@@ -1,13 +1,36 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { CappingYearCard } from "@/components/dashboard/CappingYearCard";
+import { UplinePartnersCard } from "@/components/dashboard/UplinePartnersCard";
+import { InfluencerStatusCard } from "@/components/dashboard/InfluencerStatusCard";
+import { AchievementsCard } from "@/components/dashboard/AchievementsCard";
+import { QuickLinksCard } from "@/components/dashboard/QuickLinksCard";
+import { UniversityCard } from "@/components/dashboard/UniversityCard";
+import { PromoBanners } from "@/components/dashboard/PromoBanners";
+import { ImportantUpdateCard } from "@/components/dashboard/ImportantUpdateCard";
+import { DISCCard } from "@/components/dashboard/DISCCard";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <DashboardLayout>
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Left Column */}
+        <div className="space-y-6">
+          <CappingYearCard />
+          <UplinePartnersCard />
+          <InfluencerStatusCard />
+          <DISCCard />
+          <PromoBanners />
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          <AchievementsCard />
+          <QuickLinksCard />
+          <UniversityCard />
+          <ImportantUpdateCard />
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
