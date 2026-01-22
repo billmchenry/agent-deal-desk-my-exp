@@ -1,5 +1,8 @@
+import { useState } from "react";
+import { Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ProfileSidebarCard } from "@/components/profile/ProfileSidebarCard";
 import { GeneralTab } from "@/components/profile/GeneralTab";
 import { ContactTab } from "@/components/profile/ContactTab";
@@ -15,8 +18,11 @@ import { LicensesTab } from "@/components/profile/LicensesTab";
 import { MentorTab } from "@/components/profile/MentorTab";
 import { PartnerAgentTab } from "@/components/profile/PartnerAgentTab";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { EditProfileSheet } from "@/components/profile/EditProfileSheet";
 
 export default function PersonalDetails() {
+  const [editSheetOpen, setEditSheetOpen] = useState(false);
+
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
@@ -49,6 +55,19 @@ export default function PersonalDetails() {
               <TabsContent value="personal-details" className="mt-0">
                 <Card>
                   <CardContent className="p-6">
+                    {/* Edit Button */}
+                    <div className="flex justify-end mb-4">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setEditSheetOpen(true)}
+                        className="gap-2"
+                      >
+                        <Pencil className="h-4 w-4" />
+                        Edit
+                      </Button>
+                    </div>
+
                     {/* Upper Tabs Only */}
                     <Tabs defaultValue="general" className="w-full">
                       <TabsList className="mb-6 flex-wrap h-auto gap-1 bg-transparent p-0">
@@ -197,6 +216,9 @@ export default function PersonalDetails() {
             </Tabs>
           </CardContent>
         </Card>
+
+        {/* Edit Profile Sheet */}
+        <EditProfileSheet open={editSheetOpen} onOpenChange={setEditSheetOpen} />
       </div>
     </DashboardLayout>
   );
