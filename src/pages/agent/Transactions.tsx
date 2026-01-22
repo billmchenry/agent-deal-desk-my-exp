@@ -21,6 +21,34 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Badge } from "@/components/ui/badge";
+import { TransactionDetailsSheet } from "@/components/agent/TransactionDetailsSheet";
+
+type Transaction = {
+  id: string;
+  status: string;
+  transactionId: string;
+  actualCloseDate: string;
+  scheduledCloseDate: string;
+  paymentSettledDate: string;
+  gciSum: number;
+  salesPrice: number;
+  transactionType: string;
+  currency: string;
+  propertyAddress: string;
+  isBuyerAgent: string;
+  coAgentPercentage: string;
+  agentPayablePercentage: string;
+  agentNetCommission: number;
+  companyCommission: number;
+  netPayment: number;
+  capPayment: number;
+  firstCap: string;
+  brokerReviewFee: number;
+  transactionCoordinatorFee: number;
+  mentorFee: number;
+  mentorProgramFee: number;
+  statusComp: string;
+};
 
 // Mock transactions data
 const transactionsData = [
@@ -158,6 +186,8 @@ const transactionsData = [
 
 export default function Transactions() {
   const navigate = useNavigate();
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
     to: Date | undefined;
@@ -178,6 +208,11 @@ export default function Transactions() {
     currency: "",
     propertyAddress: "",
   });
+
+  const handleRowClick = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setSheetOpen(true);
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
@@ -355,7 +390,11 @@ export default function Transactions() {
                 </TableHeader>
                 <TableBody>
                   {transactionsData.map((row) => (
-                    <TableRow key={row.id}>
+                    <TableRow 
+                      key={row.id}
+                      className="cursor-pointer hover:bg-muted/50"
+                      onClick={() => handleRowClick(row)}
+                    >
                       <TableCell>{getStatusBadge(row.status)}</TableCell>
                       <TableCell>{row.transactionId}</TableCell>
                       <TableCell>{row.actualCloseDate}</TableCell>
@@ -389,6 +428,13 @@ export default function Transactions() {
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
         </div>
+
+        {/* Transaction Details Sheet */}
+        <TransactionDetailsSheet
+          open={sheetOpen}
+          onOpenChange={setSheetOpen}
+          transaction={selectedTransaction}
+        />
       </div>
     </DashboardLayout>
   );
