@@ -123,11 +123,11 @@ export interface TopAgent {
 }
 
 export const topAgents: TopAgent[] = [
-  { id: "ta1", name: "Steven Lee Hillier", initials: "S", rank: "1 of 10", units: 6, volume: 2450000, commission: 73500 },
-  { id: "ta2", name: "John T Kellogg", initials: "J", rank: "2 of 10", units: 5, volume: 1890000, commission: 56700 },
-  { id: "ta3", name: "Tracie Dawn Kimzey-Veerkamp", initials: "T", rank: "3 of 10", units: 4, volume: 1520000, commission: 45600 },
-  { id: "ta4", name: "Brendan Anthony Mohr", initials: "B", rank: "4 of 10", units: 3, volume: 1150000, commission: 34500 },
-  { id: "ta5", name: "Kelly Eileen Young", initials: "K", rank: "5 of 10", units: 2, volume: 785000, commission: 23550 },
+  { id: "ta1", name: "Rachel Morrison", initials: "R", rank: "1 of 10", units: 6, volume: 2450000, commission: 73500 },
+  { id: "ta2", name: "Daniel Crawford", initials: "D", rank: "2 of 10", units: 5, volume: 1890000, commission: 56700 },
+  { id: "ta3", name: "Amanda Chen-Rodriguez", initials: "A", rank: "3 of 10", units: 4, volume: 1520000, commission: 45600 },
+  { id: "ta4", name: "Marcus Anthony Blake", initials: "M", rank: "4 of 10", units: 3, volume: 1150000, commission: 34500 },
+  { id: "ta5", name: "Jennifer Walsh", initials: "J", rank: "5 of 10", units: 2, volume: 785000, commission: 23550 },
 ];
 
 export const teamOverview = {
