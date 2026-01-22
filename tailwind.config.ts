@@ -57,6 +57,21 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // eXp Brand Colors
+        exp: {
+          navy: "hsl(var(--exp-navy))",
+          "navy-light": "hsl(var(--exp-navy-light))",
+          blue: "hsl(var(--exp-blue))",
+          "blue-light": "hsl(var(--exp-blue-light))",
+          gold: "hsl(var(--exp-gold))",
+          "gold-light": "hsl(var(--exp-gold-light))",
+          green: "hsl(var(--exp-green))",
+          "green-light": "hsl(var(--exp-green-light))",
+          red: "hsl(var(--exp-red))",
+          purple: "hsl(var(--exp-purple))",
+          gray: "hsl(var(--exp-gray))",
+          "gray-dark": "hsl(var(--exp-gray-dark))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,20 +80,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
