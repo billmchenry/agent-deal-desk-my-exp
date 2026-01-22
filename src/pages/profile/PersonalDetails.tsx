@@ -22,6 +22,7 @@ export default function PersonalDetails() {
       <div className="p-4 lg:p-6">
         <h1 className="text-2xl font-bold text-foreground mb-6">My Profile</h1>
 
+        {/* Top Section: Two columns */}
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Sidebar */}
           <ProfileSidebarCard />
@@ -48,7 +49,7 @@ export default function PersonalDetails() {
               <TabsContent value="personal-details" className="mt-0">
                 <Card>
                   <CardContent className="p-6">
-                    {/* Upper Tabs */}
+                    {/* Upper Tabs Only */}
                     <Tabs defaultValue="general" className="w-full">
                       <TabsList className="mb-6 flex-wrap h-auto gap-1 bg-transparent p-0">
                         <TabsTrigger
@@ -99,87 +100,6 @@ export default function PersonalDetails() {
                         <EmergencyContactsTab />
                       </TabsContent>
                     </Tabs>
-
-                    {/* Lower Tabs */}
-                    <div className="mt-8 pt-6 border-t border-border">
-                      <Tabs defaultValue="office-locations" className="w-full">
-                        <TabsList className="mb-6 flex-wrap h-auto gap-1 bg-transparent p-0">
-                          <TabsTrigger
-                            value="office-locations"
-                            className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
-                          >
-                            Office Locations
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="active-markets"
-                            className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
-                          >
-                            Active Markets
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="organizations"
-                            className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
-                          >
-                            Organizations
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="teams"
-                            className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
-                          >
-                            Teams
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="transaction-prefs"
-                            className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
-                          >
-                            Transaction preferences
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="licenses"
-                            className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
-                          >
-                            Licenses
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="mentor"
-                            className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
-                          >
-                            Mentor
-                          </TabsTrigger>
-                          <TabsTrigger
-                            value="partner-agent"
-                            className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
-                          >
-                            Partner Agent
-                          </TabsTrigger>
-                        </TabsList>
-
-                        <TabsContent value="office-locations" className="mt-0">
-                          <OfficeLocationsTab />
-                        </TabsContent>
-                        <TabsContent value="active-markets" className="mt-0">
-                          <ActiveMarketsTab />
-                        </TabsContent>
-                        <TabsContent value="organizations" className="mt-0">
-                          <OrganizationsTab />
-                        </TabsContent>
-                        <TabsContent value="teams" className="mt-0">
-                          <TeamsTab />
-                        </TabsContent>
-                        <TabsContent value="transaction-prefs" className="mt-0">
-                          <TransactionPrefsTab />
-                        </TabsContent>
-                        <TabsContent value="licenses" className="mt-0">
-                          <LicensesTab />
-                        </TabsContent>
-                        <TabsContent value="mentor" className="mt-0">
-                          <MentorTab />
-                        </TabsContent>
-                        <TabsContent value="partner-agent" className="mt-0">
-                          <PartnerAgentTab />
-                        </TabsContent>
-                      </Tabs>
-                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -194,6 +114,89 @@ export default function PersonalDetails() {
             </Tabs>
           </div>
         </div>
+
+        {/* Bottom Section: Full width, independent tabs */}
+        <Card className="mt-6">
+          <CardContent className="p-6">
+            <Tabs defaultValue="office-locations" className="w-full">
+              <TabsList className="mb-6 flex-wrap h-auto gap-1 bg-transparent p-0">
+                <TabsTrigger
+                  value="office-locations"
+                  className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
+                >
+                  Office Locations
+                </TabsTrigger>
+                <TabsTrigger
+                  value="active-markets"
+                  className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
+                >
+                  Active Markets
+                </TabsTrigger>
+                <TabsTrigger
+                  value="organizations"
+                  className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
+                >
+                  Organizations
+                </TabsTrigger>
+                <TabsTrigger
+                  value="teams"
+                  className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
+                >
+                  Teams
+                </TabsTrigger>
+                <TabsTrigger
+                  value="transaction-prefs"
+                  className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
+                >
+                  Transaction preferences
+                </TabsTrigger>
+                <TabsTrigger
+                  value="licenses"
+                  className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
+                >
+                  Licenses
+                </TabsTrigger>
+                <TabsTrigger
+                  value="mentor"
+                  className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
+                >
+                  Mentor
+                </TabsTrigger>
+                <TabsTrigger
+                  value="partner-agent"
+                  className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
+                >
+                  Partner Agent
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="office-locations" className="mt-0">
+                <OfficeLocationsTab />
+              </TabsContent>
+              <TabsContent value="active-markets" className="mt-0">
+                <ActiveMarketsTab />
+              </TabsContent>
+              <TabsContent value="organizations" className="mt-0">
+                <OrganizationsTab />
+              </TabsContent>
+              <TabsContent value="teams" className="mt-0">
+                <TeamsTab />
+              </TabsContent>
+              <TabsContent value="transaction-prefs" className="mt-0">
+                <TransactionPrefsTab />
+              </TabsContent>
+              <TabsContent value="licenses" className="mt-0">
+                <LicensesTab />
+              </TabsContent>
+              <TabsContent value="mentor" className="mt-0">
+                <MentorTab />
+              </TabsContent>
+              <TabsContent value="partner-agent" className="mt-0">
+                <PartnerAgentTab />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
     </DashboardLayout>
   );
