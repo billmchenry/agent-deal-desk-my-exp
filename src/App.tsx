@@ -10,6 +10,7 @@ import Settings from "./pages/profile/Settings";
 import AgentDashboard from "./pages/agent/Dashboard";
 import IconProgram from "./pages/agent/IconProgram";
 import CappingHistory from "./pages/agent/CappingHistory";
+import Transactions from "./pages/agent/Transactions";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/agent/dashboard" element={<AgentDashboard />} />
           <Route path="/agent/icon-program" element={<IconProgram />} />
           <Route path="/agent/capping-history" element={<CappingHistory />} />
+          <Route path="/agent/transactions" element={<Transactions />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

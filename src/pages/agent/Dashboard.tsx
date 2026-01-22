@@ -62,13 +62,18 @@ function StatCard({
   title,
   value,
   prefix = "",
+  onClick,
 }: {
   title: string;
   value: string | number;
   prefix?: string;
+  onClick?: () => void;
 }) {
   return (
-    <Card>
+    <Card 
+      className={onClick ? "cursor-pointer hover:bg-muted/50 transition-colors" : ""}
+      onClick={onClick}
+    >
       <CardContent className="p-6">
         <p className="text-sm text-muted-foreground mb-2">{title}</p>
         <p className="text-2xl font-semibold text-foreground">
@@ -176,20 +181,29 @@ export default function AgentDashboard() {
 
         {/* Stats Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <StatCard title="Units" value={agentStats.units} />
+          <StatCard 
+            title="Units" 
+            value={agentStats.units} 
+            onClick={() => navigate("/agent/transactions")}
+          />
           <StatCard
             title="Volume"
             value={agentStats.volume.toFixed(2)}
             prefix="$"
+            onClick={() => navigate("/agent/transactions")}
           />
           <StatCard
             title="Commission"
             value={agentStats.commission.toFixed(2)}
             prefix="$"
+            onClick={() => navigate("/agent/transactions")}
           />
 
           {/* Transactions Summary Card */}
-          <Card>
+          <Card 
+            className="cursor-pointer hover:bg-muted/50 transition-colors"
+            onClick={() => navigate("/agent/transactions")}
+          >
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-semibold">
                 Transactions
