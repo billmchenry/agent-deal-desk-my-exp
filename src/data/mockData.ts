@@ -349,7 +349,7 @@ export const navItems = [
   {
     title: "Team",
     icon: "Users",
-    url: "/team",
+    url: "/team/dashboard",
   },
   {
     title: "RevShare Earnings",
