@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PersonalDetails from "./pages/profile/PersonalDetails";
 import Settings from "./pages/profile/Settings";
+import AgentDashboard from "./pages/agent/Dashboard";
+import IconProgram from "./pages/agent/IconProgram";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +22,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/profile/personal-details" element={<PersonalDetails />} />
           <Route path="/profile/settings" element={<Settings />} />
+          <Route path="/agent/dashboard" element={<AgentDashboard />} />
+          <Route path="/agent/icon-program" element={<IconProgram />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

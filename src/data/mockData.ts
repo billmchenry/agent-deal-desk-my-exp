@@ -342,9 +342,8 @@ export const navItems = [
     icon: "User",
     hasSubmenu: true,
     submenu: [
-      { title: "Profile", url: "/agent/profile" },
-      { title: "Documents", url: "/agent/documents" },
-      { title: "Settings", url: "/agent/settings" },
+      { title: "Dashboard", url: "/agent/dashboard" },
+      { title: "ICON Program", url: "/agent/icon-program" },
     ],
   },
   {
