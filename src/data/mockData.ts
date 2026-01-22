@@ -389,8 +389,10 @@ export const navItems = [
     icon: "DollarSign",
     hasSubmenu: true,
     submenu: [
-      { title: "Overview", url: "/revshare/overview" },
-      { title: "History", url: "/revshare/history" },
+      { title: "Dashboard", url: "/revshare/dashboard" },
+      { title: "Organization", url: "/revshare/organization" },
+      { title: "Organization Tree", url: "/revshare/organization-tree" },
+      { title: "My RevShare Trends", url: "/revshare/trends" },
     ],
   },
   {

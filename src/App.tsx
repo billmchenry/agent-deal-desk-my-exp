@@ -12,6 +12,10 @@ import IconProgram from "./pages/agent/IconProgram";
 import CappingHistory from "./pages/agent/CappingHistory";
 import Transactions from "./pages/agent/Transactions";
 import TeamDashboard from "./pages/team/Dashboard";
+import RevShareDashboard from "./pages/revshare/Dashboard";
+import OrganizationReporting from "./pages/revshare/Organization";
+import OrganizationTree from "./pages/revshare/OrganizationTree";
+import RevShareTrends from "./pages/revshare/Trends";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +34,10 @@ const App = () => (
           <Route path="/agent/capping-history" element={<CappingHistory />} />
           <Route path="/agent/transactions" element={<Transactions />} />
           <Route path="/team/dashboard" element={<TeamDashboard />} />
+          <Route path="/revshare/dashboard" element={<RevShareDashboard />} />
+          <Route path="/revshare/organization" element={<OrganizationReporting />} />
+          <Route path="/revshare/organization-tree" element={<OrganizationTree />} />
+          <Route path="/revshare/trends" element={<RevShareTrends />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
