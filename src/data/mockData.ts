@@ -112,6 +112,39 @@ export const quickLinks = [
   { title: "KGCI Real Estate", url: "#" },
 ];
 
+export interface TopAgent {
+  id: string;
+  name: string;
+  initials: string;
+  rank: string;
+  units: number;
+  volume: number;
+  commission: number;
+}
+
+export const topAgents: TopAgent[] = [
+  { id: "ta1", name: "Steven Lee Hillier", initials: "S", rank: "1 of 10", units: 6, volume: 2450000, commission: 73500 },
+  { id: "ta2", name: "John T Kellogg", initials: "J", rank: "2 of 10", units: 5, volume: 1890000, commission: 56700 },
+  { id: "ta3", name: "Tracie Dawn Kimzey-Veerkamp", initials: "T", rank: "3 of 10", units: 4, volume: 1520000, commission: 45600 },
+  { id: "ta4", name: "Brendan Anthony Mohr", initials: "B", rank: "4 of 10", units: 3, volume: 1150000, commission: 34500 },
+  { id: "ta5", name: "Kelly Eileen Young", initials: "K", rank: "5 of 10", units: 2, volume: 785000, commission: 23550 },
+];
+
+export const teamOverview = {
+  name: "New Vision Realty Group",
+  units: { total: 13, pending: 2 },
+  volume: { total: 5145000, pending: 1659000 },
+  teamLeadSplit: { total: 2669, pending: 0 },
+};
+
+export const teamRequirements = [
+  { label: "Total Agents Count", value: "70 out of 11", progress: 100, hasInfo: true },
+  { label: "Total Closed Units", value: "13 out of 140", progress: 9 },
+  { label: "Total Sales Volume", value: "5.15M / 40M", progress: 13 },
+  { label: "Total Company Dollar Paid", value: "12.95K / 56K", progress: 23 },
+  { label: "Average Unit Split To Team Leader", value: "3.08% (25% Average Required)", progress: 12, isWarning: true },
+];
+
 export interface UserProfile {
   agentId: string;
   nrdsId: string;
