@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CalendarIcon, Filter } from "lucide-react";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -127,6 +128,7 @@ function CircularProgress({
 }
 
 export default function AgentDashboard() {
+  const navigate = useNavigate();
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
     to: Date | undefined;
@@ -280,7 +282,11 @@ export default function AgentDashboard() {
               <p className="mt-4 text-sm text-muted-foreground text-center">
                 Note: Complete 16K to achieve the cap status
               </p>
-              <Button variant="link" className="mt-2 text-primary">
+              <Button 
+                variant="link" 
+                className="mt-2 text-primary"
+                onClick={() => navigate("/agent/capping-history")}
+              >
                 View Capping History
               </Button>
             </CardContent>
