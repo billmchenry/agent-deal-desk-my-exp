@@ -396,6 +396,11 @@ export const navItems = [
     ],
   },
   {
+    title: "Pulse",
+    icon: "Sparkles",
+    url: "/pulse",
+  },
+  {
     title: "Documents",
     icon: "FileText",
     hasSubmenu: true,

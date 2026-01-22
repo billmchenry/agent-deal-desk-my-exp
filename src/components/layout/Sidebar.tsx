@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ChevronRight,
   Home,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { navItems } from "@/data/mockData";
@@ -27,6 +28,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Wrench,
   BookOpen,
   HelpCircle,
+  Sparkles,
 };
 
 interface SidebarProps {
