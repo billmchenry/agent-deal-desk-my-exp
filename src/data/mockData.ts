@@ -112,6 +112,230 @@ export const quickLinks = [
   { title: "KGCI Real Estate", url: "#" },
 ];
 
+export interface UserProfile {
+  agentId: string;
+  nrdsId: string;
+  depositLinkId: string;
+  flags: string[];
+  general: {
+    legalFirstName: string;
+    legalMiddleName: string;
+    legalLastName: string;
+    preferredName: string;
+    expEmail: string;
+    birthday: string;
+    anniversaryDate: string;
+    region: string;
+  };
+  contact: {
+    phoneNumber: string;
+    receiveText: boolean;
+    fax: string;
+    additionalPhoneNumbers: string;
+  };
+  email: {
+    secondEmail: string;
+    forwardingAddress: string;
+  };
+  addresses: {
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    country: string;
+    state: string;
+    zipCode: string;
+  };
+  emergencyContacts: {
+    primary: {
+      name: string;
+      relationship: string;
+      phoneNumber: string;
+      email: string;
+    };
+    secondary: {
+      name: string;
+      relationship: string;
+      phoneNumber: string;
+      email: string;
+    };
+  };
+  officeLocations: Array<{
+    isPrimary: boolean;
+    officeId: string;
+    officeName: string;
+    state: string;
+    status: string;
+    spaceDockerOfficeId: string;
+  }>;
+  activeMarkets: Array<{
+    isPrimary: boolean;
+    city: string;
+    zipCode: string;
+    state: string;
+    country: string;
+  }>;
+  organizations: Array<{
+    ouid: string;
+    agentMlsId: string;
+    globalId: string;
+    organization: string;
+    orgType: string;
+    orgStatus: string;
+    stateProvince: string;
+    mlsOfficeCode: string;
+  }>;
+  teams: Array<{
+    team: string;
+    teamType: string;
+    payplanName: string;
+    teamStatus: string;
+    teamAgentStatus: string;
+    teamAgentRole: string;
+    tmaEffectiveDate: string;
+  }>;
+  transactionPreferences: {
+    splitCheckPreference: boolean;
+  };
+  licenses: Array<{
+    division: string;
+    licenseNumber: string;
+    licenseFirstName: string;
+    licenseLastName: string;
+    isPrimary: boolean;
+    expirationDate: string;
+    state: string;
+    brokerApprovalStatus: string;
+    brokerApprovalSubmittedDate: string;
+    brokerApprovalSubmittedBy: string;
+    transferStatus: string;
+    transferDate: string;
+    transferBy: string;
+  }>;
+  mentorParticipation: "Mentor" | "Mentee" | "None";
+  isPartnerAgent: boolean;
+}
+
+export const userProfile: UserProfile = {
+  agentId: "AGT-847293",
+  nrdsId: "284756847",
+  depositLinkId: "DL-38472",
+  flags: ["Commercial", "Referral"],
+  general: {
+    legalFirstName: "Michael",
+    legalMiddleName: "James",
+    legalLastName: "Thompson",
+    preferredName: "Michael",
+    expEmail: "michael.thompson@exprealty.com",
+    birthday: "March 15",
+    anniversaryDate: "01 Oct 2021",
+    region: "Western",
+  },
+  contact: {
+    phoneNumber: "(916) 555-4827",
+    receiveText: true,
+    fax: "-",
+    additionalPhoneNumbers: "-",
+  },
+  email: {
+    secondEmail: "mthompson.realty@gmail.com",
+    forwardingAddress: "mthompson.realty@gmail.com",
+  },
+  addresses: {
+    addressLine1: "1842 Oak Valley Drive",
+    addressLine2: "",
+    city: "Folsom",
+    country: "US",
+    state: "CA",
+    zipCode: "95630",
+  },
+  emergencyContacts: {
+    primary: {
+      name: "Sarah Thompson",
+      relationship: "Wife",
+      phoneNumber: "(916) 555-3291",
+      email: "sarah.thompson@gmail.com",
+    },
+    secondary: {
+      name: "Robert Thompson",
+      relationship: "Brother",
+      phoneNumber: "(916) 555-7834",
+      email: "rob.thompson@gmail.com",
+    },
+  },
+  officeLocations: [
+    {
+      isPrimary: true,
+      officeId: "4521",
+      officeName: "eXp Realty of California Inc",
+      state: "CA",
+      status: "Active",
+      spaceDockerOfficeId: "8374",
+    },
+    {
+      isPrimary: false,
+      officeId: "3847",
+      officeName: "eXp Commercial",
+      state: "CA",
+      status: "Active",
+      spaceDockerOfficeId: "9156",
+    },
+  ],
+  activeMarkets: [
+    {
+      isPrimary: false,
+      city: "Sacramento",
+      zipCode: "95814",
+      state: "California",
+      country: "United States",
+    },
+  ],
+  organizations: [
+    {
+      ouid: "A00000847",
+      agentMlsId: "284756",
+      globalId: "3842",
+      organization: "Sacramento Association of Realtors",
+      orgType: "Association",
+      orgStatus: "Active",
+      stateProvince: "CA",
+      mlsOfficeCode: "-",
+    },
+  ],
+  teams: [
+    {
+      team: "Thompson Realty Partners",
+      teamType: "Mega",
+      payplanName: "Mega Team Leader",
+      teamStatus: "Active",
+      teamAgentStatus: "Active",
+      teamAgentRole: "Team_Leader",
+      tmaEffectiveDate: "10/25/2021",
+    },
+  ],
+  transactionPreferences: {
+    splitCheckPreference: true,
+  },
+  licenses: [
+    {
+      division: "Residential",
+      licenseNumber: "02847593",
+      licenseFirstName: "Michael",
+      licenseLastName: "Thompson",
+      isPrimary: true,
+      expirationDate: "09/23/2028",
+      state: "CA",
+      brokerApprovalStatus: "Approved",
+      brokerApprovalSubmittedDate: "09/03/2021",
+      brokerApprovalSubmittedBy: "marcus.chen@exprealty.net",
+      transferStatus: "Complete",
+      transferDate: "10/18/2021",
+      transferBy: "jennifer.wright@exprealty.net",
+    },
+  ],
+  mentorParticipation: "Mentor",
+  isPartnerAgent: false,
+};
+
 export const navItems = [
   {
     title: "Agent",
