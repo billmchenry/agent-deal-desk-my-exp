@@ -7,22 +7,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Filter, MessageCircle, ChevronRight, Info } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-const topAgents = [
-  { name: "Steven Lee Hillier", rank: "1 of 10", units: 6, initials: "S" },
-  { name: "John T Kellogg", rank: "2 of 10", units: 5, initials: "J" },
-  { name: "Tracie Dawn Kimzey-Veerkamp", rank: "3 of 10", units: 4, initials: "T" },
-  { name: "Brendan Anthony Mohr", rank: "4 of 10", units: 3, initials: "B" },
-  { name: "Kelly Eileen Young", rank: "5 of 10", units: 2, initials: "K" },
-];
-
-const requirements = [
-  { label: "Total Agents Count", value: "70 out of 11", progress: 100, hasInfo: true },
-  { label: "Total Closed Units", value: "13 out of 140", progress: 9 },
-  { label: "Total Sales Volume", value: "5.15M / 40M", progress: 13 },
-  { label: "Total Company Dollar Paid", value: "12.95K / 56K", progress: 23 },
-  { label: "Average Unit Split To Team Leader", value: "3.08% (25% Average Required)", progress: 12, isWarning: true },
-];
+import { topAgents, teamOverview, teamRequirements } from "@/data/mockData";
 
 export default function TeamDashboard() {
   return (
@@ -187,7 +172,7 @@ export default function TeamDashboard() {
               <div className="font-medium text-foreground">Requirements</div>
               <div className="font-medium text-foreground">Progress</div>
               
-              {requirements.map((req) => (
+              {teamRequirements.map((req) => (
                 <>
                   <div key={`label-${req.label}`} className="flex items-center gap-2 text-sm text-muted-foreground">
                     {req.label}
