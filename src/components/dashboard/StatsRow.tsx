@@ -41,14 +41,6 @@ function StatCard({ icon, value, label, progress, color }: StatCardProps) {
           <span className="text-2xl font-bold text-foreground">{value}</span>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">{label}</p>
-        
-        {/* Mini progress bar */}
-        <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-secondary">
-          <div 
-            className={`h-full rounded-full transition-all ${colors.bar}`}
-            style={{ width: `${Math.min(progress, 100)}%` }}
-          />
-        </div>
       </CardContent>
     </Card>
   );
