@@ -3,8 +3,7 @@ import { HeroBannerCard } from "@/components/dashboard/HeroBannerCard";
 import { StatsRow } from "@/components/dashboard/StatsRow";
 import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
 import { ActionCenterCard } from "@/components/dashboard/ActionCenterCard";
-import { AppointmentsCard } from "@/components/dashboard/AppointmentsCard";
-import { ProgressReportCard } from "@/components/dashboard/ProgressReportCard";
+import { ImportantUpdateCard } from "@/components/dashboard/ImportantUpdateCard";
 import { ConnectUplineCard } from "@/components/dashboard/ConnectUplineCard";
 import { TrainingEducationCard } from "@/components/dashboard/TrainingEducationCard";
 
@@ -28,8 +27,7 @@ const Index = () => {
 
         {/* Right Sidebar (1 column) */}
         <div className="space-y-6">
-          <AppointmentsCard />
-          <ProgressReportCard />
+          <ImportantUpdateCard />
           <ConnectUplineCard />
           <TrainingEducationCard />
         </div>
