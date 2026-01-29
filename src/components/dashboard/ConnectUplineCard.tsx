@@ -6,18 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+} from "@/components/ui/sheet";
 import { uplinePartners, UplinePartner } from "@/data/mockData";
 
 export function ConnectUplineCard() {
   const [view, setView] = useState<"lineage" | "contributor">("lineage");
   const [selectedPartner, setSelectedPartner] = useState<UplinePartner | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const getInitials = (name: string) =>
     name
@@ -32,7 +32,7 @@ export function ConnectUplineCard() {
 
   const handlePartnerClick = (partner: UplinePartner) => {
     setSelectedPartner(partner);
-    setDrawerOpen(true);
+    setSheetOpen(true);
   };
 
   const getLevelLabel = (level: number) => {
@@ -59,12 +59,12 @@ export function ConnectUplineCard() {
           </div>
         </CardHeader>
         <CardContent className="pt-0">
-          <ScrollArea className="max-h-64">
-            <div className="space-y-1 pr-3">
+          <ScrollArea className="h-[280px]">
+            <div className="space-y-1 pr-4">
               {displayedPartners.map((partner) => (
                 <div
                   key={partner.id}
-                  className="flex items-center gap-3 min-h-[48px] py-2 rounded-lg hover:bg-muted/50 transition-colors"
+                  className="flex items-center gap-3 min-h-[56px] py-2 px-2 rounded-lg hover:bg-muted/50 transition-colors"
                 >
                   {/* Tappable Avatar + Name */}
                   <button
@@ -113,36 +113,29 @@ export function ConnectUplineCard() {
         </CardContent>
       </Card>
 
-      {/* Contact Details Drawer */}
-      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <DrawerContent>
-          <DrawerHeader className="text-center pb-2">
-            <DrawerTitle className="sr-only">Contact Details</DrawerTitle>
-            <DrawerClose asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-4 top-4 h-10 w-10"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </DrawerClose>
-          </DrawerHeader>
+      {/* Contact Details Sheet (works on both mobile and desktop) */}
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-md">
+          <SheetHeader className="text-left pb-4">
+            <SheetTitle>Contact Details</SheetTitle>
+          </SheetHeader>
 
           {selectedPartner && (
-            <div className="px-6 pb-8">
+            <div className="space-y-6">
               {/* Profile Header */}
-              <div className="flex flex-col items-center mb-6">
-                <Avatar className="h-20 w-20 border-4 border-background shadow-lg mb-3">
+              <div className="flex items-center gap-4">
+                <Avatar className="h-16 w-16 border-4 border-background shadow-lg">
                   <AvatarImage src={selectedPartner.avatar} alt={selectedPartner.name} />
-                  <AvatarFallback className="bg-primary text-primary-foreground text-xl">
+                  <AvatarFallback className="bg-primary text-primary-foreground text-lg">
                     {getInitials(selectedPartner.name)}
                   </AvatarFallback>
                 </Avatar>
-                <h3 className="text-lg font-semibold">{selectedPartner.name}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {getLevelLabel(selectedPartner.level)}
-                </p>
+                <div>
+                  <h3 className="text-lg font-semibold">{selectedPartner.name}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {getLevelLabel(selectedPartner.level)}
+                  </p>
+                </div>
               </div>
 
               {/* Action Buttons */}
@@ -198,8 +191,8 @@ export function ConnectUplineCard() {
               </div>
             </div>
           )}
-        </DrawerContent>
-      </Drawer>
+        </SheetContent>
+      </Sheet>
     </>
   );
 }
