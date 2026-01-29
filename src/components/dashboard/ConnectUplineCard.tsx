@@ -1,80 +1,205 @@
-import { MoreVertical } from "lucide-react";
+import { useState } from "react";
+import { Phone, Mail, MessageSquare, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-
-const sponsor = {
-  name: "Ian Marshall",
-  role: "Sponsor",
-  avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-};
-
-const reapMembers = [
-  {
-    id: 1,
-    name: "eXP Reap 5",
-    role: "eXPU/Influencer",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
-  },
-  {
-    id: 2,
-    name: "Sarah Chen",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
-  },
-  {
-    id: 3,
-    name: "Michael Brooks",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
-  },
-];
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { uplinePartners, UplinePartner } from "@/data/mockData";
 
 export function ConnectUplineCard() {
-  return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base font-semibold">Connect with your Upline</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Sponsor Section */}
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
-          <Avatar className="h-12 w-12">
-            <AvatarImage src={sponsor.avatar} alt={sponsor.name} />
-            <AvatarFallback className="bg-primary text-primary-foreground">
-              {sponsor.name.split(' ').map(n => n[0]).join('')}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs text-muted-foreground">{sponsor.role}:</p>
-            <p className="font-medium">{sponsor.name}</p>
-          </div>
-          <Button size="sm" className="bg-primary hover:bg-primary/90">
-            Message
-          </Button>
-        </div>
+  const [view, setView] = useState<"lineage" | "contributor">("lineage");
+  const [selectedPartner, setSelectedPartner] = useState<UplinePartner | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-        {/* Reap Members */}
-        <div className="space-y-2">
-          {reapMembers.map((member) => (
-            <div key={member.id} className="flex items-center gap-3 py-2">
-              <Avatar className="h-9 w-9">
-                <AvatarImage src={member.avatar} alt={member.name} />
-                <AvatarFallback className="bg-muted text-muted-foreground text-xs">
-                  {member.name.split(' ').map(n => n[0]).join('')}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium">{member.name}</p>
-                {member.role && (
-                  <p className="text-xs text-muted-foreground">{member.role}</p>
-                )}
-              </div>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreVertical className="h-4 w-4 text-muted-foreground" />
-              </Button>
+  const getInitials = (name: string) =>
+    name
+      .split(" ")
+      .map((n) => n[0])
+      .join("");
+
+  const displayedPartners =
+    view === "contributor"
+      ? uplinePartners.filter((p) => p.isContributor)
+      : uplinePartners;
+
+  const handlePartnerClick = (partner: UplinePartner) => {
+    setSelectedPartner(partner);
+    setDrawerOpen(true);
+  };
+
+  const getLevelLabel = (level: number) => {
+    if (level === 1) return "Level 1 - Sponsor";
+    return `Level ${level}`;
+  };
+
+  return (
+    <>
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between gap-2">
+            <CardTitle className="text-base font-semibold">Connect with your Upline</CardTitle>
+            <Tabs value={view} onValueChange={(v) => setView(v as "lineage" | "contributor")}>
+              <TabsList className="h-8">
+                <TabsTrigger value="lineage" className="text-xs px-3">
+                  Lineage
+                </TabsTrigger>
+                <TabsTrigger value="contributor" className="text-xs px-3">
+                  Contributor
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <ScrollArea className="max-h-64">
+            <div className="space-y-1 pr-3">
+              {displayedPartners.map((partner) => (
+                <div
+                  key={partner.id}
+                  className="flex items-center gap-3 min-h-[48px] py-2 rounded-lg hover:bg-muted/50 transition-colors"
+                >
+                  {/* Tappable Avatar + Name */}
+                  <button
+                    onClick={() => handlePartnerClick(partner)}
+                    className="flex items-center gap-3 flex-1 min-w-0 text-left"
+                  >
+                    <Avatar className="h-10 w-10 border-2 border-background shadow-sm flex-shrink-0">
+                      <AvatarImage src={partner.avatar} alt={partner.name} />
+                      <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                        {getInitials(partner.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0">
+                      <p className="font-medium text-sm truncate">{partner.name}</p>
+                      <p className="text-xs text-muted-foreground">{getLevelLabel(partner.level)}</p>
+                    </div>
+                  </button>
+
+                  {/* Quick Actions */}
+                  <div className="flex gap-1 flex-shrink-0">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-10 w-10 text-primary hover:text-primary hover:bg-primary/10"
+                      asChild
+                    >
+                      <a href={`tel:${partner.phone}`} aria-label={`Call ${partner.name}`}>
+                        <Phone className="h-4 w-4" />
+                      </a>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-10 w-10 text-primary hover:text-primary hover:bg-primary/10"
+                      asChild
+                    >
+                      <a href={`mailto:${partner.email}`} aria-label={`Email ${partner.name}`}>
+                        <Mail className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+
+      {/* Contact Details Drawer */}
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <DrawerContent>
+          <DrawerHeader className="text-center pb-2">
+            <DrawerTitle className="sr-only">Contact Details</DrawerTitle>
+            <DrawerClose asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-4 top-4 h-10 w-10"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </DrawerClose>
+          </DrawerHeader>
+
+          {selectedPartner && (
+            <div className="px-6 pb-8">
+              {/* Profile Header */}
+              <div className="flex flex-col items-center mb-6">
+                <Avatar className="h-20 w-20 border-4 border-background shadow-lg mb-3">
+                  <AvatarImage src={selectedPartner.avatar} alt={selectedPartner.name} />
+                  <AvatarFallback className="bg-primary text-primary-foreground text-xl">
+                    {getInitials(selectedPartner.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <h3 className="text-lg font-semibold">{selectedPartner.name}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {getLevelLabel(selectedPartner.level)}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <Button
+                  variant="outline"
+                  className="w-full h-14 justify-start gap-4 text-left"
+                  asChild
+                >
+                  <a href={`tel:${selectedPartner.phone}`}>
+                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Phone className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-medium text-sm">Call</p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {selectedPartner.phone}
+                      </p>
+                    </div>
+                  </a>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="w-full h-14 justify-start gap-4 text-left"
+                  asChild
+                >
+                  <a href={`mailto:${selectedPartner.email}`}>
+                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Mail className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-medium text-sm">Email</p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {selectedPartner.email}
+                      </p>
+                    </div>
+                  </a>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="w-full h-14 justify-start gap-4 text-left"
+                >
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <MessageSquare className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm">Message</p>
+                    <p className="text-xs text-muted-foreground">Send a message</p>
+                  </div>
+                </Button>
+              </div>
+            </div>
+          )}
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }
