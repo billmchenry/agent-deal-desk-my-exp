@@ -1,7 +1,6 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { HeroBannerCard } from "@/components/dashboard/HeroBannerCard";
 import { StatsRow } from "@/components/dashboard/StatsRow";
-import { PerformanceChart } from "@/components/dashboard/PerformanceChart";
 import { ActionCenterCard } from "@/components/dashboard/ActionCenterCard";
 import { ImportantUpdateCard } from "@/components/dashboard/ImportantUpdateCard";
 import { ConnectUplineCard } from "@/components/dashboard/ConnectUplineCard";
@@ -21,7 +20,6 @@ const Index = () => {
         <div className="lg:col-span-2 space-y-6">
           <HeroBannerCard />
           <StatsRow />
-          <PerformanceChart />
           <ActionCenterCard />
         </div>
 
