@@ -1,18 +1,14 @@
-import { Phone, Mail, ArrowRight } from "lucide-react";
+import { Phone, Mail, ArrowRight, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { InfluencerStatusCard } from "./InfluencerStatusCard";
-import { DISCCard } from "./DISCCard";
-
-const organizationLevels = [
-  { name: "Alpha Legacy", value: "1000+ Total and 28+ FLQs Total and 28+ FLQA", isTop: true },
-  { name: "Beta", value: "", completed: true },
-  { name: "Leaders", value: "", completed: true },
-  { name: "Builders", value: "", completed: true },
-  { name: "Agents", value: "", completed: true },
-];
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { influencerTiers, achievements } from "@/data/mockData";
+import { cn } from "@/lib/utils";
 
 export function ActionCenterCard() {
+  const currentTier = influencerTiers.filter((t) => t.completed).pop();
+
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -24,65 +20,83 @@ export function ActionCenterCard() {
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Influencer Status embedded */}
-        <div className="rounded-lg border bg-muted/20 p-4">
-          <h3 className="text-base font-semibold mb-4">My Influencer Status</h3>
+        {/* Tabbed Status Section */}
+        <Tabs defaultValue="influencer" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="influencer">My Influencer Status</TabsTrigger>
+            <TabsTrigger value="flqa">FLQA Achievements</TabsTrigger>
+          </TabsList>
           
-          {/* Congratulations Banner */}
-          <div className="rounded-lg bg-exp-green/10 border border-exp-green/20 p-3 mb-4">
-            <p className="text-sm font-medium text-exp-green">
-              🎉 Congratulations! Your star Legacy! Yeah? Rew Elite is is just getter.
-            </p>
-          </div>
+          {/* Influencer Status Tab */}
+          <TabsContent value="influencer" className="mt-4 space-y-4">
+            {/* Congratulations Banner */}
+            <div className="rounded-lg bg-exp-green/10 border border-exp-green/20 p-3">
+              <p className="text-sm font-medium text-exp-green">
+                🎉 Congratulations! You've reached{" "}
+                <span className="font-bold">{currentTier?.name}</span> status
+              </p>
+            </div>
 
-          {/* Organization Level Row */}
-          <div className="flex items-center gap-3 p-3 rounded-lg bg-background border mb-4">
-            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <span className="text-lg">⭐</span>
-            </div>
-            <div className="flex-1">
-              <p className="font-semibold">Alpha Legacy</p>
-              <p className="text-xs text-muted-foreground">1000+ Total and 28+ FLQs Total and 28+ FLQA</p>
-            </div>
-            <div className="flex gap-1">
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
-                <Phone className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
-                <Mail className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+            {/* Tier Progression - No progress bars */}
+            <div className="relative pl-6">
+              {influencerTiers.map((tier, index) => (
+                <div key={tier.name} className="relative flex items-center gap-3 py-2">
+                  {/* Connector Line */}
+                  {index < influencerTiers.length - 1 && (
+                    <div
+                      className={cn(
+                        "absolute left-0 top-8 h-full w-0.5",
+                        tier.completed ? "bg-exp-green" : "bg-border"
+                      )}
+                    />
+                  )}
 
-          {/* Organization Levels */}
-          <div className="relative pl-6 space-y-1">
-            {organizationLevels.slice(1).map((level, index) => (
-              <div key={level.name} className="relative flex items-center gap-3 py-2">
-                {/* Connector Line */}
-                {index < organizationLevels.length - 2 && (
-                  <div className="absolute left-0 top-8 h-full w-0.5 bg-primary" />
-                )}
-                
-                {/* Status Indicator */}
-                <div className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary border-primary text-white">
-                  <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
+                  {/* Status Indicator */}
+                  <div
+                    className={cn(
+                      "absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border-2",
+                      tier.completed
+                        ? "bg-exp-green border-exp-green text-white"
+                        : "bg-background border-border"
+                    )}
+                  >
+                    {tier.completed && <Check className="h-3.5 w-3.5" />}
+                  </div>
+
+                  {/* Tier Name */}
+                  <span
+                    className={cn(
+                      "ml-4 font-medium",
+                      tier.completed ? "text-foreground" : "text-muted-foreground"
+                    )}
+                  >
+                    {tier.name}
+                  </span>
                 </div>
+              ))}
+            </div>
+          </TabsContent>
 
-                {/* Level Name */}
-                <span className="ml-4 font-medium text-foreground">
-                  {level.name}
-                </span>
-
-                {/* Progress Bar */}
-                <div className="flex-1 h-2 bg-primary/30 rounded-full overflow-hidden">
-                  <div className="h-full bg-primary rounded-full" style={{ width: '80%' }} />
-                </div>
+          {/* FLQA Achievements Tab */}
+          <TabsContent value="flqa" className="mt-4">
+            <div className="rounded-lg border bg-muted/30 p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-medium">FLQA Status</span>
+                <Badge className="bg-exp-green text-white hover:bg-exp-green/90">
+                  {achievements.flqa.status}
+                </Badge>
               </div>
-            ))}
-          </div>
-        </div>
+              <div className="space-y-1">
+                <p className="text-2xl font-bold text-exp-blue">
+                  ${achievements.flqa.amount.toLocaleString()}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  As of {achievements.flqa.date}
+                </p>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
 
         {/* Promo Card */}
         <div className="rounded-lg bg-primary p-4 text-primary-foreground">
