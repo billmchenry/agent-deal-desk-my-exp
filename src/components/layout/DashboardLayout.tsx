@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
-import { MiraChatbot } from "./MiraChatbot";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -19,9 +18,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <main className="lg:ml-64 min-h-[calc(100vh-4rem)] p-4 lg:p-6">
         {children}
       </main>
-      
-      {/* Global Mira Chatbot */}
-      <MiraChatbot />
     </div>
   );
 }
