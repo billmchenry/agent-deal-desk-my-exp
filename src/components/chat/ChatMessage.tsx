@@ -22,32 +22,32 @@ export function ChatMessage({ message, onFollowUp }: ChatMessageProps) {
   const isAI = message.sender === 'ai';
 
   return (
-    <div className={`flex gap-3 ${isAI ? '' : 'flex-row-reverse'}`}>
+    <div className={`flex gap-2 sm:gap-3 ${isAI ? '' : 'flex-row-reverse'}`}>
       {/* Avatar */}
-      <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+      <div className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
         isAI 
           ? 'bg-primary text-primary-foreground' 
           : 'bg-muted text-muted-foreground border border-border'
       }`}>
         {isAI ? (
-          <Sparkles className="h-5 w-5" />
+          <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
         ) : (
-          <span className="text-sm font-semibold">C</span>
+          <span className="text-xs sm:text-sm font-semibold">C</span>
         )}
       </div>
       
-      <div className={`flex flex-col max-w-[85%] ${isAI ? '' : 'items-end'}`}>
+      <div className={`flex flex-col max-w-[calc(100%-3rem)] sm:max-w-[85%] ${isAI ? '' : 'items-end'}`}>
         {/* Message bubble */}
-        <div className={`rounded-2xl px-4 py-3 ${
+        <div className={`rounded-2xl px-3 sm:px-4 py-2 sm:py-3 ${
           isAI 
             ? 'bg-muted text-foreground rounded-tl-sm' 
             : 'bg-primary text-primary-foreground rounded-tr-sm'
         }`}>
-          <p className="text-sm leading-relaxed">{message.content}</p>
+          <p className="text-xs sm:text-sm leading-relaxed">{message.content}</p>
         </div>
         
         {/* Timestamp */}
-        <span className="text-[11px] text-muted-foreground mt-1 px-1">
+        <span className="text-[10px] sm:text-[11px] text-muted-foreground mt-1 px-1">
           Just now
         </span>
         

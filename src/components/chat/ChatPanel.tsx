@@ -137,24 +137,24 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent className="w-full sm:max-w-lg p-0 flex flex-col">
-        <SheetHeader className="px-4 py-3 border-b">
+      <SheetContent className="w-full sm:max-w-md md:max-w-lg p-0 flex flex-col">
+        <SheetHeader className="px-3 sm:px-4 py-3 border-b shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <Sparkles className="h-4 w-4 text-primary-foreground" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center">
+                <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
               </div>
-              <SheetTitle className="text-base">Mira AI</SheetTitle>
+              <SheetTitle className="text-sm sm:text-base">Mira AI</SheetTitle>
             </div>
-            <Button variant="ghost" size="sm" onClick={handleNewChat} className="text-muted-foreground">
-              <RotateCcw className="h-4 w-4 mr-1" />
-              New Chat
+            <Button variant="ghost" size="sm" onClick={handleNewChat} className="text-muted-foreground text-xs sm:text-sm h-8">
+              <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />
+              <span className="hidden xs:inline">New Chat</span>
             </Button>
           </div>
         </SheetHeader>
 
-        <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-          <div className="flex flex-col gap-6">
+        <ScrollArea className="flex-1 p-3 sm:p-4" ref={scrollRef}>
+          <div className="flex flex-col gap-4 sm:gap-6">
             {messages.map((message) => (
               <ChatMessage 
                 key={message.id} 
@@ -165,16 +165,16 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
           </div>
         </ScrollArea>
 
-        <div className="p-4 border-t bg-background">
+        <div className="p-3 sm:p-4 border-t bg-background shrink-0">
           <div className="flex items-center gap-2">
             <Input
               placeholder="Ask about your insights..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="flex-1"
+              className="flex-1 text-sm"
             />
-            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()}>
+            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10">
               <Send className="h-4 w-4" />
             </Button>
           </div>

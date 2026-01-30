@@ -24,13 +24,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         {children}
       </main>
 
-      {/* Floating Mira Chat Button */}
+      {/* Floating Mira Chat Button - Smaller on mobile */}
       <Button
         onClick={openChat}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 z-40"
+        className="fixed bottom-4 right-4 h-12 w-12 sm:h-14 sm:w-14 sm:bottom-6 sm:right-6 rounded-full shadow-lg bg-primary hover:bg-primary/90 z-40"
         size="icon"
       >
-        <Sparkles className="h-6 w-6" />
+        <Sparkles className="h-5 w-5 sm:h-6 sm:w-6" />
       </Button>
 
       {/* Chat Panel */}
