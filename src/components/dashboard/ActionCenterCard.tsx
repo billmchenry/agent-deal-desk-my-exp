@@ -1,10 +1,11 @@
-import { Phone, Mail, ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { influencerTiers, achievements } from "@/data/mockData";
 import { cn } from "@/lib/utils";
+import { PromotionalCarousel } from "./PromotionalCarousel";
 
 export function ActionCenterCard() {
   const currentTier = influencerTiers.filter((t) => t.completed).pop();
@@ -98,17 +99,8 @@ export function ActionCenterCard() {
           </TabsContent>
         </Tabs>
 
-        {/* Promo Card */}
-        <div className="rounded-lg bg-primary p-4 text-primary-foreground">
-          <h3 className="font-bold mb-1">Your Organization & Revenue View just got better!</h3>
-          <p className="text-sm text-primary-foreground/80 mb-3">
-            Take your DISC Assessment first. Choose to see online.
-          </p>
-          <Button size="sm" variant="secondary" className="gap-2">
-            Learn More
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </div>
+        {/* Promotional Carousel */}
+        <PromotionalCarousel />
       </CardContent>
     </Card>
   );
