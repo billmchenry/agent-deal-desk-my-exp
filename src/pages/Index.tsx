@@ -19,13 +19,13 @@ const Index = () => {
         <div className="lg:col-span-2 space-y-6">
           <HeroBannerCard />
           <StatsRow />
+          <PromotionalCarousel />
           <ActionCenterCard />
         </div>
 
         {/* Right Sidebar (1 column) */}
         <div className="space-y-6">
           <NewsAndTrainingCard />
-          <PromotionalCarousel />
           <ConnectUplineCard />
         </div>
       </div>
