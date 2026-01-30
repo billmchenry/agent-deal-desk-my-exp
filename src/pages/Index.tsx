@@ -3,8 +3,8 @@ import { HeroBannerCard } from "@/components/dashboard/HeroBannerCard";
 import { StatsRow } from "@/components/dashboard/StatsRow";
 import { ActionCenterCard } from "@/components/dashboard/ActionCenterCard";
 import { NewsAndTrainingCard } from "@/components/dashboard/NewsAndTrainingCard";
+import { PromotionalCarousel } from "@/components/dashboard/PromotionalCarousel";
 import { ConnectUplineCard } from "@/components/dashboard/ConnectUplineCard";
-
 const Index = () => {
   return (
     <DashboardLayout>
@@ -25,6 +25,7 @@ const Index = () => {
         {/* Right Sidebar (1 column) */}
         <div className="space-y-6">
           <NewsAndTrainingCard />
+          <PromotionalCarousel />
           <ConnectUplineCard />
         </div>
       </div>
