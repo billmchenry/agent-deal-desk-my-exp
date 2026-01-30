@@ -91,17 +91,30 @@ export function DashboardToolbar() {
           )}
         </Button>
 
-        {/* Add Widget */}
+        {/* Create Widgets with Mira */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Widget
+              <Sparkles className="h-4 w-4" />
+              Create Widgets
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-56">
+            {/* Ask Mira Option - Primary */}
+            <DropdownMenuItem
+              onClick={handleAskMira}
+              className="bg-primary/5 text-primary focus:bg-primary/10 focus:text-primary"
+            >
+              <Sparkles className="h-4 w-4 mr-2" />
+              <div>
+                <div className="font-medium">Ask Mira for Insights</div>
+                <div className="text-xs opacity-80">Create personalized AI widgets</div>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {/* Pre-built widgets */}
             {availableWidgets.length === 0 ? (
-              <DropdownMenuItem disabled>All widgets added</DropdownMenuItem>
+              <DropdownMenuItem disabled>All pre-built widgets added</DropdownMenuItem>
             ) : (
               availableWidgets.map(([type, config]) => (
                 <DropdownMenuItem
@@ -118,18 +131,6 @@ export function DashboardToolbar() {
                 </DropdownMenuItem>
               ))
             )}
-            <DropdownMenuSeparator />
-            {/* Ask Mira Option */}
-            <DropdownMenuItem
-              onClick={handleAskMira}
-              className="bg-primary/5 text-primary focus:bg-primary/10 focus:text-primary"
-            >
-              <Sparkles className="h-4 w-4 mr-2" />
-              <div>
-                <div className="font-medium">Ask Mira for Insights</div>
-                <div className="text-xs opacity-80">Create custom AI-powered widgets</div>
-              </div>
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
