@@ -32,7 +32,7 @@ const slides = [
     title: "Revenue Share Explained",
     description: "Learn how to build passive income through eXp's revenue share program.",
     buttonText: "Watch Video",
-    theme: "gold" as const,
+    theme: "purple" as const,
   },
 ];
 
