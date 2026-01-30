@@ -52,6 +52,7 @@ const themeStyles = {
 export function PromotionalCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
+  const [isHovered, setIsHovered] = React.useState(false);
 
   React.useEffect(() => {
     if (!api) return;
@@ -63,6 +64,17 @@ export function PromotionalCarousel() {
     });
   }, [api]);
 
+  // Auto-play effect
+  React.useEffect(() => {
+    if (!api || isHovered) return;
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [api, isHovered]);
+
   const scrollTo = React.useCallback(
     (index: number) => {
       api?.scrollTo(index);
@@ -71,7 +83,11 @@ export function PromotionalCarousel() {
   );
 
   return (
-    <div className="space-y-3">
+    <div 
+      className="space-y-3"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <Carousel opts={{ loop: true }} setApi={setApi}>
         <CarouselContent className="-ml-0">
           {slides.map((slide) => {
