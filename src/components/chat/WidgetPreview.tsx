@@ -2,6 +2,7 @@ import { Pin, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDashboard } from "@/contexts/DashboardContext";
+import { WidgetType } from "@/types/dashboard";
 import { ForecastWidget } from "@/components/dashboard/widgets/ForecastWidget";
 import { VelocityWidget } from "@/components/dashboard/widgets/VelocityWidget";
 import { PipelineWidget } from "@/components/dashboard/widgets/PipelineWidget";
@@ -21,10 +22,10 @@ const widgetTitles = {
 
 export function WidgetPreview({ type, id, title }: WidgetPreviewProps) {
   const { addWidget, isWidgetPinned } = useDashboard();
-  const isPinned = isWidgetPinned(id);
+  const isPinned = isWidgetPinned(type as WidgetType);
 
   const handlePin = () => {
-    addWidget({ id, type, title: widgetTitles[type] });
+    addWidget(type as WidgetType);
     toast.success("Insight added to your Command Center");
   };
 

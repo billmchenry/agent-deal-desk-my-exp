@@ -1,11 +1,5 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { HeroBannerCard } from "@/components/dashboard/HeroBannerCard";
-import { StatsRow } from "@/components/dashboard/StatsRow";
-import { ActionCenterCard } from "@/components/dashboard/ActionCenterCard";
-import { PromotionalCarousel } from "@/components/dashboard/PromotionalCarousel";
-import { NewsAndTrainingCard } from "@/components/dashboard/NewsAndTrainingCard";
-import { ConnectUplineCard } from "@/components/dashboard/ConnectUplineCard";
-import { PinnedWidgetsGrid } from "@/components/dashboard/PinnedWidgetsGrid";
+import { CustomizableDashboard } from "@/components/dashboard/CustomizableDashboard";
 
 const Index = () => {
   return (
@@ -16,24 +10,8 @@ const Index = () => {
         <p className="text-muted-foreground">Hi Clifford!</p>
       </div>
 
-      {/* Pinned Widgets from AI Chat */}
-      <PinnedWidgetsGrid />
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Main Content - Left/Center (2 columns) */}
-        <div className="lg:col-span-2 space-y-6">
-          <HeroBannerCard />
-          <StatsRow />
-          <ActionCenterCard />
-          <PromotionalCarousel />
-        </div>
-
-        {/* Right Sidebar (1 column) */}
-        <div className="space-y-6">
-          <NewsAndTrainingCard />
-          <ConnectUplineCard />
-        </div>
-      </div>
+      {/* Fully Customizable Dashboard */}
+      <CustomizableDashboard />
     </DashboardLayout>
   );
 };
