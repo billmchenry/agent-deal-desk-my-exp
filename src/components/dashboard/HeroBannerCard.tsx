@@ -16,7 +16,7 @@ export function HeroBannerCard() {
   };
 
   return (
-    <Card className="relative overflow-hidden bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue p-6 text-white">
+    <Card className="relative overflow-hidden bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue p-4 sm:p-6 text-white">
       {/* Decorative background elements */}
       <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
         <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-white" />
@@ -41,21 +41,24 @@ export function HeroBannerCard() {
             You're <span className="font-semibold text-white">{formatCurrency(remaining)}</span> away from capping this year
           </p>
 
-          <div className="flex items-center gap-4 pt-2">
-            <Button className="bg-white text-exp-navy hover:bg-white/90">
+          <div className="flex flex-col xs:flex-row xs:items-center gap-3 xs:gap-4 pt-2">
+            <Button className="bg-white text-exp-navy hover:bg-white/90 w-full xs:w-auto">
               View Details
             </Button>
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-2 text-sm flex-wrap">
               <TrendingUp className="h-4 w-4 text-exp-green-light" />
-              <span>Current: <span className="font-semibold text-exp-green-light">${cappingData.current.toLocaleString()}</span></span>
+              <span className="min-w-0 break-words">
+                Current:{" "}
+                <span className="font-semibold text-exp-green-light">${cappingData.current.toLocaleString()}</span>
+              </span>
             </div>
           </div>
         </div>
 
         {/* Mini progress ring */}
         <div className="flex items-center justify-center lg:pr-8">
-          <div className="relative h-28 w-28">
-            <svg className="h-28 w-28 -rotate-90 transform" viewBox="0 0 100 100">
+          <div className="relative h-24 w-24 sm:h-28 sm:w-28">
+            <svg className="h-24 w-24 sm:h-28 sm:w-28 -rotate-90 transform" viewBox="0 0 100 100">
               <circle
                 cx="50"
                 cy="50"
@@ -76,7 +79,7 @@ export function HeroBannerCard() {
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-2xl font-bold">{progressPercentage.toFixed(0)}%</span>
+              <span className="text-xl sm:text-2xl font-bold">{progressPercentage.toFixed(0)}%</span>
               <span className="text-xs text-white/70">Complete</span>
             </div>
           </div>
