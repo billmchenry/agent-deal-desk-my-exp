@@ -1,12 +1,13 @@
 import { X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useDashboard, DashboardWidget } from "@/contexts/DashboardContext";
+import { useDashboard } from "@/contexts/DashboardContext";
+import { DashboardWidget } from "@/types/dashboard";
 import { ForecastWidget } from "./widgets/ForecastWidget";
 import { VelocityWidget } from "./widgets/VelocityWidget";
 import { PipelineWidget } from "./widgets/PipelineWidget";
 
-const widgetComponents: Record<DashboardWidget['type'], React.ComponentType<{ compact?: boolean }>> = {
+const widgetComponents: Record<'forecast' | 'velocity' | 'pipeline', React.ComponentType<{ compact?: boolean }>> = {
   forecast: ForecastWidget,
   velocity: VelocityWidget,
   pipeline: PipelineWidget,
@@ -15,14 +16,20 @@ const widgetComponents: Record<DashboardWidget['type'], React.ComponentType<{ co
 export function PinnedWidgetsGrid() {
   const { widgets, removeWidget } = useDashboard();
 
-  if (widgets.length === 0) return null;
+  // Only show AI-insight widgets in this legacy component (for backward compat)
+  const aiWidgets = widgets.filter(w => 
+    w.type === 'forecast' || w.type === 'velocity' || w.type === 'pipeline'
+  );
+
+  if (aiWidgets.length === 0) return null;
 
   return (
     <div className="mb-6">
       <h2 className="text-lg font-semibold mb-3 text-foreground">Your Pinned Insights</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {widgets.map((widget) => {
-          const WidgetComponent = widgetComponents[widget.type];
+        {aiWidgets.map((widget) => {
+          const WidgetComponent = widgetComponents[widget.type as 'forecast' | 'velocity' | 'pipeline'];
+          if (!WidgetComponent) return null;
           
           return (
             <Card 
