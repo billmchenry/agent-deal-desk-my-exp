@@ -7,7 +7,8 @@ export type WidgetType =
   | 'connect-upline'
   | 'forecast'
   | 'velocity'
-  | 'pipeline';
+  | 'pipeline'
+  | 'ai-insight';
 
 export interface DashboardWidget {
   id: string;
@@ -15,6 +16,8 @@ export interface DashboardWidget {
   title: string;
   size: 'small' | 'medium' | 'large' | 'full';
   column: 'main' | 'sidebar';
+  // For AI insight widgets, store the content
+  content?: string;
 }
 
 export interface DashboardTemplate {
@@ -84,6 +87,12 @@ export const WIDGET_REGISTRY: Record<WidgetType, {
     defaultSize: 'small',
     defaultColumn: 'main',
     description: 'Summary of active escrows',
+  },
+  'ai-insight': {
+    title: 'AI Insight',
+    defaultSize: 'medium',
+    defaultColumn: 'main',
+    description: 'Pinned insight from Mira AI',
   },
 };
 
