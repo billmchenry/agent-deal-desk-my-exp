@@ -1,4 +1,4 @@
-import { Pin, Check } from "lucide-react";
+import { Pin, Check, TrendingUp, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDashboard } from "@/contexts/DashboardContext";
@@ -12,21 +12,54 @@ interface WidgetPreviewProps {
   type: 'forecast' | 'velocity' | 'pipeline';
   id: string;
   title: string;
+  onFollowUp?: (question: string) => void;
 }
 
-const widgetTitles = {
-  forecast: "Revenue Share Forecast",
-  velocity: "Listing Velocity",
-  pipeline: "Active Pipeline",
+// Insights and follow-up questions for each widget type
+const widgetInsights: Record<string, { insights: { icon: 'trend' | 'sparkle'; text: string }[]; followUps: string[] }> = {
+  forecast: {
+    insights: [
+      { icon: 'trend', text: '23% growth compared to last year' },
+      { icon: 'sparkle', text: 'December was your best month at $54K' },
+      { icon: 'sparkle', text: 'Average deal size increased by $12K' },
+    ],
+    followUps: [
+      'How does this compare to my team?',
+      'What is my projected revenue for next quarter?',
+    ],
+  },
+  velocity: {
+    insights: [
+      { icon: 'trend', text: 'Selling 15% faster than market average' },
+      { icon: 'sparkle', text: 'Average days on market: 18 days' },
+      { icon: 'sparkle', text: 'Price-to-list ratio improved to 98.5%' },
+    ],
+    followUps: [
+      'Which listings are taking longest?',
+      'How can I improve my velocity?',
+    ],
+  },
+  pipeline: {
+    insights: [
+      { icon: 'trend', text: '8 active deals worth $2.4M total' },
+      { icon: 'sparkle', text: '3 deals expected to close this month' },
+      { icon: 'sparkle', text: 'Average commission per deal: $18K' },
+    ],
+    followUps: [
+      'Which deals need attention?',
+      'What is my projected commission this quarter?',
+    ],
+  },
 };
 
-export function WidgetPreview({ type, id, title }: WidgetPreviewProps) {
+export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProps) {
   const { addWidget, isWidgetPinned } = useDashboard();
   const isPinned = isWidgetPinned(type as WidgetType);
+  const { insights, followUps } = widgetInsights[type] || { insights: [], followUps: [] };
 
   const handlePin = () => {
     addWidget(type as WidgetType);
-    toast.success("Insight added to your Command Center");
+    toast.success("Insight pinned to your dashboard!");
   };
 
   const renderWidget = () => {
@@ -43,35 +76,71 @@ export function WidgetPreview({ type, id, title }: WidgetPreviewProps) {
   };
 
   return (
-    <Card className="mt-2 border-primary/20 bg-card/50">
-      <CardHeader className="pb-2 pt-3 px-3">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="px-3 pb-3">
-        {renderWidget()}
-        <Button
-          onClick={handlePin}
-          disabled={isPinned}
-          size="sm"
-          className={`w-full mt-3 ${
-            isPinned 
-              ? "bg-green-600 hover:bg-green-600 text-white" 
-              : "bg-primary hover:bg-primary/90"
-          }`}
-        >
-          {isPinned ? (
-            <>
-              <Check className="h-4 w-4 mr-1" />
-              Pinned
-            </>
-          ) : (
-            <>
-              <Pin className="h-4 w-4 mr-1" />
-              Pin to Dashboard
-            </>
-          )}
-        </Button>
-      </CardContent>
-    </Card>
+    <div className="mt-3 space-y-3">
+      {/* Chart Card */}
+      <Card className="border-border/50 bg-card shadow-sm">
+        <CardHeader className="pb-2 pt-4 px-4">
+          <CardTitle className="text-sm font-semibold">{title}</CardTitle>
+        </CardHeader>
+        <CardContent className="px-4 pb-4">
+          {renderWidget()}
+        </CardContent>
+      </Card>
+
+      {/* Key Insights */}
+      <div className="space-y-2 px-1">
+        {insights.map((insight, index) => (
+          <div key={index} className="flex items-start gap-2 text-sm">
+            {insight.icon === 'trend' ? (
+              <TrendingUp className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+            ) : (
+              <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+            )}
+            <span className="text-muted-foreground">{insight.text}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Follow-up Questions */}
+      <div className="flex flex-wrap gap-2">
+        {followUps.map((question, index) => (
+          <Button
+            key={index}
+            variant="outline"
+            size="sm"
+            onClick={() => onFollowUp?.(question)}
+            className="h-8 text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5"
+          >
+            {question}
+            <ArrowRight className="h-3 w-3 ml-1" />
+          </Button>
+        ))}
+      </div>
+
+      {/* Pin to Dashboard */}
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={handlePin}
+        disabled={isPinned}
+        className={`h-8 px-2 text-sm ${
+          isPinned 
+            ? 'text-green-600 hover:text-green-600' 
+            : 'text-muted-foreground hover:text-foreground'
+        }`}
+      >
+        {isPinned ? (
+          <>
+            <Check className="h-4 w-4 mr-1.5" />
+            Pinned to Dashboard
+          </>
+        ) : (
+          <>
+            <Pin className="h-4 w-4 mr-1.5" />
+            Pin to Dashboard
+          </>
+        )}
+      </Button>
+    </div>
   );
 }
