@@ -76,43 +76,43 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
   };
 
   return (
-    <div className="mt-3 space-y-3">
+    <div className="mt-3 space-y-2.5 w-full max-w-full overflow-hidden">
       {/* Chart Card */}
-      <Card className="border-border/50 bg-card shadow-sm">
-        <CardHeader className="pb-2 pt-3 sm:pt-4 px-3 sm:px-4">
-          <CardTitle className="text-sm font-semibold">{title}</CardTitle>
+      <Card className="border-border/50 bg-card shadow-sm w-full">
+        <CardHeader className="pb-2 pt-2.5 px-2.5 sm:pt-4 sm:px-4">
+          <CardTitle className="text-xs sm:text-sm font-semibold truncate">{title}</CardTitle>
         </CardHeader>
-        <CardContent className="px-3 sm:px-4 pb-3 sm:pb-4">
+        <CardContent className="px-2 sm:px-4 pb-2.5 sm:pb-4">
           {renderWidget()}
         </CardContent>
       </Card>
 
       {/* Key Insights */}
-      <div className="space-y-1.5 sm:space-y-2 px-1">
+      <div className="space-y-1 sm:space-y-2">
         {insights.map((insight, index) => (
-          <div key={index} className="flex items-start gap-2 text-xs sm:text-sm">
+          <div key={index} className="flex items-start gap-1.5 sm:gap-2 text-[11px] sm:text-sm">
             {insight.icon === 'trend' ? (
-              <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-500 shrink-0 mt-0.5" />
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 shrink-0 mt-0.5" />
             ) : (
-              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0 mt-0.5" />
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-primary shrink-0 mt-0.5" />
             )}
-            <span className="text-muted-foreground">{insight.text}</span>
+            <span className="text-muted-foreground leading-tight">{insight.text}</span>
           </div>
         ))}
       </div>
 
       {/* Follow-up Questions - Stack on mobile */}
-      <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+      <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:gap-2">
         {followUps.map((question, index) => (
           <Button
             key={index}
             variant="outline"
             size="sm"
             onClick={() => onFollowUp?.(question)}
-            className="h-8 text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5 justify-start sm:justify-center"
+            className="h-7 sm:h-8 text-[11px] sm:text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5 justify-start px-2.5 sm:px-3"
           >
             <span className="truncate">{question}</span>
-            <ArrowRight className="h-3 w-3 ml-1 shrink-0" />
+            <ArrowRight className="h-2.5 w-2.5 sm:h-3 sm:w-3 ml-1 shrink-0" />
           </Button>
         ))}
       </div>
@@ -123,7 +123,7 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
         size="sm"
         onClick={handlePin}
         disabled={isPinned}
-        className={`h-8 px-2 text-xs sm:text-sm ${
+        className={`h-7 sm:h-8 px-2 text-[11px] sm:text-sm ${
           isPinned 
             ? 'text-green-600 hover:text-green-600' 
             : 'text-muted-foreground hover:text-foreground'
@@ -131,12 +131,12 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
       >
         {isPinned ? (
           <>
-            <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
+            <Check className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
             Pinned to Dashboard
           </>
         ) : (
           <>
-            <Pin className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
+            <Pin className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
             Pin to Dashboard
           </>
         )}

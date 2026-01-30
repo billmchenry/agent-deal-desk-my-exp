@@ -15,7 +15,7 @@ interface ForecastWidgetProps {
 
 export function ForecastWidget({ compact = false }: ForecastWidgetProps) {
   return (
-    <div className={compact ? "h-32" : "h-48"}>
+    <div className={compact ? "h-28 sm:h-32" : "h-48"}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={forecastData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
           <defs>
