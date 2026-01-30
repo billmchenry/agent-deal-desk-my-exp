@@ -1,17 +1,13 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { HeroBannerCard } from "@/components/dashboard/HeroBannerCard";
 import { StatsRow } from "@/components/dashboard/StatsRow";
-import { DraggableWidget, DropZone } from "@/components/dashboard/DraggableWidget";
-import { WidgetRenderer } from "@/components/dashboard/WidgetRenderer";
-import { WidgetGallery } from "@/components/dashboard/WidgetGallery";
-import { TemplateManager } from "@/components/dashboard/TemplateManager";
-import { useLayout } from "@/contexts/LayoutContext";
+import { ActionCenterCard } from "@/components/dashboard/ActionCenterCard";
+import { PromotionalCarousel } from "@/components/dashboard/PromotionalCarousel";
+import { NewsAndTrainingCard } from "@/components/dashboard/NewsAndTrainingCard";
+import { ConnectUplineCard } from "@/components/dashboard/ConnectUplineCard";
+import { PinnedWidgetsGrid } from "@/components/dashboard/PinnedWidgetsGrid";
 
 const Index = () => {
-  const { getWidgetsByZone, widgets } = useLayout();
-
-  const mainWidgets = getWidgetsByZone('main');
-  const sidebarWidgets = getWidgetsByZone('sidebar');
-
   return (
     <DashboardLayout>
       {/* Welcome Header */}
@@ -20,62 +16,22 @@ const Index = () => {
         <p className="text-muted-foreground">Hi Clifford!</p>
       </div>
 
-      {/* Layout Controls */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-foreground">Your Dashboard</h2>
-        <div className="flex gap-2">
-          <WidgetGallery />
-          <TemplateManager />
-        </div>
-      </div>
+      {/* Pinned Widgets from AI Chat */}
+      <PinnedWidgetsGrid />
 
-      {/* Stats Row - Fixed */}
-      <div className="mb-6">
-        <StatsRow />
-      </div>
-
-      {/* Dynamic Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Main Zone (2 cols) */}
+        {/* Main Content - Left/Center (2 columns) */}
         <div className="lg:col-span-2 space-y-6">
-          {mainWidgets.length === 0 ? (
-            <DropZone zone="main" isEmpty />
-          ) : (
-            <>
-              {mainWidgets.map((widget, index) => (
-                <DraggableWidget
-                  key={widget.id}
-                  widget={widget}
-                  index={index}
-                  zone="main"
-                >
-                  <WidgetRenderer widget={widget} />
-                </DraggableWidget>
-              ))}
-              <DropZone zone="main" />
-            </>
-          )}
+          <HeroBannerCard />
+          <StatsRow />
+          <ActionCenterCard />
+          <PromotionalCarousel />
         </div>
 
-        {/* Sidebar Zone (1 col) */}
+        {/* Right Sidebar (1 column) */}
         <div className="space-y-6">
-          {sidebarWidgets.length === 0 ? (
-            <DropZone zone="sidebar" isEmpty />
-          ) : (
-            <>
-              {sidebarWidgets.map((widget, index) => (
-                <DraggableWidget
-                  key={widget.id}
-                  widget={widget}
-                  index={index}
-                  zone="sidebar"
-                >
-                  <WidgetRenderer widget={widget} />
-                </DraggableWidget>
-              ))}
-              <DropZone zone="sidebar" />
-            </>
-          )}
+          <NewsAndTrainingCard />
+          <ConnectUplineCard />
         </div>
       </div>
     </DashboardLayout>
