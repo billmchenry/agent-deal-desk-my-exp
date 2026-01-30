@@ -48,9 +48,9 @@ export function CustomizableDashboard() {
   const sidebarWidgets = widgets.filter((w) => w.column === "sidebar");
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 min-w-0 max-w-full">
       {/* Toolbar */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start sm:items-center justify-between gap-2 flex-wrap min-w-0">
         <DashboardToolbar />
         {isEditMode && (
           <p className="text-sm text-muted-foreground">
@@ -65,9 +65,9 @@ export function CustomizableDashboard() {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3 min-w-0 max-w-full">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6 min-w-0 max-w-full">
             <SortableContext
               items={mainWidgets.map((w) => w.id)}
               strategy={verticalListSortingStrategy}
@@ -104,7 +104,7 @@ export function CustomizableDashboard() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-6 min-w-0 max-w-full">
             <SortableContext
               items={sidebarWidgets.map((w) => w.id)}
               strategy={verticalListSortingStrategy}

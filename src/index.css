@@ -111,8 +111,16 @@
     @apply border-border;
   }
 
+  html {
+    @apply overflow-x-hidden;
+  }
+
   body {
     @apply bg-background text-foreground overflow-x-hidden;
+  }
+
+  #root {
+    @apply overflow-x-hidden;
   }
 }
 
