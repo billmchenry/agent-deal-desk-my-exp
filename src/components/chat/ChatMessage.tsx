@@ -36,14 +36,14 @@ export function ChatMessage({ message, onFollowUp }: ChatMessageProps) {
         )}
       </div>
       
-      <div className={`flex flex-col max-w-[calc(100%-3rem)] sm:max-w-[85%] ${isAI ? '' : 'items-end'}`}>
+      <div className={`flex flex-col min-w-0 max-w-[calc(100%-2.5rem)] sm:max-w-[85%] ${isAI ? '' : 'items-end'}`}>
         {/* Message bubble */}
-        <div className={`rounded-2xl px-3 sm:px-4 py-2 sm:py-3 ${
+        <div className={`rounded-2xl px-2.5 sm:px-4 py-2 sm:py-3 ${
           isAI 
             ? 'bg-muted text-foreground rounded-tl-sm' 
             : 'bg-primary text-primary-foreground rounded-tr-sm'
         }`}>
-          <p className="text-xs sm:text-sm leading-relaxed">{message.content}</p>
+          <p className="text-[11px] sm:text-sm leading-relaxed">{message.content}</p>
         </div>
         
         {/* Timestamp */}

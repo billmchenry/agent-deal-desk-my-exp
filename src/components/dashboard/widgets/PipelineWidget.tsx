@@ -24,25 +24,25 @@ export function PipelineWidget({ compact = false }: PipelineWidgetProps) {
   };
 
   return (
-    <div className={`flex flex-col ${compact ? "gap-3" : "gap-4"}`}>
+    <div className={`flex flex-col ${compact ? "gap-2 sm:gap-3" : "gap-4"}`}>
       <div>
-        <p className="text-xs text-muted-foreground mb-1">Total Pipeline Value</p>
-        <p className={`font-bold text-foreground ${compact ? "text-xl" : "text-2xl"}`}>
+        <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Total Pipeline Value</p>
+        <p className={`font-bold text-foreground ${compact ? "text-lg sm:text-xl" : "text-2xl"}`}>
           {formatCurrency(pipelineData.totalValue)}
         </p>
       </div>
       
-      <div className={`grid grid-cols-3 ${compact ? "gap-2" : "gap-3"}`}>
+      <div className={`grid grid-cols-3 ${compact ? "gap-1.5 sm:gap-2" : "gap-3"}`}>
         {pipelineData.escrows.map((item) => (
           <div 
             key={item.status} 
-            className="flex flex-col items-center p-2 rounded-lg bg-muted/50"
+            className="flex flex-col items-center p-1.5 sm:p-2 rounded-lg bg-muted/50"
           >
-            <item.icon className={`${compact ? "h-4 w-4" : "h-5 w-5"} text-primary mb-1`} />
-            <span className={`font-bold text-foreground ${compact ? "text-lg" : "text-xl"}`}>
+            <item.icon className={`${compact ? "h-3.5 w-3.5 sm:h-4 sm:w-4" : "h-5 w-5"} text-primary mb-0.5 sm:mb-1`} />
+            <span className={`font-bold text-foreground ${compact ? "text-base sm:text-lg" : "text-xl"}`}>
               {item.count}
             </span>
-            <span className="text-[10px] text-muted-foreground text-center leading-tight">
+            <span className="text-[9px] sm:text-[10px] text-muted-foreground text-center leading-tight">
               {item.status}
             </span>
           </div>
