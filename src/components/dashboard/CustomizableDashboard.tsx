@@ -12,14 +12,18 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { Sparkles } from "lucide-react";
 import { useDashboard } from "@/contexts/DashboardContext";
+import { useMiraChat } from "@/contexts/MiraChatContext";
 import { DraggableWidget } from "./DraggableWidget";
 import { WidgetRenderer } from "./WidgetRenderer";
 import { DashboardToolbar } from "./DashboardToolbar";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function CustomizableDashboard() {
   const { widgets, isEditMode, removeWidget, reorderWidgets } = useDashboard();
+  const { openChat } = useMiraChat();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -86,7 +90,15 @@ export function CustomizableDashboard() {
                 "border-muted-foreground/25 text-muted-foreground"
               )}>
                 <p className="text-lg font-medium">No widgets in main area</p>
-                <p className="text-sm">Click "Add Widget" to add content</p>
+                <p className="text-sm mb-4">Add pre-built widgets or ask Mira for personalized insights</p>
+                <Button
+                  variant="outline"
+                  onClick={openChat}
+                  className="gap-2"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Chat with Mira
+                </Button>
               </div>
             )}
           </div>

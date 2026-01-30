@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Edit, Save, Plus, RotateCcw, LayoutTemplate, Check, X } from "lucide-react";
+import { Edit, Save, Plus, RotateCcw, LayoutTemplate, Check, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useDashboard } from "@/contexts/DashboardContext";
+import { useMiraChat } from "@/contexts/MiraChatContext";
 import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { toast } from "sonner";
 
@@ -33,6 +34,8 @@ export function DashboardToolbar() {
     loadTemplate,
     resetToDefault,
   } = useDashboard();
+
+  const { openChat } = useMiraChat();
 
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [templateName, setTemplateName] = useState("");
@@ -54,6 +57,11 @@ export function DashboardToolbar() {
   const handleReset = () => {
     resetToDefault();
     toast.success("Reset to default layout");
+  };
+
+  const handleAskMira = () => {
+    openChat();
+    toast.info("Ask Mira for personalized insights you can pin!");
   };
 
   const availableWidgets = Object.entries(WIDGET_REGISTRY).filter(
@@ -110,6 +118,18 @@ export function DashboardToolbar() {
                 </DropdownMenuItem>
               ))
             )}
+            <DropdownMenuSeparator />
+            {/* Ask Mira Option */}
+            <DropdownMenuItem
+              onClick={handleAskMira}
+              className="bg-primary/5 text-primary focus:bg-primary/10 focus:text-primary"
+            >
+              <Sparkles className="h-4 w-4 mr-2" />
+              <div>
+                <div className="font-medium">Ask Mira for Insights</div>
+                <div className="text-xs opacity-80">Create custom AI-powered widgets</div>
+              </div>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 

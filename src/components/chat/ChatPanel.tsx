@@ -50,7 +50,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     {
       id: 'welcome',
       sender: 'ai',
-      content: "Hi! I'm Mira, your AI assistant. Ask me about your forecast, listing velocity, or pipeline to see insights you can pin to your dashboard.",
+      content: "Hi! I'm Mira, your AI assistant. Ask me anything about your business and I'll give you insights you can **pin as widgets** on your dashboard! Try asking about your forecast, listing velocity, or pipeline.",
       timestamp: new Date(),
     },
   ]);
