@@ -1,187 +1,92 @@
 
+# Plan: Bridge the AI Widget Creation Discovery Gap
 
-# AI-to-Dashboard Widget Pinning System
+## Problem Summary
+There's a user experience disconnect where agents don't realize they can create custom insight widgets through conversations with Mira AI. The current "Add Widget" button only shows pre-built widgets, with no indication that personalized AI-generated insights can be pinned as widgets.
 
-## Overview
-
-Build an interactive AI chat system that can display widget previews within chat messages and allow users to pin these widgets directly to their dashboard. This creates a customizable dashboard experience driven by AI-generated insights.
+## Solution Overview
+Add visual cues and entry points that connect the dashboard customization experience to Mira AI, making it clear that conversations can become pinned widgets.
 
 ---
 
-## Architecture
+## Implementation Steps
 
-```text
-+------------------+     +-------------------+     +------------------+
-|   Mira Chatbot   | --> | Chat Context/Hook | --> |  Index (Home)    |
-|                  |     | (shared state)    |     |  Dashboard       |
-+------------------+     +-------------------+     +------------------+
-        |                        |                        |
-        v                        v                        v
-+------------------+     +-------------------+     +------------------+
-| ChatMessage      |     | dashboardWidgets  |     | PinnedWidgets    |
-| Component        |     | pinnedWidgetIds   |     | Grid Section     |
-+------------------+     +-------------------+     +------------------+
-        |
-        v
-+------------------+
-| Widget Previews  |
-| (Forecast,       |
-|  Velocity,       |
-|  Pipeline)       |
-+------------------+
+### 1. Add "Create with Mira" Option in the Add Widget Dropdown
+Modify `DashboardToolbar.tsx` to include a special menu item at the bottom of the "Add Widget" dropdown that opens the Mira chat panel.
+
+**What it does:**
+- Adds a highlighted option like "Ask Mira for a custom insight" with a sparkles icon
+- When clicked, opens the Mira chat panel
+- Creates a clear path from dashboard customization to AI-powered widget creation
+
+**Requires:** Passing a callback from `DashboardLayout` to open the chat, or using a simple event/state management approach.
+
+### 2. Update Empty Dashboard State with Mira Prompt
+Modify the empty state message in `CustomizableDashboard.tsx` to suggest asking Mira.
+
+**Current message:**
+```
+No widgets in main area
+Click "Add Widget" to add content
 ```
 
----
-
-## Files to Create
-
-| File | Purpose |
-|------|---------|
-| `src/contexts/DashboardContext.tsx` | Shared state for pinned widgets |
-| `src/components/chat/ChatPanel.tsx` | Slide-out chat panel container |
-| `src/components/chat/ChatMessage.tsx` | Renders text or widget preview messages |
-| `src/components/chat/WidgetPreview.tsx` | In-chat widget preview with Pin button |
-| `src/components/dashboard/PinnedWidgetsGrid.tsx` | Renders pinned widgets at top of dashboard |
-| `src/components/dashboard/widgets/ForecastWidget.tsx` | Revenue Share forecast chart |
-| `src/components/dashboard/widgets/VelocityWidget.tsx` | Listings velocity metric |
-| `src/components/dashboard/widgets/PipelineWidget.tsx` | Active escrows summary |
-
----
-
-## Files to Modify
-
-| File | Changes |
-|------|---------|
-| `src/pages/Index.tsx` | Wrap with context, add PinnedWidgetsGrid |
-| `src/components/layout/DashboardLayout.tsx` | Add ChatPanel and floating trigger button |
-| `src/App.tsx` | Wrap app with DashboardProvider |
-
----
-
-## Implementation Details
-
-### 1. Dashboard Context (State Management)
-
-Create a React context to manage:
-- `dashboardWidgets`: Array of pinned widget objects
-- `pinnedWidgetIds`: Set of IDs for quick lookup
-- `addWidget()`: Function to pin a new widget
-- `removeWidget()`: Function to unpin a widget
-
-```tsx
-interface DashboardWidget {
-  id: string;
-  type: 'forecast' | 'velocity' | 'pipeline';
-  title: string;
-  pinnedAt: Date;
-}
-
-interface DashboardContextType {
-  widgets: DashboardWidget[];
-  pinnedIds: Set<string>;
-  addWidget: (widget: DashboardWidget) => void;
-  removeWidget: (id: string) => void;
-}
+**Proposed message:**
+```
+No widgets in main area
+Click "Add Widget" or ask Mira for personalized insights
+[Chat with Mira] button
 ```
 
-### 2. Chat Panel Component
+### 3. Add a Floating Tooltip/Hint on First Visit
+Add a one-time tooltip or callout near the Mira floating button that says "Ask me anything and pin my answers to your dashboard!"
 
-- Slide-out sheet (using existing Sheet component) triggered by floating Mira button
-- Contains message history and input field
-- Messages array with sender ('user' | 'ai') and content (text or widget)
+### 4. Enhance Mira's Welcome Message
+Update the initial welcome message in `ChatPanel.tsx` to be more explicit about the pinning capability:
 
-### 3. Chat Message Component
+**Current:**
+> "Hi! I'm Mira, your AI assistant. Ask me about your forecast, listing velocity, or pipeline to see insights you can pin to your dashboard."
 
-Renders two types of content:
-- **Standard Text**: Regular chat bubble with markdown support
-- **Widget Preview**: Embedded widget card with Pin button
+**Proposed:**
+> "Hi! I'm Mira, your AI assistant. Ask me anything about your business and I can give you insights you can **pin as widgets** on your dashboard. Try asking about your forecast, listing velocity, or pipeline!"
 
-```tsx
-interface ChatMessage {
-  id: string;
-  sender: 'user' | 'ai';
-  content: string;
-  widget?: {
-    type: 'forecast' | 'velocity' | 'pipeline';
-    id: string;
-    title: string;
-  };
-  timestamp: Date;
-}
-```
-
-### 4. Widget Preview Component
-
-- Renders inside chat bubble as a mini dashboard card
-- Displays widget content (chart, metric, or summary)
-- **Pin to Dashboard** button:
-  - Default: Blue button with pin icon
-  - After pinning: Green checkmark with "Pinned" text, disabled
-
-### 5. Widget Components
-
-**Forecast Widget:**
-- Line/area chart showing projected Revenue Share for next 6 months
-- Uses recharts (already installed)
-- Mock data showing upward trend
-
-**Velocity Widget:**
-- Single metric card showing days-on-market average
-- Comparison to previous period
-- Color-coded indicator (green = fast, yellow = average)
-
-**Pipeline Widget:**
-- Summary card with escrow counts
-- Total value in pipeline
-- Status breakdown (pending, in escrow, closing soon)
-
-### 6. AI Response Simulation
-
-When user types specific phrases, simulate AI responses:
-
-| User Input | AI Response |
-|------------|-------------|
-| "show me my forecast" | Text explanation + Forecast Widget preview |
-| "how fast are my listings selling" | Text explanation + Velocity Widget preview |
-| "what's in my pipeline" | Text explanation + Pipeline Widget preview |
-
-### 7. Pinned Widgets Grid
-
-- Appears at the **top** of the main dashboard content (above HeroBannerCard)
-- Responsive grid (1-3 columns based on screen size)
-- Each pinned widget has an "X" button to remove
-- Animates in when new widget is pinned
-
-### 8. Toast Notification
-
-When widget is pinned, show toast:
-- Message: "Insight added to your Command Center"
-- Duration: 3 seconds
-- Uses existing sonner toast system
+### 5. Add Visual Badge on Mira Button
+Add a subtle indicator on the floating Mira button (like a small "+" badge) to hint that it can add content to the dashboard.
 
 ---
 
-## User Flow
+## Technical Details
 
-1. User clicks floating Mira button (bottom right)
-2. Chat panel slides open from the right
-3. User types "Show me my forecast"
-4. AI responds with:
-   - Text: "Based on your current trajectory, here's your projected Revenue Share for the next 6 months..."
-   - Widget Preview: Forecast chart with "Pin to Dashboard" button
-5. User clicks "Pin to Dashboard"
-6. Button changes to green checkmark "Pinned"
-7. Toast appears: "Insight added to your Command Center"
-8. Forecast widget appears at top of home dashboard
-9. User can close chat and see widget on dashboard
-10. User can remove widget by clicking X on the widget card
+### File Changes
+
+| File | Change |
+|------|--------|
+| `src/components/dashboard/DashboardToolbar.tsx` | Add "Create with Mira" menu item that triggers chat open |
+| `src/components/dashboard/CustomizableDashboard.tsx` | Update empty state with Mira CTA and button |
+| `src/components/chat/ChatPanel.tsx` | Enhance welcome message |
+| `src/components/layout/DashboardLayout.tsx` | Expose `setChatOpen` via context or callback prop |
+| `src/pages/Index.tsx` | Wire up the chat open callback |
+
+### Approach for Cross-Component Communication
+Create a simple callback pattern:
+1. Add `onOpenMiraChat` prop to `CustomizableDashboard` and `DashboardToolbar`
+2. Pass the `setChatOpen(true)` function down from `DashboardLayout`
+
+Alternatively, create a small `MiraChatContext` to manage chat open state globally.
 
 ---
 
-## Technical Notes
+## User Experience Flow After Implementation
 
-- Use `useState` in context for simplicity (no external state library needed)
-- Widget IDs are unique strings combining type and timestamp
-- Pinned state persists only in memory (refreshing clears - can add localStorage later)
-- Charts use recharts with consistent theming matching existing dashboard
+1. User lands on dashboard and sees "Add Widget" button
+2. Clicking it shows standard widgets PLUS "Ask Mira for custom insight"
+3. Clicking that option opens Mira chat
+4. User asks a question, Mira responds
+5. User sees "Pin to Dashboard" button on the response
+6. Pinned insight appears as a draggable widget
 
+---
+
+## Optional Enhancements (Future)
+- Let users edit the title of an AI insight before/after pinning
+- Add category tags to pinned insights (e.g., "Revenue", "Performance")
+- Show a "Pinned from Mira" badge on AI insight widgets
