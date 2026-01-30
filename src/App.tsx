@@ -21,6 +21,7 @@ import Pulse from "./pages/Pulse";
 
 const queryClient = new QueryClient();
 
+// Dashboard Provider wraps the entire app for widget state management
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <DashboardProvider>
