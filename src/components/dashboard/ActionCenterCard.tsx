@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { influencerTiers, achievements } from "@/data/mockData";
 import { cn } from "@/lib/utils";
-import { PromotionalCarousel } from "./PromotionalCarousel";
 
 export function ActionCenterCard() {
   const currentTier = influencerTiers.filter((t) => t.completed).pop();
@@ -98,9 +97,6 @@ export function ActionCenterCard() {
             </div>
           </TabsContent>
         </Tabs>
-
-        {/* Promotional Carousel */}
-        <PromotionalCarousel />
       </CardContent>
     </Card>
   );
