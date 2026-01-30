@@ -7,7 +7,7 @@ interface DashboardContextType {
   isEditMode: boolean;
   
   // Widget actions
-  addWidget: (type: WidgetType) => void;
+  addWidget: (type: WidgetType, customTitle?: string, content?: string) => void;
   removeWidget: (id: string) => void;
   reorderWidgets: (activeId: string, overId: string) => void;
   isWidgetPinned: (type: WidgetType) => boolean;
@@ -40,14 +40,15 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   ]);
   const [activeTemplateId, setActiveTemplateId] = useState<string | null>('default');
 
-  const addWidget = useCallback((type: WidgetType) => {
+  const addWidget = useCallback((type: WidgetType, customTitle?: string, content?: string) => {
     const registry = WIDGET_REGISTRY[type];
     const newWidget: DashboardWidget = {
       id: `${type}-${Date.now()}`,
       type,
-      title: registry.title,
+      title: customTitle || registry.title,
       size: registry.defaultSize,
       column: registry.defaultColumn,
+      content,
     };
     setWidgets(prev => [newWidget, ...prev]);
     setActiveTemplateId(null); // Mark as modified

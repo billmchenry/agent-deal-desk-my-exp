@@ -8,6 +8,7 @@ import { ConnectUplineCard } from "./ConnectUplineCard";
 import { ForecastWidget } from "./widgets/ForecastWidget";
 import { VelocityWidget } from "./widgets/VelocityWidget";
 import { PipelineWidget } from "./widgets/PipelineWidget";
+import { AIInsightWidget } from "./widgets/AIInsightWidget";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface WidgetRendererProps {
@@ -58,6 +59,17 @@ export function WidgetRenderer({ widget }: WidgetRendererProps) {
           </CardHeader>
           <CardContent>
             <PipelineWidget />
+          </CardContent>
+        </Card>
+      );
+    case 'ai-insight':
+      return (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">{widget.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AIInsightWidget content={widget.content || ''} />
           </CardContent>
         </Card>
       );

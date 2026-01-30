@@ -1,5 +1,9 @@
-import { Sparkles, User } from "lucide-react";
+import { Sparkles, User, Pin, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useDashboard } from "@/contexts/DashboardContext";
 import { WidgetPreview } from "./WidgetPreview";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export interface ChatMessageData {
   id: string;
@@ -19,6 +23,18 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const isAI = message.sender === 'ai';
+  const { addWidget } = useDashboard();
+  const [isPinned, setIsPinned] = useState(false);
+
+  const handlePinMessage = () => {
+    // Create a short title from the first few words
+    const words = message.content.split(' ').slice(0, 4).join(' ');
+    const title = words.length < message.content.length ? `${words}...` : words;
+    
+    addWidget('ai-insight', title, message.content);
+    setIsPinned(true);
+    toast.success("Insight pinned to your dashboard!");
+  };
 
   return (
     <div className={`flex gap-3 ${isAI ? '' : 'flex-row-reverse'}`}>
@@ -45,6 +61,33 @@ export function ChatMessage({ message }: ChatMessageProps) {
             id={message.widget.id}
             title={message.widget.title}
           />
+        )}
+
+        {/* Pin button for AI messages without a widget preview */}
+        {isAI && !message.widget && message.id !== 'welcome' && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handlePinMessage}
+            disabled={isPinned}
+            className={`mt-1 h-7 text-xs ${
+              isPinned 
+                ? 'text-green-600 hover:text-green-600' 
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {isPinned ? (
+              <>
+                <Check className="h-3 w-3 mr-1" />
+                Pinned
+              </>
+            ) : (
+              <>
+                <Pin className="h-3 w-3 mr-1" />
+                Pin to Dashboard
+              </>
+            )}
+          </Button>
         )}
         
         <span className="text-[10px] text-muted-foreground mt-1 px-1">
