@@ -32,7 +32,7 @@ const slides = [
     title: "Revenue Share Explained",
     description: "Learn how to build passive income through eXp's revenue share program.",
     buttonText: "Watch Video",
-    theme: "purple" as const,
+    theme: "blue" as const,
   },
 ];
 
@@ -46,6 +46,11 @@ const themeStyles = {
     card: "bg-gradient-to-r from-exp-gold/10 to-exp-gold/5 border-exp-gold/20",
     icon: "bg-exp-gold/20 text-exp-gold",
     button: "bg-exp-gold hover:bg-exp-gold/90 text-foreground",
+  },
+  blue: {
+    card: "bg-gradient-to-r from-exp-blue/10 to-exp-blue/5 border-exp-blue/20",
+    icon: "bg-exp-blue/20 text-exp-blue",
+    button: "bg-exp-blue hover:bg-exp-blue/90",
   },
 };
 
