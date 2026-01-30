@@ -25,7 +25,7 @@ const widgetInsights: Record<string, { insights: { icon: 'trend' | 'sparkle'; te
     ],
     followUps: [
       'How does this compare to my team?',
-      'What is my projected revenue for next quarter?',
+      'Projected revenue next quarter?',
     ],
   },
   velocity: {
@@ -35,8 +35,8 @@ const widgetInsights: Record<string, { insights: { icon: 'trend' | 'sparkle'; te
       { icon: 'sparkle', text: 'Price-to-list ratio improved to 98.5%' },
     ],
     followUps: [
-      'Which listings are taking longest?',
-      'How can I improve my velocity?',
+      'Which listings are slowest?',
+      'How can I improve velocity?',
     ],
   },
   pipeline: {
@@ -47,7 +47,7 @@ const widgetInsights: Record<string, { insights: { icon: 'trend' | 'sparkle'; te
     ],
     followUps: [
       'Which deals need attention?',
-      'What is my projected commission this quarter?',
+      'Projected commission this quarter?',
     ],
   },
 };
@@ -79,40 +79,40 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
     <div className="mt-3 space-y-3">
       {/* Chart Card */}
       <Card className="border-border/50 bg-card shadow-sm">
-        <CardHeader className="pb-2 pt-4 px-4">
+        <CardHeader className="pb-2 pt-3 sm:pt-4 px-3 sm:px-4">
           <CardTitle className="text-sm font-semibold">{title}</CardTitle>
         </CardHeader>
-        <CardContent className="px-4 pb-4">
+        <CardContent className="px-3 sm:px-4 pb-3 sm:pb-4">
           {renderWidget()}
         </CardContent>
       </Card>
 
       {/* Key Insights */}
-      <div className="space-y-2 px-1">
+      <div className="space-y-1.5 sm:space-y-2 px-1">
         {insights.map((insight, index) => (
-          <div key={index} className="flex items-start gap-2 text-sm">
+          <div key={index} className="flex items-start gap-2 text-xs sm:text-sm">
             {insight.icon === 'trend' ? (
-              <TrendingUp className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+              <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-500 shrink-0 mt-0.5" />
             ) : (
-              <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary shrink-0 mt-0.5" />
             )}
             <span className="text-muted-foreground">{insight.text}</span>
           </div>
         ))}
       </div>
 
-      {/* Follow-up Questions */}
-      <div className="flex flex-wrap gap-2">
+      {/* Follow-up Questions - Stack on mobile */}
+      <div className="flex flex-col sm:flex-row flex-wrap gap-2">
         {followUps.map((question, index) => (
           <Button
             key={index}
             variant="outline"
             size="sm"
             onClick={() => onFollowUp?.(question)}
-            className="h-8 text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5"
+            className="h-8 text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5 justify-start sm:justify-center"
           >
-            {question}
-            <ArrowRight className="h-3 w-3 ml-1" />
+            <span className="truncate">{question}</span>
+            <ArrowRight className="h-3 w-3 ml-1 shrink-0" />
           </Button>
         ))}
       </div>
@@ -123,7 +123,7 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
         size="sm"
         onClick={handlePin}
         disabled={isPinned}
-        className={`h-8 px-2 text-sm ${
+        className={`h-8 px-2 text-xs sm:text-sm ${
           isPinned 
             ? 'text-green-600 hover:text-green-600' 
             : 'text-muted-foreground hover:text-foreground'
@@ -131,12 +131,12 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
       >
         {isPinned ? (
           <>
-            <Check className="h-4 w-4 mr-1.5" />
+            <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
             Pinned to Dashboard
           </>
         ) : (
           <>
-            <Pin className="h-4 w-4 mr-1.5" />
+            <Pin className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
             Pin to Dashboard
           </>
         )}
