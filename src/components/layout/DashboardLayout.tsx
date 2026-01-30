@@ -15,12 +15,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { isChatOpen, openChat, closeChat } = useMiraChat();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background w-full overflow-x-hidden">
       <Header onMenuClick={() => setSidebarOpen(true)} />
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Main Content */}
-      <main className="lg:ml-64 min-h-[calc(100vh-4rem)] p-4 lg:p-6 pb-24">
+      <main className="lg:ml-64 min-h-[calc(100vh-4rem)] p-4 lg:p-6 pb-24 max-w-full overflow-x-hidden">
         {children}
       </main>
 
