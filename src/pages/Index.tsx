@@ -5,6 +5,7 @@ import { ActionCenterCard } from "@/components/dashboard/ActionCenterCard";
 import { PromotionalCarousel } from "@/components/dashboard/PromotionalCarousel";
 import { NewsAndTrainingCard } from "@/components/dashboard/NewsAndTrainingCard";
 import { ConnectUplineCard } from "@/components/dashboard/ConnectUplineCard";
+import { PinnedWidgetsGrid } from "@/components/dashboard/PinnedWidgetsGrid";
 
 const Index = () => {
   return (
@@ -14,6 +15,9 @@ const Index = () => {
         <h1 className="text-2xl font-bold text-foreground">Welcome to eXp!</h1>
         <p className="text-muted-foreground">Hi Clifford!</p>
       </div>
+
+      {/* Pinned Widgets from AI Chat */}
+      <PinnedWidgetsGrid />
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Content - Left/Center (2 columns) */}
