@@ -1,135 +1,165 @@
 
-# Consolidate Sidebar Widgets + Cleanup
+# Promotional Cards Carousel
 
 ## Overview
 
-Merge `ImportantUpdateCard` and `TrainingEducationCard` into a single tabbed **"News & Training"** card, then delete the unused widget files to clean up the codebase.
+Create a carousel component that cycles through three promotional cards (DISC Assessment, Stock Purchase Program, Revenue Share Explained), replacing the current stacked layout with a swipeable/clickable carousel.
 
 ---
 
 ## Current vs After
 
 ```text
-CURRENT SIDEBAR (3 cards)       AFTER SIDEBAR (2 cards)
+CURRENT (Stacked)               AFTER (Carousel)
 ┌─────────────────────┐         ┌─────────────────────┐
-│  Important Update   │         │  News & Training    │
-│  (video + NEW badge)│         │  [Updates][Training]│
+│  DISC Assessment    │         │  • ○ ○              │
+│  [Button]           │         │  ◀ [Active Card] ▶  │
 └─────────────────────┘         │                     │
-┌─────────────────────┐         │  (Tab content)      │
-│  Connect Upline     │         └─────────────────────┘
-└─────────────────────┘         ┌─────────────────────┐
-┌─────────────────────┐         │  Connect Upline     │
-│ Training & Education│         └─────────────────────┘
+┌─────────────────────┐         │  Swipe or click     │
+│  Stock Program      │         │  to navigate        │
+│  [Button]           │         └─────────────────────┘
+└─────────────────────┘
+┌─────────────────────┐
+│  Revenue Share      │
+│  [Button]           │
 └─────────────────────┘
 
-+ 3 unused files in codebase    (Unused files deleted)
+Height: ~450px                  Height: ~160px
 ```
 
 ---
 
-## New Component Design
+## Component Design
 
-### `NewsAndTrainingCard.tsx`
+### New: `PromotionalCarousel.tsx`
 
-A tabbed card with two sections:
+A single carousel containing three themed promotional slides:
 
-**Tab 1: "Updates"**
-- Video thumbnail with play overlay
-- "NEW" badge for fresh announcements
-- Description text
-- (Content from ImportantUpdateCard)
+| Slide | Title | Theme | Button |
+|-------|-------|-------|--------|
+| 1 | DISC Assessment | Purple gradient | "Take Assessment" |
+| 2 | Stock Purchase Program | Amber/Gold gradient | "Learn More" |
+| 3 | Revenue Share Explained | Amber/Gold gradient | "Watch Video" |
 
-**Tab 2: "Training"**
-- List of upcoming training events
-- Avatar, title, subtitle, date badge
-- Hover states for interaction
-- (Content from TrainingEducationCard)
+### Features
+- Dot indicators showing current slide
+- Left/right navigation arrows
+- Auto-advances every 5 seconds (optional)
+- Touch/swipe support on mobile
+- Keyboard navigation (arrow keys)
+
+---
+
+## Visual Design
+
+Each slide maintains the current card styling from your screenshot:
+
+```text
+┌────────────────────────────────────────┐
+│  [Icon]  Title                         │
+│          Description text that         │
+│          explains the feature          │
+│                                        │
+│          [Action Button →]             │
+└────────────────────────────────────────┘
+```
+
+With themed backgrounds:
+- **Purple gradient** for DISC
+- **Amber/gold gradient** for Stock & Revenue
 
 ---
 
 ## Technical Implementation
 
-### Step 1: Create New Component
+### Files to Create
 
-**New file: `src/components/dashboard/NewsAndTrainingCard.tsx`**
+**`src/components/dashboard/PromotionalCarousel.tsx`**
 
-```tsx
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// ... other imports
-
-export function NewsAndTrainingCard() {
-  return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">News & Training</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="updates">
-          <TabsList className="w-full">
-            <TabsTrigger value="updates" className="flex-1">Updates</TabsTrigger>
-            <TabsTrigger value="training" className="flex-1">Training</TabsTrigger>
-          </TabsList>
-          <TabsContent value="updates">
-            {/* Video thumbnail + announcement content */}
-          </TabsContent>
-          <TabsContent value="training">
-            {/* Training events list */}
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
-  );
-}
-```
-
-### Step 2: Update Index.tsx
-
-- Remove imports for `ImportantUpdateCard` and `TrainingEducationCard`
-- Add import for `NewsAndTrainingCard`
-- Replace two component usages with one
+Uses the existing Embla carousel components:
+- `Carousel`, `CarouselContent`, `CarouselItem` from `@/components/ui/carousel`
+- Adds custom dot indicators for navigation
+- Contains all three promotional cards inline
 
 ```tsx
-// Before
-<ImportantUpdateCard />
-<ConnectUplineCard />
-<TrainingEducationCard />
-
-// After
-<NewsAndTrainingCard />
-<ConnectUplineCard />
+// Structure
+<Carousel opts={{ loop: true }}>
+  <CarouselContent>
+    <CarouselItem>
+      {/* DISC Card - Purple */}
+    </CarouselItem>
+    <CarouselItem>
+      {/* Stock Program Card - Amber */}
+    </CarouselItem>
+    <CarouselItem>
+      {/* Revenue Share Card - Amber */}
+    </CarouselItem>
+  </CarouselContent>
+  {/* Dot indicators below */}
+</Carousel>
 ```
 
-### Step 3: Delete Unused Files
+### Files to Modify
 
-| File | Reason |
-|------|--------|
-| `ImportantUpdateCard.tsx` | Merged into NewsAndTrainingCard |
-| `TrainingEducationCard.tsx` | Merged into NewsAndTrainingCard |
-| `PromoBanners.tsx` | Never used in Index.tsx |
-| `QuickLinksCard.tsx` | Never used in Index.tsx |
-| `UniversityCard.tsx` | Never used in Index.tsx |
+**`src/pages/Index.tsx`**
+
+Add the `PromotionalCarousel` to the right sidebar:
+
+```tsx
+<div className="space-y-6">
+  <NewsAndTrainingCard />
+  <PromotionalCarousel />  {/* New */}
+  <ConnectUplineCard />
+</div>
+```
+
+### Files to Delete
+
+**`src/components/dashboard/DISCCard.tsx`**
+
+Content merged into the carousel, standalone file no longer needed.
 
 ---
 
-## File Changes Summary
+## Carousel Features
+
+### Navigation
+- **Dots**: Click to jump to specific slide
+- **Arrows**: Small prev/next buttons (can be hidden on mobile)
+- **Swipe**: Touch gestures on mobile
+- **Keyboard**: Arrow keys when focused
+
+### Auto-play (Optional)
+- Advances every 5 seconds
+- Pauses on hover/focus
+- Can be disabled for accessibility
+
+---
+
+## Implementation Steps
+
+1. Create `PromotionalCarousel.tsx` with carousel wrapper
+2. Add three promotional slide cards with themed styling
+3. Add dot indicator component below carousel
+4. Update `Index.tsx` to include the carousel in sidebar
+5. Delete the standalone `DISCCard.tsx` file
+
+---
+
+## File Summary
 
 | Action | File |
 |--------|------|
-| Create | `src/components/dashboard/NewsAndTrainingCard.tsx` |
+| Create | `src/components/dashboard/PromotionalCarousel.tsx` |
 | Modify | `src/pages/Index.tsx` |
-| Delete | `src/components/dashboard/ImportantUpdateCard.tsx` |
-| Delete | `src/components/dashboard/TrainingEducationCard.tsx` |
-| Delete | `src/components/dashboard/PromoBanners.tsx` |
-| Delete | `src/components/dashboard/QuickLinksCard.tsx` |
-| Delete | `src/components/dashboard/UniversityCard.tsx` |
+| Delete | `src/components/dashboard/DISCCard.tsx` |
 
 ---
 
 ## Benefits
 
-- **Reduced sidebar height** - 3 cards becomes 2 cards
-- **Better mobile experience** - Less vertical scrolling
-- **Cleaner codebase** - 5 files removed, 1 added (net -4 files)
-- **Logical grouping** - News and training are related content types
-- **User control** - Tabs let users focus on what interests them
+- **Saves vertical space** - 3 cards become 1 carousel (~66% height reduction)
+- **Better mobile UX** - Less scrolling required
+- **Engagement** - Carousel draws attention to rotating content
+- **Uses existing components** - Leverages the Embla carousel already installed
+- **All content preserved** - Nothing removed, just reorganized
