@@ -1,5 +1,4 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { HeroBannerCard } from "@/components/dashboard/HeroBannerCard";
 import { StatsRow } from "@/components/dashboard/StatsRow";
 import { ActionCenterCard } from "@/components/dashboard/ActionCenterCard";
 import { NewsAndTrainingCard } from "@/components/dashboard/NewsAndTrainingCard";
@@ -17,7 +16,6 @@ const Index = () => {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Content - Left/Center (2 columns) */}
         <div className="lg:col-span-2 space-y-6">
-          <HeroBannerCard />
           <StatsRow />
           <ActionCenterCard />
         </div>
