@@ -20,12 +20,16 @@ export function DraggableWidget({ widget, isEditMode, onRemove, children }: Drag
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: widget.id });
+  } = useSortable({ id: widget.id, disabled: !isEditMode });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  if (!isEditMode) {
+    return <div>{children}</div>;
+  }
 
   return (
     <div
@@ -33,35 +37,31 @@ export function DraggableWidget({ widget, isEditMode, onRemove, children }: Drag
       style={style}
       className={cn(
         "relative group",
-        isDragging && "z-50 opacity-90",
-        isEditMode && "ring-2 ring-dashed ring-primary/30 rounded-lg"
+        isDragging && "z-50 opacity-80 scale-[1.02]",
+        "ring-2 ring-dashed ring-primary/30 rounded-lg p-1"
       )}
     >
-      {isEditMode && (
-        <>
-          {/* Drag Handle */}
-          <button
-            {...attributes}
-            {...listeners}
-            className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 h-12 w-6 flex items-center justify-center bg-primary text-primary-foreground rounded-l-md cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-label="Drag to reorder"
-          >
-            <GripVertical className="h-4 w-4" />
-          </button>
+      {/* Drag Handle - Always visible in edit mode */}
+      <div
+        {...attributes}
+        {...listeners}
+        className="absolute -left-3 top-4 z-10 h-10 w-6 flex items-center justify-center bg-primary text-primary-foreground rounded-l-md cursor-grab active:cursor-grabbing shadow-md hover:bg-primary/90 transition-colors"
+        aria-label="Drag to reorder"
+      >
+        <GripVertical className="h-4 w-4" />
+      </div>
 
-          {/* Delete Button */}
-          <Button
-            variant="destructive"
-            size="icon"
-            className="absolute -right-2 -top-2 z-10 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={() => onRemove(widget.id)}
-          >
-            <X className="h-3 w-3" />
-          </Button>
-        </>
-      )}
+      {/* Delete Button - Always visible in edit mode */}
+      <Button
+        variant="destructive"
+        size="icon"
+        className="absolute -right-2 -top-2 z-10 h-6 w-6 rounded-full shadow-md"
+        onClick={() => onRemove(widget.id)}
+      >
+        <X className="h-3 w-3" />
+      </Button>
       
-      <div className={cn(isEditMode && "pointer-events-none")}>
+      <div className="pointer-events-none select-none">
         {children}
       </div>
     </div>
