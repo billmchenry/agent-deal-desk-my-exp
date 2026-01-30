@@ -2,6 +2,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { HeroBannerCard } from "@/components/dashboard/HeroBannerCard";
 import { StatsRow } from "@/components/dashboard/StatsRow";
 import { ActionCenterCard } from "@/components/dashboard/ActionCenterCard";
+import { PromotionalCarousel } from "@/components/dashboard/PromotionalCarousel";
 import { NewsAndTrainingCard } from "@/components/dashboard/NewsAndTrainingCard";
 import { ConnectUplineCard } from "@/components/dashboard/ConnectUplineCard";
 
@@ -20,6 +21,7 @@ const Index = () => {
           <HeroBannerCard />
           <StatsRow />
           <ActionCenterCard />
+          <PromotionalCarousel />
         </div>
 
         {/* Right Sidebar (1 column) */}

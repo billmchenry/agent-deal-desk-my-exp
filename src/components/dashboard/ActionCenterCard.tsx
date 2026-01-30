@@ -99,8 +99,6 @@ export function ActionCenterCard() {
           </TabsContent>
         </Tabs>
 
-        {/* Promotional Carousel */}
-        <PromotionalCarousel />
       </CardContent>
     </Card>
   );
