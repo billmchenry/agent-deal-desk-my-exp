@@ -102,7 +102,7 @@ function ChatContent({
       {/* Chat View */}
       <div className="w-1/2 h-full flex flex-col">
         <div className="px-3 sm:px-4 py-3 border-b shrink-0 bg-background relative z-10">
-          <div className="flex items-center justify-between w-full">
+          <div className={`flex items-center justify-between w-full ${isMobile ? "" : "pr-8"}`}>
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
                 <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
