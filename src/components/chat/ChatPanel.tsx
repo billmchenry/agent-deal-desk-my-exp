@@ -179,22 +179,24 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
           {/* Chat View */}
           <div className="w-1/2 h-full flex flex-col">
             <SheetHeader className="px-3 sm:px-4 py-3 border-b shrink-0">
-              <div className="flex items-center gap-2 pr-16">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-                  <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
+              <div className="flex items-center justify-between w-full pr-8">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
+                  </div>
+                  <SheetTitle className="text-sm sm:text-base">Mira AI</SheetTitle>
                 </div>
-                <SheetTitle className="text-sm sm:text-base">Mira AI</SheetTitle>
+                
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => setShowHistory(true)} 
+                  className="h-8 w-8"
+                  title="History"
+                >
+                  <History className="h-4 w-4" />
+                </Button>
               </div>
-              
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setShowHistory(true)} 
-                className="absolute right-12 top-3 h-8 w-8"
-                title="History"
-              >
-                <History className="h-4 w-4" />
-              </Button>
             </SheetHeader>
 
             <ScrollArea className="flex-1 p-3 sm:p-4" ref={scrollRef}>
