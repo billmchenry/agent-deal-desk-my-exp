@@ -1,92 +1,161 @@
 
-# Plan: Bridge the AI Widget Creation Discovery Gap
 
-## Problem Summary
-There's a user experience disconnect where agents don't realize they can create custom insight widgets through conversations with Mira AI. The current "Add Widget" button only shows pre-built widgets, with no indication that personalized AI-generated insights can be pinned as widgets.
+# Chat History Feature: Header Dropdown + Full History Page
 
-## Solution Overview
-Add visual cues and entry points that connect the dashboard customization experience to Mira AI, making it clear that conversations can become pinned widgets.
+This plan combines two approaches to give users quick access to recent conversations from the chat panel, plus a dedicated page for searching and managing their complete chat history.
 
 ---
 
-## Implementation Steps
+## Overview
 
-### 1. Add "Create with Mira" Option in the Add Widget Dropdown
-Modify `DashboardToolbar.tsx` to include a special menu item at the bottom of the "Add Widget" dropdown that opens the Mira chat panel.
+Users will be able to:
+1. **Quick access**: See their 5 most recent conversations in a dropdown within the Mira chat header
+2. **Full history**: Navigate to a dedicated `/mira/history` page to search, filter, and manage all conversations
+3. **Seamless switching**: Load any past conversation back into the chat panel
 
-**What it does:**
-- Adds a highlighted option like "Ask Mira for a custom insight" with a sparkles icon
-- When clicked, opens the Mira chat panel
-- Creates a clear path from dashboard customization to AI-powered widget creation
+---
 
-**Requires:** Passing a callback from `DashboardLayout` to open the chat, or using a simple event/state management approach.
+## User Flow
 
-### 2. Update Empty Dashboard State with Mira Prompt
-Modify the empty state message in `CustomizableDashboard.tsx` to suggest asking Mira.
+```text
++----------------------------------+
+|  Mira Chat Panel (Sheet)         |
+|  +----------------------------+  |
+|  | [Sparkles] Mira AI   [v] [+]  |  <-- Dropdown trigger + New Chat
+|  +----------------------------+  |
+|         |                        |
+|         v (click dropdown)       |
+|  +----------------------------+  |
+|  | Recent Conversations       |  |
+|  | - "GCI Trends" - 2h ago    |  |
+|  | - "Pipeline Review" - 1d   |  |
+|  | - "Velocity Check" - 3d    |  |
+|  |----------------------------|  |
+|  | [View All History]         |  |  <-- Links to /mira/history
+|  +----------------------------+  |
++----------------------------------+
 
-**Current message:**
+          ||
+          || (click "View All History")
+          \/
+
++------------------------------------------+
+|  /mira/history Page                      |
+|  +------------------------------------+  |
+|  | [Search conversations...]   [Filter]  |
+|  +------------------------------------+  |
+|  |                                    |  |
+|  | Conversation Cards:                |  |
+|  | +--------------------------------+ |  |
+|  | | "GCI Trends Analysis"          | |  |
+|  | | Jan 29, 2026 - 4 messages      | |  |
+|  | | Preview: "Your GCI is..."      | |  |
+|  | | [Open] [Delete]                | |  |
+|  | +--------------------------------+ |  |
+|  |                                    |  |
+|  +------------------------------------+  |
++------------------------------------------+
 ```
-No widgets in main area
-Click "Add Widget" to add content
-```
 
-**Proposed message:**
-```
-No widgets in main area
-Click "Add Widget" or ask Mira for personalized insights
-[Chat with Mira] button
-```
+---
 
-### 3. Add a Floating Tooltip/Hint on First Visit
-Add a one-time tooltip or callout near the Mira floating button that says "Ask me anything and pin my answers to your dashboard!"
+## What Will Be Built
 
-### 4. Enhance Mira's Welcome Message
-Update the initial welcome message in `ChatPanel.tsx` to be more explicit about the pinning capability:
+### 1. Data Types & Storage
 
-**Current:**
-> "Hi! I'm Mira, your AI assistant. Ask me about your forecast, listing velocity, or pipeline to see insights you can pin to your dashboard."
+**New file: `src/types/chat.ts`**
+- `Conversation` type with id, title, messages, timestamps, preview text
+- `ChatHistoryState` type for managing conversation list
 
-**Proposed:**
-> "Hi! I'm Mira, your AI assistant. Ask me anything about your business and I can give you insights you can **pin as widgets** on your dashboard. Try asking about your forecast, listing velocity, or pipeline!"
+**Updated: `src/contexts/MiraChatContext.tsx`**
+- Store conversations array (initially in memory, can later persist to localStorage or database)
+- Track current active conversation ID
+- Provide methods: `loadConversation()`, `saveConversation()`, `deleteConversation()`, `getRecentConversations()`
 
-### 5. Add Visual Badge on Mira Button
-Add a subtle indicator on the floating Mira button (like a small "+" badge) to hint that it can add content to the dashboard.
+### 2. Chat Panel Header Enhancement
+
+**Updated: `src/components/chat/ChatPanel.tsx`**
+- Replace "New Chat" button with a split control:
+  - **Dropdown trigger**: Shows conversation title with chevron
+  - **New Chat button**: Sparkles icon to start fresh
+- Add dropdown menu showing:
+  - 5 most recent conversations with title + relative time
+  - "View All History" link at bottom
+- Auto-generate conversation titles from first user message
+
+### 3. Dedicated History Page
+
+**New file: `src/pages/mira/History.tsx`**
+- Full-page layout using `DashboardLayout`
+- Search input to filter conversations by content
+- Date filter (Today, This Week, This Month, All Time)
+- Conversation cards showing:
+  - Title (auto-generated or editable)
+  - Date and message count
+  - Preview of first AI response
+  - Actions: Open (loads into chat panel), Delete
+- Empty state for no conversations
+
+### 4. Conversation Card Component
+
+**New file: `src/components/chat/ConversationCard.tsx`**
+- Reusable card for displaying conversation previews
+- Click to open conversation in chat panel
+- Delete button with confirmation
+
+### 5. Routing
+
+**Updated: `src/App.tsx`**
+- Add route: `/mira/history` -> `History` page
 
 ---
 
 ## Technical Details
 
-### File Changes
+### Conversation Type Structure
+```typescript
+interface Conversation {
+  id: string;
+  title: string;
+  messages: ChatMessageData[];
+  createdAt: Date;
+  updatedAt: Date;
+  preview: string; // First 100 chars of first AI response
+}
+```
 
-| File | Change |
-|------|--------|
-| `src/components/dashboard/DashboardToolbar.tsx` | Add "Create with Mira" menu item that triggers chat open |
-| `src/components/dashboard/CustomizableDashboard.tsx` | Update empty state with Mira CTA and button |
-| `src/components/chat/ChatPanel.tsx` | Enhance welcome message |
-| `src/components/layout/DashboardLayout.tsx` | Expose `setChatOpen` via context or callback prop |
-| `src/pages/Index.tsx` | Wire up the chat open callback |
+### Context Updates
+The `MiraChatContext` will be extended to manage:
+- `conversations: Conversation[]` - All saved conversations
+- `activeConversationId: string | null` - Currently loaded conversation
+- `loadConversation(id: string)` - Load a conversation into chat panel
+- `saveCurrentConversation()` - Save current chat as a conversation
+- `deleteConversation(id: string)` - Remove a conversation
+- `getRecentConversations(limit: number)` - Get N most recent conversations
 
-### Approach for Cross-Component Communication
-Create a simple callback pattern:
-1. Add `onOpenMiraChat` prop to `CustomizableDashboard` and `DashboardToolbar`
-2. Pass the `setChatOpen(true)` function down from `DashboardLayout`
-
-Alternatively, create a small `MiraChatContext` to manage chat open state globally.
-
----
-
-## User Experience Flow After Implementation
-
-1. User lands on dashboard and sees "Add Widget" button
-2. Clicking it shows standard widgets PLUS "Ask Mira for custom insight"
-3. Clicking that option opens Mira chat
-4. User asks a question, Mira responds
-5. User sees "Pin to Dashboard" button on the response
-6. Pinned insight appears as a draggable widget
+### Auto-Save Behavior
+- Conversations auto-save when the chat panel closes (if there are user messages)
+- Title is auto-generated from the first user message (truncated to 40 chars)
 
 ---
 
-## Optional Enhancements (Future)
-- Let users edit the title of an AI insight before/after pinning
-- Add category tags to pinned insights (e.g., "Revenue", "Performance")
-- Show a "Pinned from Mira" badge on AI insight widgets
+## Files to Create/Modify
+
+| File | Action | Description |
+|------|--------|-------------|
+| `src/types/chat.ts` | Create | Conversation type definitions |
+| `src/contexts/MiraChatContext.tsx` | Modify | Add conversation management |
+| `src/components/chat/ChatPanel.tsx` | Modify | Add header dropdown |
+| `src/components/chat/ConversationCard.tsx` | Create | Reusable conversation preview card |
+| `src/pages/mira/History.tsx` | Create | Full history page |
+| `src/App.tsx` | Modify | Add /mira/history route |
+
+---
+
+## Future Enhancements (Not in this implementation)
+- Persist conversations to localStorage for cross-session access
+- Connect to Supabase for cloud storage and sync
+- Edit conversation titles
+- Export conversation as text/PDF
+- Pin favorite conversations
+
