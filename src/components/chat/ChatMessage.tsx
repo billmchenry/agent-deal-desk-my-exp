@@ -1,17 +1,8 @@
 import { Sparkles } from "lucide-react";
 import { WidgetPreview } from "./WidgetPreview";
+import { ChatMessageData } from "@/types/chat";
 
-export interface ChatMessageData {
-  id: string;
-  sender: 'user' | 'ai';
-  content: string;
-  widget?: {
-    type: 'forecast' | 'velocity' | 'pipeline';
-    id: string;
-    title: string;
-  };
-  timestamp: Date;
-}
+export type { ChatMessageData };
 
 interface ChatMessageProps {
   message: ChatMessageData;
