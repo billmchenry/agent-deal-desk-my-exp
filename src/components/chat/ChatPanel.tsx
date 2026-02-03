@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Sparkles, Send, ChevronDown, Plus, History, ArrowLeft, MessageSquare } from "lucide-react";
+import { Sparkles, Send, History, ArrowLeft, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
@@ -9,13 +9,6 @@ import { ChatMessage } from "./ChatMessage";
 import { useMiraChat } from "@/contexts/MiraChatContext";
 import { ChatMessageData } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface ChatPanelProps {
   isOpen: boolean;
@@ -61,10 +54,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const { 
     currentMessages, 
     setCurrentMessages, 
-    startNewChat, 
-    getRecentConversations, 
     loadConversation,
-    activeConversationId,
     conversations,
   } = useMiraChat();
   const [inputValue, setInputValue] = useState("");
@@ -75,11 +65,6 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     loadConversation(id);
     setShowHistory(false);
   };
-
-  const recentConversations = getRecentConversations(5);
-  const currentTitle = activeConversationId 
-    ? conversations.find(c => c.id === activeConversationId)?.title || "Mira AI"
-    : "Mira AI";
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -175,47 +160,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                   <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
                     <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
                   </div>
-                  
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-auto p-1 font-normal flex items-center gap-1 min-w-0">
-                        <SheetTitle className="text-sm sm:text-base truncate max-w-[120px] sm:max-w-[180px]">
-                          {currentTitle}
-                        </SheetTitle>
-                        <ChevronDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-64 bg-popover">
-                      {recentConversations.length > 0 ? (
-                        <>
-                          <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                            Recent Conversations
-                          </div>
-                          {recentConversations.map(conv => (
-                            <DropdownMenuItem 
-                              key={conv.id} 
-                              onClick={() => loadConversation(conv.id)}
-                              className="flex flex-col items-start gap-0.5 cursor-pointer"
-                            >
-                              <span className="font-medium truncate w-full">{conv.title}</span>
-                              <span className="text-xs text-muted-foreground">
-                                {formatDistanceToNow(conv.updatedAt, { addSuffix: true })}
-                              </span>
-                            </DropdownMenuItem>
-                          ))}
-                          <DropdownMenuSeparator />
-                        </>
-                      ) : (
-                        <div className="px-2 py-3 text-sm text-muted-foreground text-center">
-                          No recent conversations
-                        </div>
-                      )}
-                      <DropdownMenuItem onClick={handleViewAllHistory} className="cursor-pointer">
-                        <History className="h-4 w-4 mr-2" />
-                        View All History
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <SheetTitle className="text-sm sm:text-base">Mira AI</SheetTitle>
                 </div>
                 
                 <Button 
@@ -226,15 +171,6 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                   title="History"
                 >
                   <History className="h-4 w-4" />
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={startNewChat} 
-                  className="h-8 w-8 shrink-0"
-                  title="New Chat"
-                >
-                  <Plus className="h-4 w-4" />
                 </Button>
               </div>
             </SheetHeader>
