@@ -19,6 +19,7 @@ import OrganizationReporting from "./pages/revshare/Organization";
 import OrganizationTree from "./pages/revshare/OrganizationTree";
 import RevShareTrends from "./pages/revshare/Trends";
 import Pulse from "./pages/Pulse";
+import MiraHistory from "./pages/mira/History";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/revshare/organization-tree" element={<OrganizationTree />} />
               <Route path="/revshare/trends" element={<RevShareTrends />} />
               <Route path="/pulse" element={<Pulse />} />
+              <Route path="/mira/history" element={<MiraHistory />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

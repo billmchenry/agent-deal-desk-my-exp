@@ -1,10 +1,21 @@
-import { useState, useRef, useEffect } from "react";
-import { Sparkles, Send, RotateCcw } from "lucide-react";
+import { useRef, useEffect } from "react";
+import { Sparkles, Send, ChevronDown, Plus, History } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChatMessage, ChatMessageData } from "./ChatMessage";
+import { ChatMessage } from "./ChatMessage";
+import { useMiraChat } from "@/contexts/MiraChatContext";
+import { ChatMessageData } from "@/types/chat";
+import { formatDistanceToNow } from "date-fns";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface ChatPanelProps {
   isOpen: boolean;
@@ -46,22 +57,29 @@ const parseUserInput = (input: string): keyof typeof aiResponses | null => {
 };
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
-  const [messages, setMessages] = useState<ChatMessageData[]>([
-    {
-      id: 'welcome',
-      sender: 'ai',
-      content: "Hi! I'm Mira, your AI assistant. Ask me anything about your business and I'll give you insights you can pin to your dashboard! Try asking about your GCI trends, listing velocity, or pipeline.",
-      timestamp: new Date(),
-    },
-  ]);
-  const [inputValue, setInputValue] = useState("");
+  const navigate = useNavigate();
+  const { 
+    currentMessages, 
+    setCurrentMessages, 
+    startNewChat, 
+    getRecentConversations, 
+    loadConversation,
+    activeConversationId,
+    conversations,
+  } = useMiraChat();
+  const [inputValue, setInputValue] = React.useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const recentConversations = getRecentConversations(5);
+  const currentTitle = activeConversationId 
+    ? conversations.find(c => c.id === activeConversationId)?.title || "Mira AI"
+    : "Mira AI";
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [currentMessages]);
 
   const processMessage = (content: string) => {
     const userMessage: ChatMessageData = {
@@ -71,7 +89,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setCurrentMessages([...currentMessages, userMessage]);
     setInputValue("");
 
     // Simulate AI response after a short delay
@@ -104,7 +122,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
         };
       }
 
-      setMessages(prev => [...prev, aiMessage]);
+      setCurrentMessages([...currentMessages, userMessage, aiMessage]);
     }, 800);
   };
 
@@ -117,17 +135,6 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     processMessage(question);
   };
 
-  const handleNewChat = () => {
-    setMessages([
-      {
-        id: 'welcome',
-        sender: 'ai',
-        content: "Hi! I'm Mira, your AI assistant. Ask me anything about your business and I'll give you insights you can pin to your dashboard! Try asking about your GCI trends, listing velocity, or pipeline.",
-        timestamp: new Date(),
-      },
-    ]);
-  };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -135,27 +142,78 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     }
   };
 
+  const handleViewAllHistory = () => {
+    onClose();
+    navigate('/mira/history');
+  };
+
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent className="w-full sm:max-w-md md:max-w-lg p-0 flex flex-col">
         <SheetHeader className="px-3 sm:px-4 py-3 border-b shrink-0">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
                 <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
               </div>
-              <SheetTitle className="text-sm sm:text-base">Mira AI</SheetTitle>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="h-auto p-1 font-normal flex items-center gap-1 min-w-0">
+                    <SheetTitle className="text-sm sm:text-base truncate max-w-[120px] sm:max-w-[180px]">
+                      {currentTitle}
+                    </SheetTitle>
+                    <ChevronDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-64 bg-popover">
+                  {recentConversations.length > 0 ? (
+                    <>
+                      <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                        Recent Conversations
+                      </div>
+                      {recentConversations.map(conv => (
+                        <DropdownMenuItem 
+                          key={conv.id} 
+                          onClick={() => loadConversation(conv.id)}
+                          className="flex flex-col items-start gap-0.5 cursor-pointer"
+                        >
+                          <span className="font-medium truncate w-full">{conv.title}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(conv.updatedAt, { addSuffix: true })}
+                          </span>
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuSeparator />
+                    </>
+                  ) : (
+                    <div className="px-2 py-3 text-sm text-muted-foreground text-center">
+                      No recent conversations
+                    </div>
+                  )}
+                  <DropdownMenuItem onClick={handleViewAllHistory} className="cursor-pointer">
+                    <History className="h-4 w-4 mr-2" />
+                    View All History
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
-            <Button variant="ghost" size="sm" onClick={handleNewChat} className="text-muted-foreground text-xs sm:text-sm h-8">
-              <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />
-              <span className="hidden xs:inline">New Chat</span>
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={startNewChat} 
+              className="h-8 w-8 shrink-0"
+              title="New Chat"
+            >
+              <Plus className="h-4 w-4" />
             </Button>
           </div>
         </SheetHeader>
 
         <ScrollArea className="flex-1 p-3 sm:p-4" ref={scrollRef}>
           <div className="flex flex-col gap-4 sm:gap-6">
-            {messages.map((message) => (
+            {currentMessages.map((message) => (
               <ChatMessage 
                 key={message.id} 
                 message={message} 
@@ -183,3 +241,5 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     </Sheet>
   );
 }
+
+import React from "react";
