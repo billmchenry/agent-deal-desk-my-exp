@@ -167,7 +167,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                   variant="ghost" 
                   size="icon" 
                   onClick={() => setShowHistory(true)} 
-                  className="h-8 w-8 shrink-0"
+                  className="h-8 w-8 shrink-0 mr-6"
                   title="History"
                 >
                   <History className="h-4 w-4" />
