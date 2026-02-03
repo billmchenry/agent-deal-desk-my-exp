@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Sparkles, Send, ChevronDown, Plus, History } from "lucide-react";
+import { Sparkles, Send, ChevronDown, Plus, History, X, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -68,7 +69,13 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     conversations,
   } = useMiraChat();
   const [inputValue, setInputValue] = useState("");
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleLoadConversation = (id: string) => {
+    loadConversation(id);
+    setIsHistoryOpen(false);
+  };
 
   const recentConversations = getRecentConversations(5);
   const currentTitle = activeConversationId 
@@ -202,7 +209,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={handleViewAllHistory} 
+              onClick={() => setIsHistoryOpen(true)} 
               className="h-8 w-8 shrink-0"
               title="History"
             >
@@ -266,6 +273,64 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
           </div>
         </div>
       </SheetContent>
+
+      {/* History Drawer */}
+      <Drawer open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
+        <DrawerContent className="max-h-[85vh]">
+          <DrawerHeader className="border-b">
+            <div className="flex items-center justify-between">
+              <DrawerTitle>Chat History</DrawerTitle>
+              <DrawerClose asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <X className="h-4 w-4" />
+                </Button>
+              </DrawerClose>
+            </div>
+          </DrawerHeader>
+          
+          <ScrollArea className="flex-1 p-4">
+            {conversations.length > 0 ? (
+              <div className="space-y-1">
+                {conversations
+                  .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+                  .map((conv) => (
+                    <button
+                      key={conv.id}
+                      onClick={() => handleLoadConversation(conv.id)}
+                      className="w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-colors min-h-[44px] flex items-start gap-3"
+                    >
+                      <MessageSquare className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">{conv.title}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {formatDistanceToNow(conv.updatedAt, { addSuffix: true })} · {conv.messages.length} messages
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                <p className="text-sm">No conversations yet</p>
+              </div>
+            )}
+          </ScrollArea>
+
+          <div className="p-4 border-t">
+            <Button 
+              variant="outline" 
+              className="w-full" 
+              onClick={() => {
+                setIsHistoryOpen(false);
+                navigate('/mira/history');
+              }}
+            >
+              View All History
+            </Button>
+          </div>
+        </DrawerContent>
+      </Drawer>
     </Sheet>
   );
 }
