@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -51,7 +50,6 @@ const parseUserInput = (input: string): keyof typeof aiResponses | null => {
 };
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
-  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { 
     currentMessages, 
@@ -163,10 +161,6 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     }
   };
 
-  const handleViewAllHistory = () => {
-    onClose();
-    navigate('/mira/history');
-  };
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -340,16 +334,6 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                 </div>
               )}
             </ScrollArea>
-
-            <div className="p-3 sm:p-4 border-t shrink-0">
-              <Button 
-                variant="outline" 
-                className="w-full" 
-                onClick={handleViewAllHistory}
-              >
-                View All History
-              </Button>
-            </div>
           </div>
         </div>
       </SheetContent>
