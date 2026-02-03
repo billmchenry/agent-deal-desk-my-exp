@@ -59,7 +59,7 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
 
   const handlePin = () => {
     addWidget(type as WidgetType);
-    toast.success("Insight pinned to your dashboard!");
+    toast.success("Insight pinned to Home");
   };
 
   const renderWidget = () => {
@@ -79,8 +79,26 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
     <div className="mt-3 space-y-2.5 w-full max-w-full overflow-hidden">
       {/* Chart Card */}
       <Card className="border-border/50 bg-card shadow-sm w-full">
-        <CardHeader className="pb-2 pt-2.5 px-2.5 sm:pt-4 sm:px-4">
+        <CardHeader className="pb-2 pt-2.5 px-2.5 sm:pt-4 sm:px-4 flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-xs sm:text-sm font-semibold truncate">{title}</CardTitle>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handlePin}
+            disabled={isPinned}
+            className={`h-6 w-6 sm:h-7 sm:w-7 shrink-0 ${
+              isPinned 
+                ? 'text-green-600 hover:text-green-600' 
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+            title={isPinned ? "Pinned to Dashboard" : "Pin to Dashboard"}
+          >
+            {isPinned ? (
+              <Check className="h-3 w-3 sm:h-4 sm:w-4" />
+            ) : (
+              <Pin className="h-3 w-3 sm:h-4 sm:w-4" />
+            )}
+          </Button>
         </CardHeader>
         <CardContent className="px-2 sm:px-4 pb-2.5 sm:pb-4">
           {renderWidget()}
@@ -117,30 +135,6 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
         ))}
       </div>
 
-      {/* Pin to Dashboard */}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={handlePin}
-        disabled={isPinned}
-        className={`h-7 sm:h-8 px-2 text-[11px] sm:text-sm ${
-          isPinned 
-            ? 'text-green-600 hover:text-green-600' 
-            : 'text-muted-foreground hover:text-foreground'
-        }`}
-      >
-        {isPinned ? (
-          <>
-            <Check className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-            Pinned to Dashboard
-          </>
-        ) : (
-          <>
-            <Pin className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-            Pin to Dashboard
-          </>
-        )}
-      </Button>
     </div>
   );
 }

@@ -202,6 +202,15 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
             <Button 
               variant="ghost" 
               size="icon" 
+              onClick={handleViewAllHistory} 
+              className="h-8 w-8 shrink-0"
+              title="History"
+            >
+              <History className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
               onClick={startNewChat} 
               className="h-8 w-8 shrink-0"
               title="New Chat"
@@ -223,7 +232,26 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
           </div>
         </ScrollArea>
 
-        <div className="p-3 sm:p-4 border-t bg-background shrink-0">
+        <div className="p-3 sm:p-4 border-t bg-background shrink-0 space-y-2">
+          {/* Suggestion Chips */}
+          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
+            {[
+              { label: "GCI Trends", query: "Show me my GCI trends" },
+              { label: "Listing Velocity", query: "How fast are my listings selling?" },
+              { label: "Active Pipeline", query: "What's in my active pipeline?" },
+            ].map((chip) => (
+              <Button
+                key={chip.label}
+                variant="outline"
+                size="sm"
+                onClick={() => processMessage(chip.query)}
+                className="h-7 sm:h-8 px-2.5 sm:px-3 text-[11px] sm:text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5 whitespace-nowrap shrink-0"
+              >
+                {chip.label}
+              </Button>
+            ))}
+          </div>
+          
           <div className="flex items-center gap-2">
             <Input
               placeholder="Ask about your insights..."
