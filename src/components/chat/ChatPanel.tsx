@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2 } from "lucide-react";
+import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -48,6 +49,236 @@ const parseUserInput = (input: string): keyof typeof aiResponses | null => {
   }
   return null;
 };
+
+// Shared chat content component
+interface ChatContentProps {
+  showHistory: boolean;
+  setShowHistory: (show: boolean) => void;
+  currentMessages: ChatMessageData[];
+  handleFollowUp: (question: string) => void;
+  processMessage: (content: string) => void;
+  inputValue: string;
+  setInputValue: (value: string) => void;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+  handleSend: () => void;
+  scrollRef: React.RefObject<HTMLDivElement>;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  filteredConversations: any[];
+  handleLoadConversation: (id: string) => void;
+  handleDeleteConversation: (e: React.MouseEvent, id: string) => void;
+  swipedId: string | null;
+  setSwipedId: (id: string | null) => void;
+  isMobile: boolean;
+  onClose: () => void;
+}
+
+function ChatContent({
+  showHistory,
+  setShowHistory,
+  currentMessages,
+  handleFollowUp,
+  processMessage,
+  inputValue,
+  setInputValue,
+  handleKeyPress,
+  handleSend,
+  scrollRef,
+  searchQuery,
+  setSearchQuery,
+  filteredConversations,
+  handleLoadConversation,
+  handleDeleteConversation,
+  swipedId,
+  setSwipedId,
+  isMobile,
+  onClose,
+}: ChatContentProps) {
+  return (
+    <div 
+      className="flex w-[200%] h-full transition-transform duration-300 ease-out"
+      style={{ transform: showHistory ? 'translateX(-50%)' : 'translateX(0)' }}
+    >
+      {/* Chat View */}
+      <div className="w-1/2 h-full flex flex-col">
+        <div className="px-3 sm:px-4 py-3 border-b shrink-0">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
+              </div>
+              <span className="font-semibold text-sm sm:text-base">Mira AI</span>
+            </div>
+            
+            <div className="flex items-center gap-1">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setShowHistory(true)} 
+                className="h-8 w-8"
+                title="History"
+              >
+                <History className="h-4 w-4" />
+              </Button>
+              {isMobile && (
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={onClose} 
+                  className="h-8 w-8"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <ScrollArea className="flex-1 p-3 sm:p-4" ref={scrollRef}>
+          <div className="flex flex-col gap-4 sm:gap-6">
+            {currentMessages.map((message) => (
+              <ChatMessage 
+                key={message.id} 
+                message={message} 
+                onFollowUp={handleFollowUp}
+              />
+            ))}
+          </div>
+        </ScrollArea>
+
+        <div className="p-3 sm:p-4 border-t bg-background shrink-0 space-y-2">
+          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
+            {[
+              { label: "GCI Trends", query: "Show me my GCI trends" },
+              { label: "Listing Velocity", query: "How fast are my listings selling?" },
+              { label: "Active Pipeline", query: "What's in my active pipeline?" },
+            ].map((chip) => (
+              <Button
+                key={chip.label}
+                variant="outline"
+                size="sm"
+                onClick={() => processMessage(chip.query)}
+                className="h-7 sm:h-8 px-2.5 sm:px-3 text-[11px] sm:text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5 whitespace-nowrap shrink-0"
+              >
+                {chip.label}
+              </Button>
+            ))}
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder="Ask about your insights..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="flex-1 text-sm"
+            />
+            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10">
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* History View */}
+      <div className="w-1/2 h-full flex flex-col bg-background">
+        <div className="px-3 sm:px-4 py-3 border-b shrink-0">
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setShowHistory(false)} 
+              className="h-8 w-8 shrink-0"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h2 className="font-semibold text-sm sm:text-base">Chat History</h2>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="px-3 sm:px-4 py-2 border-b shrink-0">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search conversations..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 h-9 text-sm"
+            />
+          </div>
+        </div>
+
+        <ScrollArea className="flex-1">
+          {filteredConversations.length > 0 ? (
+            <div className="p-2">
+              {filteredConversations.map((conv) => (
+                <div
+                  key={conv.id}
+                  className="relative group"
+                  onTouchStart={() => isMobile && setSwipedId(conv.id)}
+                  onTouchEnd={() => isMobile && setTimeout(() => setSwipedId(null), 3000)}
+                >
+                  <button
+                    onClick={() => handleLoadConversation(conv.id)}
+                    className={`w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
+                      swipedId === conv.id ? 'translate-x-[-60px]' : ''
+                    }`}
+                  >
+                    <MessageSquare className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm truncate">{conv.title}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {formatDistanceToNow(conv.updatedAt, { addSuffix: true })} · {conv.messages.length} messages
+                      </p>
+                    </div>
+                    
+                    {/* Desktop hover delete button */}
+                    {!isMobile && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => handleDeleteConversation(e, conv.id)}
+                        className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive shrink-0"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </button>
+                  
+                  {/* Mobile swipe delete button */}
+                  {isMobile && swipedId === conv.id && (
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={(e) => handleDeleteConversation(e, conv.id)}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-14 rounded-lg"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : searchQuery ? (
+            <div className="text-center py-12 text-muted-foreground">
+              <Search className="h-10 w-10 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">No results for "{searchQuery}"</p>
+              <p className="text-xs mt-1">Try a different search term</p>
+            </div>
+          ) : (
+            <div className="text-center py-12 text-muted-foreground">
+              <MessageSquare className="h-10 w-10 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">No conversations yet</p>
+              <p className="text-xs mt-1">Start chatting with Mira!</p>
+            </div>
+          )}
+        </ScrollArea>
+      </div>
+    </div>
+  );
+}
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const isMobile = useIsMobile();
@@ -161,181 +392,44 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     }
   };
 
+  const contentProps = {
+    showHistory,
+    setShowHistory,
+    currentMessages,
+    handleFollowUp,
+    processMessage,
+    inputValue,
+    setInputValue,
+    handleKeyPress,
+    handleSend,
+    scrollRef,
+    searchQuery,
+    setSearchQuery,
+    filteredConversations,
+    handleLoadConversation,
+    handleDeleteConversation,
+    swipedId,
+    setSwipedId,
+    isMobile,
+    onClose,
+  };
 
+  // Mobile: Use Drawer (slides up from bottom)
+  if (isMobile) {
+    return (
+      <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
+        <DrawerContent className="h-[85vh] p-0 flex flex-col overflow-hidden">
+          <ChatContent {...contentProps} />
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  // Desktop: Use Sheet (slides in from right)
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent className="w-full sm:max-w-md md:max-w-lg p-0 flex flex-col overflow-hidden">
-        {/* Sliding container for chat and history views */}
-        <div 
-          className="flex w-[200%] h-full transition-transform duration-300 ease-out"
-          style={{ transform: showHistory ? 'translateX(-50%)' : 'translateX(0)' }}
-        >
-          {/* Chat View */}
-          <div className="w-1/2 h-full flex flex-col">
-            <SheetHeader className="px-3 sm:px-4 py-3 border-b shrink-0">
-              <div className="flex items-center justify-between w-full pr-8">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-                    <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
-                  </div>
-                  <SheetTitle className="text-sm sm:text-base">Mira AI</SheetTitle>
-                </div>
-                
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => setShowHistory(true)} 
-                  className="h-8 w-8"
-                  title="History"
-                >
-                  <History className="h-4 w-4" />
-                </Button>
-              </div>
-            </SheetHeader>
-
-            <ScrollArea className="flex-1 p-3 sm:p-4" ref={scrollRef}>
-              <div className="flex flex-col gap-4 sm:gap-6">
-                {currentMessages.map((message) => (
-                  <ChatMessage 
-                    key={message.id} 
-                    message={message} 
-                    onFollowUp={handleFollowUp}
-                  />
-                ))}
-              </div>
-            </ScrollArea>
-
-            <div className="p-3 sm:p-4 border-t bg-background shrink-0 space-y-2">
-              <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
-                {[
-                  { label: "GCI Trends", query: "Show me my GCI trends" },
-                  { label: "Listing Velocity", query: "How fast are my listings selling?" },
-                  { label: "Active Pipeline", query: "What's in my active pipeline?" },
-                ].map((chip) => (
-                  <Button
-                    key={chip.label}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => processMessage(chip.query)}
-                    className="h-7 sm:h-8 px-2.5 sm:px-3 text-[11px] sm:text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5 whitespace-nowrap shrink-0"
-                  >
-                    {chip.label}
-                  </Button>
-                ))}
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <Input
-                  placeholder="Ask about your insights..."
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="flex-1 text-sm"
-                />
-                <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10">
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* History View */}
-          <div className="w-1/2 h-full flex flex-col bg-background">
-            <div className="px-3 sm:px-4 py-3 border-b shrink-0">
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => setShowHistory(false)} 
-                  className="h-8 w-8 shrink-0"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <h2 className="font-semibold text-sm sm:text-base">Chat History</h2>
-              </div>
-            </div>
-
-            {/* Search Bar */}
-            <div className="px-3 sm:px-4 py-2 border-b shrink-0">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search conversations..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-8 h-9 text-sm"
-                />
-              </div>
-            </div>
-
-            <ScrollArea className="flex-1">
-              {filteredConversations.length > 0 ? (
-                <div className="p-2">
-                  {filteredConversations.map((conv) => (
-                    <div
-                      key={conv.id}
-                      className="relative group"
-                      onTouchStart={() => isMobile && setSwipedId(conv.id)}
-                      onTouchEnd={() => isMobile && setTimeout(() => setSwipedId(null), 3000)}
-                    >
-                      <button
-                        onClick={() => handleLoadConversation(conv.id)}
-                        className={`w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
-                          swipedId === conv.id ? 'translate-x-[-60px]' : ''
-                        }`}
-                      >
-                        <MessageSquare className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-sm truncate">{conv.title}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {formatDistanceToNow(conv.updatedAt, { addSuffix: true })} · {conv.messages.length} messages
-                          </p>
-                        </div>
-                        
-                        {/* Desktop hover delete button */}
-                        {!isMobile && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={(e) => handleDeleteConversation(e, conv.id)}
-                            className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive shrink-0"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </button>
-                      
-                      {/* Mobile swipe delete button */}
-                      {isMobile && swipedId === conv.id && (
-                        <Button
-                          variant="destructive"
-                          size="icon"
-                          onClick={(e) => handleDeleteConversation(e, conv.id)}
-                          className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-14 rounded-lg"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : searchQuery ? (
-                <div className="text-center py-12 text-muted-foreground">
-                  <Search className="h-10 w-10 mx-auto mb-3 opacity-50" />
-                  <p className="text-sm">No results for "{searchQuery}"</p>
-                  <p className="text-xs mt-1">Try a different search term</p>
-                </div>
-              ) : (
-                <div className="text-center py-12 text-muted-foreground">
-                  <MessageSquare className="h-10 w-10 mx-auto mb-3 opacity-50" />
-                  <p className="text-sm">No conversations yet</p>
-                  <p className="text-xs mt-1">Start chatting with Mira!</p>
-                </div>
-              )}
-            </ScrollArea>
-          </div>
-        </div>
+        <ChatContent {...contentProps} />
       </SheetContent>
     </Sheet>
   );
