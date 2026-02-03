@@ -101,7 +101,7 @@ function ChatContent({
     >
       {/* Chat View */}
       <div className="w-1/2 h-full flex flex-col">
-        <div className="px-3 sm:px-4 py-3 border-b shrink-0">
+        <div className="px-3 sm:px-4 py-3 border-b shrink-0 bg-background relative z-10">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
@@ -110,12 +110,12 @@ function ChatContent({
               <span className="font-semibold text-sm sm:text-base">Mira AI</span>
             </div>
             
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 shrink-0">
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => setShowHistory(true)} 
-                className="h-8 w-8"
+                className="h-8 w-8 shrink-0"
                 title="History"
               >
                 <History className="h-4 w-4" />
@@ -125,7 +125,7 @@ function ChatContent({
                   variant="ghost" 
                   size="icon" 
                   onClick={onClose} 
-                  className="h-8 w-8"
+                  className="h-8 w-8 shrink-0"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -418,13 +418,12 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <DrawerContent className="h-[85vh] p-0 flex flex-col overflow-hidden">
+        <DrawerContent hideHandle className="h-[85vh] p-0 flex flex-col overflow-hidden">
           <ChatContent {...contentProps} />
         </DrawerContent>
       </Drawer>
     );
   }
-
   // Desktop: Use Sheet (slides in from right)
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
