@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Sparkles, Send, ChevronDown, Plus, History } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -67,7 +67,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     activeConversationId,
     conversations,
   } = useMiraChat();
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const recentConversations = getRecentConversations(5);
@@ -242,4 +242,4 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   );
 }
 
-import React from "react";
+
