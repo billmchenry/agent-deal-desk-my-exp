@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Sparkles, Send, History, ArrowLeft, MessageSquare } from "lucide-react";
+import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { ChatMessage } from "./ChatMessage";
 import { useMiraChat } from "@/contexts/MiraChatContext";
 import { ChatMessageData } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ChatPanelProps {
   isOpen: boolean;
@@ -51,20 +52,43 @@ const parseUserInput = (input: string): keyof typeof aiResponses | null => {
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const { 
     currentMessages, 
     setCurrentMessages, 
     loadConversation,
+    deleteConversation,
     conversations,
   } = useMiraChat();
   const [inputValue, setInputValue] = useState("");
   const [showHistory, setShowHistory] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [swipedId, setSwipedId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleLoadConversation = (id: string) => {
     loadConversation(id);
     setShowHistory(false);
   };
+
+  const handleDeleteConversation = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    deleteConversation(id);
+    setSwipedId(null);
+  };
+
+  // Filter conversations based on search query
+  const filteredConversations = conversations
+    .filter(conv => {
+      if (!searchQuery.trim()) return true;
+      const query = searchQuery.toLowerCase();
+      return (
+        conv.title.toLowerCase().includes(query) ||
+        conv.preview.toLowerCase().includes(query) ||
+        conv.messages.some(m => m.content.toLowerCase().includes(query))
+      );
+    })
+    .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -235,16 +259,35 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
               </div>
             </div>
 
+            {/* Search Bar */}
+            <div className="px-3 sm:px-4 py-2 border-b shrink-0">
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search conversations..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-8 h-9 text-sm"
+                />
+              </div>
+            </div>
+
             <ScrollArea className="flex-1">
-              {conversations.length > 0 ? (
+              {filteredConversations.length > 0 ? (
                 <div className="p-2">
-                  {conversations
-                    .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
-                    .map((conv) => (
+                  {filteredConversations.map((conv) => (
+                    <div
+                      key={conv.id}
+                      className="relative group"
+                      onTouchStart={() => isMobile && setSwipedId(conv.id)}
+                      onTouchEnd={() => isMobile && setTimeout(() => setSwipedId(null), 3000)}
+                    >
                       <button
-                        key={conv.id}
                         onClick={() => handleLoadConversation(conv.id)}
-                        className="w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-colors min-h-[44px] flex items-start gap-3"
+                        className={`w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
+                          swipedId === conv.id ? 'translate-x-[-60px]' : ''
+                        }`}
                       >
                         <MessageSquare className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
                         <div className="flex-1 min-w-0">
@@ -253,8 +296,39 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                             {formatDistanceToNow(conv.updatedAt, { addSuffix: true })} · {conv.messages.length} messages
                           </p>
                         </div>
+                        
+                        {/* Desktop hover delete button */}
+                        {!isMobile && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={(e) => handleDeleteConversation(e, conv.id)}
+                            className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive shrink-0"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
                       </button>
-                    ))}
+                      
+                      {/* Mobile swipe delete button */}
+                      {isMobile && swipedId === conv.id && (
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          onClick={(e) => handleDeleteConversation(e, conv.id)}
+                          className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-14 rounded-lg"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : searchQuery ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  <Search className="h-10 w-10 mx-auto mb-3 opacity-50" />
+                  <p className="text-sm">No results for "{searchQuery}"</p>
+                  <p className="text-xs mt-1">Try a different search term</p>
                 </div>
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
