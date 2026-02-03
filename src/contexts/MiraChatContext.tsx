@@ -27,11 +27,45 @@ const WELCOME_MESSAGE: ChatMessageData = {
   timestamp: new Date(),
 };
 
-// Generate title from first user message
+// Generate smart title from first user message
 const generateTitle = (messages: ChatMessageData[]): string => {
   const firstUserMessage = messages.find(m => m.sender === 'user');
   if (!firstUserMessage) return 'New Conversation';
-  return firstUserMessage.content.slice(0, 40) + (firstUserMessage.content.length > 40 ? '...' : '');
+  
+  const content = firstUserMessage.content.toLowerCase();
+  
+  // Smart title generation based on content keywords
+  if (content.includes('gci') || content.includes('revenue') || content.includes('income')) {
+    return 'GCI Analysis';
+  }
+  if (content.includes('pipeline') || content.includes('deals') || content.includes('escrow')) {
+    return 'Pipeline Overview';
+  }
+  if (content.includes('velocity') || content.includes('how fast') || content.includes('selling')) {
+    return 'Listing Velocity';
+  }
+  if (content.includes('trend') || content.includes('forecast') || content.includes('projection')) {
+    return 'Trends & Forecast';
+  }
+  if (content.includes('compare') || content.includes('vs') || content.includes('versus')) {
+    return 'Comparison Analysis';
+  }
+  if (content.includes('report') || content.includes('summary')) {
+    return 'Performance Report';
+  }
+  
+  // Fallback: Clean up and use first part of message
+  const cleanContent = firstUserMessage.content
+    .replace(/^(show me|tell me|what|how|can you|please|i want to|i need)/i, '')
+    .trim();
+  
+  // Capitalize first letter of each word for title case
+  const title = cleanContent.slice(0, 35)
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+  
+  return title + (cleanContent.length > 35 ? '...' : '') || 'New Conversation';
 };
 
 // Generate preview from first AI response (excluding welcome message)
