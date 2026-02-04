@@ -4,6 +4,7 @@ import { GripVertical, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DashboardWidget } from "@/types/dashboard";
+import { useMiraChat } from "@/contexts/MiraChatContext";
 
 interface DraggableWidgetProps {
   widget: DashboardWidget;
@@ -13,6 +14,9 @@ interface DraggableWidgetProps {
 }
 
 export function DraggableWidget({ widget, isEditMode, onRemove, children }: DraggableWidgetProps) {
+  const { focusWidgetId } = useMiraChat();
+  const isFocused = focusWidgetId === widget.id;
+  
   const {
     attributes,
     listeners,
@@ -28,7 +32,17 @@ export function DraggableWidget({ widget, isEditMode, onRemove, children }: Drag
   };
 
   if (!isEditMode) {
-    return <div>{children}</div>;
+    return (
+      <div 
+        id={`widget-${widget.id}`}
+        className={cn(
+          "transition-all duration-500",
+          isFocused && "ring-2 ring-primary ring-offset-2 rounded-lg animate-pulse"
+        )}
+      >
+        {children}
+      </div>
+    );
   }
 
   return (
