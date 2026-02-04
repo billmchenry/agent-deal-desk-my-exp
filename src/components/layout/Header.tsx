@@ -1,4 +1,4 @@
-import { Bell, HelpCircle, Sparkles, ChevronDown, Menu } from "lucide-react";
+import { Bell, HelpCircle, ChevronDown, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -43,11 +43,6 @@ export function Header({ onMenuClick }: HeaderProps) {
           <span>Get Help</span>
         </Button>
 
-        {/* Mira AI Assistant */}
-        <Button variant="ghost" size="sm" className="hidden sm:flex gap-2">
-          <Sparkles className="h-4 w-4 text-exp-purple" />
-          <span>Mira</span>
-        </Button>
 
         {/* Notifications */}
         <Button variant="ghost" size="icon" className="relative">
