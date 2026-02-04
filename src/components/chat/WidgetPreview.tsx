@@ -1,12 +1,14 @@
-import { Pin, Check, TrendingUp, Sparkles, ArrowRight } from "lucide-react";
+import { Pin, Check, TrendingUp, Sparkles, ArrowRight, Focus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDashboard } from "@/contexts/DashboardContext";
+import { useMiraChat } from "@/contexts/MiraChatContext";
 import { WidgetType } from "@/types/dashboard";
 import { ForecastWidget } from "@/components/dashboard/widgets/ForecastWidget";
 import { VelocityWidget } from "@/components/dashboard/widgets/VelocityWidget";
 import { PipelineWidget } from "@/components/dashboard/widgets/PipelineWidget";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface WidgetPreviewProps {
   type: 'forecast' | 'velocity' | 'pipeline';
@@ -53,13 +55,37 @@ const widgetInsights: Record<string, { insights: { icon: 'trend' | 'sparkle'; te
 };
 
 export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProps) {
-  const { addWidget, isWidgetPinned } = useDashboard();
+  const { addWidget, isWidgetPinned, widgets } = useDashboard();
+  const { setFocusWidgetId, closeChat } = useMiraChat();
   const isPinned = isWidgetPinned(type as WidgetType);
   const { insights, followUps } = widgetInsights[type] || { insights: [], followUps: [] };
+
+  // Find the actual widget ID on dashboard for this type
+  const dashboardWidget = widgets.find(w => w.type === type);
 
   const handlePin = () => {
     addWidget(type as WidgetType);
     toast.success("Insight pinned to Home");
+  };
+
+  const handleFocus = () => {
+    if (dashboardWidget) {
+      setFocusWidgetId(dashboardWidget.id);
+      closeChat();
+      
+      // Scroll to the widget after a short delay for the panel to close
+      setTimeout(() => {
+        const element = document.getElementById(`widget-${dashboardWidget.id}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 300);
+      
+      // Clear focus after animation
+      setTimeout(() => {
+        setFocusWidgetId(null);
+      }, 2500);
+    }
   };
 
   const renderWidget = () => {
@@ -77,28 +103,60 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
 
   return (
     <div className="mt-3 space-y-2.5 w-full max-w-full overflow-hidden">
-      {/* Chart Card */}
-      <Card className="border-border/50 bg-card shadow-sm w-full">
+      {/* Chart Card - Clickable for focus mode */}
+      <Card 
+        className={`border-border/50 bg-card shadow-sm w-full ${
+          isPinned ? 'cursor-pointer hover:border-primary/50 transition-colors' : ''
+        }`}
+        onClick={isPinned ? handleFocus : undefined}
+      >
         <CardHeader className="pb-2 pt-2.5 px-2.5 sm:pt-4 sm:px-4 flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-xs sm:text-sm font-semibold truncate">{title}</CardTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handlePin}
-            disabled={isPinned}
-            className={`h-6 w-6 sm:h-7 sm:w-7 shrink-0 ${
-              isPinned 
-                ? 'text-green-600 hover:text-green-600' 
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-            title={isPinned ? "Pinned to Dashboard" : "Pin to Dashboard"}
-          >
-            {isPinned ? (
-              <Check className="h-3 w-3 sm:h-4 sm:w-4" />
-            ) : (
-              <Pin className="h-3 w-3 sm:h-4 sm:w-4" />
+          <div className="flex items-center gap-1">
+            {/* Focus button - only show when pinned */}
+            {isPinned && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleFocus();
+                      }}
+                      className="h-6 w-6 sm:h-7 sm:w-7 shrink-0 text-primary hover:text-primary"
+                    >
+                      <Focus className="h-3 w-3 sm:h-4 sm:w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Focus on Dashboard</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
-          </Button>
+            {/* Pin button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePin();
+              }}
+              disabled={isPinned}
+              className={`h-6 w-6 sm:h-7 sm:w-7 shrink-0 ${
+                isPinned 
+                  ? 'text-green-600 hover:text-green-600' 
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              title={isPinned ? "Pinned to Dashboard" : "Pin to Dashboard"}
+            >
+              {isPinned ? (
+                <Check className="h-3 w-3 sm:h-4 sm:w-4" />
+              ) : (
+                <Pin className="h-3 w-3 sm:h-4 sm:w-4" />
+              )}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="px-2 sm:px-4 pb-2.5 sm:pb-4">
           {renderWidget()}
@@ -134,7 +192,6 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
           </Button>
         ))}
       </div>
-
     </div>
   );
 }

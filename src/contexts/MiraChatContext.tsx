@@ -4,14 +4,17 @@ import { Conversation, ChatMessageData } from "@/types/chat";
 interface MiraChatContextType {
   isChatOpen: boolean;
   openChat: () => void;
-  openChatWithMessage: (message: string) => void;
+  openChatWithMessage: (message: string, widgetInfo?: { type: string; id: string; title: string }) => void;
   closeChat: () => void;
   toggleChat: () => void;
+  // Focus mode for scrolling to widgets
+  focusWidgetId: string | null;
+  setFocusWidgetId: (id: string | null) => void;
   // Conversation management
   conversations: Conversation[];
   activeConversationId: string | null;
   currentMessages: ChatMessageData[];
-  setCurrentMessages: (messages: ChatMessageData[]) => void;
+  setCurrentMessages: (messages: ChatMessageData[] | ((prev: ChatMessageData[]) => ChatMessageData[])) => void;
   loadConversation: (id: string) => void;
   saveCurrentConversation: (messages: ChatMessageData[]) => void;
   deleteConversation: (id: string) => void;
@@ -81,16 +84,22 @@ export function MiraChatProvider({ children }: { children: ReactNode }) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
   const [currentMessages, setCurrentMessages] = useState<ChatMessageData[]>([WELCOME_MESSAGE]);
+  const [focusWidgetId, setFocusWidgetId] = useState<string | null>(null);
 
   const openChat = () => setIsChatOpen(true);
   
-  const openChatWithMessage = useCallback((message: string) => {
+  const openChatWithMessage = useCallback((message: string, widgetInfo?: { type: string; id: string; title: string }) => {
     // Create a new AI message to show in the chat
     const aiMessage: ChatMessageData = {
       id: `mira-${Date.now()}`,
       sender: 'ai',
       content: message,
       timestamp: new Date(),
+      widget: widgetInfo ? {
+        type: widgetInfo.type as 'forecast' | 'velocity' | 'pipeline',
+        id: widgetInfo.id,
+        title: widgetInfo.title,
+      } : undefined,
     };
     
     // Add to current messages (after welcome message)
@@ -105,6 +114,7 @@ export function MiraChatProvider({ children }: { children: ReactNode }) {
     
     setIsChatOpen(true);
   }, []);
+
   const closeChat = useCallback(() => {
     setIsChatOpen(false);
     // Auto-save conversation when closing if there are user messages
@@ -184,6 +194,8 @@ export function MiraChatProvider({ children }: { children: ReactNode }) {
       openChatWithMessage,
       closeChat, 
       toggleChat,
+      focusWidgetId,
+      setFocusWidgetId,
       conversations,
       activeConversationId,
       currentMessages,
