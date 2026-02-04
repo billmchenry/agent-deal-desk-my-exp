@@ -71,9 +71,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         )}
       >
         {/* Sidebar Header with Logo */}
-        <div className="flex h-16 items-center gap-1 px-5 border-b border-sidebar-border">
-          <span className="text-xl font-bold leading-none text-white">MY</span>
-          <span className="text-xl leading-none text-sidebar-foreground/60">|</span>
+        <div className="flex h-16 items-center gap-1 px-5 border-b border-border bg-white">
+          <span className="text-xl font-bold leading-none text-foreground">MY</span>
+          <span className="text-xl leading-none text-muted-foreground">|</span>
           <span className="text-xl font-bold leading-none text-exp-blue">eXp</span>
         </div>
 
