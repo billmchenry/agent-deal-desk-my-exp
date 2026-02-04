@@ -20,10 +20,37 @@ import { WidgetRenderer } from "./WidgetRenderer";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
+import { useCallback } from "react";
+
+// Widget-specific removal messages
+const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
+  'forecast': "I've removed that forecast. Let me know if you need a different view!",
+  'velocity': "I've removed the Listing Velocity widget. Want to try a different metric instead?",
+  'pipeline': "I've removed your Pipeline widget. Need a different way to track your deals?",
+  'hero-banner': "I've removed Capping Progress. Want me to add a different goal tracker?",
+  'stats-row': "I've removed Key Stats. Let me know if you want specific metrics instead!",
+  'action-center': "I've removed Action Center. Want me to suggest other widgets?",
+  'promo-carousel': "I've removed Promotions. Looking for something more specific?",
+  'news-training': "I've removed News & Training. Want a more focused feed instead?",
+  'connect-upline': "I've removed Connect Upline. Need a different way to stay connected?",
+  'ai-insight': "I've removed that insight. Want me to generate a new one?",
+};
 
 export function CustomizableDashboard() {
-  const { widgets, isEditMode, removeWidget, reorderWidgets } = useDashboard();
-  const { openChat } = useMiraChat();
+  const { widgets, isEditMode, removeWidget, reorderWidgets, getWidgetById } = useDashboard();
+  const { openChat, openChatWithMessage } = useMiraChat();
+
+  // Handle widget removal with Mira notification
+  const handleRemoveWidget = useCallback((id: string) => {
+    const widget = getWidgetById(id);
+    removeWidget(id);
+    
+    if (widget) {
+      const message = WIDGET_REMOVAL_MESSAGES[widget.type] || "I've removed that widget. Let me know if you need anything else!";
+      openChatWithMessage(message);
+    }
+  }, [getWidgetById, removeWidget, openChatWithMessage]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -72,7 +99,7 @@ export function CustomizableDashboard() {
                   key={widget.id}
                   widget={widget}
                   isEditMode={isEditMode}
-                  onRemove={removeWidget}
+                  onRemove={handleRemoveWidget}
                 >
                   <WidgetRenderer widget={widget} />
                 </DraggableWidget>
@@ -109,7 +136,7 @@ export function CustomizableDashboard() {
                   key={widget.id}
                   widget={widget}
                   isEditMode={isEditMode}
-                  onRemove={removeWidget}
+                  onRemove={handleRemoveWidget}
                 >
                   <WidgetRenderer widget={widget} />
                 </DraggableWidget>

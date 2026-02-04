@@ -13,10 +13,11 @@ interface DashboardContextType {
   isEditMode: boolean;
   
   // Widget actions
-  addWidget: (type: WidgetType, customTitle?: string, content?: string) => void;
-  removeWidget: (id: string) => void;
+  addWidget: (type: WidgetType, customTitle?: string, content?: string) => string;
+  removeWidget: (id: string) => DashboardWidget | undefined;
   reorderWidgets: (activeId: string, overId: string) => void;
   isWidgetPinned: (type: WidgetType) => boolean;
+  getWidgetById: (id: string) => DashboardWidget | undefined;
   
   // Edit mode
   toggleEditMode: () => void;
@@ -64,7 +65,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     });
   }, [widgets, setStoredWidgets]);
 
-  const addWidget = useCallback((type: WidgetType, customTitle?: string, content?: string) => {
+  const addWidget = useCallback((type: WidgetType, customTitle?: string, content?: string): string => {
     const registry = WIDGET_REGISTRY[type];
     const newWidget: DashboardWidget = {
       id: `${type}-${Date.now()}`,
@@ -75,11 +76,21 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       content,
     };
     setWidgets(prev => [newWidget, ...prev]);
+    return newWidget.id;
   }, []);
 
-  const removeWidget = useCallback((id: string) => {
-    setWidgets(prev => prev.filter(w => w.id !== id));
+  const removeWidget = useCallback((id: string): DashboardWidget | undefined => {
+    let removedWidget: DashboardWidget | undefined;
+    setWidgets(prev => {
+      removedWidget = prev.find(w => w.id === id);
+      return prev.filter(w => w.id !== id);
+    });
+    return removedWidget;
   }, []);
+
+  const getWidgetById = useCallback((id: string): DashboardWidget | undefined => {
+    return widgets.find(w => w.id === id);
+  }, [widgets]);
 
   const reorderWidgets = useCallback((activeId: string, overId: string) => {
     setWidgets(prev => {
@@ -123,6 +134,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     removeWidget,
     reorderWidgets,
     isWidgetPinned,
+    getWidgetById,
     toggleEditMode,
     resetToDefault,
     lastSynced,
@@ -135,6 +147,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     removeWidget,
     reorderWidgets,
     isWidgetPinned,
+    getWidgetById,
     toggleEditMode,
     resetToDefault,
     lastSynced,

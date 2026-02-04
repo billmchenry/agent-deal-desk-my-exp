@@ -20,6 +20,19 @@ import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
+// Widget-specific Mira messages
+const WIDGET_MIRA_MESSAGES: Record<string, string> = {
+  'forecast': "I've added your Revenue Forecast. Want to see this by month or by quarter?",
+  'velocity': "I've added Listing Velocity to your dashboard. Would you like me to break this down by property type or neighborhood?",
+  'pipeline': "I've added your Active Pipeline widget. Want me to show pending vs. active escrows, or filter by price range?",
+  'hero-banner': "I've added your Capping Progress tracker. Need help understanding your path to cap?",
+  'stats-row': "I've added your Key Stats. Want me to explain any of these metrics in detail?",
+  'action-center': "I've added the Action Center. Would you like tips on improving your influencer status?",
+  'promo-carousel': "I've added Promotions to your dashboard. Any specific programs you'd like to learn more about?",
+  'news-training': "I've added News & Training. Want me to recommend training based on your goals?",
+  'connect-upline': "I've added Connect Upline. Need help reaching out to any of your upline partners?",
+};
+
 function formatRelativeTime(date: Date): string {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
@@ -49,8 +62,7 @@ export function DashboardToolbar() {
     isRefreshing,
     refreshData,
   } = useDashboard();
-
-  const { openChat } = useMiraChat();
+  const { openChat, openChatWithMessage } = useMiraChat();
 
   const [relativeTime, setRelativeTime] = useState(() => formatRelativeTime(lastSynced));
 
@@ -159,6 +171,12 @@ export function DashboardToolbar() {
                 onClick={() => {
                   addWidget(type as WidgetType);
                   toast.success(`${config.title} added`);
+                  
+                  // Open Mira with contextual message
+                  const miraMessage = WIDGET_MIRA_MESSAGES[type];
+                  if (miraMessage) {
+                    openChatWithMessage(miraMessage);
+                  }
                 }}
               >
                 <div>
