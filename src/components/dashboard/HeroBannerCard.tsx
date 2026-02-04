@@ -33,7 +33,7 @@ export function HeroBannerCard() {
           <div>
             <h2 className="text-lg font-medium text-white/80">Track your progress to</h2>
             <p className="text-3xl font-bold">
-              <span className="text-exp-green-light">${(cappingData.target / 1000).toFixed(0)}K</span> Cap!
+              <span className="text-exp-green-light">${(cappingData.target / 1000).toFixed(0)}K</span> Cap
             </p>
           </div>
           
