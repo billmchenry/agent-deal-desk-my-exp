@@ -1,5 +1,16 @@
-import { createContext, useContext, useState, ReactNode, useCallback, useMemo } from "react";
+import { createContext, useContext, useState, ReactNode, useCallback, useMemo, useEffect } from "react";
 import { DashboardWidget, DashboardTemplate, DEFAULT_LAYOUT, WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+
+interface StoredWidgets {
+  widgets: DashboardWidget[];
+  lastUpdated: string;
+}
+
+interface StoredTemplates {
+  templates: DashboardTemplate[];
+  activeTemplateId: string | null;
+}
 
 interface DashboardContextType {
   // Widget state
@@ -22,23 +33,67 @@ interface DashboardContextType {
   loadTemplate: (templateId: string) => void;
   deleteTemplate: (templateId: string) => void;
   resetToDefault: () => void;
+
+  // Data refresh
+  lastSynced: Date;
+  isRefreshing: boolean;
+  refreshData: () => Promise<void>;
 }
 
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
+const DEFAULT_TEMPLATES: DashboardTemplate[] = [
+  {
+    id: 'default',
+    name: 'Default Layout',
+    widgets: DEFAULT_LAYOUT,
+    createdAt: new Date(),
+    isDefault: true,
+  },
+];
+
 export function DashboardProvider({ children }: { children: ReactNode }) {
-  const [widgets, setWidgets] = useState<DashboardWidget[]>(DEFAULT_LAYOUT);
+  // localStorage persistence
+  const [storedWidgets, setStoredWidgets] = useLocalStorage<StoredWidgets | null>(
+    'dashboard-widgets',
+    null
+  );
+  const [storedTemplates, setStoredTemplates] = useLocalStorage<StoredTemplates | null>(
+    'dashboard-templates',
+    null
+  );
+
+  // Initialize state from localStorage or defaults
+  const [widgets, setWidgets] = useState<DashboardWidget[]>(() => 
+    storedWidgets?.widgets ?? DEFAULT_LAYOUT
+  );
   const [isEditMode, setIsEditMode] = useState(false);
-  const [templates, setTemplates] = useState<DashboardTemplate[]>([
-    {
-      id: 'default',
-      name: 'Default Layout',
-      widgets: DEFAULT_LAYOUT,
-      createdAt: new Date(),
-      isDefault: true,
-    },
-  ]);
-  const [activeTemplateId, setActiveTemplateId] = useState<string | null>('default');
+  const [templates, setTemplates] = useState<DashboardTemplate[]>(() => 
+    storedTemplates?.templates ?? DEFAULT_TEMPLATES
+  );
+  const [activeTemplateId, setActiveTemplateId] = useState<string | null>(() => 
+    storedTemplates?.activeTemplateId ?? 'default'
+  );
+
+  // Data refresh state
+  const [lastSynced, setLastSynced] = useState<Date>(new Date());
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Persist widgets to localStorage whenever they change
+  useEffect(() => {
+    setStoredWidgets({
+      widgets,
+      lastUpdated: new Date().toISOString(),
+    });
+  }, [widgets, setStoredWidgets]);
+
+  // Persist templates to localStorage whenever they change
+  useEffect(() => {
+    setStoredTemplates({
+      templates,
+      activeTemplateId,
+    });
+  }, [templates, activeTemplateId, setStoredTemplates]);
 
   const addWidget = useCallback((type: WidgetType, customTitle?: string, content?: string) => {
     const registry = WIDGET_REGISTRY[type];
@@ -111,6 +166,14 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     setActiveTemplateId('default');
   }, []);
 
+  const refreshData = useCallback(async () => {
+    setIsRefreshing(true);
+    // Simulate data refresh (in real app, this would fetch from API)
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setLastSynced(new Date());
+    setIsRefreshing(false);
+  }, []);
+
   const value = useMemo(() => ({
     widgets,
     isEditMode,
@@ -125,6 +188,9 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     loadTemplate,
     deleteTemplate,
     resetToDefault,
+    lastSynced,
+    isRefreshing,
+    refreshData,
   }), [
     widgets,
     isEditMode,
@@ -139,6 +205,9 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     loadTemplate,
     deleteTemplate,
     resetToDefault,
+    lastSynced,
+    isRefreshing,
+    refreshData,
   ]);
 
   return (
