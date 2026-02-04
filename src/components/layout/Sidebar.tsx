@@ -66,11 +66,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] w-64 transform bg-sidebar transition-transform duration-200 ease-in-out lg:translate-x-0",
+          "fixed left-0 top-0 z-40 h-screen w-64 transform bg-sidebar transition-transform duration-200 ease-in-out lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <nav className="flex h-full flex-col overflow-y-auto py-4">
+        <nav className="flex h-full flex-col overflow-y-auto pt-20 pb-4">
           {/* Home Link */}
           <a
             href="/"
