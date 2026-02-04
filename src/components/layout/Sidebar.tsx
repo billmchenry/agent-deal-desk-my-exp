@@ -70,7 +70,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <nav className="flex h-full flex-col overflow-y-auto pt-20 pb-4">
+        {/* Sidebar Header with Logo */}
+        <div className="flex h-16 items-center gap-1 px-5 border-b border-sidebar-border">
+          <span className="text-xl font-bold leading-none text-white">MY</span>
+          <span className="text-xl leading-none text-sidebar-foreground/60">|</span>
+          <span className="text-xl font-bold leading-none text-exp-blue">eXp</span>
+        </div>
+
+        <nav className="flex h-full flex-col overflow-y-auto py-4">
           {/* Home Link */}
           <a
             href="/"

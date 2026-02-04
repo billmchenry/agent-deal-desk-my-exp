@@ -33,15 +33,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         >
           <Menu className="h-5 w-5" />
         </Button>
-        
-        {/* Logo */}
-        <div className="flex items-center gap-1">
-          <span className="text-xl font-bold leading-none text-exp-navy">MY</span>
-          <span className="text-xl leading-none text-muted-foreground">|</span>
-          <span className="text-xl font-bold leading-none text-exp-blue">eXp</span>
-        </div>
-        
-        {/* Welcome Message - Hidden on mobile */}
+        {/* Welcome Message */}
         <span className="hidden md:inline text-sm text-muted-foreground">
           Welcome, <span className="font-medium text-foreground">{currentUser.name}</span>
         </span>
