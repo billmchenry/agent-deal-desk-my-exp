@@ -33,10 +33,6 @@ export function Header({ onMenuClick }: HeaderProps) {
         >
           <Menu className="h-5 w-5" />
         </Button>
-        {/* Welcome Message */}
-        <span className="hidden md:inline text-sm text-muted-foreground">
-          Welcome, <span className="font-medium text-foreground">{currentUser.name}</span>
-        </span>
       </div>
 
       {/* Right Section */}
