@@ -1,58 +1,38 @@
 
-# Simplify Dashboard Toolbar
 
-## Problem
-The current toolbar in edit mode shows too many elements:
-- Done button
-- Reset to Default button
-- Create Widgets dropdown
-- "Synced 6 min ago" text
-- "Drag widgets to reorder • Hover to delete" text
+## Silent Pre-built Widget Addition
 
-This creates visual overload and takes up too much horizontal space.
+Making pre-built widgets add silently with just a toast notification, keeping the Mira chat for conversational AI insights only.
 
-## Solution
+---
 
-### Simplified Layout
+### What Will Change
 
-**Normal Mode:**
-```
-[Customize]  [✨ Create Widgets ▼]  ↻ 2 min ago
-```
+When you select a pre-built widget (Revenue Forecast, Listing Velocity, etc.) from the "Create Widgets" dropdown:
+- **Current**: Widget is added AND Mira sidebar opens with a contextual message
+- **After**: Widget is added with a simple toast confirmation, Mira stays closed
 
-**Edit Mode:**
-```
-[✓ Done]  [↺]  [✨ Create Widgets ▼]
-          └── Reset icon only (tooltip: "Reset to Default")
-```
+The "Ask Mira for Insights" option will continue to open the Mira chat as expected.
 
-### Key Changes
+---
 
-| Current | Proposed |
-|---------|----------|
-| Full "Reset to Default" button | Icon-only button with tooltip |
-| "Synced X ago" always visible | Hidden during edit mode |
-| Helper text inline in toolbar | Moved below toolbar or removed |
-
-### Technical Changes
+### Technical Details
 
 **File: `src/components/dashboard/DashboardToolbar.tsx`**
 
-1. **Reset button becomes icon-only** - Use just the `RotateCcw` icon with a Tooltip wrapper
-2. **Hide sync timestamp in edit mode** - Only show when not editing
-3. **Remove inline helper text** - Move hint to a subtle subtitle or remove entirely (the drag handles are intuitive enough)
+1. Remove the `WIDGET_MIRA_CONFIG` object (lines 24-58) - no longer needed since we won't be sending contextual messages
 
-### Visual Result
+2. Remove `openChatWithMessage` from the `useMiraChat` destructure (line 89) - only `openChat` is needed for "Ask Mira"
 
-Normal mode - clean and minimal:
-```
-[Customize]  [✨ Create Widgets ▼]  ↻ 2m
-```
+3. Simplify the pre-built widget click handler (lines 195-209) to just:
+   ```typescript
+   onClick={() => {
+     addWidget(type as WidgetType);
+     toast.success(`${config.title} added`);
+   }}
+   ```
 
-Edit mode - focused on actions:
-```
-[✓ Done]  [↺]  [✨ Create Widgets ▼]
-```
-
-The helper text "Drag widgets to reorder • Hover to delete" will be removed from the toolbar entirely - the UI affordances (drag handles, delete buttons on hover) are self-explanatory.
+This removes approximately 40 lines of code and creates a cleaner separation between:
+- **Pre-built shortcuts**: Quick add with toast feedback
+- **Ask Mira**: Conversational AI experience
 
