@@ -1,138 +1,188 @@
 
-# Inline History Drawer for Mira Chat
+# Dashboard Header and Widget Behavior Refinements
 
-Replace the History button's navigation behavior with a mobile-friendly bottom sheet that shows conversation history without leaving the chat panel.
-
----
-
-## Why Bottom Sheet is the Best Choice
-
-| Approach | Mobile UX Score | Reasoning |
-|----------|-----------------|-----------|
-| Navigate to /mira/history | Poor | Breaks context, loses current conversation state |
-| Dropdown menu | Okay | Limited space, small tap targets, awkward on mobile |
-| Inline list (replace messages) | Okay | Mode switching can confuse users |
-| **Bottom Sheet (Drawer)** | **Excellent** | Native mobile pattern, thumb-friendly, maintains context |
+## Overview
+This plan covers four enhancements to improve the dashboard user experience:
+1. Add a "Last Synced" timestamp that updates automatically
+2. Show a "Reset to Default" button when in Customize mode
+3. Persist widget positions across page refreshes using localStorage
+4. Add skeleton loaders for GCI and Volume stats during data updates
 
 ---
 
-## Implementation Plan
+## 1. Last Synced Timestamp
 
-### 1. Add History Drawer State to ChatPanel
+Add a subtle timestamp next to the toolbar buttons showing when data was last synced.
 
-Add a new state variable to control the drawer visibility:
+**Location:** After the "Create Widgets" button in the toolbar
 
+**Behavior:**
+- Displays relative time (e.g., "Synced 2 min ago")
+- Updates every 30 seconds automatically
+- Clicking it triggers a manual data refresh
+- Shows a brief loading spinner during refresh
+
+**Visual Design:**
+```
+[Customize] [Create Widgets ▼] • Synced 2 min ago [Templates ▼]
+```
+
+---
+
+## 2. Reset to Default Button in Edit Mode
+
+When "Customize" is active (edit mode), display a "Reset to Default" button inline for quick access.
+
+**Current behavior:** Reset is buried in Templates dropdown
+**New behavior:** When `isEditMode === true`, show the reset button directly in the toolbar
+
+**Visual:**
+```
+Edit mode OFF:  [Customize] [Create Widgets ▼] ...
+Edit mode ON:   [Done ✓] [Reset to Default ↺] [Create Widgets ▼] ...
+```
+
+---
+
+## 3. Persist Widget Layout with localStorage
+
+Save widget positions to localStorage so they survive page refreshes.
+
+**Implementation:**
+- Create a custom `useLocalStorage` hook
+- Store `widgets` array under key `dashboard-widgets`
+- Store `templates` under key `dashboard-templates`
+- Load from localStorage on initial mount
+- Save to localStorage whenever widgets or templates change
+
+**Data Structure:**
 ```typescript
-const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-```
+// localStorage key: "dashboard-widgets"
+{
+  widgets: DashboardWidget[],
+  lastUpdated: string // ISO timestamp
+}
 
-### 2. Create Inline History List Component
-
-Build a simplified conversation list optimized for the drawer context:
-- Compact conversation items (not full cards)
-- Shows title, timestamp, and message count
-- Tap to load conversation and close drawer
-- Swipe to delete (optional enhancement)
-
-### 3. Wire History Button to Open Drawer
-
-Change the History button's `onClick` from navigating to `/mira/history` to opening the drawer:
-
-```typescript
-onClick={() => setIsHistoryOpen(true)}
-```
-
-### 4. Implement the Drawer UI
-
-Use the existing `vaul` Drawer component:
-
-```text
-+----------------------------------+
-|           [Drag Handle]          |
-|  Chat History              [X]   |
-+----------------------------------+
-|  [Search conversations...]       |
-+----------------------------------+
-|                                  |
-|  "Show me my GCI trends"         |
-|  2 minutes ago · 3 messages      |
-|  --------------------------------|
-|  "Listing velocity help"         |
-|  Yesterday · 5 messages          |
-|  --------------------------------|
-|  "Pipeline overview"             |
-|  2 days ago · 4 messages         |
-|                                  |
-+----------------------------------+
-|  [View All History →]            |  <- Links to full /mira/history page
-+----------------------------------+
+// localStorage key: "dashboard-templates"
+{
+  templates: DashboardTemplate[],
+  activeTemplateId: string | null
+}
 ```
 
 ---
 
-## Technical Details
+## 4. Skeleton Loaders for Stats
 
-### File Changes
+Add loading states to GCI and Volume stat cards so they don't shift layout during updates.
+
+**Changes to StatsRow.tsx:**
+- Accept optional `isLoading` prop
+- When loading, show Skeleton components for the value text
+- Keep icon and label visible (only value becomes skeleton)
+- Fixed height on value container to prevent layout shift
+
+**Visual:**
+```
+Normal:   [💰]  $2.67K        Loading:  [💰]  ░░░░░░░
+          Gross Commission             Gross Commission
+```
+
+---
+
+## Technical Implementation
+
+### Files to Create
+
+| File | Purpose |
+|------|---------|
+| `src/hooks/use-local-storage.ts` | Custom hook for localStorage with React state sync |
+
+### Files to Modify
 
 | File | Changes |
 |------|---------|
-| `ChatPanel.tsx` | Add drawer state, replace navigation with drawer open, add Drawer component with conversation list |
-
-### Component Structure
-
-```text
-ChatPanel
-├── SheetContent
-│   ├── SheetHeader (with History button)
-│   ├── ScrollArea (messages)
-│   ├── Suggestion Chips
-│   └── Input Area
-└── Drawer (NEW - for history)
-    ├── DrawerContent
-    │   ├── DrawerHeader ("Chat History")
-    │   ├── Search Input (optional)
-    │   ├── Conversation List
-    │   └── "View All" Link
-    └── DrawerClose
-```
-
-### Conversation List Item (Simplified)
-
-Each item in the drawer shows:
-- Conversation title (truncated)
-- Relative timestamp ("2 min ago", "Yesterday")
-- Message count
-- Tap action: load conversation + close drawer
-
-### Mobile Responsiveness
-
-- Drawer uses `snap-points` for predictable heights (50% or 85% of viewport)
-- List items have minimum 44px touch targets (Apple HIG recommendation)
-- Horizontal swipe gestures preserved for closing
-- Search input uses `type="search"` for mobile keyboard optimization
+| `src/contexts/DashboardContext.tsx` | Add `lastSynced`, `isRefreshing`, `refreshData` state; integrate localStorage persistence |
+| `src/components/dashboard/DashboardToolbar.tsx` | Add Last Synced display, Reset button in edit mode, refresh trigger |
+| `src/components/dashboard/StatsRow.tsx` | Add `isLoading` prop and Skeleton loader for GCI/Volume values |
 
 ---
 
-## User Flow
+## Context Changes (DashboardContext.tsx)
 
-1. User taps History icon in chat header
-2. Drawer slides up from bottom (50% height default)
-3. User sees recent conversations in a scrollable list
-4. User taps a conversation → it loads into chat, drawer closes
-5. Alternatively, user taps "View All History" → navigates to full history page
-6. User can swipe down or tap outside to dismiss drawer
+New state and functions:
+```typescript
+interface DashboardContextType {
+  // ... existing
+  
+  // Data refresh
+  lastSynced: Date;
+  isRefreshing: boolean;
+  refreshData: () => Promise<void>;
+}
+```
+
+**localStorage initialization:**
+- On mount, check localStorage for saved widgets
+- If found, use saved widgets instead of DEFAULT_LAYOUT
+- On any widget change, save to localStorage
 
 ---
 
-## Visual Comparison
+## Toolbar Layout (DashboardToolbar.tsx)
 
-**Current (navigates away):**
-```text
-[Tap History] → Navigate to /mira/history → Full page → Back button → Lost context
+**Edit Mode OFF:**
+```
+[Customize] [Create Widgets ▼] • Synced 2 min ago [Templates ▼]
 ```
 
-**Proposed (inline drawer):**
-```text
-[Tap History] → Drawer slides up → Tap conversation → Drawer closes → Chat updates
+**Edit Mode ON:**
+```
+[Done ✓] [Reset to Default ↺] [Create Widgets ▼] [Templates ▼]
 ```
 
+The Last Synced timestamp is:
+- Styled as muted text with a small clock or refresh icon
+- Clickable to trigger manual refresh
+- Hidden on very small mobile screens (shows only icon)
+
+---
+
+## StatsRow Loading State
+
+Add loading prop that triggers skeleton display:
+
+```tsx
+function StatCard({ icon, value, label, color, isLoading }: StatCardProps) {
+  return (
+    <Card>
+      <CardContent className="p-4">
+        <div className="flex items-start justify-between">
+          <div className={`rounded-lg p-2.5 ${colors.bg}`}>
+            <div className={colors.icon}>{icon}</div>
+          </div>
+          {isLoading ? (
+            <Skeleton className="h-8 w-20" />
+          ) : (
+            <span className="text-2xl font-bold">{value}</span>
+          )}
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">{label}</p>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+---
+
+## Summary
+
+| Feature | Implementation |
+|---------|----------------|
+| Last Synced | New timestamp display in toolbar, auto-updates every 30s |
+| Reset Button | Conditionally shown when `isEditMode` is true |
+| Persistence | localStorage hook syncs widgets and templates |
+| Skeleton Loaders | Loading state prop on StatsRow with fixed-height skeletons |
+
+This approach keeps all changes contained to a few files while adding meaningful UX improvements without disrupting the existing widget architecture.
