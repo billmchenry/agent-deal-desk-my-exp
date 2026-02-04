@@ -20,42 +20,6 @@ import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-// Widget-specific Mira messages and chart types
-const WIDGET_MIRA_CONFIG: Record<string, { message: string; chartType?: 'forecast' | 'velocity' | 'pipeline'; chartTitle?: string }> = {
-  'forecast': {
-    message: "I've added your Revenue Forecast. Want to see this by month or by quarter?",
-    chartType: 'forecast',
-    chartTitle: 'Monthly GCI Trend',
-  },
-  'velocity': {
-    message: "I've added Listing Velocity to your dashboard. Would you like me to break this down by property type or neighborhood?",
-    chartType: 'velocity',
-    chartTitle: 'Listing Velocity',
-  },
-  'pipeline': {
-    message: "I've added your Active Pipeline widget. Want me to show pending vs. active escrows, or filter by price range?",
-    chartType: 'pipeline',
-    chartTitle: 'Active Pipeline',
-  },
-  'hero-banner': {
-    message: "I've added your Capping Progress tracker. Need help understanding your path to cap?",
-  },
-  'stats-row': {
-    message: "I've added your Key Stats. Want me to explain any of these metrics in detail?",
-  },
-  'action-center': {
-    message: "I've added the Action Center. Would you like tips on improving your influencer status?",
-  },
-  'promo-carousel': {
-    message: "I've added Promotions to your dashboard. Any specific programs you'd like to learn more about?",
-  },
-  'news-training': {
-    message: "I've added News & Training. Want me to recommend training based on your goals?",
-  },
-  'connect-upline': {
-    message: "I've added Connect Upline. Need help reaching out to any of your upline partners?",
-  },
-};
 
 function formatRelativeTime(date: Date): string {
   const now = new Date();
@@ -86,7 +50,7 @@ export function DashboardToolbar() {
     isRefreshing,
     refreshData,
   } = useDashboard();
-  const { openChat, openChatWithMessage } = useMiraChat();
+  const { openChat } = useMiraChat();
 
   const [relativeTime, setRelativeTime] = useState(() => formatRelativeTime(lastSynced));
 
@@ -193,20 +157,8 @@ export function DashboardToolbar() {
               <DropdownMenuItem
                 key={type}
                 onClick={() => {
-                  const widgetId = addWidget(type as WidgetType);
+                  addWidget(type as WidgetType);
                   toast.success(`${config.title} added`);
-                  
-                  // Open Mira with contextual message and widget preview if applicable
-                  const miraConfig = WIDGET_MIRA_CONFIG[type];
-                  if (miraConfig) {
-                    const widgetInfo = miraConfig.chartType && widgetId ? {
-                      type: miraConfig.chartType,
-                      id: widgetId,
-                      title: miraConfig.chartTitle || config.title,
-                    } : undefined;
-                    
-                    openChatWithMessage(miraConfig.message, widgetInfo);
-                  }
                 }}
               >
                 <div>
