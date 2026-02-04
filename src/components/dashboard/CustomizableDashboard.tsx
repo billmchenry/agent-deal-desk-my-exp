@@ -20,8 +20,6 @@ import { WidgetRenderer } from "./WidgetRenderer";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
-import { useCallback } from "react";
 
 // Widget-specific removal messages
 const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
@@ -38,19 +36,8 @@ const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
 };
 
 export function CustomizableDashboard() {
-  const { widgets, isEditMode, removeWidget, reorderWidgets, getWidgetById } = useDashboard();
-  const { openChat, openChatWithMessage } = useMiraChat();
-
-  // Handle widget removal with Mira notification
-  const handleRemoveWidget = useCallback((id: string) => {
-    const widget = getWidgetById(id);
-    removeWidget(id);
-    
-    if (widget) {
-      const message = WIDGET_REMOVAL_MESSAGES[widget.type] || "I've removed that widget. Let me know if you need anything else!";
-      openChatWithMessage(message);
-    }
-  }, [getWidgetById, removeWidget, openChatWithMessage]);
+  const { widgets, isEditMode, removeWidget, reorderWidgets } = useDashboard();
+  const { openChat } = useMiraChat();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -99,7 +86,7 @@ export function CustomizableDashboard() {
                   key={widget.id}
                   widget={widget}
                   isEditMode={isEditMode}
-                  onRemove={handleRemoveWidget}
+                  onRemove={removeWidget}
                 >
                   <WidgetRenderer widget={widget} />
                 </DraggableWidget>
@@ -136,7 +123,7 @@ export function CustomizableDashboard() {
                   key={widget.id}
                   widget={widget}
                   isEditMode={isEditMode}
-                  onRemove={handleRemoveWidget}
+                  onRemove={removeWidget}
                 >
                   <WidgetRenderer widget={widget} />
                 </DraggableWidget>
