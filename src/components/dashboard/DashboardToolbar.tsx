@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Edit, Save, Plus, RotateCcw, LayoutTemplate, Check, X, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Edit, Save, RotateCcw, LayoutTemplate, Check, Sparkles, RefreshCw, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +21,25 @@ import { useDashboard } from "@/contexts/DashboardContext";
 import { useMiraChat } from "@/contexts/MiraChatContext";
 import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+
+function formatRelativeTime(date: Date): string {
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+
+  if (diffSeconds < 60) {
+    return "Just now";
+  } else if (diffMinutes < 60) {
+    return `${diffMinutes} min ago`;
+  } else if (diffHours < 24) {
+    return `${diffHours}h ago`;
+  } else {
+    return date.toLocaleDateString();
+  }
+}
 
 export function DashboardToolbar() {
   const {
@@ -33,12 +52,27 @@ export function DashboardToolbar() {
     saveAsTemplate,
     loadTemplate,
     resetToDefault,
+    lastSynced,
+    isRefreshing,
+    refreshData,
   } = useDashboard();
 
   const { openChat } = useMiraChat();
 
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [templateName, setTemplateName] = useState("");
+  const [relativeTime, setRelativeTime] = useState(() => formatRelativeTime(lastSynced));
+
+  // Update relative time every 30 seconds
+  useEffect(() => {
+    setRelativeTime(formatRelativeTime(lastSynced));
+    
+    const interval = setInterval(() => {
+      setRelativeTime(formatRelativeTime(lastSynced));
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [lastSynced]);
 
   const handleSaveTemplate = () => {
     if (templateName.trim()) {
@@ -57,6 +91,11 @@ export function DashboardToolbar() {
   const handleReset = () => {
     resetToDefault();
     toast.success("Reset to default layout");
+  };
+
+  const handleRefresh = async () => {
+    await refreshData();
+    toast.success("Data refreshed");
   };
 
   const handleAskMira = () => {
@@ -92,6 +131,20 @@ export function DashboardToolbar() {
             </>
           )}
         </Button>
+
+        {/* Reset to Default - Only shown in edit mode */}
+        {isEditMode && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleReset}
+            className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9"
+          >
+            <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Reset to Default</span>
+            <span className="sm:hidden">Reset</span>
+          </Button>
+        )}
 
         {/* Create Widgets with Mira */}
         <DropdownMenu>
@@ -136,6 +189,20 @@ export function DashboardToolbar() {
             )}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Last Synced Timestamp */}
+        <button
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          className={cn(
+            "flex items-center gap-1.5 px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50",
+            isRefreshing && "opacity-50 cursor-not-allowed"
+          )}
+        >
+          <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin")} />
+          <span className="hidden sm:inline">Synced {relativeTime}</span>
+          <Clock className="h-3 w-3 sm:hidden" />
+        </button>
 
         {/* Templates - Hidden on very small screens */}
         <DropdownMenu>
