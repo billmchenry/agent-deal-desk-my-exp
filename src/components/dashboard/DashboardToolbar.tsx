@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Edit, Save, RotateCcw, LayoutTemplate, Check, Sparkles, RefreshCw, Clock } from "lucide-react";
+import { Edit, RotateCcw, Check, Sparkles, RefreshCw, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,14 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { useDashboard } from "@/contexts/DashboardContext";
 import { useMiraChat } from "@/contexts/MiraChatContext";
 import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
@@ -47,10 +38,6 @@ export function DashboardToolbar() {
     toggleEditMode,
     addWidget,
     isWidgetPinned,
-    templates,
-    activeTemplateId,
-    saveAsTemplate,
-    loadTemplate,
     resetToDefault,
     lastSynced,
     isRefreshing,
@@ -59,8 +46,6 @@ export function DashboardToolbar() {
 
   const { openChat } = useMiraChat();
 
-  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
-  const [templateName, setTemplateName] = useState("");
   const [relativeTime, setRelativeTime] = useState(() => formatRelativeTime(lastSynced));
 
   // Update relative time every 30 seconds
@@ -73,20 +58,6 @@ export function DashboardToolbar() {
 
     return () => clearInterval(interval);
   }, [lastSynced]);
-
-  const handleSaveTemplate = () => {
-    if (templateName.trim()) {
-      saveAsTemplate(templateName.trim());
-      toast.success(`Template "${templateName}" saved`);
-      setTemplateName("");
-      setSaveDialogOpen(false);
-    }
-  };
-
-  const handleLoadTemplate = (templateId: string) => {
-    loadTemplate(templateId);
-    toast.success("Layout loaded");
-  };
 
   const handleReset = () => {
     resetToDefault();
@@ -108,161 +79,100 @@ export function DashboardToolbar() {
   );
 
   return (
-    <>
-      <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-        {/* Edit Mode Toggle */}
+    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+      {/* Edit Mode Toggle */}
+      <Button
+        variant={isEditMode ? "default" : "outline"}
+        size="sm"
+        onClick={toggleEditMode}
+        className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9"
+      >
+        {isEditMode ? (
+          <>
+            <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden xs:inline">Done</span>
+            <span className="xs:hidden">Done</span>
+          </>
+        ) : (
+          <>
+            <Edit className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Customize</span>
+            <span className="sm:hidden">Edit</span>
+          </>
+        )}
+      </Button>
+
+      {/* Reset to Default - Only shown in edit mode */}
+      {isEditMode && (
         <Button
-          variant={isEditMode ? "default" : "outline"}
+          variant="outline"
           size="sm"
-          onClick={toggleEditMode}
+          onClick={handleReset}
           className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9"
         >
-          {isEditMode ? (
-            <>
-              <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span className="hidden xs:inline">Done</span>
-              <span className="xs:hidden">Done</span>
-            </>
-          ) : (
-            <>
-              <Edit className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span className="hidden sm:inline">Customize</span>
-              <span className="sm:hidden">Edit</span>
-            </>
-          )}
+          <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="hidden sm:inline">Reset to Default</span>
+          <span className="sm:hidden">Reset</span>
         </Button>
+      )}
 
-        {/* Reset to Default - Only shown in edit mode */}
-        {isEditMode && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleReset}
-            className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9"
-          >
-            <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Reset to Default</span>
-            <span className="sm:hidden">Reset</span>
+      {/* Create Widgets with Mira */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9">
+            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Create Widgets</span>
+            <span className="sm:hidden">Create</span>
           </Button>
-        )}
-
-        {/* Create Widgets with Mira */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9">
-              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span className="hidden sm:inline">Create Widgets</span>
-              <span className="sm:hidden">Create</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
-            {/* Ask Mira Option - Primary */}
-            <DropdownMenuItem
-              onClick={handleAskMira}
-              className="bg-primary/5 text-primary focus:bg-primary/10 focus:text-primary"
-            >
-              <Sparkles className="h-4 w-4 mr-2" />
-              <div>
-                <div className="font-medium text-sm">Ask Mira for Insights</div>
-                <div className="text-xs opacity-80">Create personalized AI widgets</div>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {/* Pre-built widgets */}
-            {availableWidgets.length === 0 ? (
-              <DropdownMenuItem disabled>All pre-built widgets added</DropdownMenuItem>
-            ) : (
-              availableWidgets.map(([type, config]) => (
-                <DropdownMenuItem
-                  key={type}
-                  onClick={() => {
-                    addWidget(type as WidgetType);
-                    toast.success(`${config.title} added`);
-                  }}
-                >
-                  <div>
-                    <div className="font-medium text-sm">{config.title}</div>
-                    <div className="text-xs text-muted-foreground">{config.description}</div>
-                  </div>
-                </DropdownMenuItem>
-              ))
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        {/* Last Synced Timestamp */}
-        <button
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className={cn(
-            "flex items-center gap-1.5 px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50",
-            isRefreshing && "opacity-50 cursor-not-allowed"
-          )}
-        >
-          <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin")} />
-          <span className="hidden sm:inline">Synced {relativeTime}</span>
-          <Clock className="h-3 w-3 sm:hidden" />
-        </button>
-
-        {/* Templates - Hidden on very small screens */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 hidden xs:flex">
-              <LayoutTemplate className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span className="hidden sm:inline">Templates</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-48">
-            {templates.map((template) => (
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-56">
+          {/* Ask Mira Option - Primary */}
+          <DropdownMenuItem
+            onClick={handleAskMira}
+            className="bg-primary/5 text-primary focus:bg-primary/10 focus:text-primary"
+          >
+            <Sparkles className="h-4 w-4 mr-2" />
+            <div>
+              <div className="font-medium text-sm">Ask Mira for Insights</div>
+              <div className="text-xs opacity-80">Create personalized AI widgets</div>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {/* Pre-built widgets */}
+          {availableWidgets.length === 0 ? (
+            <DropdownMenuItem disabled>All pre-built widgets added</DropdownMenuItem>
+          ) : (
+            availableWidgets.map(([type, config]) => (
               <DropdownMenuItem
-                key={template.id}
-                onClick={() => handleLoadTemplate(template.id)}
-                className="flex items-center justify-between"
+                key={type}
+                onClick={() => {
+                  addWidget(type as WidgetType);
+                  toast.success(`${config.title} added`);
+                }}
               >
-                <span>{template.name}</span>
-                {template.id === activeTemplateId && (
-                  <Check className="h-4 w-4 text-primary" />
-                )}
+                <div>
+                  <div className="font-medium text-sm">{config.title}</div>
+                  <div className="text-xs text-muted-foreground">{config.description}</div>
+                </div>
               </DropdownMenuItem>
-            ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setSaveDialogOpen(true)}>
-              <Save className="h-4 w-4 mr-2" />
-              Save Current Layout
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleReset}>
-              <RotateCcw className="h-4 w-4 mr-2" />
-              Reset to Default
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+            ))
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
-      {/* Save Template Dialog */}
-      <Dialog open={saveDialogOpen} onOpenChange={setSaveDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Save Layout Template</DialogTitle>
-            <DialogDescription>
-              Give your custom layout a name to save it for later use.
-            </DialogDescription>
-          </DialogHeader>
-          <Input
-            placeholder="Template name"
-            value={templateName}
-            onChange={(e) => setTemplateName(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSaveTemplate()}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setSaveDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSaveTemplate} disabled={!templateName.trim()}>
-              Save Template
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+      {/* Last Synced Timestamp */}
+      <button
+        onClick={handleRefresh}
+        disabled={isRefreshing}
+        className={cn(
+          "flex items-center gap-1.5 px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50",
+          isRefreshing && "opacity-50 cursor-not-allowed"
+        )}
+      >
+        <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin")} />
+        <span className="hidden sm:inline">Synced {relativeTime}</span>
+        <Clock className="h-3 w-3 sm:hidden" />
+      </button>
+    </div>
   );
 }

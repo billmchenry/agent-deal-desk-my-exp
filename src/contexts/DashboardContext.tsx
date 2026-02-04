@@ -1,15 +1,10 @@
 import { createContext, useContext, useState, ReactNode, useCallback, useMemo, useEffect, useRef } from "react";
-import { DashboardWidget, DashboardTemplate, DEFAULT_LAYOUT, WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
+import { DashboardWidget, DEFAULT_LAYOUT, WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
 interface StoredWidgets {
   widgets: DashboardWidget[];
   lastUpdated: string;
-}
-
-interface StoredTemplates {
-  templates: DashboardTemplate[];
-  activeTemplateId: string | null;
 }
 
 interface DashboardContextType {
@@ -26,12 +21,7 @@ interface DashboardContextType {
   // Edit mode
   toggleEditMode: () => void;
   
-  // Templates
-  templates: DashboardTemplate[];
-  activeTemplateId: string | null;
-  saveAsTemplate: (name: string) => void;
-  loadTemplate: (templateId: string) => void;
-  deleteTemplate: (templateId: string) => void;
+  // Reset
   resetToDefault: () => void;
 
   // Data refresh
@@ -43,24 +33,10 @@ interface DashboardContextType {
 // Context for dashboard state management
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
-const DEFAULT_TEMPLATES: DashboardTemplate[] = [
-  {
-    id: 'default',
-    name: 'Default Layout',
-    widgets: DEFAULT_LAYOUT,
-    createdAt: new Date(),
-    isDefault: true,
-  },
-];
-
 export function DashboardProvider({ children }: { children: ReactNode }) {
   // localStorage persistence
   const [storedWidgets, setStoredWidgets] = useLocalStorage<StoredWidgets | null>(
     'dashboard-widgets',
-    null
-  );
-  const [storedTemplates, setStoredTemplates] = useLocalStorage<StoredTemplates | null>(
-    'dashboard-templates',
     null
   );
 
@@ -69,12 +45,6 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     storedWidgets?.widgets ?? DEFAULT_LAYOUT
   );
   const [isEditMode, setIsEditMode] = useState(false);
-  const [templates, setTemplates] = useState<DashboardTemplate[]>(() => 
-    storedTemplates?.templates ?? DEFAULT_TEMPLATES
-  );
-  const [activeTemplateId, setActiveTemplateId] = useState<string | null>(() => 
-    storedTemplates?.activeTemplateId ?? 'default'
-  );
 
   // Data refresh state
   const [lastSynced, setLastSynced] = useState<Date>(new Date());
@@ -94,14 +64,6 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     });
   }, [widgets, setStoredWidgets]);
 
-  // Persist templates to localStorage whenever they change
-  useEffect(() => {
-    setStoredTemplates({
-      templates,
-      activeTemplateId,
-    });
-  }, [templates, activeTemplateId, setStoredTemplates]);
-
   const addWidget = useCallback((type: WidgetType, customTitle?: string, content?: string) => {
     const registry = WIDGET_REGISTRY[type];
     const newWidget: DashboardWidget = {
@@ -113,12 +75,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       content,
     };
     setWidgets(prev => [newWidget, ...prev]);
-    setActiveTemplateId(null); // Mark as modified
   }, []);
 
   const removeWidget = useCallback((id: string) => {
     setWidgets(prev => prev.filter(w => w.id !== id));
-    setActiveTemplateId(null);
   }, []);
 
   const reorderWidgets = useCallback((activeId: string, overId: string) => {
@@ -134,7 +94,6 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       
       return newWidgets;
     });
-    setActiveTemplateId(null);
   }, []);
 
   const isWidgetPinned = useCallback((type: WidgetType) => {
@@ -145,32 +104,8 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     setIsEditMode(prev => !prev);
   }, []);
 
-  const saveAsTemplate = useCallback((name: string) => {
-    const newTemplate: DashboardTemplate = {
-      id: `template-${Date.now()}`,
-      name,
-      widgets: [...widgets],
-      createdAt: new Date(),
-    };
-    setTemplates(prev => [...prev, newTemplate]);
-    setActiveTemplateId(newTemplate.id);
-  }, [widgets]);
-
-  const loadTemplate = useCallback((templateId: string) => {
-    const template = templates.find(t => t.id === templateId);
-    if (template) {
-      setWidgets([...template.widgets]);
-      setActiveTemplateId(templateId);
-    }
-  }, [templates]);
-
-  const deleteTemplate = useCallback((templateId: string) => {
-    setTemplates(prev => prev.filter(t => t.id !== templateId || t.isDefault));
-  }, []);
-
   const resetToDefault = useCallback(() => {
     setWidgets([...DEFAULT_LAYOUT]);
-    setActiveTemplateId('default');
   }, []);
 
   const refreshData = useCallback(async () => {
@@ -189,11 +124,6 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     reorderWidgets,
     isWidgetPinned,
     toggleEditMode,
-    templates,
-    activeTemplateId,
-    saveAsTemplate,
-    loadTemplate,
-    deleteTemplate,
     resetToDefault,
     lastSynced,
     isRefreshing,
@@ -206,11 +136,6 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     reorderWidgets,
     isWidgetPinned,
     toggleEditMode,
-    templates,
-    activeTemplateId,
-    saveAsTemplate,
-    loadTemplate,
-    deleteTemplate,
     resetToDefault,
     lastSynced,
     isRefreshing,

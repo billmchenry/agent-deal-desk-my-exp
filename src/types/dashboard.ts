@@ -20,13 +20,6 @@ export interface DashboardWidget {
   content?: string;
 }
 
-export interface DashboardTemplate {
-  id: string;
-  name: string;
-  widgets: DashboardWidget[];
-  createdAt: Date;
-  isDefault?: boolean;
-}
 
 export const WIDGET_REGISTRY: Record<WidgetType, { 
   title: string; 
