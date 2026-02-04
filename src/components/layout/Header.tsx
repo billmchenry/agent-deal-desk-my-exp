@@ -22,7 +22,7 @@ export function Header({ onMenuClick }: HeaderProps) {
     .join("");
 
   return (
-    <header className="fixed top-0 left-0 right-0 lg:left-0 z-50 flex h-16 items-center justify-between border-b bg-card px-4 lg:pl-[17rem] lg:pr-6">
+    <header className="fixed top-0 left-0 right-0 lg:left-64 z-40 flex h-16 items-center justify-between border-b bg-card px-4 lg:px-6">
       {/* Left Section */}
       <div className="flex items-center gap-4">
         <Button
