@@ -4,6 +4,7 @@ import { Conversation, ChatMessageData } from "@/types/chat";
 interface MiraChatContextType {
   isChatOpen: boolean;
   openChat: () => void;
+  openChatWithMessage: (message: string) => void;
   closeChat: () => void;
   toggleChat: () => void;
   // Conversation management
@@ -82,6 +83,28 @@ export function MiraChatProvider({ children }: { children: ReactNode }) {
   const [currentMessages, setCurrentMessages] = useState<ChatMessageData[]>([WELCOME_MESSAGE]);
 
   const openChat = () => setIsChatOpen(true);
+  
+  const openChatWithMessage = useCallback((message: string) => {
+    // Create a new AI message to show in the chat
+    const aiMessage: ChatMessageData = {
+      id: `mira-${Date.now()}`,
+      sender: 'ai',
+      content: message,
+      timestamp: new Date(),
+    };
+    
+    // Add to current messages (after welcome message)
+    setCurrentMessages(prev => {
+      // If only welcome message exists, add the new message
+      if (prev.length === 1 && prev[0].id === 'welcome') {
+        return [...prev, aiMessage];
+      }
+      // Otherwise append to existing conversation
+      return [...prev, aiMessage];
+    });
+    
+    setIsChatOpen(true);
+  }, []);
   const closeChat = useCallback(() => {
     setIsChatOpen(false);
     // Auto-save conversation when closing if there are user messages
@@ -157,7 +180,8 @@ export function MiraChatProvider({ children }: { children: ReactNode }) {
   return (
     <MiraChatContext.Provider value={{ 
       isChatOpen, 
-      openChat, 
+      openChat,
+      openChatWithMessage,
       closeChat, 
       toggleChat,
       conversations,
