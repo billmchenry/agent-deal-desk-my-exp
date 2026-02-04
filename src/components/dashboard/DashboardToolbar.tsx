@@ -8,6 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useDashboard } from "@/contexts/DashboardContext";
 import { useMiraChat } from "@/contexts/MiraChatContext";
 import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
@@ -102,18 +108,23 @@ export function DashboardToolbar() {
         )}
       </Button>
 
-      {/* Reset to Default - Only shown in edit mode */}
+      {/* Reset to Default - Icon only with tooltip, shown in edit mode */}
       {isEditMode && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleReset}
-          className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9"
-        >
-          <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          <span className="hidden sm:inline">Reset to Default</span>
-          <span className="sm:hidden">Reset</span>
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleReset}
+                className="h-8 w-8 sm:h-9 sm:w-9 p-0"
+              >
+                <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Reset to Default</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )}
 
       {/* Create Widgets with Mira */}
@@ -160,19 +171,21 @@ export function DashboardToolbar() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* Last Synced Timestamp */}
-      <button
-        onClick={handleRefresh}
-        disabled={isRefreshing}
-        className={cn(
-          "flex items-center gap-1.5 px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50",
-          isRefreshing && "opacity-50 cursor-not-allowed"
-        )}
-      >
-        <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin")} />
-        <span className="hidden sm:inline">Synced {relativeTime}</span>
-        <Clock className="h-3 w-3 sm:hidden" />
-      </button>
+      {/* Last Synced Timestamp - Hidden in edit mode */}
+      {!isEditMode && (
+        <button
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          className={cn(
+            "flex items-center gap-1.5 px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50",
+            isRefreshing && "opacity-50 cursor-not-allowed"
+          )}
+        >
+          <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin")} />
+          <span className="hidden sm:inline">Synced {relativeTime}</span>
+          <Clock className="h-3 w-3 sm:hidden" />
+        </button>
+      )}
     </div>
   );
 }
