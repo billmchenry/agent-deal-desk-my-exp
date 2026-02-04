@@ -20,7 +20,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Main Content */}
-      <main className="lg:ml-64 min-h-[calc(100vh-4rem)] p-4 lg:p-6 pb-24 max-w-full overflow-x-hidden">
+      <main className="lg:ml-64 pt-16 min-h-screen p-4 lg:p-6 pb-24 max-w-full overflow-x-hidden">
         {children}
       </main>
 
