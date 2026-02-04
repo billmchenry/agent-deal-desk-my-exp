@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, useCallback, useMemo, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode, useCallback, useMemo, useEffect, useRef } from "react";
 import { DashboardWidget, DashboardTemplate, DEFAULT_LAYOUT, WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 
@@ -40,6 +40,7 @@ interface DashboardContextType {
   refreshData: () => Promise<void>;
 }
 
+// Context for dashboard state management
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
 const DEFAULT_TEMPLATES: DashboardTemplate[] = [
@@ -79,8 +80,14 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   const [lastSynced, setLastSynced] = useState<Date>(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Persist widgets to localStorage whenever they change
+  // Persist widgets to localStorage whenever they change (skip initial mount)
+  const isInitialMount = useRef(true);
+  
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     setStoredWidgets({
       widgets,
       lastUpdated: new Date().toISOString(),
