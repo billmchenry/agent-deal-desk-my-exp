@@ -77,7 +77,6 @@ export function DashboardToolbar() {
 
   const handleAskMira = () => {
     openChat();
-    toast.info("Ask Mira for personalized insights you can pin!");
   };
 
   const availableWidgets = Object.entries(WIDGET_REGISTRY).filter(
