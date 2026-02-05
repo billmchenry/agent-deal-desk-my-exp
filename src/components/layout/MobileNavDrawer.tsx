@@ -16,6 +16,7 @@ import {
   ChevronRight,
   ChevronDown,
   X,
+  Store,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
@@ -39,6 +40,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   BookOpen,
   HelpCircle,
   Award,
+  Store,
 };
 
 interface MobileNavDrawerProps {
