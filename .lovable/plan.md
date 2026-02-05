@@ -1,93 +1,281 @@
 
 
-# Hover-Reveal Chevron Indicators for Sidebar
+# Mobile Navigation Drawer with Slide-to-View Hierarchy
 
 ## Overview
 
-Adding subtle chevron indicators that only appear when hovering over expandable menu items (Documents, RevShare Earnings). This provides the best of both worlds: a clean default state with discoverability on interaction.
+Transforming the mobile sidebar from a left-sliding panel into a modern bottom drawer with a slide-to-view hierarchy pattern. Tapping a section header reveals only that section's links, with a "Back" button to return to the main menu.
 
 ---
 
-## Visual Behavior
+## Visual Design
 
+### Main Menu View
 ```text
-Default State:                    On Hover:
-+------------------------+        +------------------------+
-|  📄 Documents          |   -->  |  📄 Documents        ▶ |
-+------------------------+        +------------------------+
++----------------------------------------+
+|  [X]              MY | eXp             |
++----------------------------------------+
+|                                        |
+|  +----------------------------------+  |
+|  | [Home Icon]        Home         >|  | <- 44px min-height
+|  +----------------------------------+  |
+|  | [Dashboard]   Agent Performance >|  |
+|  +----------------------------------+  |
+|  | [Docs Icon]      Documents      >|  | <- Has submenu
+|  +----------------------------------+  |
+|  | [Calendar]    Events Calendar   >|  |
+|  +----------------------------------+  |
+|                                        |
+|  BUSINESS & GROWTH                     |
+|  +----------------------------------+  |
+|  | [Users]            Team         >|  |
+|  +----------------------------------+  |
+|  | [$]        RevShare Earnings    >|  | <- Has submenu
+|  +----------------------------------+  |
+|  | [Award]       ICON Program      >|  |
+|  +----------------------------------+  |
+|  ...                                   |
++----------------------------------------+
+```
 
-Expanded State (with hover):
-+------------------------+
-|  📄 Documents        ▼ |  <-- Chevron rotates down
-|     All Documents      |
-|     Templates          |
-+------------------------+
+### Section Detail View (after tapping "Documents")
+```text
++----------------------------------------+
+|  [< Back]         Documents            |
++----------------------------------------+
+|                                        |
+|  +----------------------------------+  |
+|  |           All Documents          |  | <- 44px min-height
+|  +----------------------------------+  |
+|  |             Templates            |  |
+|  +----------------------------------+  |
+|                                        |
++----------------------------------------+
+```
+
+---
+
+## Technical Approach
+
+### Component Architecture
+
+**New Components:**
+1. `MobileNavDrawer.tsx` - The main drawer component using vaul's Drawer
+2. `MobileNavContent.tsx` - Shared content with slide-to-view logic
+
+### State Management
+
+```tsx
+// State for slide-to-view hierarchy
+const [activeSection, setActiveSection] = useState<{
+  key: string;
+  label: string;
+  items: SidebarNavItem[];
+} | null>(null);
+```
+
+### Slide Animation Pattern
+
+Using the same translateX pattern already established in ChatPanel.tsx:
+
+```tsx
+<div 
+  className="flex w-[200%] h-full transition-transform duration-300 ease-out"
+  style={{ transform: activeSection ? 'translateX(-50%)' : 'translateX(0)' }}
+>
+  {/* Main Categories View */}
+  <div className="w-1/2">...</div>
+  
+  {/* Section Detail View */}
+  <div className="w-1/2">...</div>
+</div>
 ```
 
 ---
 
 ## Implementation Details
 
-### File: `src/components/layout/Sidebar.tsx`
+### File Changes
 
-**Changes:**
+| File | Action |
+|------|--------|
+| `src/components/layout/MobileNavDrawer.tsx` | Create - New drawer component |
+| `src/components/layout/Sidebar.tsx` | Modify - Desktop only, remove mobile logic |
+| `src/components/layout/DashboardLayout.tsx` | Modify - Use new drawer for mobile |
+| `src/components/layout/Header.tsx` | No change - Already handles menu click |
 
-1. **Add ChevronRight icon import** from lucide-react
+---
 
-2. **Add hover state tracking** using CSS group utilities (no JS state needed)
+### 1. MobileNavDrawer.tsx (New File)
 
-3. **Render chevron conditionally** for items with submenus:
-   - Hidden by default (`opacity-0`)
-   - Visible on hover (`group-hover:opacity-100`)
-   - Rotates 90° when expanded (`rotate-90`)
-   - Smooth transition (`transition-all duration-200`)
+**Key Features:**
 
-**Code approach:**
+- Uses vaul Drawer component (consistent with Mira chat)
+- Dark navy background (`bg-exp-navy`)
+- White text and icons for high contrast
+- 44px minimum touch targets for all interactive elements
+- Slide-to-view animation between main menu and section details
+
+**Structure:**
 
 ```tsx
-// For items with submenus, add the chevron
-<button className="group flex w-full items-center ...">
-  {Icon && <Icon className="h-4 w-4" />}
-  <span>{item.title}</span>
-  
-  {item.submenu && (
-    <ChevronRight 
-      className={cn(
-        "ml-auto h-4 w-4 opacity-0 transition-all duration-200",
-        "group-hover:opacity-100",
-        isExpanded && "rotate-90 opacity-100"
-      )}
-    />
-  )}
+// Props
+interface MobileNavDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+// Main categories view shows:
+// - Section headers (MY DESK, BUSINESS & GROWTH, RESOURCES)
+// - Each nav item with icon, title, and chevron
+// - Items with submenus navigate to detail view
+// - Items without submenus navigate directly and close drawer
+
+// Section detail view shows:
+// - Back button + section title header
+// - List of submenu links
+// - Tapping a link navigates and closes drawer
+```
+
+**Touch Target Styling:**
+
+```tsx
+// All interactive elements use min-h-[44px]
+<button className="min-h-[44px] flex items-center gap-4 px-4 py-3 w-full">
+  {/* content */}
 </button>
+```
+
+**Color Scheme (Dark Navy Theme):**
+
+```tsx
+// Background: dark navy
+className="bg-exp-navy"
+
+// Text: white for primary, white/70 for secondary
+className="text-white"
+className="text-white/70"
+
+// Icons: white
+className="text-white h-5 w-5"
+
+// Active/hover states: lighter navy
+className="hover:bg-exp-navy-light"
+className="bg-sidebar-accent" // for active items
 ```
 
 ---
 
-## Behavior Summary
+### 2. Sidebar.tsx Modifications
 
-| State | Chevron Visibility | Chevron Rotation |
-|-------|-------------------|------------------|
-| Default (collapsed) | Hidden | 0° (pointing right) |
-| Hover (collapsed) | Visible | 0° (pointing right) |
-| Expanded | Always visible | 90° (pointing down) |
-| Hover (expanded) | Always visible | 90° (pointing down) |
+**Remove mobile-specific rendering:**
+- Remove mobile overlay div
+- Remove mobile translate animation
+- Add `hidden lg:block` to make it desktop-only
+
+**Simplified structure:**
+
+```tsx
+export function Sidebar() {
+  // Remove isOpen/onClose props for desktop
+  // Sidebar is always visible on desktop
+  return (
+    <aside className="hidden lg:block fixed left-0 top-0 z-50 h-screen w-64 bg-sidebar">
+      {/* Existing sidebar content */}
+    </aside>
+  );
+}
+```
 
 ---
 
-## CSS Utilities Used
+### 3. DashboardLayout.tsx Modifications
 
-- `group` - Parent element for group-hover
-- `group-hover:opacity-100` - Show on parent hover
-- `opacity-0` - Hidden by default
-- `rotate-90` - Rotated state for expanded
-- `transition-all duration-200` - Smooth animation
+**Add MobileNavDrawer integration:**
+
+```tsx
+import { MobileNavDrawer } from "./MobileNavDrawer";
+
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  return (
+    <div className="min-h-screen bg-background w-full overflow-x-hidden">
+      <Header onMenuClick={() => setMobileMenuOpen(true)} />
+      
+      {/* Desktop Sidebar */}
+      <Sidebar />
+      
+      {/* Mobile Drawer */}
+      <MobileNavDrawer 
+        isOpen={mobileMenuOpen} 
+        onClose={() => setMobileMenuOpen(false)} 
+      />
+      
+      <main>...</main>
+    </div>
+  );
+}
+```
 
 ---
 
-## File Changes
+## Interaction Flow
 
-| File | Action |
-|------|--------|
-| `src/components/layout/Sidebar.tsx` | Add ChevronRight with hover-reveal behavior |
+```text
+User taps hamburger menu
+        |
+        v
++------------------+
+| Main Menu Opens  |  <- Bottom drawer slides up
+| (All sections)   |
++------------------+
+        |
+        | User taps "Documents" (has submenu)
+        v
++------------------+
+| Slides to        |  <- Content slides left
+| Documents view   |
+| [< Back]         |
+| - All Documents  |
+| - Templates      |
++------------------+
+        |
+        | User taps "All Documents"
+        v
++------------------+
+| Drawer closes    |  <- Navigates to /documents/all
+| Page navigates   |
++------------------+
+
+OR
+
+        | User taps "< Back"
+        v
++------------------+
+| Slides back to   |  <- Content slides right
+| Main Menu        |
++------------------+
+```
+
+---
+
+## Accessibility Considerations
+
+1. **Touch Targets**: All buttons/links have `min-h-[44px]` (Apple HIG standard)
+2. **Color Contrast**: White text on dark navy meets WCAG AA standards
+3. **Focus Management**: Focus trapped within drawer when open
+4. **Escape Key**: Closes drawer (handled by vaul)
+5. **Overlay Click**: Closes drawer (handled by vaul)
+
+---
+
+## Summary
+
+This implementation:
+- Replaces the "antiquated" left-slide menu with a modern bottom drawer
+- Uses the slide-to-view hierarchy pattern for intuitive sub-navigation
+- Maintains the existing dark navy theme with high-contrast white icons
+- Ensures 44px+ touch targets for accessibility
+- Reuses the vaul Drawer component pattern already in the codebase
 
