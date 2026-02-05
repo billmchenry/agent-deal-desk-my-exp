@@ -1,4 +1,4 @@
- import { Bell, HelpCircle, ChevronDown } from "lucide-react";
+import { Bell, HelpCircle, ChevronDown, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,14 +11,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { currentUser, userProfile } from "@/data/mockData";
 
- export function Header() {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
   const initials = currentUser.name
     .split(" ")
     .map((n) => n[0])
     .join("");
 
   return (
-     <header className="fixed top-0 left-0 right-0 lg:left-64 z-40 flex h-16 items-center justify-end border-b bg-white px-4 lg:px-6">
+    <header className="fixed top-0 left-0 right-0 lg:left-64 z-40 flex h-16 items-center justify-between border-b bg-white px-4 lg:px-6">
+      {/* Left Section - Hamburger on mobile */}
+      <div className="flex items-center lg:hidden">
+        <Button variant="ghost" size="icon" onClick={onMenuClick}>
+          <Menu className="h-5 w-5" />
+        </Button>
+      </div>
+
+      {/* Spacer for desktop */}
+      <div className="hidden lg:block" />
 
       {/* Right Section */}
       <div className="flex items-center gap-2">
@@ -27,7 +40,6 @@ import { currentUser, userProfile } from "@/data/mockData";
           <HelpCircle className="h-4 w-4" />
           <span>Get Help</span>
         </Button>
-
 
         {/* Notifications */}
         <Button variant="ghost" size="icon" className="relative">
