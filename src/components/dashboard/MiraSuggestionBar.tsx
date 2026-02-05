@@ -7,7 +7,6 @@ const SUGGESTIONS = [
   { label: "How can I increase my GCI?", query: "How can I increase my gross commission income?" },
   { label: "Am I on track to cap?", query: "Am I on track to hit my cap this year?" },
   { label: "Analyze my volume trends", query: "Analyze my total volume trends" },
-  { label: "Compare to last month", query: "Compare my performance to last month" },
 ];
 
 export function MiraSuggestionBar() {
