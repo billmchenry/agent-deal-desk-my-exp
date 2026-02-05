@@ -386,7 +386,7 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
     label: "MY DESK",
     items: [
       { title: "Home", icon: "Home", url: "/" },
-      { title: "Dashboard", icon: "LayoutDashboard", url: "/agent/dashboard" },
+      { title: "Agent Dashboard", icon: "LayoutDashboard", url: "/agent/dashboard" },
       {
         title: "Documents",
         icon: "FileText",
