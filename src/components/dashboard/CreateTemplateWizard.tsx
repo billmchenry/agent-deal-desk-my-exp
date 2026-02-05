@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Check, ChevronLeft, ChevronRight, X } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useDashboard } from "@/contexts/DashboardContext";
 import { TemplateCategory, TemplateVisibility } from "@/types/dashboard";
@@ -95,21 +95,21 @@ export function CreateTemplateWizard({ isOpen, onClose }: CreateTemplateWizardPr
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader className="space-y-3">
-          <div className="flex items-center justify-between">
-            <DialogTitle>Create a Template</DialogTitle>
+    <Sheet open={isOpen} onOpenChange={(open) => !open && handleClose()}>
+      <SheetContent className="w-full sm:max-w-md p-0 flex flex-col">
+        <SheetHeader className="px-4 py-3 border-b shrink-0">
+          <div className="space-y-2">
+            <SheetTitle>Create a Template</SheetTitle>
+            <div className="space-y-1">
+              <WizardProgress currentStep={step} totalSteps={4} />
+              <p className="text-xs text-muted-foreground text-right">
+                Step {step} of 4
+              </p>
+            </div>
           </div>
-          <div className="space-y-1">
-            <WizardProgress currentStep={step} totalSteps={4} />
-            <p className="text-xs text-muted-foreground text-right">
-              Step {step} of 4
-            </p>
-          </div>
-        </DialogHeader>
+        </SheetHeader>
 
-        <div className="py-4">
+        <div className="flex-1 overflow-y-auto p-4">
           {step === 1 && (
             <TemplateStepInsights
               widgets={widgets}
@@ -149,7 +149,7 @@ export function CreateTemplateWizard({ isOpen, onClose }: CreateTemplateWizardPr
           )}
         </div>
 
-        <div className="flex items-center justify-between pt-2 border-t">
+        <div className="flex items-center justify-between p-4 border-t shrink-0">
           {step === 1 ? (
             <Button variant="ghost" onClick={handleClose}>
               Cancel
@@ -173,7 +173,7 @@ export function CreateTemplateWizard({ isOpen, onClose }: CreateTemplateWizardPr
             </Button>
           )}
         </div>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }
