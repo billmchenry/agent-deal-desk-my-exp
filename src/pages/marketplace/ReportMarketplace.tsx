@@ -31,9 +31,10 @@ export default function ReportMarketplace() {
   const [showSharedOnly, setShowSharedOnly] = useState(false);
   const [confirmInstallId, setConfirmInstallId] = useState<string | null>(null);
 
-  // Combine user templates with mock templates
+  // Combine user templates with mock templates (ensure userTemplates is always an array)
   const allTemplates = useMemo(() => {
-    return [...userTemplates, ...mockTemplates];
+    const safeUserTemplates = Array.isArray(userTemplates) ? userTemplates : [];
+    return [...safeUserTemplates, ...mockTemplates];
   }, [userTemplates]);
 
   // Filter and sort templates
