@@ -62,10 +62,11 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     []
   );
 
-  // Initialize state from localStorage or defaults
-  const [widgets, setWidgets] = useState<DashboardWidget[]>(() => 
-    storedWidgets?.widgets ?? DEFAULT_LAYOUT
-  );
+  // Initialize state from localStorage or defaults (with safety check for corrupted data)
+  const [widgets, setWidgets] = useState<DashboardWidget[]>(() => {
+    const stored = storedWidgets?.widgets;
+    return Array.isArray(stored) ? stored : DEFAULT_LAYOUT;
+  });
   const [templates, setTemplates] = useState<DashboardTemplate[]>(() => storedTemplates);
   const [isEditMode, setIsEditMode] = useState(false);
 
