@@ -96,7 +96,7 @@ export function CreateTemplateWizard({ isOpen, onClose }: CreateTemplateWizardPr
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <SheetContent className="w-full sm:max-w-md p-0 flex flex-col">
+      <SheetContent className="w-full sm:max-w-md p-0 flex flex-col h-full">
         <SheetHeader className="px-4 py-3 border-b shrink-0">
           <div className="space-y-2">
             <SheetTitle>Create a Template</SheetTitle>
@@ -109,7 +109,7 @@ export function CreateTemplateWizard({ isOpen, onClose }: CreateTemplateWizardPr
           </div>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 min-h-0">
           {step === 1 && (
             <TemplateStepInsights
               widgets={widgets}
@@ -149,7 +149,7 @@ export function CreateTemplateWizard({ isOpen, onClose }: CreateTemplateWizardPr
           )}
         </div>
 
-        <div className="flex items-center justify-between p-4 border-t shrink-0">
+        <div className="flex items-center justify-between p-4 border-t shrink-0 bg-background">
           {step === 1 ? (
             <Button variant="ghost" onClick={handleClose}>
               Cancel
