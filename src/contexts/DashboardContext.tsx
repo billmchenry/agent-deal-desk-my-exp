@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode, useCallback, useMemo, useEffect, useRef } from "react";
-import { DashboardWidget, DEFAULT_LAYOUT, WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
+import { DashboardWidget, DashboardTemplate, DEFAULT_LAYOUT, WIDGET_REGISTRY, WidgetType, TemplateCategory, TemplateVisibility } from "@/types/dashboard";
 import { useLocalStorage } from "@/hooks/use-local-storage";
+import { currentUser } from "@/data/mockData";
 
 interface StoredWidgets {
   widgets: DashboardWidget[];
@@ -29,22 +30,43 @@ interface DashboardContextType {
   lastSynced: Date;
   isRefreshing: boolean;
   refreshData: () => Promise<void>;
+
+  // Template state and actions
+  templates: DashboardTemplate[];
+  createTemplate: (data: {
+    name: string;
+    description: string;
+    category: TemplateCategory;
+    tags: string[];
+    visibility: TemplateVisibility;
+    widgets: DashboardWidget[];
+  }) => string;
+  deleteTemplate: (id: string) => void;
+  applyTemplate: (id: string) => void;
+  updateTemplate: (id: string, updates: Partial<DashboardTemplate>) => void;
 }
 
 // Context for dashboard state management
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
 export function DashboardProvider({ children }: { children: ReactNode }) {
-  // localStorage persistence
+  // localStorage persistence for widgets
   const [storedWidgets, setStoredWidgets] = useLocalStorage<StoredWidgets | null>(
     'dashboard-widgets',
     null
+  );
+
+  // localStorage persistence for templates
+  const [storedTemplates, setStoredTemplates] = useLocalStorage<DashboardTemplate[]>(
+    'dashboard-templates',
+    []
   );
 
   // Initialize state from localStorage or defaults
   const [widgets, setWidgets] = useState<DashboardWidget[]>(() => 
     storedWidgets?.widgets ?? DEFAULT_LAYOUT
   );
+  const [templates, setTemplates] = useState<DashboardTemplate[]>(() => storedTemplates);
   const [isEditMode, setIsEditMode] = useState(false);
 
   // Data refresh state
@@ -64,6 +86,17 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       lastUpdated: new Date().toISOString(),
     });
   }, [widgets, setStoredWidgets]);
+
+  // Persist templates to localStorage
+  const isTemplateInitialMount = useRef(true);
+
+  useEffect(() => {
+    if (isTemplateInitialMount.current) {
+      isTemplateInitialMount.current = false;
+      return;
+    }
+    setStoredTemplates(templates);
+  }, [templates, setStoredTemplates]);
 
   const addWidget = useCallback((type: WidgetType, customTitle?: string, content?: string): string => {
     const registry = WIDGET_REGISTRY[type];
@@ -127,6 +160,64 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     setIsRefreshing(false);
   }, []);
 
+  // Template actions
+  const createTemplate = useCallback((data: {
+    name: string;
+    description: string;
+    category: TemplateCategory;
+    tags: string[];
+    visibility: TemplateVisibility;
+    widgets: DashboardWidget[];
+  }): string => {
+    const now = new Date().toISOString();
+    const newTemplate: DashboardTemplate = {
+      id: `template-${Date.now()}`,
+      name: data.name,
+      description: data.description,
+      category: data.category,
+      tags: data.tags,
+      visibility: data.visibility,
+      widgets: data.widgets,
+      createdAt: now,
+      updatedAt: now,
+      createdBy: {
+        id: currentUser.id,
+        name: currentUser.name,
+        avatar: currentUser.avatar,
+      },
+      rating: 0,
+      installCount: 0,
+      isOwned: true,
+    };
+    setTemplates(prev => [newTemplate, ...prev]);
+    return newTemplate.id;
+  }, []);
+
+  const deleteTemplate = useCallback((id: string) => {
+    setTemplates(prev => prev.filter(t => t.id !== id));
+  }, []);
+
+  const applyTemplate = useCallback((id: string) => {
+    const allTemplates = [...templates];
+    const template = allTemplates.find(t => t.id === id);
+    if (template) {
+      // Create new widget instances with new IDs to avoid conflicts
+      const newWidgets = template.widgets.map(w => ({
+        ...w,
+        id: `${w.type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      }));
+      setWidgets(newWidgets);
+    }
+  }, [templates]);
+
+  const updateTemplate = useCallback((id: string, updates: Partial<DashboardTemplate>) => {
+    setTemplates(prev => prev.map(t => 
+      t.id === id 
+        ? { ...t, ...updates, updatedAt: new Date().toISOString() }
+        : t
+    ));
+  }, []);
+
   const value = useMemo(() => ({
     widgets,
     isEditMode,
@@ -140,6 +231,11 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     lastSynced,
     isRefreshing,
     refreshData,
+    templates,
+    createTemplate,
+    deleteTemplate,
+    applyTemplate,
+    updateTemplate,
   }), [
     widgets,
     isEditMode,
@@ -153,6 +249,11 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     lastSynced,
     isRefreshing,
     refreshData,
+    templates,
+    createTemplate,
+    deleteTemplate,
+    applyTemplate,
+    updateTemplate,
   ]);
 
   return (

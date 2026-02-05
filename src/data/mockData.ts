@@ -419,6 +419,7 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
   resources: {
     label: "RESOURCES",
     items: [
+      { title: "Report Marketplace", icon: "Store", url: "/marketplace" },
       { title: "Tools", icon: "Wrench", url: "/tools" },
       { title: "Knowledge Base", icon: "BookOpen", url: "/knowledge" },
       { title: "Help Center", icon: "HelpCircle", url: "/help" },
