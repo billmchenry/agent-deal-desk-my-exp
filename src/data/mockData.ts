@@ -369,6 +369,63 @@ export const userProfile: UserProfile = {
   isPartnerAgent: false,
 };
 
+export interface SidebarNavItem {
+  title: string;
+  icon: string;
+  url?: string;
+  submenu?: { title: string; url: string }[];
+}
+
+export interface SidebarSection {
+  label: string;
+  items: SidebarNavItem[];
+}
+
+export const sidebarNavigation: Record<string, SidebarSection> = {
+  myDesk: {
+    label: "MY DESK",
+    items: [
+      { title: "Home", icon: "Home", url: "/" },
+      { title: "Dashboard", icon: "LayoutDashboard", url: "/agent/dashboard" },
+      {
+        title: "Documents",
+        icon: "FileText",
+        submenu: [
+          { title: "All Documents", url: "/documents/all" },
+          { title: "Templates", url: "/documents/templates" },
+        ],
+      },
+      { title: "Events Calendar", icon: "Calendar", url: "/events" },
+    ],
+  },
+  businessGrowth: {
+    label: "BUSINESS & GROWTH",
+    items: [
+      { title: "Team", icon: "Users", url: "/team/dashboard" },
+      {
+        title: "RevShare Earnings",
+        icon: "DollarSign",
+        submenu: [
+          { title: "Dashboard", url: "/revshare/dashboard" },
+          { title: "Organization", url: "/revshare/organization" },
+          { title: "Organization Tree", url: "/revshare/organization-tree" },
+          { title: "My RevShare Trends", url: "/revshare/trends" },
+        ],
+      },
+      { title: "ICON Program", icon: "Award", url: "/agent/icon-program" },
+      { title: "Mentor Program", icon: "GraduationCap", url: "/mentor" },
+    ],
+  },
+  resources: {
+    label: "RESOURCES",
+    items: [
+      { title: "Tools", icon: "Wrench", url: "/tools" },
+      { title: "Knowledge Base", icon: "BookOpen", url: "/knowledge" },
+      { title: "Help Center", icon: "HelpCircle", url: "/help" },
+    ],
+  },
+};
+
 export const navItems = [
   {
     title: "Agent",
