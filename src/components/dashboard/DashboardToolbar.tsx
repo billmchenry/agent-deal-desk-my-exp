@@ -129,12 +129,12 @@ export function DashboardToolbar() {
           </TooltipProvider>
         )}
 
-        {/* Create Template Button - always visible */}
+        {/* Create Template Button - always visible, pushed to far right */}
         <Button
           variant="outline"
           size="sm"
           onClick={() => setShowTemplateWizard(true)}
-          className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9"
+          className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 ml-auto"
         >
           <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           <span className="hidden sm:inline">Create Template</span>
