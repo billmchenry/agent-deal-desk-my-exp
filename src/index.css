@@ -158,4 +158,9 @@
   .gradient-blue {
     background: linear-gradient(135deg, hsl(var(--exp-blue)) 0%, hsl(var(--exp-blue-light)) 100%);
   }
+
+   /* Safe area for devices with home indicators */
+   .pb-safe {
+     padding-bottom: env(safe-area-inset-bottom);
+   }
 }
