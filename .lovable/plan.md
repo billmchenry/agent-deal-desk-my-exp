@@ -1,176 +1,93 @@
 
 
-# High-End Collapsible Sidebar Navigation
+# Hover-Reveal Chevron Indicators for Sidebar
 
 ## Overview
 
-Redesigning the sidebar navigation with a clean, modern hierarchy organized into three static sections. The key UX improvement is removing all chevrons and implementing "smart expansion" where only one submenu can be open at a time.
+Adding subtle chevron indicators that only appear when hovering over expandable menu items (Documents, RevShare Earnings). This provides the best of both worlds: a clean default state with discoverability on interaction.
 
 ---
 
-## Navigation Structure
+## Visual Behavior
 
 ```text
-+----------------------------------+
-|  MY | eXp (Logo)                 |
-+----------------------------------+
-|                                  |
-|  MY DESK                         |  <-- Section Label (muted, uppercase)
-|    Home                          |
-|    Dashboard                     |
-|    Documents                     |  <-- Expandable (no chevron)
-|       All Documents              |  <-- Indented sub-item
-|       Templates                  |
-|    Events Calendar               |
-|                                  |
-|  BUSINESS & GROWTH               |
-|    Team                          |
-|    RevShare Earnings             |  <-- Expandable
-|       Dashboard                  |
-|       Organization               |
-|       Organization Tree          |
-|       My RevShare Trends         |
-|    ICON Program                  |
-|    Mentor Program                |
-|                                  |
-|  RESOURCES                       |
-|    Tools                         |
-|    Knowledge Base                |
-|    Help Center                   |
-|                                  |
-+----------------------------------+
+Default State:                    On Hover:
++------------------------+        +------------------------+
+|  📄 Documents          |   -->  |  📄 Documents        ▶ |
++------------------------+        +------------------------+
+
+Expanded State (with hover):
++------------------------+
+|  📄 Documents        ▼ |  <-- Chevron rotates down
+|     All Documents      |
+|     Templates          |
++------------------------+
 ```
 
 ---
 
 ## Implementation Details
 
-### File Changes
+### File: `src/components/layout/Sidebar.tsx`
 
-**1. Update `src/data/mockData.ts`**
+**Changes:**
 
-Replace the flat `navItems` array with a new structured `sidebarNavigation` export organized by section:
+1. **Add ChevronRight icon import** from lucide-react
 
-```typescript
-export const sidebarNavigation = {
-  myDesk: {
-    label: "MY DESK",
-    items: [
-      { title: "Home", icon: "Home", url: "/" },
-      { title: "Dashboard", icon: "LayoutDashboard", url: "/agent/dashboard" },
-      { 
-        title: "Documents", 
-        icon: "FileText", 
-        submenu: [
-          { title: "All Documents", url: "/documents/all" },
-          { title: "Templates", url: "/documents/templates" }
-        ]
-      },
-      { title: "Events Calendar", icon: "Calendar", url: "/events" }
-    ]
-  },
-  businessGrowth: {
-    label: "BUSINESS & GROWTH",
-    items: [
-      { title: "Team", icon: "Users", url: "/team/dashboard" },
-      { 
-        title: "RevShare Earnings", 
-        icon: "DollarSign", 
-        submenu: [
-          { title: "Dashboard", url: "/revshare/dashboard" },
-          { title: "Organization", url: "/revshare/organization" },
-          { title: "Organization Tree", url: "/revshare/organization-tree" },
-          { title: "My RevShare Trends", url: "/revshare/trends" }
-        ]
-      },
-      { title: "ICON Program", icon: "Award", url: "/agent/icon-program" },
-      { title: "Mentor Program", icon: "GraduationCap", url: "/mentor" }
-    ]
-  },
-  resources: {
-    label: "RESOURCES",
-    items: [
-      { title: "Tools", icon: "Wrench", url: "/tools" },
-      { title: "Knowledge Base", icon: "BookOpen", url: "/knowledge" },
-      { title: "Help Center", icon: "HelpCircle", url: "/help" }
-    ]
-  }
-};
-```
+2. **Add hover state tracking** using CSS group utilities (no JS state needed)
 
-**2. Rewrite `src/components/layout/Sidebar.tsx`**
+3. **Render chevron conditionally** for items with submenus:
+   - Hidden by default (`opacity-0`)
+   - Visible on hover (`group-hover:opacity-100`)
+   - Rotates 90° when expanded (`rotate-90`)
+   - Smooth transition (`transition-all duration-200`)
 
-Key changes:
-- Remove chevron icons entirely
-- Change state from array to single string (`expandedItem` instead of `expandedItems[]`)
-- Add section labels with muted styling
-- Implement accordion-style behavior (only one submenu open at a time)
-- Add smooth CSS transitions for expand/collapse using Radix Collapsible
+**Code approach:**
 
-```typescript
-// State change: only one item can be expanded
-const [expandedItem, setExpandedItem] = useState<string | null>(null);
-
-// Toggle logic: clicking same item closes it, clicking different item opens it
-const handleItemClick = (title: string, hasSubmenu: boolean, url?: string) => {
-  if (hasSubmenu) {
-    setExpandedItem(prev => prev === title ? null : title);
-  }
-  // If it has a URL and no submenu, navigate normally
-};
+```tsx
+// For items with submenus, add the chevron
+<button className="group flex w-full items-center ...">
+  {Icon && <Icon className="h-4 w-4" />}
+  <span>{item.title}</span>
+  
+  {item.submenu && (
+    <ChevronRight 
+      className={cn(
+        "ml-auto h-4 w-4 opacity-0 transition-all duration-200",
+        "group-hover:opacity-100",
+        isExpanded && "rotate-90 opacity-100"
+      )}
+    />
+  )}
+</button>
 ```
 
 ---
 
-## Visual Design Specifications
+## Behavior Summary
 
-| Element | Style |
-|---------|-------|
-| Section Labels | `text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50` |
-| Parent Items | `text-sm font-medium` with hover highlight |
-| Sub-items | `text-sm text-sidebar-foreground/70` with left indent (`ml-9`) |
-| Active State | `bg-sidebar-accent text-sidebar-foreground` |
-| Spacing | `py-1.5` for items, `mt-6` between sections |
-
----
-
-## Smart Expansion Behavior
-
-1. **Click parent with submenu** - Submenu slides down, any other open submenu collapses
-2. **Click same parent again** - Submenu collapses (toggle behavior)
-3. **Click parent without submenu** - Navigates directly, collapses any open submenu
-4. **Active route detection** - If user navigates to a sub-route, that section auto-expands on load
+| State | Chevron Visibility | Chevron Rotation |
+|-------|-------------------|------------------|
+| Default (collapsed) | Hidden | 0° (pointing right) |
+| Hover (collapsed) | Visible | 0° (pointing right) |
+| Expanded | Always visible | 90° (pointing down) |
+| Hover (expanded) | Always visible | 90° (pointing down) |
 
 ---
 
-## Technical Considerations
+## CSS Utilities Used
 
-### Auto-expand on Active Route
-
-When the page loads, detect if the current URL matches any submenu item and auto-expand that parent:
-
-```typescript
-useEffect(() => {
-  // Find which parent contains the active route
-  const activeParent = findParentWithActiveChild(location.pathname);
-  if (activeParent) {
-    setExpandedItem(activeParent);
-  }
-}, [location.pathname]);
-```
-
-### Smooth Animations
-
-Use Radix Collapsible with CSS transitions:
-- `data-[state=open]:animate-accordion-down`
-- `data-[state=closed]:animate-accordion-up`
+- `group` - Parent element for group-hover
+- `group-hover:opacity-100` - Show on parent hover
+- `opacity-0` - Hidden by default
+- `rotate-90` - Rotated state for expanded
+- `transition-all duration-200` - Smooth animation
 
 ---
 
-## Summary of Changes
+## File Changes
 
 | File | Action |
 |------|--------|
-| `src/data/mockData.ts` | Add new `sidebarNavigation` structure |
-| `src/components/layout/Sidebar.tsx` | Complete rewrite with new hierarchy, no chevrons, smart expansion |
+| `src/components/layout/Sidebar.tsx` | Add ChevronRight with hover-reveal behavior |
 
