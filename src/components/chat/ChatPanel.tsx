@@ -288,6 +288,8 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     loadConversation,
     deleteConversation,
     conversations,
+    pendingQuery,
+    clearPendingQuery,
   } = useMiraChat();
   const [inputValue, setInputValue] = useState("");
   const [showHistory, setShowHistory] = useState(false);
@@ -331,6 +333,18 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
       setShowHistory(false);
     }
   }, [isOpen]);
+
+  // Process pending query when chat opens
+  useEffect(() => {
+    if (isOpen && pendingQuery) {
+      // Small delay to ensure panel is fully rendered
+      const timer = setTimeout(() => {
+        processMessage(pendingQuery);
+        clearPendingQuery();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, pendingQuery, clearPendingQuery]);
 
   const processMessage = (content: string) => {
     const userMessage: ChatMessageData = {
