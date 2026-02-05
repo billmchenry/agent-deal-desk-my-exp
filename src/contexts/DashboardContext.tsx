@@ -67,7 +67,9 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     const stored = storedWidgets?.widgets;
     return Array.isArray(stored) ? stored : DEFAULT_LAYOUT;
   });
-  const [templates, setTemplates] = useState<DashboardTemplate[]>(() => storedTemplates);
+  const [templates, setTemplates] = useState<DashboardTemplate[]>(() => {
+    return Array.isArray(storedTemplates) ? storedTemplates : [];
+  });
   const [isEditMode, setIsEditMode] = useState(false);
 
   // Data refresh state
@@ -109,7 +111,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       column: registry.defaultColumn,
       content,
     };
-    setWidgets(prev => [newWidget, ...prev]);
+    setWidgets((prev) => [newWidget, ...(Array.isArray(prev) ? prev : [])]);
     return newWidget.id;
   }, []);
 
@@ -127,16 +129,18 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   }, [widgets]);
 
   const reorderWidgets = useCallback((activeId: string, overId: string) => {
-    setWidgets(prev => {
-      const oldIndex = prev.findIndex(w => w.id === activeId);
-      const newIndex = prev.findIndex(w => w.id === overId);
-      
-      if (oldIndex === -1 || newIndex === -1) return prev;
-      
-      const newWidgets = [...prev];
+    setWidgets((prev) => {
+      const safePrev = Array.isArray(prev) ? prev : [];
+
+      const oldIndex = safePrev.findIndex((w) => w.id === activeId);
+      const newIndex = safePrev.findIndex((w) => w.id === overId);
+
+      if (oldIndex === -1 || newIndex === -1) return safePrev;
+
+      const newWidgets = [...safePrev];
       const [removed] = newWidgets.splice(oldIndex, 1);
       newWidgets.splice(newIndex, 0, removed);
-      
+
       return newWidgets;
     });
   }, []);
@@ -190,7 +194,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       installCount: 0,
       isOwned: true,
     };
-    setTemplates(prev => [newTemplate, ...prev]);
+    setTemplates((prev) => [newTemplate, ...(Array.isArray(prev) ? prev : [])]);
     return newTemplate.id;
   }, []);
 
@@ -199,11 +203,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const applyTemplate = useCallback((id: string) => {
-    const allTemplates = [...templates];
-    const template = allTemplates.find(t => t.id === id);
+    const template = (Array.isArray(templates) ? templates : []).find((t) => t.id === id);
     if (template) {
       // Create new widget instances with new IDs to avoid conflicts
-      const newWidgets = template.widgets.map(w => ({
+      const newWidgets = template.widgets.map((w) => ({
         ...w,
         id: `${w.type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       }));
