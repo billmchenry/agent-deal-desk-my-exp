@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RevShareSubNav } from "@/components/revshare/RevShareSubNav";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Info, Phone, Mail, ChevronRight } from "lucide-react";
@@ -28,6 +29,7 @@ export default function RevShareDashboard() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
+        <RevShareSubNav />
         <h1 className="text-2xl font-bold text-foreground mb-6">RevShare Dashboard</h1>
 
         {/* CTA Banner */}
