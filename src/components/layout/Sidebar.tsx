@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   User,
@@ -34,12 +34,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Award,
 };
 
-interface SidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export function Sidebar({ isOpen, onClose }: SidebarProps) {
+ export function Sidebar() {
   const location = useLocation();
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
@@ -138,23 +133,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     );
   };
 
-  return (
-    <>
-      {/* Mobile Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={onClose}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={cn(
-          "fixed left-0 top-0 z-50 h-screen w-64 transform bg-sidebar transition-transform duration-200 ease-in-out lg:translate-x-0",
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
+   return (
+     <aside className="hidden lg:block fixed left-0 top-0 z-50 h-screen w-64 bg-sidebar">
         {/* Sidebar Header with Logo */}
         <div className="flex h-16 items-center gap-1 px-5 border-b border-border bg-white">
           <span className="text-xl font-bold leading-none text-foreground">MY</span>
@@ -193,7 +173,6 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
           </div>
         </nav>
-      </aside>
-    </>
+     </aside>
   );
 }

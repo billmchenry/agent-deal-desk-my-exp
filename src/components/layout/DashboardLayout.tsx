@@ -1,6 +1,7 @@
 import { Sparkles } from "lucide-react";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
+ import { MobileNavDrawer } from "./MobileNavDrawer";
 import { ChatPanel } from "@/components/chat/ChatPanel";
 import { Button } from "@/components/ui/button";
 import { useMiraChat } from "@/contexts/MiraChatContext";
@@ -11,13 +12,19 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isChatOpen, openChat, closeChat } = useMiraChat();
 
   return (
     <div className="min-h-screen bg-background w-full overflow-x-hidden">
-      <Header onMenuClick={() => setSidebarOpen(true)} />
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+       <Header onMenuClick={() => setMobileMenuOpen(true)} />
+       <Sidebar />
+       
+       {/* Mobile Navigation Drawer */}
+       <MobileNavDrawer 
+         isOpen={mobileMenuOpen} 
+         onClose={() => setMobileMenuOpen(false)} 
+       />
       
       {/* Main Content - Shrinks when chat panel is open on desktop */}
       <main className={`lg:ml-64 min-h-screen px-4 lg:px-6 pt-20 pb-24 max-w-full overflow-x-hidden transition-all duration-300 ${
