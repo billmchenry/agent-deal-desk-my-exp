@@ -1,95 +1,176 @@
 
 
-## Relocate Mira Suggested Prompts Below Stats Row
+# High-End Collapsible Sidebar Navigation
 
-Moving the suggestion bar to appear directly after the stats row will create a more contextual experience — users see their key metrics and then are prompted with relevant questions about that data.
+## Overview
 
-### Design Changes
-
-**Current Position:**
-```
-[Toolbar]
-[Ask Mira: Suggestion Chips]  ← Currently here
-[Hero Banner]
-[Stats Row]
-[Action Center]
-```
-
-**New Position (matching reference):**
-```
-[Toolbar]
-[Hero Banner]
-[Stats Row]
-[Ask Mira: Suggestion Chips]  ← Move here, directly below stats
-[Action Center]
-```
-
-### Visual Updates (per reference)
-
-The suggestion chips will be updated to match the reference design:
-- Each chip will have its own Sparkles icon inside it
-- Remove the separate "Ask Mira:" label
-- Chips will be larger with more padding
-- Center-aligned on desktop, scrollable on mobile
-- No dismiss button (cleaner look)
-
-### Updated Prompts
-
-More contextual prompts that relate to the stats shown above:
-- "Why was March my best month?"
-- "What's my YoY growth rate?"
-- "Predict my Q1 performance"
+Redesigning the sidebar navigation with a clean, modern hierarchy organized into three static sections. The key UX improvement is removing all chevrons and implementing "smart expansion" where only one submenu can be open at a time.
 
 ---
 
-## Technical Implementation
+## Navigation Structure
 
-### Files to Modify
-
-**`src/components/dashboard/MiraSuggestionBar.tsx`**
-
-Update the component design:
-- Add Sparkles icon inside each chip button
-- Remove the leading "Ask Mira:" label
-- Remove the dismiss button for a cleaner look
-- Update chip styling for larger touch targets
-- Update prompts to be more contextual to stats data
-
-**`src/components/dashboard/StatsRow.tsx`**
-
-Integrate the suggestion bar directly into the StatsRow component:
-- Import and render MiraSuggestionBar at the bottom of StatsRow
-- This ensures suggestions always appear immediately after the stats
-
-**`src/components/dashboard/CustomizableDashboard.tsx`**
-
-- Remove the standalone MiraSuggestionBar import and render (since it's now part of StatsRow)
-
-### Updated Component Design
-
-```tsx
-// MiraSuggestionBar.tsx - Updated structure
-const SUGGESTIONS = [
-  { label: "Why was March my best month?", query: "Why was March my best month?" },
-  { label: "What's my YoY growth rate?", query: "What's my year-over-year growth rate?" },
-  { label: "Predict my Q1 performance", query: "Predict my Q1 performance" },
-];
-
-return (
-  <div className="flex flex-wrap justify-center gap-3 mt-6">
-    {SUGGESTIONS.map((s) => (
-      <Button variant="outline" className="gap-2 px-4 py-2 rounded-lg">
-        <Sparkles className="h-4 w-4" />
-        {s.label}
-      </Button>
-    ))}
-  </div>
-);
+```text
++----------------------------------+
+|  MY | eXp (Logo)                 |
++----------------------------------+
+|                                  |
+|  MY DESK                         |  <-- Section Label (muted, uppercase)
+|    Home                          |
+|    Dashboard                     |
+|    Documents                     |  <-- Expandable (no chevron)
+|       All Documents              |  <-- Indented sub-item
+|       Templates                  |
+|    Events Calendar               |
+|                                  |
+|  BUSINESS & GROWTH               |
+|    Team                          |
+|    RevShare Earnings             |  <-- Expandable
+|       Dashboard                  |
+|       Organization               |
+|       Organization Tree          |
+|       My RevShare Trends         |
+|    ICON Program                  |
+|    Mentor Program                |
+|                                  |
+|  RESOURCES                       |
+|    Tools                         |
+|    Knowledge Base                |
+|    Help Center                   |
+|                                  |
++----------------------------------+
 ```
 
-### Mobile Considerations
+---
 
-- Chips will wrap to multiple lines if needed, or scroll horizontally
-- Maintain 44px minimum touch targets
-- Keep the responsive 390px viewport constraint
+## Implementation Details
+
+### File Changes
+
+**1. Update `src/data/mockData.ts`**
+
+Replace the flat `navItems` array with a new structured `sidebarNavigation` export organized by section:
+
+```typescript
+export const sidebarNavigation = {
+  myDesk: {
+    label: "MY DESK",
+    items: [
+      { title: "Home", icon: "Home", url: "/" },
+      { title: "Dashboard", icon: "LayoutDashboard", url: "/agent/dashboard" },
+      { 
+        title: "Documents", 
+        icon: "FileText", 
+        submenu: [
+          { title: "All Documents", url: "/documents/all" },
+          { title: "Templates", url: "/documents/templates" }
+        ]
+      },
+      { title: "Events Calendar", icon: "Calendar", url: "/events" }
+    ]
+  },
+  businessGrowth: {
+    label: "BUSINESS & GROWTH",
+    items: [
+      { title: "Team", icon: "Users", url: "/team/dashboard" },
+      { 
+        title: "RevShare Earnings", 
+        icon: "DollarSign", 
+        submenu: [
+          { title: "Dashboard", url: "/revshare/dashboard" },
+          { title: "Organization", url: "/revshare/organization" },
+          { title: "Organization Tree", url: "/revshare/organization-tree" },
+          { title: "My RevShare Trends", url: "/revshare/trends" }
+        ]
+      },
+      { title: "ICON Program", icon: "Award", url: "/agent/icon-program" },
+      { title: "Mentor Program", icon: "GraduationCap", url: "/mentor" }
+    ]
+  },
+  resources: {
+    label: "RESOURCES",
+    items: [
+      { title: "Tools", icon: "Wrench", url: "/tools" },
+      { title: "Knowledge Base", icon: "BookOpen", url: "/knowledge" },
+      { title: "Help Center", icon: "HelpCircle", url: "/help" }
+    ]
+  }
+};
+```
+
+**2. Rewrite `src/components/layout/Sidebar.tsx`**
+
+Key changes:
+- Remove chevron icons entirely
+- Change state from array to single string (`expandedItem` instead of `expandedItems[]`)
+- Add section labels with muted styling
+- Implement accordion-style behavior (only one submenu open at a time)
+- Add smooth CSS transitions for expand/collapse using Radix Collapsible
+
+```typescript
+// State change: only one item can be expanded
+const [expandedItem, setExpandedItem] = useState<string | null>(null);
+
+// Toggle logic: clicking same item closes it, clicking different item opens it
+const handleItemClick = (title: string, hasSubmenu: boolean, url?: string) => {
+  if (hasSubmenu) {
+    setExpandedItem(prev => prev === title ? null : title);
+  }
+  // If it has a URL and no submenu, navigate normally
+};
+```
+
+---
+
+## Visual Design Specifications
+
+| Element | Style |
+|---------|-------|
+| Section Labels | `text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50` |
+| Parent Items | `text-sm font-medium` with hover highlight |
+| Sub-items | `text-sm text-sidebar-foreground/70` with left indent (`ml-9`) |
+| Active State | `bg-sidebar-accent text-sidebar-foreground` |
+| Spacing | `py-1.5` for items, `mt-6` between sections |
+
+---
+
+## Smart Expansion Behavior
+
+1. **Click parent with submenu** - Submenu slides down, any other open submenu collapses
+2. **Click same parent again** - Submenu collapses (toggle behavior)
+3. **Click parent without submenu** - Navigates directly, collapses any open submenu
+4. **Active route detection** - If user navigates to a sub-route, that section auto-expands on load
+
+---
+
+## Technical Considerations
+
+### Auto-expand on Active Route
+
+When the page loads, detect if the current URL matches any submenu item and auto-expand that parent:
+
+```typescript
+useEffect(() => {
+  // Find which parent contains the active route
+  const activeParent = findParentWithActiveChild(location.pathname);
+  if (activeParent) {
+    setExpandedItem(activeParent);
+  }
+}, [location.pathname]);
+```
+
+### Smooth Animations
+
+Use Radix Collapsible with CSS transitions:
+- `data-[state=open]:animate-accordion-down`
+- `data-[state=closed]:animate-accordion-up`
+
+---
+
+## Summary of Changes
+
+| File | Action |
+|------|--------|
+| `src/data/mockData.ts` | Add new `sidebarNavigation` structure |
+| `src/components/layout/Sidebar.tsx` | Complete rewrite with new hierarchy, no chevrons, smart expansion |
 
