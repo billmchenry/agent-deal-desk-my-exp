@@ -4,9 +4,10 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { cn } from "@/lib/utils";
 
 const SUGGESTIONS = [
-  { label: "Why was March my best month?", query: "Why was March my best month?" },
-  { label: "What's my YoY growth rate?", query: "What's my year-over-year growth rate?" },
-  { label: "Predict my Q1 performance", query: "Predict my Q1 performance" },
+  { label: "How can I increase my GCI?", query: "How can I increase my gross commission income?" },
+  { label: "Am I on track to cap?", query: "Am I on track to hit my cap this year?" },
+  { label: "Analyze my volume trends", query: "Analyze my total volume trends" },
+  { label: "Compare to last month", query: "Compare my performance to last month" },
 ];
 
 export function MiraSuggestionBar() {
