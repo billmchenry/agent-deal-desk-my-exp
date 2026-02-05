@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Info } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
+import { RevShareSubNav } from "@/components/revshare/RevShareSubNav";
 
 const agentAreasData = [
   { name: "Residential", value: 93.1, color: "#1e3a5f" },
@@ -30,6 +31,7 @@ export default function OrganizationReporting() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
+        <RevShareSubNav />
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-foreground">Organization Reporting</h1>
         </div>

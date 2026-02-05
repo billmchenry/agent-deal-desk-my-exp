@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Download, Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RevShareSubNav } from "@/components/revshare/RevShareSubNav";
 
 // Fake names for the organization tree
 const orgTreeAgents = [
@@ -48,6 +49,7 @@ export default function OrganizationTree() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
+        <RevShareSubNav />
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-bold text-foreground">Organization Tree</h1>
