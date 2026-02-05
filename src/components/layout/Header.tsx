@@ -1,4 +1,4 @@
-import { Bell, HelpCircle, ChevronDown, Menu } from "lucide-react";
+ import { Bell, HelpCircle, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,29 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { currentUser, userProfile } from "@/data/mockData";
 
-interface HeaderProps {
-  onMenuClick: () => void;
-}
-
-export function Header({ onMenuClick }: HeaderProps) {
+ export function Header() {
   const initials = currentUser.name
     .split(" ")
     .map((n) => n[0])
     .join("");
 
   return (
-    <header className="fixed top-0 left-0 right-0 lg:left-64 z-40 flex h-16 items-center justify-between border-b bg-white px-4 lg:px-6">
-      {/* Left Section */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden"
-          onClick={onMenuClick}
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
-      </div>
+     <header className="fixed top-0 left-0 right-0 lg:left-64 z-40 flex h-16 items-center justify-end border-b bg-white px-4 lg:px-6">
 
       {/* Right Section */}
       <div className="flex items-center gap-2">
