@@ -110,38 +110,36 @@ export function DashboardToolbar() {
           )}
         </Button>
 
-        {/* Reset to Default & Create Template - shown in edit mode */}
+        {/* Reset to Default - shown in edit mode */}
         {isEditMode && (
-          <>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleReset}
-                    className="h-8 w-8 sm:h-9 sm:w-9 p-0"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Reset to Default</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            {/* Create Template Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowTemplateWizard(true)}
-              className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9"
-            >
-              <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span className="hidden sm:inline">Create Template</span>
-              <span className="sm:hidden">Template</span>
-            </Button>
-          </>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleReset}
+                  className="h-8 w-8 sm:h-9 sm:w-9 p-0"
+                >
+                  <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Reset to Default</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
+
+        {/* Create Template Button - always visible */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowTemplateWizard(true)}
+          className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9"
+        >
+          <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="hidden sm:inline">Create Template</span>
+          <span className="sm:hidden">Template</span>
+        </Button>
 
         {/* Create Widgets with Mira */}
         <DropdownMenu>
