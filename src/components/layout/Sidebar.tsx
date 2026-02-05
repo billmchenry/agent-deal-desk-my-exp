@@ -13,6 +13,7 @@ import {
   Home,
   LayoutDashboard,
   Award,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
@@ -88,11 +89,18 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           <CollapsibleTrigger asChild>
             <button
               className={cn(
-                "mx-2 flex w-[calc(100%-1rem)] items-center gap-3 rounded-lg px-3 py-1.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
+                "group mx-2 flex w-[calc(100%-1rem)] items-center gap-3 rounded-lg px-3 py-1.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
               )}
             >
               {Icon && <Icon className="h-4 w-4" />}
               <span>{item.title}</span>
+              <ChevronRight 
+                className={cn(
+                  "ml-auto h-4 w-4 opacity-0 transition-all duration-200",
+                  "group-hover:opacity-100",
+                  isExpanded && "rotate-90 opacity-100"
+                )}
+              />
             </button>
           </CollapsibleTrigger>
           <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
