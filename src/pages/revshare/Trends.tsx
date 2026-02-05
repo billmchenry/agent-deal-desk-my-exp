@@ -6,7 +6,6 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ChevronDown, Download, Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
-import { RevShareSubNav } from "@/components/revshare/RevShareSubNav";
 
 const totalSummaryData = [
   { field: "Transaction Count", jan2026: "12", dec2025: "27", nov2025: "18", oct2025: "23", sep2025: "28", aug2025: "16" },
@@ -63,7 +62,6 @@ export default function RevShareTrends() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <RevShareSubNav />
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-foreground">My RevShare Trends by Level</h1>
         </div>
