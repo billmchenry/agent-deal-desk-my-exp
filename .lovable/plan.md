@@ -1,95 +1,72 @@
 
 
-# Mobile Navigation Drawer with Slide-to-View Hierarchy
+# Bottom Tab Bar Navigation with "More" Menu
 
 ## Overview
 
-Transforming the mobile sidebar from a left-sliding panel into a modern bottom drawer with a slide-to-view hierarchy pattern. Tapping a section header reveals only that section's links, with a "Back" button to return to the main menu.
+Replacing the bottom drawer navigation with a **fixed bottom tab bar** that provides instant 1-tap access to key destinations. A "More" tab opens a compact bottom sheet for remaining navigation items.
 
 ---
 
 ## Visual Design
 
-### Main Menu View
+### Bottom Tab Bar (Always Visible)
 ```text
-+----------------------------------------+
-|  [X]              MY | eXp             |
-+----------------------------------------+
-|                                        |
-|  +----------------------------------+  |
-|  | [Home Icon]        Home         >|  | <- 44px min-height
-|  +----------------------------------+  |
-|  | [Dashboard]   Agent Performance >|  |
-|  +----------------------------------+  |
-|  | [Docs Icon]      Documents      >|  | <- Has submenu
-|  +----------------------------------+  |
-|  | [Calendar]    Events Calendar   >|  |
-|  +----------------------------------+  |
-|                                        |
-|  BUSINESS & GROWTH                     |
-|  +----------------------------------+  |
-|  | [Users]            Team         >|  |
-|  +----------------------------------+  |
-|  | [$]        RevShare Earnings    >|  | <- Has submenu
-|  +----------------------------------+  |
-|  | [Award]       ICON Program      >|  |
-|  +----------------------------------+  |
-|  ...                                   |
-+----------------------------------------+
++--------------------------------------------+
+|                                            |
+|              PAGE CONTENT                  |
+|                                            |
++--------------------------------------------+
+| [🏠]     [📊]     [👥]     [$]      [≡]   |
+| Home   Perform   Team  RevShare   More    |
++--------------------------------------------+
+  ↑ Fixed at bottom, always visible on mobile
 ```
 
-### Section Detail View (after tapping "Documents")
+### "More" Bottom Sheet (When Tapped)
 ```text
-+----------------------------------------+
-|  [< Back]         Documents            |
-+----------------------------------------+
-|                                        |
-|  +----------------------------------+  |
-|  |           All Documents          |  | <- 44px min-height
-|  +----------------------------------+  |
-|  |             Templates            |  |
-|  +----------------------------------+  |
-|                                        |
-+----------------------------------------+
++--------------------------------------------+
+|                                            |
+|  +--------------------------------------+  |
+|  |           ≡  More Options            |  |
+|  +--------------------------------------+  |
+|  | [📄] Documents                     > |  |
+|  | [📅] Events Calendar                 |  |
+|  | [🎓] Mentor Program                  |  |
+|  | [🏆] ICON Program                    |  |
+|  | [🔧] Tools                           |  |
+|  | [📚] Knowledge Base                  |  |
+|  | [❓] Help Center                     |  |
+|  +--------------------------------------+  |
++--------------------------------------------+
 ```
+
+---
+
+## Primary Tabs Selection
+
+Based on the sidebar navigation structure, here are the 5 tabs:
+
+| Position | Icon | Label | Destination |
+|----------|------|-------|-------------|
+| 1 | Home | Home | `/` |
+| 2 | LayoutDashboard | Perform | `/agent/dashboard` |
+| 3 | Users | Team | `/team/dashboard` |
+| 4 | DollarSign | RevShare | `/revshare/dashboard` |
+| 5 | Menu | More | Opens bottom sheet |
 
 ---
 
 ## Technical Approach
 
-### Component Architecture
+### New Components
 
-**New Components:**
-1. `MobileNavDrawer.tsx` - The main drawer component using vaul's Drawer
-2. `MobileNavContent.tsx` - Shared content with slide-to-view logic
+1. **`MobileBottomNav.tsx`** - Fixed bottom tab bar component
+2. **`MoreMenuSheet.tsx`** - Bottom sheet for remaining nav items
 
-### State Management
+### Component Removal
 
-```tsx
-// State for slide-to-view hierarchy
-const [activeSection, setActiveSection] = useState<{
-  key: string;
-  label: string;
-  items: SidebarNavItem[];
-} | null>(null);
-```
-
-### Slide Animation Pattern
-
-Using the same translateX pattern already established in ChatPanel.tsx:
-
-```tsx
-<div 
-  className="flex w-[200%] h-full transition-transform duration-300 ease-out"
-  style={{ transform: activeSection ? 'translateX(-50%)' : 'translateX(0)' }}
->
-  {/* Main Categories View */}
-  <div className="w-1/2">...</div>
-  
-  {/* Section Detail View */}
-  <div className="w-1/2">...</div>
-</div>
-```
+- **`MobileNavDrawer.tsx`** - Will be deleted (replaced by new components)
 
 ---
 
@@ -99,120 +76,144 @@ Using the same translateX pattern already established in ChatPanel.tsx:
 
 | File | Action |
 |------|--------|
-| `src/components/layout/MobileNavDrawer.tsx` | Create - New drawer component |
-| `src/components/layout/Sidebar.tsx` | Modify - Desktop only, remove mobile logic |
-| `src/components/layout/DashboardLayout.tsx` | Modify - Use new drawer for mobile |
-| `src/components/layout/Header.tsx` | No change - Already handles menu click |
+| `src/components/layout/MobileBottomNav.tsx` | Create - Bottom tab bar |
+| `src/components/layout/MoreMenuSheet.tsx` | Create - "More" bottom sheet |
+| `src/components/layout/MobileNavDrawer.tsx` | Delete - No longer needed |
+| `src/components/layout/DashboardLayout.tsx` | Modify - Add bottom nav, adjust padding |
+| `src/components/layout/Header.tsx` | Modify - Remove hamburger menu on mobile |
 
 ---
 
-### 1. MobileNavDrawer.tsx (New File)
+### 1. MobileBottomNav.tsx (New File)
 
 **Key Features:**
 
-- Uses vaul Drawer component (consistent with Mira chat)
-- Dark navy background (`bg-exp-navy`)
-- White text and icons for high contrast
-- 44px minimum touch targets for all interactive elements
-- Slide-to-view animation between main menu and section details
+- Fixed at bottom of screen on mobile only (`lg:hidden`)
+- 5 tabs with icons and labels
+- Active state highlighting with brand blue color
+- Safe area padding for devices with home indicators
+- 60px height for comfortable touch targets
 
 **Structure:**
 
 ```tsx
-// Props
-interface MobileNavDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface TabItem {
+  icon: LucideIcon;
+  label: string;
+  path?: string;
+  isMore?: boolean;
 }
 
-// Main categories view shows:
-// - Section headers (MY DESK, BUSINESS & GROWTH, RESOURCES)
-// - Each nav item with icon, title, and chevron
-// - Items with submenus navigate to detail view
-// - Items without submenus navigate directly and close drawer
-
-// Section detail view shows:
-// - Back button + section title header
-// - List of submenu links
-// - Tapping a link navigates and closes drawer
+const tabs: TabItem[] = [
+  { icon: Home, label: "Home", path: "/" },
+  { icon: LayoutDashboard, label: "Perform", path: "/agent/dashboard" },
+  { icon: Users, label: "Team", path: "/team/dashboard" },
+  { icon: DollarSign, label: "RevShare", path: "/revshare/dashboard" },
+  { icon: Menu, label: "More", isMore: true },
+];
 ```
 
-**Touch Target Styling:**
+**Styling:**
 
 ```tsx
-// All interactive elements use min-h-[44px]
-<button className="min-h-[44px] flex items-center gap-4 px-4 py-3 w-full">
-  {/* content */}
-</button>
-```
+// Container - fixed bottom, safe area aware
+className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white border-t border-border pb-safe"
 
-**Color Scheme (Dark Navy Theme):**
+// Individual tab - centered, touch-friendly
+className="flex flex-col items-center justify-center flex-1 py-2 min-h-[60px]"
 
-```tsx
-// Background: dark navy
-className="bg-exp-navy"
+// Active state
+className="text-exp-blue"
 
-// Text: white for primary, white/70 for secondary
-className="text-white"
-className="text-white/70"
-
-// Icons: white
-className="text-white h-5 w-5"
-
-// Active/hover states: lighter navy
-className="hover:bg-exp-navy-light"
-className="bg-sidebar-accent" // for active items
+// Inactive state  
+className="text-muted-foreground"
 ```
 
 ---
 
-### 2. Sidebar.tsx Modifications
+### 2. MoreMenuSheet.tsx (New File)
 
-**Remove mobile-specific rendering:**
-- Remove mobile overlay div
-- Remove mobile translate animation
-- Add `hidden lg:block` to make it desktop-only
+**Key Features:**
 
-**Simplified structure:**
+- Uses vaul Drawer component (bottom sheet style)
+- Contains all remaining navigation items not in the tab bar
+- Items with submenus expand inline (accordion style) rather than slide-to-view
+- Closes on navigation
+
+**Navigation Items in "More":**
+
+- Documents (with submenu: All Documents, Templates)
+- Events Calendar
+- ICON Program
+- Mentor Program
+- Tools
+- Knowledge Base
+- Help Center
+
+**Structure:**
 
 ```tsx
-export function Sidebar() {
-  // Remove isOpen/onClose props for desktop
-  // Sidebar is always visible on desktop
-  return (
-    <aside className="hidden lg:block fixed left-0 top-0 z-50 h-screen w-64 bg-sidebar">
-      {/* Existing sidebar content */}
-    </aside>
-  );
+interface MoreMenuSheetProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
+
+// Submenu items expand inline when tapped
+const [expandedItem, setExpandedItem] = useState<string | null>(null);
+```
+
+**Styling:**
+
+```tsx
+// Sheet background
+className="bg-white"
+
+// Menu items - 44px touch targets
+className="min-h-[44px] flex items-center gap-3 px-4 py-3"
+
+// Submenu items - slightly indented
+className="pl-12"
 ```
 
 ---
 
 ### 3. DashboardLayout.tsx Modifications
 
-**Add MobileNavDrawer integration:**
+**Changes needed:**
+
+1. Remove `MobileNavDrawer` import and usage
+2. Remove `mobileMenuOpen` state (hamburger no longer needed)
+3. Add `MobileBottomNav` component
+4. Add bottom padding on mobile to account for tab bar (`pb-20 lg:pb-6`)
+5. Move Mira chat button above the tab bar
+
+**Updated structure:**
 
 ```tsx
-import { MobileNavDrawer } from "./MobileNavDrawer";
+import { MobileBottomNav } from "./MobileBottomNav";
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const { isChatOpen, openChat, closeChat } = useMiraChat();
+
   return (
     <div className="min-h-screen bg-background w-full overflow-x-hidden">
-      <Header onMenuClick={() => setMobileMenuOpen(true)} />
-      
-      {/* Desktop Sidebar */}
+      <Header />
       <Sidebar />
       
-      {/* Mobile Drawer */}
-      <MobileNavDrawer 
-        isOpen={mobileMenuOpen} 
-        onClose={() => setMobileMenuOpen(false)} 
+      <main className={`lg:ml-64 min-h-screen px-4 lg:px-6 pt-20 pb-24 lg:pb-6 ...`}>
+        {children}
+      </main>
+
+      {/* Mira Chat Button - positioned above tab bar on mobile */}
+      <Button
+        onClick={openChat}
+        className="fixed bottom-20 right-4 lg:bottom-6 lg:right-6 ..."
       />
-      
-      <main>...</main>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+
+      <ChatPanel isOpen={isChatOpen} onClose={closeChat} />
     </div>
   );
 }
@@ -220,23 +221,75 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
 ---
 
+### 4. Header.tsx Modifications
+
+**Changes needed:**
+
+- Remove hamburger menu button on mobile (no longer needed)
+- Remove `onMenuClick` prop
+
+**Before:**
+```tsx
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+```
+
+**After:**
+```tsx
+// No props needed - header is simpler now
+export function Header() {
+  // Remove hamburger button completely
+}
+```
+
+---
+
+## Safe Area Handling
+
+For devices with bottom home indicators (iPhone X and later):
+
+```css
+/* Add to index.css */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+```
+
+The tab bar will use `pb-safe` to ensure content doesn't overlap with the home indicator.
+
+---
+
 ## Interaction Flow
 
 ```text
-User taps hamburger menu
+User lands on app
         |
         v
 +------------------+
-| Main Menu Opens  |  <- Bottom drawer slides up
-| (All sections)   |
+| Bottom tab bar   |  <- Always visible
+| visible          |
 +------------------+
         |
-        | User taps "Documents" (has submenu)
+        | User taps "Home"
         v
 +------------------+
-| Slides to        |  <- Content slides left
-| Documents view   |
-| [< Back]         |
+| Navigates to /   |  <- Direct 1-tap navigation
++------------------+
+
+OR
+        | User taps "More"
+        v
++------------------+
+| Bottom sheet     |  <- Slides up from bottom
+| with remaining   |
+| nav options      |
++------------------+
+        |
+        | User taps "Documents"
+        v
++------------------+
+| Submenu expands  |  <- Inline accordion
 | - All Documents  |
 | - Templates      |
 +------------------+
@@ -244,38 +297,41 @@ User taps hamburger menu
         | User taps "All Documents"
         v
 +------------------+
-| Drawer closes    |  <- Navigates to /documents/all
+| Sheet closes     |  <- Navigates to /documents/all
 | Page navigates   |
-+------------------+
-
-OR
-
-        | User taps "< Back"
-        v
-+------------------+
-| Slides back to   |  <- Content slides right
-| Main Menu        |
 +------------------+
 ```
 
 ---
 
-## Accessibility Considerations
+## Benefits Over Previous Drawer
 
-1. **Touch Targets**: All buttons/links have `min-h-[44px]` (Apple HIG standard)
-2. **Color Contrast**: White text on dark navy meets WCAG AA standards
-3. **Focus Management**: Focus trapped within drawer when open
-4. **Escape Key**: Closes drawer (handled by vaul)
-5. **Overlay Click**: Closes drawer (handled by vaul)
+| Aspect | Drawer | Tab Bar |
+|--------|--------|---------|
+| Taps to Home | 2 (open + tap) | 1 |
+| Taps to Team | 2 (open + tap) | 1 |
+| Scrolling needed | Yes | No (for primary items) |
+| Always visible | No | Yes |
+| Discoverability | Low | High |
+
+---
+
+## Accessibility
+
+1. **Touch Targets**: All tabs are 60px tall with minimum 44px touch area
+2. **Labels**: Every icon has a text label for clarity
+3. **Active State**: Clear visual distinction for current page
+4. **Safe Areas**: Proper padding for modern device home indicators
 
 ---
 
 ## Summary
 
 This implementation:
-- Replaces the "antiquated" left-slide menu with a modern bottom drawer
-- Uses the slide-to-view hierarchy pattern for intuitive sub-navigation
-- Maintains the existing dark navy theme with high-contrast white icons
-- Ensures 44px+ touch targets for accessibility
-- Reuses the vaul Drawer component pattern already in the codebase
+
+- Provides **1-tap access** to the 4 most important destinations
+- Eliminates scrolling through navigation items
+- Uses familiar mobile patterns (Instagram, TikTok, etc.)
+- Keeps less-used items accessible via "More" menu
+- Maintains brand colors and accessibility standards
 
