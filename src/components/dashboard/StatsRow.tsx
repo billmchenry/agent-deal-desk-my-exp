@@ -3,6 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Home, DollarSign, Building2 } from "lucide-react";
 import { cappingData } from "@/data/mockData";
 import { useDashboard } from "@/contexts/DashboardContext";
+ import { MiraSuggestionBar } from "./MiraSuggestionBar";
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -65,6 +66,7 @@ export function StatsRow() {
   };
 
   return (
+     <>
      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard
           icon={<Home className="h-5 w-5" />}
@@ -88,5 +90,9 @@ export function StatsRow() {
           isLoading={isRefreshing}
         />
       </div>
+       
+       {/* Mira AI Suggestion Bar */}
+       <MiraSuggestionBar />
+     </>
   );
 }
