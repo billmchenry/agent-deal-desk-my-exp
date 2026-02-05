@@ -18,6 +18,7 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { DraggableWidget } from "./DraggableWidget";
 import { WidgetRenderer } from "./WidgetRenderer";
 import { DashboardToolbar } from "./DashboardToolbar";
+import { MiraSuggestionBar } from "./MiraSuggestionBar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -67,6 +68,9 @@ export function CustomizableDashboard() {
       <div className="flex items-center gap-2 flex-wrap min-w-0">
         <DashboardToolbar />
       </div>
+
+      {/* Mira AI Suggestion Bar */}
+      <MiraSuggestionBar />
 
       {/* Dashboard Grid */}
       <DndContext

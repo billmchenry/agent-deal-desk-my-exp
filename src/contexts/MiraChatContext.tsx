@@ -5,6 +5,7 @@ interface MiraChatContextType {
   isChatOpen: boolean;
   openChat: () => void;
   openChatWithMessage: (message: string, widgetInfo?: { type: string; id: string; title: string }) => void;
+  openChatWithQuery: (query: string) => void;
   closeChat: () => void;
   toggleChat: () => void;
   // Focus mode for scrolling to widgets
@@ -20,6 +21,9 @@ interface MiraChatContextType {
   deleteConversation: (id: string) => void;
   getRecentConversations: (limit: number) => Conversation[];
   startNewChat: () => void;
+  // Pending query for auto-send
+  pendingQuery: string | null;
+  clearPendingQuery: () => void;
 }
 
 const MiraChatContext = createContext<MiraChatContextType | undefined>(undefined);
@@ -85,8 +89,19 @@ export function MiraChatProvider({ children }: { children: ReactNode }) {
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
   const [currentMessages, setCurrentMessages] = useState<ChatMessageData[]>([WELCOME_MESSAGE]);
   const [focusWidgetId, setFocusWidgetId] = useState<string | null>(null);
+  const [pendingQuery, setPendingQuery] = useState<string | null>(null);
 
   const openChat = () => setIsChatOpen(true);
+  
+  const openChatWithQuery = useCallback((query: string) => {
+    // Set the pending query to be processed by ChatPanel
+    setPendingQuery(query);
+    setIsChatOpen(true);
+  }, []);
+  
+  const clearPendingQuery = useCallback(() => {
+    setPendingQuery(null);
+  }, []);
   
   const openChatWithMessage = useCallback((message: string, widgetInfo?: { type: string; id: string; title: string }) => {
     // Create a new AI message to show in the chat
@@ -192,6 +207,7 @@ export function MiraChatProvider({ children }: { children: ReactNode }) {
       isChatOpen, 
       openChat,
       openChatWithMessage,
+      openChatWithQuery,
       closeChat, 
       toggleChat,
       focusWidgetId,
@@ -205,6 +221,8 @@ export function MiraChatProvider({ children }: { children: ReactNode }) {
       deleteConversation,
       getRecentConversations,
       startNewChat,
+      pendingQuery,
+      clearPendingQuery,
     }}>
       {children}
     </MiraChatContext.Provider>
