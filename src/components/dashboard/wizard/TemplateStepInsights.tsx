@@ -30,7 +30,7 @@ export function TemplateStepInsights({
         </p>
       </div>
 
-      <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+      <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1 pb-2">
         {widgets.map((widget) => {
           const registry = WIDGET_REGISTRY[widget.type];
           const isSelected = selectedWidgetIds.includes(widget.id);
