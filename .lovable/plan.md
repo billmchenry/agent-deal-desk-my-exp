@@ -1,101 +1,95 @@
 
 
-## Mira AI Suggested Prompts on Dashboard
+## Relocate Mira Suggested Prompts Below Stats Row
 
-Adding suggested prompts directly on the dashboard will significantly increase Mira's visibility and encourage users to interact with the AI assistant without needing to click the floating button first.
+Moving the suggestion bar to appear directly after the stats row will create a more contextual experience — users see their key metrics and then are prompted with relevant questions about that data.
 
-### Recommended Approach
+### Design Changes
 
-Create a new "Ask Mira" suggestion component that displays contextual prompt chips below the toolbar. When clicked, these chips will open the Mira chat and automatically send the selected query.
-
-### Component Design
-
-**Location:** Below the dashboard toolbar, above the widgets grid
-
-**Layout:**
-- Compact horizontal row with a subtle Sparkles icon
-- 3-4 clickable suggestion chips
-- Scrollable on mobile for responsiveness
-- Dismissible (optional) with a close button that remembers preference
-
-**Visual Style:**
+**Current Position:**
 ```
-[✨ Ask Mira] [Show my GCI trends] [Pipeline overview] [Listing velocity]
+[Toolbar]
+[Ask Mira: Suggestion Chips]  ← Currently here
+[Hero Banner]
+[Stats Row]
+[Action Center]
 ```
 
-### Suggested Prompts (Contextual)
+**New Position (matching reference):**
+```
+[Toolbar]
+[Hero Banner]
+[Stats Row]
+[Ask Mira: Suggestion Chips]  ← Move here, directly below stats
+[Action Center]
+```
 
-The prompts will be relevant to real estate agents:
-- "Show my GCI trends"
-- "How's my pipeline?"
-- "Listing velocity insights"
-- "Compare to last year"
+### Visual Updates (per reference)
 
-### User Flow
+The suggestion chips will be updated to match the reference design:
+- Each chip will have its own Sparkles icon inside it
+- Remove the separate "Ask Mira:" label
+- Chips will be larger with more padding
+- Center-aligned on desktop, scrollable on mobile
+- No dismiss button (cleaner look)
 
-1. User sees prompt chips on dashboard
-2. Clicks a chip (e.g., "Show my GCI trends")
-3. Mira chat opens
-4. Query is automatically sent
-5. Mira responds with relevant widget and insights
+### Updated Prompts
+
+More contextual prompts that relate to the stats shown above:
+- "Why was March my best month?"
+- "What's my YoY growth rate?"
+- "Predict my Q1 performance"
 
 ---
 
 ## Technical Implementation
 
-### Files to Create
-
-**`src/components/dashboard/MiraSuggestionBar.tsx`** (new)
-
-A horizontal bar component that:
-- Uses `useMiraChat` hook to access `openChat` and `setCurrentMessages`
-- Displays 3-4 suggestion chips with the Sparkles icon
-- Triggers the chat with a pre-filled query on click
-- Horizontally scrollable on mobile
-- Optional dismiss functionality using local storage
-
 ### Files to Modify
+
+**`src/components/dashboard/MiraSuggestionBar.tsx`**
+
+Update the component design:
+- Add Sparkles icon inside each chip button
+- Remove the leading "Ask Mira:" label
+- Remove the dismiss button for a cleaner look
+- Update chip styling for larger touch targets
+- Update prompts to be more contextual to stats data
+
+**`src/components/dashboard/StatsRow.tsx`**
+
+Integrate the suggestion bar directly into the StatsRow component:
+- Import and render MiraSuggestionBar at the bottom of StatsRow
+- This ensures suggestions always appear immediately after the stats
 
 **`src/components/dashboard/CustomizableDashboard.tsx`**
 
-- Import and render `MiraSuggestionBar` between toolbar and widgets grid
-- Position it as the first element after the toolbar
+- Remove the standalone MiraSuggestionBar import and render (since it's now part of StatsRow)
 
-**`src/contexts/MiraChatContext.tsx`**
-
-- Add a new function `openChatWithQuery(query: string)` that:
-  - Opens the chat
-  - Immediately processes the query as if the user typed it
-
-### Component Structure
+### Updated Component Design
 
 ```tsx
-// MiraSuggestionBar.tsx
-function MiraSuggestionBar() {
-  const suggestions = [
-    { label: "GCI trends", query: "Show me my GCI trends" },
-    { label: "Pipeline overview", query: "What's in my pipeline?" },
-    { label: "Listing velocity", query: "How fast are my listings selling?" },
-    { label: "Compare to last year", query: "Compare my performance to last year" },
-  ];
+// MiraSuggestionBar.tsx - Updated structure
+const SUGGESTIONS = [
+  { label: "Why was March my best month?", query: "Why was March my best month?" },
+  { label: "What's my YoY growth rate?", query: "What's my year-over-year growth rate?" },
+  { label: "Predict my Q1 performance", query: "Predict my Q1 performance" },
+];
 
-  return (
-    <div className="flex items-center gap-2 overflow-x-auto">
-      <Sparkles className="text-primary" />
-      <span className="text-sm text-muted-foreground">Ask Mira:</span>
-      {suggestions.map(s => (
-        <Button variant="outline" onClick={() => openChatWithQuery(s.query)}>
-          {s.label}
-        </Button>
-      ))}
-    </div>
-  );
-}
+return (
+  <div className="flex flex-wrap justify-center gap-3 mt-6">
+    {SUGGESTIONS.map((s) => (
+      <Button variant="outline" className="gap-2 px-4 py-2 rounded-lg">
+        <Sparkles className="h-4 w-4" />
+        {s.label}
+      </Button>
+    ))}
+  </div>
+);
 ```
 
 ### Mobile Considerations
 
-- Chips will be horizontally scrollable with `overflow-x-auto`
-- Hide "Ask Mira:" label on very small screens
-- Ensure minimum 44px touch targets
+- Chips will wrap to multiple lines if needed, or scroll horizontally
+- Maintain 44px minimum touch targets
+- Keep the responsive 390px viewport constraint
 
