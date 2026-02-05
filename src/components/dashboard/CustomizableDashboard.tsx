@@ -64,10 +64,9 @@ export function CustomizableDashboard() {
   return (
     <div className="space-y-4 min-w-0 max-w-full">
       {/* Toolbar */}
-      <div className="w-full min-w-0">
+      <div className="flex items-center gap-2 flex-wrap min-w-0">
         <DashboardToolbar />
       </div>
-
       {/* Dashboard Grid */}
       <DndContext
         sensors={sensors}
