@@ -35,6 +35,7 @@ export function DraggableWidget({ widget, isEditMode, onRemove, children }: Drag
     return (
       <div 
         id={`widget-${widget.id}`}
+        data-widget-type={widget.type}
         className={cn(
           "transition-all duration-500",
           isFocused && "ring-2 ring-primary ring-offset-2 rounded-lg animate-pulse"
