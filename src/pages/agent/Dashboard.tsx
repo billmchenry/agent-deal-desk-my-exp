@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { AgentFilterBar } from "@/components/agent/AgentFilterBar";
-import { VitalSignsRow } from "@/components/agent/VitalSignsRow";
+import { AgentHeroBanner } from "@/components/agent/AgentHeroBanner";
 import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
 import { CappingHistorySection } from "@/components/agent/CappingHistorySection";
 import { IconStatusSummary } from "@/components/agent/IconStatusSummary";
@@ -15,21 +14,14 @@ export default function AgentDashboard() {
     from: new Date(2026, 0, 1),
     to: new Date(2026, 1, 6),
   });
-  const [includePipeline, setIncludePipeline] = useState(false);
 
   return (
     <DashboardLayout>
       <div className="space-y-4">
-        {/* Global filter bar */}
-        <AgentFilterBar
+        {/* Hero Banner with stats, cap progress, and date filter */}
+        <AgentHeroBanner
           dateRange={dateRange}
           onDateRangeChange={setDateRange}
-          includePipeline={includePipeline}
-          onIncludePipelineChange={setIncludePipeline}
-        />
-
-        {/* Vital Signs */}
-        <VitalSignsRow
           units={5}
           volume={1784000}
           commission={2669}
