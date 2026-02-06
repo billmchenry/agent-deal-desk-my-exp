@@ -4,6 +4,17 @@ import { ChatMessageData } from "@/types/chat";
 
 export type { ChatMessageData };
 
+// Render simple markdown: **bold** → <strong>
+function renderMarkdown(text: string) {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    return part;
+  });
+}
+
 interface ChatMessageProps {
   message: ChatMessageData;
   onFollowUp?: (question: string) => void;
@@ -34,7 +45,7 @@ export function ChatMessage({ message, onFollowUp }: ChatMessageProps) {
             ? 'bg-muted text-foreground rounded-tl-sm' 
             : 'bg-primary text-primary-foreground rounded-tr-sm'
         }`}>
-          <p className="text-[11px] sm:text-sm leading-relaxed">{message.content}</p>
+          <p className="text-[11px] sm:text-sm leading-relaxed">{renderMarkdown(message.content)}</p>
         </div>
         
         {/* Timestamp */}
