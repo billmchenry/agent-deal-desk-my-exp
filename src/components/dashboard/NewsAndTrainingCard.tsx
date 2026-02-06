@@ -1,33 +1,14 @@
-import { Play, Sparkles } from "lucide-react";
+import { Play, Sparkles, ExternalLink, GraduationCap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const trainingEvents = [
-  {
-    id: 1,
-    title: "Annual DISC Your Brand Online",
-    subtitle: "Weekly Team Huddle - 2 PM",
-    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face",
-    initials: "DY",
-  },
-  {
-    id: 2,
-    title: "Annual Conference with 'Building Your 2026 Date Announced!'",
-    subtitle: "",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=face",
-    initials: "AC",
-  },
-  {
-    id: 3,
-    title: "Annual Partnership with",
-    subtitle: "'Building Your Huddle - Calendar'",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
-    initials: "AP",
-    date: "29",
-  },
+const quickLinks = [
+  { label: "eXpU Courses", url: "#" },
+  { label: "eXpU YouTube", url: "#" },
+  { label: "KGCI Real Estate on Air", url: "#" },
+  { label: "Instructor Interest Form", url: "#" },
 ];
 
 export function NewsAndTrainingCard() {
@@ -73,31 +54,32 @@ export function NewsAndTrainingCard() {
             </p>
           </TabsContent>
           
-          <TabsContent value="training" className="space-y-3 mt-0">
-            {trainingEvents.map((event) => (
-              <div
-                key={event.id}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
-              >
-                <Avatar className="h-10 w-10 rounded-lg">
-                  <AvatarImage src={event.avatar} alt={event.title} className="object-cover" />
-                  <AvatarFallback className="rounded-lg bg-primary text-primary-foreground text-xs">
-                    {event.initials}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{event.title}</p>
-                  {event.subtitle && (
-                    <p className="text-xs text-muted-foreground">{event.subtitle}</p>
-                  )}
-                </div>
-                {event.date && (
-                  <Badge variant="secondary" className="h-8 w-8 rounded-lg flex items-center justify-center text-sm font-bold">
-                    {event.date}
-                  </Badge>
-                )}
+          <TabsContent value="training" className="mt-0">
+            {/* eXp University Header */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold text-foreground">eXp</span>
+                <span className="text-muted-foreground">|</span>
+                <span className="text-lg font-semibold text-muted-foreground tracking-wide">UNIVERSITY</span>
               </div>
-            ))}
+            </div>
+
+            {/* Quick Links */}
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-foreground mb-2">Quick Links</p>
+              <div className="grid grid-cols-1 gap-1">
+                {quickLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    className="flex items-center gap-2 px-2 py-2 rounded-md text-sm text-primary hover:bg-muted/50 hover:underline transition-colors"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </CardContent>
