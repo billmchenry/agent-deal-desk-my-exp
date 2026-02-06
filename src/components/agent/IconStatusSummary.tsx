@@ -53,7 +53,7 @@ export function IconStatusSummary() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-foreground">{goal.label}</span>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10 text-xs">
+                    <Badge variant="secondary" className="bg-exp-blue/10 text-exp-blue hover:bg-exp-blue/10 text-xs">
                       In Progress
                     </Badge>
                     <span className="text-xs text-muted-foreground">{goal.percentage}%</span>
@@ -91,12 +91,12 @@ export function IconStatusSummary() {
                 >
                   <span className="text-xs text-muted-foreground font-medium">{grant.label}</span>
                   {grant.status === "awarded" ? (
-                    <Badge className="bg-green-500 hover:bg-green-500 text-white gap-1 text-[10px]">
+                    <Badge className="bg-exp-green/10 text-exp-green border-exp-green/20 hover:bg-exp-green/10 gap-1 text-[10px]">
                       <Check className="h-3 w-3" />
                       Awarded
                     </Badge>
                   ) : (
-                    <Badge variant="secondary" className="bg-primary/10 text-primary text-[10px]">
+                    <Badge variant="secondary" className="bg-exp-blue/10 text-exp-blue text-[10px]">
                       In Progress
                     </Badge>
                   )}

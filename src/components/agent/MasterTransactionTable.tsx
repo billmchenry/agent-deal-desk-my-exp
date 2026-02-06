@@ -107,11 +107,11 @@ const transactionsData: Transaction[] = [
 function getStatusBadge(status: string) {
   switch (status.toLowerCase()) {
     case "paid":
-      return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Paid</Badge>;
+      return <Badge className="bg-exp-green/10 text-exp-green border-exp-green/20 hover:bg-exp-green/10">Paid</Badge>;
     case "pending":
-      return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Pending</Badge>;
+      return <Badge className="bg-exp-gold/10 text-exp-gold border-exp-gold/20 hover:bg-exp-gold/10">Pending</Badge>;
     case "withdrawn":
-      return <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">Withdrawn</Badge>;
+      return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Withdrawn</Badge>;
     default:
       return <Badge variant="outline">{status}</Badge>;
   }

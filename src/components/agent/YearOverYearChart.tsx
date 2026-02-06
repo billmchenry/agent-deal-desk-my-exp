@@ -31,7 +31,7 @@ export function YearOverYearChart() {
   const [chartTab, setChartTab] = useState("units");
 
   return (
-    <Card>
+    <Card className="border shadow-sm">
       <CardHeader className="pb-2 pt-4 px-4 sm:px-6">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <CardTitle className="text-sm font-semibold">
@@ -57,7 +57,7 @@ export function YearOverYearChart() {
             <Bar
               dataKey="currentYear"
               name="Current Year"
-              fill="hsl(var(--primary))"
+              fill="hsl(var(--exp-blue))"
               radius={[4, 4, 0, 0]}
             />
             <Bar
