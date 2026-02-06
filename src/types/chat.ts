@@ -1,3 +1,9 @@
+export interface ChatMessageAction {
+  label: string;
+  icon?: 'focus' | 'pin';
+  onClick?: () => void;
+}
+
 export interface ChatMessageData {
   id: string;
   sender: 'user' | 'ai';
@@ -7,6 +13,7 @@ export interface ChatMessageData {
     id: string;
     title: string;
   };
+  action?: ChatMessageAction;
   timestamp: Date;
 }
 

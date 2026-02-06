@@ -1,4 +1,5 @@
-import { Sparkles } from "lucide-react";
+import { Sparkles, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { WidgetPreview } from "./WidgetPreview";
 import { ChatMessageData } from "@/types/chat";
 
@@ -46,6 +47,19 @@ export function ChatMessage({ message, onFollowUp }: ChatMessageProps) {
             : 'bg-primary text-primary-foreground rounded-tr-sm'
         }`}>
           <p className="text-[11px] sm:text-sm leading-relaxed">{renderMarkdown(message.content)}</p>
+          
+          {/* Inline action button */}
+          {message.action && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={message.action.onClick}
+              className="mt-2 h-7 sm:h-8 px-2.5 sm:px-3 text-[11px] sm:text-xs rounded-full bg-primary/10 hover:bg-primary/20 text-primary gap-1.5"
+            >
+              <MapPin className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              {message.action.label}
+            </Button>
+          )}
         </div>
         
         {/* Timestamp */}
