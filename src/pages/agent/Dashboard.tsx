@@ -4,7 +4,6 @@ import { AgentFilterBar } from "@/components/agent/AgentFilterBar";
 import { VitalSignsRow } from "@/components/agent/VitalSignsRow";
 import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
 import { CappingHistorySection } from "@/components/agent/CappingHistorySection";
-import { IconStatusSummary } from "@/components/agent/IconStatusSummary";
 import { MasterTransactionTable } from "@/components/agent/MasterTransactionTable";
 
 export default function AgentDashboard() {
@@ -46,9 +45,6 @@ export default function AgentDashboard() {
 
         {/* Capping History */}
         <CappingHistorySection />
-
-        {/* ICON Status Summary */}
-        <IconStatusSummary />
 
         {/* Master Transaction Table */}
         <MasterTransactionTable />
