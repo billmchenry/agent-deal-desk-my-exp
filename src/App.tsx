@@ -11,8 +11,6 @@ import PersonalDetails from "./pages/profile/PersonalDetails";
 import Settings from "./pages/profile/Settings";
 import AgentDashboard from "./pages/agent/Dashboard";
 import IconProgram from "./pages/agent/IconProgram";
-import CappingHistory from "./pages/agent/CappingHistory";
-import Transactions from "./pages/agent/Transactions";
 import TeamDashboard from "./pages/team/Dashboard";
 import RevShareDashboard from "./pages/revshare/Dashboard";
 import OrganizationReporting from "./pages/revshare/Organization";
@@ -39,8 +37,6 @@ const App = () => (
               <Route path="/profile/settings" element={<Settings />} />
               <Route path="/agent/dashboard" element={<AgentDashboard />} />
               <Route path="/agent/icon-program" element={<IconProgram />} />
-              <Route path="/agent/capping-history" element={<CappingHistory />} />
-              <Route path="/agent/transactions" element={<Transactions />} />
               <Route path="/team/dashboard" element={<TeamDashboard />} />
               <Route path="/revshare/dashboard" element={<RevShareDashboard />} />
               <Route path="/revshare/organization" element={<OrganizationReporting />} />
