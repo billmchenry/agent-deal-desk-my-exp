@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { AgentHeroBanner } from "@/components/agent/AgentHeroBanner";
 import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
-import { CappingHistorySection } from "@/components/agent/CappingHistorySection";
+import { CappingSection } from "@/components/agent/CappingSection";
 
 export default function AgentDashboard() {
   const [dateRange, setDateRange] = useState<{
@@ -25,12 +25,13 @@ export default function AgentDashboard() {
           transactionsClosed={5}
           transactionsPending={15}
           transactionsWithdrawn={5}
+        />
+        <YearOverYearChart />
+        <CappingSection
           capCurrent={481.9}
           capTarget={16000}
           capPercentage={3}
         />
-        <YearOverYearChart />
-        <CappingHistorySection />
       </div>
     </DashboardLayout>
   );
