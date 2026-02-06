@@ -7,7 +7,6 @@ import { WidgetType } from "@/types/dashboard";
 import { ForecastWidget } from "@/components/dashboard/widgets/ForecastWidget";
 import { VelocityWidget } from "@/components/dashboard/widgets/VelocityWidget";
 import { PipelineWidget } from "@/components/dashboard/widgets/PipelineWidget";
-import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface WidgetPreviewProps {
@@ -56,7 +55,7 @@ const widgetInsights: Record<string, { insights: { icon: 'trend' | 'sparkle'; te
 
 export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProps) {
   const { addWidget, isWidgetPinned, widgets } = useDashboard();
-  const { setFocusWidgetId, closeChat } = useMiraChat();
+  const { setFocusWidgetId, closeChat, setCurrentMessages } = useMiraChat();
   const isPinned = isWidgetPinned(type as WidgetType);
   const { insights, followUps } = widgetInsights[type] || { insights: [], followUps: [] };
 
@@ -65,7 +64,15 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
 
   const handlePin = () => {
     addWidget(type as WidgetType);
-    toast.success("Insight pinned to Home");
+    setCurrentMessages(prev => [
+      ...prev,
+      {
+        id: `pin-success-${Date.now()}`,
+        sender: 'ai' as const,
+        content: `✅ Done! I've pinned **${title}** to your dashboard. You can click "Focus" to jump to it anytime.`,
+        timestamp: new Date(),
+      },
+    ]);
   };
 
   const handleFocus = () => {
