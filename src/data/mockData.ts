@@ -412,7 +412,6 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
           { title: "My RevShare Trends", url: "/revshare/trends" },
         ],
       },
-      { title: "ICON Program", icon: "Award", url: "/agent/icon-program" },
       { title: "Mentor Program", icon: "GraduationCap", url: "/mentor" },
     ],
   },
