@@ -154,9 +154,9 @@ export function MasterTransactionTable() {
   return (
     <section>
       {/* Sticky header */}
-      <div className="sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b px-0 py-3">
+      <div className="sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b px-0 py-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-foreground">Transactions</h2>
+          <h2 className="text-sm font-semibold text-foreground">Transactions</h2>
           <div className="flex items-center gap-3">
             <Button variant="outline" size="sm" className="gap-2 text-xs h-8">
               <Download className="h-3.5 w-3.5" />

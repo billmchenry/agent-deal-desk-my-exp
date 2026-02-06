@@ -31,21 +31,23 @@ export function YearOverYearChart() {
   const [chartTab, setChartTab] = useState("units");
 
   return (
-    <Card className="mb-6">
-      <CardHeader>
-        <CardTitle className="text-base font-semibold">
-          Year-over-Year Comparison
-        </CardTitle>
-        <Tabs value={chartTab} onValueChange={setChartTab} className="w-full">
-          <TabsList className="bg-muted">
-            <TabsTrigger value="units">Units</TabsTrigger>
-            <TabsTrigger value="volume">Volume</TabsTrigger>
-            <TabsTrigger value="commission">Commission</TabsTrigger>
-          </TabsList>
-        </Tabs>
+    <Card>
+      <CardHeader className="pb-2 pt-4 px-4 sm:px-6">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <CardTitle className="text-sm font-semibold">
+            Year-over-Year Comparison
+          </CardTitle>
+          <Tabs value={chartTab} onValueChange={setChartTab}>
+            <TabsList className="bg-muted h-8">
+              <TabsTrigger value="units" className="text-xs h-7 px-3">Units</TabsTrigger>
+              <TabsTrigger value="volume" className="text-xs h-7 px-3">Volume</TabsTrigger>
+              <TabsTrigger value="commission" className="text-xs h-7 px-3">Commission</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
       </CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
+      <CardContent className="px-2 sm:px-4 pb-4">
+        <ResponsiveContainer width="100%" height={260}>
           <BarChart data={yearOverYearData}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 12 }} />

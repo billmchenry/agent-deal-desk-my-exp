@@ -23,9 +23,9 @@ function StatCard({
 }) {
   return (
     <Card>
-      <CardContent className="p-4 sm:p-6">
-        <p className="text-sm text-muted-foreground mb-1">{title}</p>
-        <p className="text-xl sm:text-2xl font-semibold text-foreground">
+      <CardContent className="p-3 sm:p-4">
+        <p className="text-xs text-muted-foreground mb-1">{title}</p>
+        <p className="text-lg sm:text-xl font-semibold text-foreground truncate">
           {prefix}
           {typeof value === "number" ? value.toLocaleString("en-US") : value}
         </p>
@@ -41,28 +41,28 @@ function CircularProgress({
   percentage: number;
   value: number;
 }) {
-  const radius = 50;
+  const radius = 40;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
     <div className="relative flex items-center justify-center">
-      <svg className="w-28 h-28 -rotate-90" viewBox="0 0 120 120">
+      <svg className="w-20 h-20 -rotate-90" viewBox="0 0 100 100">
         <circle
-          cx="60"
-          cy="60"
+          cx="50"
+          cy="50"
           r={radius}
           fill="none"
           stroke="hsl(var(--muted))"
-          strokeWidth="8"
+          strokeWidth="7"
         />
         <circle
-          cx="60"
-          cy="60"
+          cx="50"
+          cy="50"
           r={radius}
           fill="none"
           stroke="hsl(var(--primary))"
-          strokeWidth="8"
+          strokeWidth="7"
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
@@ -70,10 +70,10 @@ function CircularProgress({
         />
       </svg>
       <div className="absolute text-center">
-        <p className="text-base font-semibold text-primary">
+        <p className="text-sm font-semibold text-primary">
           ${value.toLocaleString("en-US")}
         </p>
-        <p className="text-xs text-primary">{percentage}%</p>
+        <p className="text-[10px] text-primary">{percentage}%</p>
       </div>
     </div>
   );
@@ -91,19 +91,15 @@ export function VitalSignsRow({
   capPercentage,
 }: VitalSignsRowProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+    <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
       <StatCard title="Units" value={units} />
       <StatCard title="Volume" value={volume.toFixed(2)} prefix="$" />
       <StatCard title="Commission" value={commission.toFixed(2)} prefix="$" />
 
       {/* Transactions summary */}
       <Card>
-        <CardHeader className="pb-1 pt-4 px-4 sm:px-6">
-          <CardTitle className="text-sm text-muted-foreground font-normal">
-            Transactions
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0 px-4 sm:px-6 pb-4 sm:pb-6">
+        <CardContent className="p-3 sm:p-4">
+          <p className="text-xs text-muted-foreground mb-1.5">Transactions</p>
           <div className="space-y-0.5 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Closed</span>
@@ -123,14 +119,10 @@ export function VitalSignsRow({
 
       {/* Cap Status */}
       <Card>
-        <CardHeader className="pb-0 pt-3 px-4 sm:px-6">
-          <CardTitle className="text-sm text-muted-foreground font-normal">
-            Cap Status
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center px-4 sm:px-6 pb-3">
+        <CardContent className="p-3 sm:p-4 flex flex-col items-center">
+          <p className="text-xs text-muted-foreground mb-1 self-start">Cap Status</p>
           <CircularProgress percentage={capPercentage} value={capCurrent} />
-          <p className="text-[11px] text-muted-foreground text-center mt-1 leading-tight">
+          <p className="text-[10px] text-muted-foreground text-center mt-0.5 leading-tight">
             Complete ${(capTarget / 1000).toFixed(0)}K to achieve cap
           </p>
         </CardContent>
