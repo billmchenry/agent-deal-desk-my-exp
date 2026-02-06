@@ -431,11 +431,7 @@ export const navItems = [
   {
     title: "Agent",
     icon: "User",
-    hasSubmenu: true,
-    submenu: [
-      { title: "Dashboard", url: "/agent/dashboard" },
-      { title: "ICON Program", url: "/agent/icon-program" },
-    ],
+    url: "/agent/dashboard",
   },
   {
     title: "Team",
