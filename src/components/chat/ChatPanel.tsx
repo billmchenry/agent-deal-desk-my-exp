@@ -61,7 +61,7 @@ interface ChatContentProps {
   setInputValue: (value: string) => void;
   handleKeyPress: (e: React.KeyboardEvent) => void;
   handleSend: () => void;
-  scrollRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef: React.RefObject<HTMLDivElement>;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   filteredConversations: any[];
@@ -83,7 +83,7 @@ function ChatContent({
   setInputValue,
   handleKeyPress,
   handleSend,
-  scrollRef,
+  messagesEndRef,
   searchQuery,
   setSearchQuery,
   filteredConversations,
@@ -134,7 +134,7 @@ function ChatContent({
           </div>
         </div>
 
-        <ScrollArea className="flex-1 p-3 sm:p-4" ref={scrollRef}>
+        <ScrollArea className="flex-1 p-3 sm:p-4">
           <div className="flex flex-col gap-4 sm:gap-6">
             {currentMessages.map((message) => (
               <ChatMessage 
@@ -143,6 +143,7 @@ function ChatContent({
                 onFollowUp={handleFollowUp}
               />
             ))}
+            <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
 
@@ -295,7 +296,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const [showHistory, setShowHistory] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [swipedId, setSwipedId] = useState<string | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleLoadConversation = (id: string) => {
     loadConversation(id);
@@ -322,8 +323,8 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [currentMessages]);
 
@@ -416,7 +417,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     setInputValue,
     handleKeyPress,
     handleSend,
-    scrollRef,
+    messagesEndRef,
     searchQuery,
     setSearchQuery,
     filteredConversations,
