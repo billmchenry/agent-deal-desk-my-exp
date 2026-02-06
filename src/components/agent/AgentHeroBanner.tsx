@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Filter, CalendarIcon, Home, DollarSign, Building2, TrendingUp, Target, Clock, FileText } from "lucide-react";
+import { Filter, Home, DollarSign, Building2, Target, FileText } from "lucide-react";
 import { format, startOfYear, startOfMonth, subWeeks, subYears } from "date-fns";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,9 +26,6 @@ interface AgentHeroBannerProps {
   transactionsClosed: number;
   transactionsPending: number;
   transactionsWithdrawn: number;
-  capCurrent: number;
-  capTarget: number;
-  capPercentage: number;
 }
 
 const presets = [
@@ -78,14 +75,8 @@ export function AgentHeroBanner({
   transactionsClosed,
   transactionsPending,
   transactionsWithdrawn,
-  capCurrent,
-  capTarget,
-  capPercentage,
 }: AgentHeroBannerProps) {
   const [open, setOpen] = useState(false);
-  const remaining = capTarget - capCurrent;
-  const circumference = 2 * Math.PI * 40;
-  const strokeDashoffset = circumference - (capPercentage / 100) * circumference;
 
   const formatCurrency = (value: number) => {
     if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
@@ -103,39 +94,14 @@ export function AgentHeroBanner({
 
       <div className="relative z-10">
         {/* Header Row */}
-        <div className="flex items-start justify-between gap-4 mb-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Badge className="bg-exp-gold/20 text-exp-gold-light border-exp-gold/30 hover:bg-exp-gold/30">
-                <Target className="mr-1 h-3 w-3" />
-                PERFORMANCE
-              </Badge>
-            </div>
-            <h1 className="text-xl sm:text-2xl font-bold">Agent Performance</h1>
-            <p className="text-sm text-white/70 mt-0.5">
-              You're <span className="font-semibold text-white">{formatCurrency(remaining)}</span> away from capping
-            </p>
+        <div className="mb-4">
+          <div className="flex items-center gap-2 mb-1">
+            <Badge className="bg-exp-gold/20 text-exp-gold-light border-exp-gold/30 hover:bg-exp-gold/30">
+              <Target className="mr-1 h-3 w-3" />
+              PERFORMANCE
+            </Badge>
           </div>
-
-          {/* Cap Progress Ring */}
-          <div className="flex flex-col items-center shrink-0">
-            <div className="relative h-20 w-20 sm:h-24 sm:w-24">
-              <svg className="h-20 w-20 sm:h-24 sm:w-24 -rotate-90 transform" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="8" />
-                <circle
-                  cx="50" cy="50" r="40" fill="none"
-                  stroke="hsl(var(--exp-green))"
-                  strokeWidth="8"
-                  strokeDasharray={`${capPercentage * 2.51} 251`}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-lg sm:text-xl font-bold">{capPercentage}%</span>
-                <span className="text-[10px] text-white/70">Cap</span>
-              </div>
-            </div>
-          </div>
+          <h1 className="text-xl sm:text-2xl font-bold">Agent Performance</h1>
         </div>
 
         {/* Date filter row */}
@@ -173,7 +139,7 @@ export function AgentHeroBanner({
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
           <MiniStatCard
             icon={<Home className="h-4 w-4" />}
             value={units.toString()}
@@ -197,12 +163,6 @@ export function AgentHeroBanner({
             value={`${transactionsClosed}/${transactionsPending}/${transactionsWithdrawn}`}
             label="Closed / Pending / Withdrawn"
             color="gold"
-          />
-          <MiniStatCard
-            icon={<TrendingUp className="h-4 w-4" />}
-            value={formatCurrency(capCurrent)}
-            label={`of ${formatCurrency(capTarget)} cap`}
-            color="green"
           />
         </div>
       </div>
