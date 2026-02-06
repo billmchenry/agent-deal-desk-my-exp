@@ -19,7 +19,7 @@ export default function AgentDashboard() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-2">
+      <div className="space-y-4">
         {/* Global filter bar */}
         <AgentFilterBar
           dateRange={dateRange}

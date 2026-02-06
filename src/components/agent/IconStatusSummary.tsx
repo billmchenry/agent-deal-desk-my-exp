@@ -30,9 +30,9 @@ export function IconStatusSummary() {
   return (
     <section>
       {/* Sticky header */}
-      <div className="sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b px-0 py-3">
+      <div className="sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b px-0 py-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-foreground">ICON Status</h2>
+          <h2 className="text-sm font-semibold text-foreground">ICON Status</h2>
           <Link
             to="/agent/icon-program"
             className="inline-flex items-center gap-1 text-sm text-primary hover:underline min-h-[44px] px-2"
@@ -43,11 +43,11 @@ export function IconStatusSummary() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-2">
         {/* Production Goals */}
         <Card>
-          <CardContent className="p-4 sm:p-6 space-y-5">
-            <h3 className="font-semibold text-foreground text-sm">Production Goals</h3>
+          <CardContent className="p-3 sm:p-4 space-y-4">
+            <h3 className="font-semibold text-foreground text-xs">Production Goals</h3>
             {productionGoals.map((goal) => (
               <div key={goal.label} className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -81,9 +81,9 @@ export function IconStatusSummary() {
 
         {/* Stock Grants */}
         <Card>
-          <CardContent className="p-4 sm:p-6">
-            <h3 className="font-semibold text-foreground text-sm mb-4">Stock Grants</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <CardContent className="p-3 sm:p-4">
+            <h3 className="font-semibold text-foreground text-xs mb-3">Stock Grants</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {stockGrants.map((grant) => (
                 <div
                   key={grant.label}

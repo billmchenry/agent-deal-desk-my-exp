@@ -43,8 +43,8 @@ export function AgentFilterBar({
   };
 
   return (
-    <div className="flex items-center justify-between mb-6">
-      <h1 className="text-2xl font-bold text-foreground">Agent Performance</h1>
+    <div className="flex items-center justify-between mb-2">
+      <h1 className="text-xl font-bold text-foreground">Agent Performance</h1>
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
