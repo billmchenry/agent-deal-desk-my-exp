@@ -3,7 +3,6 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { AgentHeroBanner } from "@/components/agent/AgentHeroBanner";
 import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
 import { CappingHistorySection } from "@/components/agent/CappingHistorySection";
-import { IconStatusSummary } from "@/components/agent/IconStatusSummary";
 
 export default function AgentDashboard() {
   const [dateRange, setDateRange] = useState<{
@@ -32,7 +31,6 @@ export default function AgentDashboard() {
         />
         <YearOverYearChart />
         <CappingHistorySection />
-        <IconStatusSummary />
       </div>
     </DashboardLayout>
   );
