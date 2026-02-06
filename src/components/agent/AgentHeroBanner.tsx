@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Filter, Home, DollarSign, Building2, Target, FileText } from "lucide-react";
+import { CalendarDays, Home, DollarSign, Building2, Target, FileText } from "lucide-react";
 import { format, startOfYear, startOfMonth, subWeeks, subYears } from "date-fns";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -101,41 +101,37 @@ export function AgentHeroBanner({
               PERFORMANCE
             </Badge>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold">Agent Performance</h1>
-        </div>
-
-        {/* Date filter row */}
-        <div className="flex items-center gap-2 mb-4">
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Button variant="secondary" size="sm" className="gap-2 text-xs bg-white/15 border-white/20 text-white hover:bg-white/25 hover:text-white h-8">
-                <Filter className="h-3.5 w-3.5" />
-                {dateRange.from && dateRange.to ? (
-                  <>
-                    {format(dateRange.from, "MM/dd/yyyy")} – {format(dateRange.to, "MM/dd/yyyy")}
-                  </>
-                ) : (
-                  "Select date range"
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-4" align="start">
-              <div className="flex flex-wrap gap-2 mb-4">
-                {presets.map((p) => (
-                  <Button key={p.label} variant="outline" size="sm" className="text-xs h-7" onClick={() => onDateRangeChange(p.getRange())}>
-                    {p.label}
-                  </Button>
-                ))}
-              </div>
-              <Calendar
-                mode="range"
-                selected={dateRange}
-                onSelect={(range) => onDateRangeChange({ from: range?.from, to: range?.to })}
-                numberOfMonths={2}
-                className={cn("p-3 pointer-events-auto")}
-              />
-            </PopoverContent>
-          </Popover>
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold">Agent Performance</h1>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <button className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white border-b border-transparent hover:border-white/40 transition-all cursor-pointer pb-0.5">
+                  <CalendarDays className="h-3.5 w-3.5" />
+                  {dateRange.from && dateRange.to ? (
+                    <span>{format(dateRange.from, "MMM d, yyyy")} – {format(dateRange.to, "MMM d, yyyy")}</span>
+                  ) : (
+                    <span>Select date range</span>
+                  )}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-4" align="end">
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {presets.map((p) => (
+                    <Button key={p.label} variant="outline" size="sm" className="text-xs h-7" onClick={() => onDateRangeChange(p.getRange())}>
+                      {p.label}
+                    </Button>
+                  ))}
+                </div>
+                <Calendar
+                  mode="range"
+                  selected={dateRange}
+                  onSelect={(range) => onDateRangeChange({ from: range?.from, to: range?.to })}
+                  numberOfMonths={2}
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
 
         {/* Stats Grid */}
