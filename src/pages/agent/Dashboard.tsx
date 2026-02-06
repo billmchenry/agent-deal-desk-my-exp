@@ -2,6 +2,7 @@ import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { AgentHeroBanner } from "@/components/agent/AgentHeroBanner";
 import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
+import { CappingHistorySection } from "@/components/agent/CappingHistorySection";
 import { IconStatusSummary } from "@/components/agent/IconStatusSummary";
 
 export default function AgentDashboard() {
@@ -16,7 +17,6 @@ export default function AgentDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-4">
-        {/* Hero Banner with stats, cap progress, and date filter */}
         <AgentHeroBanner
           dateRange={dateRange}
           onDateRangeChange={setDateRange}
@@ -30,11 +30,8 @@ export default function AgentDashboard() {
           capTarget={16000}
           capPercentage={3}
         />
-
-        {/* Year-over-Year Chart */}
         <YearOverYearChart />
-
-        {/* ICON Status Summary */}
+        <CappingHistorySection />
         <IconStatusSummary />
       </div>
     </DashboardLayout>

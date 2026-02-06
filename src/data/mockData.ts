@@ -387,13 +387,12 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
     items: [
       { title: "Home", icon: "Home", url: "/" },
       {
-        title: "Agent Performance",
-        icon: "LayoutDashboard",
+        title: "Agent",
+        icon: "User",
         submenu: [
-          { title: "Overview", url: "/agent/dashboard" },
-          { title: "Capping History", url: "/agent/capping" },
-          { title: "ICON Program", url: "/agent/icon-program" },
+          { title: "Dashboard", url: "/agent/dashboard" },
           { title: "Transactions", url: "/agent/transactions" },
+          { title: "ICON Program", url: "/agent/icon-program" },
         ],
       },
       {
