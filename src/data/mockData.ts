@@ -389,6 +389,7 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
       {
         title: "Agent",
         icon: "User",
+        url: "/agent/dashboard",
         submenu: [
           { title: "Dashboard", url: "/agent/dashboard" },
           { title: "Transactions", url: "/agent/transactions" },
@@ -398,6 +399,7 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
       {
         title: "Documents",
         icon: "FileText",
+        url: "/documents/all",
         submenu: [
           { title: "All Documents", url: "/documents/all" },
           { title: "Templates", url: "/documents/templates" },
@@ -413,6 +415,7 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
       {
         title: "RevShare Earnings",
         icon: "DollarSign",
+        url: "/revshare/dashboard",
         submenu: [
           { title: "Dashboard", url: "/revshare/dashboard" },
           { title: "Organization", url: "/revshare/organization" },
