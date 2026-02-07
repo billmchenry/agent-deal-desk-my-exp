@@ -1,51 +1,22 @@
 
 
-## Redesign the Agent Performance Date Filter
+## Fix Calendar Dropdown UX
 
-The current date filter button on the hero banner looks like a standalone, old-school filter button floating awkwardly below the title. It needs to feel more integrated and modern.
+The month and year selectors in the calendar look like static text boxes because the native dropdown arrow is hidden (`appearance-none`) with no replacement visual indicator. Users can't tell these are interactive. Having both arrow navigation and dropdowns side-by-side also creates confusion.
 
 ### What Changes
 
-**Move the date range into the header row** -- Instead of a separate row with a chunky button, the date range will be displayed inline next to the title as a subtle, clickable text element with a calendar icon. This mirrors how modern dashboards show contextual filters -- clean, minimal, and part of the header flow.
+**Make dropdowns obviously interactive** -- Add a visible dropdown chevron indicator and improve the visual styling so users immediately recognize these as selectable controls.
 
-**New filter design:**
-- The date range text sits right next to "Agent Performance" on the same line (or wraps naturally on mobile)
-- Styled as a light, understated pill with a small `CalendarDays` icon -- white text with a subtle underline/border on hover
-- No heavy `bg-white/15` block; instead a transparent trigger with a light bottom border or subtle opacity shift on hover
-- Preset chips (YTD, MTD, etc.) remain inside the popover calendar dropdown
+**Simplify navigation** -- When dropdowns are active, the left/right arrow buttons become redundant. Hide them so the caption area is clean and focused on the dropdown controls.
 
 ### Technical Details
 
-**File: `src/components/agent/AgentHeroBanner.tsx`**
+**File: `src/components/ui/calendar.tsx`**
 
-1. Remove the standalone "Date filter row" `div` (lines 107-139)
-2. Integrate the date picker trigger into the header section alongside the title:
-   - Title "Agent Performance" on the left
-   - Date range as a compact, clickable element on the right of the same row
-   - Use `CalendarDays` icon instead of `Filter` icon for a more modern look
-   - Style: transparent background, `text-white/80 hover:text-white` with a subtle bottom border or rounded pill with very light border (`border border-white/20`)
-3. On mobile, the date range wraps below the title naturally using `flex-wrap`
-4. The popover content (presets + calendar) stays the same -- only the trigger visual changes
+1. Update the `dropdown` class to restore a styled dropdown arrow using CSS `background-image` (an inline SVG chevron) positioned on the right side, with appropriate padding-right to make room for it
+2. Add a subtle filled background (`bg-muted/50`) and stronger hover state (`hover:bg-accent`) so the dropdowns feel like real controls rather than flat text
+3. When `hasDropdowns` is true, hide the nav buttons by conditionally applying `hidden` to `nav_button_previous` and `nav_button_next` -- since the dropdowns already handle month/year jumping, the arrows are redundant
+4. Slightly increase padding on the dropdowns for better touch targets
 
-### Visual Result
-
-**Before:**
-```text
-[PERFORMANCE badge]
-Agent Performance
-[ Filter icon  01/01/2026 - 02/06/2026 ]    <-- bulky, separate row
-
-[Units] [Volume] [Commission] [Transactions]
-```
-
-**After:**
-```text
-[PERFORMANCE badge]
-Agent Performance          [calendar] Jan 1 - Feb 6, 2026
-                                       ^-- subtle, inline
-
-[Units] [Volume] [Commission] [Transactions]
-```
-
-The date text uses a friendlier format (`MMM d, yyyy`) instead of the utilitarian `MM/dd/yyyy`, and the trigger is styled to feel like part of the banner rather than a separate control.
-
+These changes apply globally to the Calendar component, so both the Agent Dashboard date picker and any future calendar usage benefit automatically.
