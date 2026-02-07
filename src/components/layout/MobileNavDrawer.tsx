@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
@@ -15,7 +15,6 @@ import {
   Award,
   ChevronRight,
   ChevronDown,
-  X,
   Store,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -43,6 +42,12 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Store,
 };
 
+/** Check if the current path belongs to a submenu section */
+function isInSection(pathname: string, item: SidebarNavItem): boolean {
+  if (!item.submenu) return false;
+  return item.submenu.some((sub) => pathname.startsWith(sub.url.split("/").slice(0, 3).join("/")));
+}
+
 interface MobileNavDrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -51,19 +56,46 @@ interface MobileNavDrawerProps {
 export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const [manuallyCollapsed, setManuallyCollapsed] = useState<string | null>(null);
 
   const isActive = (url?: string) => {
     if (!url) return false;
     return location.pathname === url;
   };
 
-  const handleItemClick = (item: SidebarNavItem) => {
-    if (item.submenu) {
-      setExpandedItem((prev) => (prev === item.title ? null : item.title));
+  const isExpanded = (item: SidebarNavItem): boolean => {
+    const inSection = isInSection(location.pathname, item);
+    if (inSection && manuallyCollapsed === item.title) return false;
+    return inSection;
+  };
+
+  // Reset manual collapse when route changes sections
+  useEffect(() => {
+    setManuallyCollapsed(null);
+  }, [location.pathname]);
+
+  const handleParentClick = (item: SidebarNavItem) => {
+    if (item.submenu && item.url) {
+      navigate(item.url);
+      setManuallyCollapsed(null);
+      onClose();
     } else if (item.url) {
       navigate(item.url);
       onClose();
+    }
+  };
+
+  const handleChevronClick = (e: React.MouseEvent, item: SidebarNavItem) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInSection(location.pathname, item)) {
+      setManuallyCollapsed((prev) => (prev === item.title ? null : item.title));
+    } else {
+      // If not in section, clicking chevron navigates + opens
+      if (item.url) {
+        navigate(item.url);
+        onClose();
+      }
     }
   };
 
@@ -74,31 +106,38 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
   const renderNavItem = (item: SidebarNavItem) => {
     const Icon = iconMap[item.icon];
-    const isExpanded = expandedItem === item.title;
     const hasSubmenu = !!item.submenu;
+    const expanded = hasSubmenu && isExpanded(item);
 
     return (
       <div key={item.title}>
-        <button
-          onClick={() => handleItemClick(item)}
-          className={cn(
-            "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-            "text-foreground hover:bg-muted",
-            isActive(item.url) && "bg-muted text-exp-blue"
-          )}
-        >
-          {Icon && <Icon className="h-5 w-5 shrink-0" />}
-          <span className="flex-1 text-left">{item.title}</span>
+        <div className="flex items-center">
+          <button
+            onClick={() => handleParentClick(item)}
+            className={cn(
+              "flex flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+              "text-foreground hover:bg-muted",
+              isActive(item.url) && "bg-muted text-exp-blue"
+            )}
+          >
+            {Icon && <Icon className="h-5 w-5 shrink-0" />}
+            <span className="flex-1 text-left">{item.title}</span>
+          </button>
           {hasSubmenu && (
-            isExpanded ? (
-              <ChevronDown className="h-4 w-4 shrink-0" />
-            ) : (
-              <ChevronRight className="h-4 w-4 shrink-0" />
-            )
+            <button
+              onClick={(e) => handleChevronClick(e, item)}
+              className="p-2 rounded-lg hover:bg-muted transition-colors"
+            >
+              {expanded ? (
+                <ChevronDown className="h-4 w-4 shrink-0" />
+              ) : (
+                <ChevronRight className="h-4 w-4 shrink-0" />
+              )}
+            </button>
           )}
-        </button>
+        </div>
 
-        {hasSubmenu && isExpanded && (
+        {hasSubmenu && expanded && (
           <div className="ml-8 mt-1 space-y-1 border-l border-border pl-3">
             {item.submenu?.map((subItem) => (
               <button
