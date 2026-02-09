@@ -43,6 +43,7 @@ function getCapColor(pct: string) {
 }
 
 export function CappingHistoryTable() {
+  const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDir, setSortDir] = useState<SortDir>("asc");
@@ -87,24 +88,38 @@ export function CappingHistoryTable() {
       <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
         <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">History</h3>
         <div className="flex items-center gap-2">
-          <div className="relative">
-            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
-            <Input
-              placeholder="Search..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="h-7 w-[130px] pl-7 text-xs"
-            />
-          </div>
+          <Button
+            variant={showSearch ? "secondary" : "ghost"}
+            size="sm"
+            className="gap-1.5 text-xs h-7 px-2"
+            onClick={() => setShowSearch((v) => !v)}
+          >
+            <Search className="h-3 w-3" />
+            Search
+          </Button>
           <Button variant="outline" size="sm" className="gap-1.5 text-xs h-7">
             <Download className="h-3 w-3" />
             <span className="hidden sm:inline">Download</span>
           </Button>
           <span className="text-xs text-muted-foreground">
-            {sortedData.length}
+            {sortedData.length} Results
           </span>
         </div>
       </div>
+      {showSearch && (
+        <div className="mb-2">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+            <Input
+              placeholder="Search all columns..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="h-7 pl-7 text-xs"
+            />
+          </div>
+        </div>
+      )}
+
       <div className="border rounded-lg overflow-hidden">
         <ScrollArea className="w-full">
           <Table>
