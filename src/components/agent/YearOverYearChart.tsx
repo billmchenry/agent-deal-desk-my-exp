@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   BarChart,
   Bar,
@@ -10,6 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  Cell,
 } from "recharts";
 
 const yearOverYearData = [
@@ -43,6 +45,20 @@ function CustomTooltip({ active, payload, label }: any) {
 
 export function YearOverYearChart() {
   const [chartTab, setChartTab] = useState("units");
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const isMobile = useIsMobile();
+
+  const selectedData = selectedMonth
+    ? yearOverYearData.find((d) => d.month === selectedMonth)
+    : null;
+
+  const handleBarClick = (data: any) => {
+    if (isMobile && data?.activeLabel) {
+      setSelectedMonth((prev) =>
+        prev === data.activeLabel ? null : data.activeLabel
+      );
+    }
+  };
 
   return (
     <Card className="border shadow-sm">
@@ -62,26 +78,79 @@ export function YearOverYearChart() {
       </CardHeader>
       <CardContent className="px-2 sm:px-4 pb-6">
         <ResponsiveContainer width="100%" height={320}>
-          <BarChart data={yearOverYearData} barCategoryGap="20%" barGap={4}>
+          <BarChart
+            data={yearOverYearData}
+            barCategoryGap="20%"
+            barGap={4}
+            onClick={handleBarClick}
+          >
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
             <YAxis tick={{ fontSize: 12 }} width={30} />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))' }} />
+            {!isMobile && (
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))' }} />
+            )}
+            {isMobile && (
+              <Tooltip content={() => null} cursor={{ fill: 'hsl(var(--muted))' }} />
+            )}
             <Legend />
             <Bar
               dataKey="currentYear"
               name="Current Year"
               fill="hsl(var(--exp-blue))"
               radius={[4, 4, 0, 0]}
-            />
+            >
+              {yearOverYearData.map((entry) => (
+                <Cell
+                  key={entry.month}
+                  fill={
+                    selectedMonth === entry.month
+                      ? "hsl(var(--exp-blue-light))"
+                      : "hsl(var(--exp-blue))"
+                  }
+                  stroke={selectedMonth === entry.month ? "hsl(var(--exp-blue))" : "none"}
+                  strokeWidth={selectedMonth === entry.month ? 2 : 0}
+                />
+              ))}
+            </Bar>
             <Bar
               dataKey="previousYear"
               name="Previous Year"
               fill="hsl(var(--exp-navy-light))"
               radius={[4, 4, 0, 0]}
-            />
+            >
+              {yearOverYearData.map((entry) => (
+                <Cell
+                  key={entry.month}
+                  fill={
+                    selectedMonth === entry.month
+                      ? "hsl(var(--exp-navy))"
+                      : "hsl(var(--exp-navy-light))"
+                  }
+                />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
+
+        {/* Mobile: tap-to-select detail strip */}
+        {isMobile && (
+          <div className="mt-3 rounded-lg bg-muted/50 px-3 py-2.5 text-center min-h-[44px] flex items-center justify-center">
+            {selectedData ? (
+              <div className="flex items-center gap-4">
+                <span className="font-semibold text-sm text-foreground">{selectedData.month}</span>
+                <span className="text-xs text-exp-blue">
+                  Current: <span className="font-semibold">{selectedData.currentYear}</span>
+                </span>
+                <span className="text-xs text-exp-navy">
+                  Previous: <span className="font-semibold">{selectedData.previousYear}</span>
+                </span>
+              </div>
+            ) : (
+              <span className="text-xs text-muted-foreground">Tap a bar to see details</span>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
