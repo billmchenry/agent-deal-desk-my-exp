@@ -34,14 +34,14 @@ export function YearOverYearChart() {
     <Card className="border shadow-sm">
       <CardHeader className="pb-2 pt-4 px-4 sm:px-6">
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <CardTitle className="text-base sm:text-sm font-semibold">
+          <CardTitle className="text-sm font-semibold">
             Year-over-Year Comparison
           </CardTitle>
           <Tabs value={chartTab} onValueChange={setChartTab}>
             <TabsList className="bg-muted h-8">
-              <TabsTrigger value="units" className="text-sm sm:text-xs h-8 sm:h-7 px-3">Units</TabsTrigger>
-              <TabsTrigger value="volume" className="text-sm sm:text-xs h-8 sm:h-7 px-3">Volume</TabsTrigger>
-              <TabsTrigger value="commission" className="text-sm sm:text-xs h-8 sm:h-7 px-3">Commission</TabsTrigger>
+              <TabsTrigger value="units" className="text-xs h-7 px-3">Units</TabsTrigger>
+              <TabsTrigger value="volume" className="text-xs h-7 px-3">Volume</TabsTrigger>
+              <TabsTrigger value="commission" className="text-xs h-7 px-3">Commission</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -50,8 +50,8 @@ export function YearOverYearChart() {
         <ResponsiveContainer width="100%" height={260}>
           <BarChart data={yearOverYearData}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 14 }} />
-            <YAxis tick={{ fontSize: 14 }} />
+            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} />
             <Tooltip />
             <Legend />
             <Bar

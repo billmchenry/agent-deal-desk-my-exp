@@ -24,7 +24,7 @@ function StatCard({
   return (
     <Card>
       <CardContent className="p-3 sm:p-4">
-        <p className="text-sm sm:text-xs text-muted-foreground mb-1">{title}</p>
+        <p className="text-xs text-muted-foreground mb-1">{title}</p>
         <p className="text-lg sm:text-xl font-semibold text-foreground truncate">
           {prefix}
           {typeof value === "number" ? value.toLocaleString("en-US") : value}
@@ -99,7 +99,7 @@ export function VitalSignsRow({
       {/* Transactions summary */}
       <Card>
         <CardContent className="p-3 sm:p-4">
-          <p className="text-sm sm:text-xs text-muted-foreground mb-1.5">Transactions</p>
+          <p className="text-xs text-muted-foreground mb-1.5">Transactions</p>
           <div className="space-y-0.5 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Closed</span>
@@ -120,7 +120,7 @@ export function VitalSignsRow({
       {/* Cap Status */}
       <Card>
         <CardContent className="p-3 sm:p-4 flex flex-col items-center">
-          <p className="text-sm sm:text-xs text-muted-foreground mb-1 self-start">Cap Status</p>
+          <p className="text-xs text-muted-foreground mb-1 self-start">Cap Status</p>
           <CircularProgress percentage={capPercentage} value={capCurrent} />
           <p className="text-xs sm:text-[10px] text-muted-foreground text-center mt-0.5 leading-tight">
             Complete ${(capTarget / 1000).toFixed(0)}K to achieve cap

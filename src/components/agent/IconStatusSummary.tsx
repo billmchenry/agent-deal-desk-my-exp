@@ -47,22 +47,22 @@ export function IconStatusSummary() {
         {/* Production Goals */}
         <Card>
           <CardContent className="p-3 sm:p-4 space-y-4">
-            <h3 className="font-semibold text-foreground text-sm sm:text-xs">Production Goals</h3>
+            <h3 className="font-semibold text-foreground text-xs">Production Goals</h3>
             {productionGoals.map((goal) => (
               <div key={goal.label} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-foreground">{goal.label}</span>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="bg-exp-blue/10 text-exp-blue hover:bg-exp-blue/10 text-sm sm:text-xs">
+                    <Badge variant="secondary" className="bg-exp-blue/10 text-exp-blue hover:bg-exp-blue/10 text-xs">
                       In Progress
                     </Badge>
-                    <span className="text-sm sm:text-xs text-muted-foreground">{goal.percentage}%</span>
+                    <span className="text-xs text-muted-foreground">{goal.percentage}%</span>
                   </div>
                 </div>
                 <div className="relative">
                   <Progress value={goal.percentage} className="h-2" />
                   <div
-                    className="absolute -top-6 text-xs sm:text-[10px] bg-foreground text-background px-1.5 py-0.5 rounded"
+                    className="absolute -top-6 text-[10px] bg-foreground text-background px-1.5 py-0.5 rounded"
                     style={{
                       left: `${Math.max(2, Math.min(goal.percentage, 95))}%`,
                       transform: "translateX(-50%)",
@@ -71,7 +71,7 @@ export function IconStatusSummary() {
                     ${goal.current.toLocaleString("en-US")}
                   </div>
                 </div>
-                <p className="text-sm sm:text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   Goal: ${(goal.target / 1000).toFixed(0)}K
                 </p>
               </div>
@@ -82,21 +82,21 @@ export function IconStatusSummary() {
         {/* Stock Grants */}
         <Card>
           <CardContent className="p-3 sm:p-4">
-            <h3 className="font-semibold text-foreground text-sm sm:text-xs mb-3">Stock Grants</h3>
+            <h3 className="font-semibold text-foreground text-xs mb-3">Stock Grants</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {stockGrants.map((grant) => (
                 <div
                   key={grant.label}
                   className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/50"
                 >
-                  <span className="text-sm sm:text-xs text-muted-foreground font-medium">{grant.label}</span>
+                  <span className="text-xs text-muted-foreground font-medium">{grant.label}</span>
                   {grant.status === "awarded" ? (
-                    <Badge className="bg-exp-green/10 text-exp-green border-exp-green/20 hover:bg-exp-green/10 gap-1 text-xs sm:text-[10px]">
+                    <Badge className="bg-exp-green/10 text-exp-green border-exp-green/20 hover:bg-exp-green/10 gap-1 text-[10px]">
                       <Check className="h-3 w-3" />
                       Awarded
                     </Badge>
                   ) : (
-                    <Badge variant="secondary" className="bg-exp-blue/10 text-exp-blue text-xs sm:text-[10px]">
+                    <Badge variant="secondary" className="bg-exp-blue/10 text-exp-blue text-[10px]">
                       In Progress
                     </Badge>
                   )}
