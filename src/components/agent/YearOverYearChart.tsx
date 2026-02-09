@@ -27,6 +27,20 @@ const yearOverYearData = [
   { month: "Dec", currentYear: 6, previousYear: 4 },
 ];
 
+function CustomTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-background border rounded-md shadow-md px-2.5 py-1.5 text-xs max-w-[160px]">
+      <p className="font-semibold text-foreground mb-0.5">{label}</p>
+      {payload.map((entry: any, i: number) => (
+        <p key={i} style={{ color: entry.color }} className="leading-tight">
+          {entry.name}: {entry.value}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 export function YearOverYearChart() {
   const [chartTab, setChartTab] = useState("units");
 
@@ -52,7 +66,7 @@ export function YearOverYearChart() {
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
             <YAxis tick={{ fontSize: 12 }} width={30} />
-            <Tooltip />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))' }} />
             <Legend />
             <Bar
               dataKey="currentYear"
