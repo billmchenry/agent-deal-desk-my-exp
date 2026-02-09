@@ -63,7 +63,7 @@ export function YearOverYearChart() {
             <Bar
               dataKey="previousYear"
               name="Previous Year"
-              fill="hsl(var(--muted))"
+              fill="hsl(var(--exp-navy-light))"
               radius={[4, 4, 0, 0]}
             />
           </BarChart>
