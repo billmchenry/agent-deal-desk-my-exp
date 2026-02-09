@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { AgentFilterBar } from "@/components/agent/AgentFilterBar";
 import { AgentHeroBanner } from "@/components/agent/AgentHeroBanner";
 import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
 import { CappingSection } from "@/components/agent/CappingSection";
@@ -16,9 +17,11 @@ export default function AgentDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-4">
-        <AgentHeroBanner
+        <AgentFilterBar
           dateRange={dateRange}
           onDateRangeChange={setDateRange}
+        />
+        <AgentHeroBanner
           units={5}
           volume={1784000}
           commission={2669}

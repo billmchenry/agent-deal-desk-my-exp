@@ -1,25 +1,9 @@
-import { useState } from "react";
-import { CalendarDays, Home, DollarSign, Building2, Target, FileText } from "lucide-react";
-import { format, startOfYear, startOfMonth, subWeeks, subYears } from "date-fns";
+import { Home, DollarSign, Building2, Target, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-interface DateRange {
-  from: Date | undefined;
-  to: Date | undefined;
-}
-
 interface AgentHeroBannerProps {
-  dateRange: DateRange;
-  onDateRangeChange: (range: DateRange) => void;
   units: number;
   volume: number;
   commission: number;
@@ -27,13 +11,6 @@ interface AgentHeroBannerProps {
   transactionsPending: number;
   transactionsWithdrawn: number;
 }
-
-const presets = [
-  { label: "YTD", getRange: () => ({ from: startOfYear(new Date()), to: new Date() }) },
-  { label: "MTD", getRange: () => ({ from: startOfMonth(new Date()), to: new Date() }) },
-  { label: "Last Week", getRange: () => ({ from: subWeeks(new Date(), 1), to: new Date() }) },
-  { label: "Last Year", getRange: () => ({ from: startOfYear(subYears(new Date(), 1)), to: new Date(subYears(new Date(), 1).getFullYear(), 11, 31) }) },
-];
 
 function MiniStatCard({
   icon,
@@ -67,8 +44,6 @@ function MiniStatCard({
 }
 
 export function AgentHeroBanner({
-  dateRange,
-  onDateRangeChange,
   units,
   volume,
   commission,
@@ -76,8 +51,6 @@ export function AgentHeroBanner({
   transactionsPending,
   transactionsWithdrawn,
 }: AgentHeroBannerProps) {
-  const [open, setOpen] = useState(false);
-
   const formatCurrency = (value: number) => {
     if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
     if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`;
@@ -100,40 +73,6 @@ export function AgentHeroBanner({
               <Target className="mr-1 h-3 w-3" />
               PERFORMANCE
             </Badge>
-          </div>
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold">Agent Performance</h1>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <button className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white border-b border-transparent hover:border-white/40 transition-all cursor-pointer pb-0.5">
-                  <CalendarDays className="h-3.5 w-3.5" />
-                  {dateRange.from && dateRange.to ? (
-                    <span>{format(dateRange.from, "MMM d, yyyy")} – {format(dateRange.to, "MMM d, yyyy")}</span>
-                  ) : (
-                    <span>Select date range</span>
-                  )}
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-4" align="end">
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {presets.map((p) => (
-                    <Button key={p.label} variant="outline" size="sm" className="text-xs h-7" onClick={() => onDateRangeChange(p.getRange())}>
-                      {p.label}
-                    </Button>
-                  ))}
-                </div>
-                <Calendar
-                  mode="range"
-                  captionLayout="dropdown-buttons"
-                  fromYear={2015}
-                  toYear={new Date().getFullYear() + 1}
-                  selected={dateRange}
-                  onSelect={(range) => onDateRangeChange({ from: range?.from, to: range?.to })}
-                  numberOfMonths={2}
-                  className={cn("p-3 pointer-events-auto")}
-                />
-              </PopoverContent>
-            </Popover>
           </div>
         </div>
 
