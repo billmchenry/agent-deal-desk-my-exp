@@ -1,38 +1,34 @@
 
 
-## Add Month/Year Dropdowns to the Agent Filter Calendar
+## Combine Capping Progress Ring with History Table
 
-The calendar in the AgentFilterBar currently shows "February 2026" / "March 2026" as static text with only left/right arrow navigation. To quickly jump to a different month or year, the calendar needs dropdown selectors.
+Instead of having the progress ring in its own card and the history table in a separate section below, merge them into a single card. The progress ring becomes a compact left-column element beside the table, creating a balanced, unified layout.
 
-### What Changes
+### Layout
 
-Add three props to the `Calendar` component in `AgentFilterBar.tsx`:
+On desktop (sm+), the card uses a two-column layout:
+- **Left column** (~180px): Progress ring + current cap stats stacked vertically, centered
+- **Right column** (flex-1): The capping history table fills the remaining space
 
-- `captionLayout="dropdown-buttons"` -- switches the month/year headers from plain text to dropdown selects
-- `fromYear={2015}` -- sets the earliest selectable year
-- `toYear={new Date().getFullYear() + 1}` -- sets the latest selectable year (2027)
+On mobile, the layout stacks vertically: ring/stats on top, table below.
 
-The Calendar component already has built-in styling for dropdowns (the chevron indicator and hover states we fixed earlier), so no additional CSS work is needed.
+### Changes
 
-### Technical Details
+**File: `src/components/agent/CappingSection.tsx`**
 
-**File: `src/components/agent/AgentFilterBar.tsx`** (line ~80)
+1. Remove the separate `<Card>` wrapper around the progress ring -- instead, wrap everything (ring + table) inside a single `<Card>`
+2. Use a `flex` layout inside the card: ring on the left, table on the right
+3. Remove the `<CappingHistorySection />` as a standalone component call and inline its table content directly (or render it inside the shared card)
 
-Update the `<Calendar>` element to include:
+**File: `src/components/agent/CappingHistorySection.tsx`**
 
-```tsx
-<Calendar
-  mode="range"
-  captionLayout="dropdown-buttons"
-  fromYear={2015}
-  toYear={new Date().getFullYear() + 1}
-  selected={dateRange}
-  onSelect={(range) =>
-    onDateRangeChange({ from: range?.from, to: range?.to })
-  }
-  numberOfMonths={2}
-  className={cn("p-3 pointer-events-auto")}
-/>
-```
+4. Export the table portion without its own sticky header and outer section wrapper, so it can be embedded cleanly inside the shared card
+5. Move the "Capping History" label and download button into the card header area
 
-This is a single-line addition -- no other files need changes.
+### Result
+
+- The progress ring no longer floats alone in a wide card with excess whitespace
+- The ring visually anchors the left side while the table fills the right
+- Single card = cleaner, more balanced appearance
+- Mobile gracefully stacks ring above table
+
