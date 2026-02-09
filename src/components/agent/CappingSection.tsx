@@ -1,4 +1,6 @@
+import { Download } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { CappingHistoryTable } from "./CappingHistorySection";
 
 interface CappingSectionProps {
@@ -20,7 +22,13 @@ export function CappingSection({ capCurrent, capTarget, capPercentage }: Capping
     <section className="space-y-3">
       <Card>
         <CardContent className="p-4">
-          <h2 className="text-sm font-semibold text-foreground mb-3">Capping Status</h2>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-foreground">Capping Status</h2>
+            <Button variant="outline" size="sm" className="gap-2 text-xs h-7">
+              <Download className="h-3 w-3" />
+              Download
+            </Button>
+          </div>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
             {/* Left: Progress Ring + Stats */}
             <div className="flex flex-col items-center justify-center shrink-0 sm:w-[180px] sm:border-r sm:pr-6 border-border">

@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Download, SlidersHorizontal, ArrowUpDown, ChevronUp, ChevronDown, Search } from "lucide-react";
+import { SlidersHorizontal, ArrowUpDown, ChevronUp, ChevronDown, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -97,10 +97,6 @@ export function CappingHistoryTable() {
             Filter
           </Button>
           <span className="text-[10px] text-muted-foreground">{sortedData.length} Results</span>
-          <Button variant="outline" size="sm" className="gap-2 text-xs h-7 hidden sm:inline-flex">
-            <Download className="h-3 w-3" />
-            Download
-          </Button>
         </div>
       </div>
       <div className="border rounded-lg overflow-hidden">
