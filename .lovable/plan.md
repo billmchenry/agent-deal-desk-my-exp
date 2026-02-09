@@ -1,55 +1,55 @@
 
 
-## Make "Agent" a Direct Link with Auto-Expanding Submenu
+## Move Date Picker to Page-Level Filter Bar
 
-Right now, clicking "Agent" in the sidebar only toggles the submenu open/closed -- it doesn't navigate anywhere. This creates a dead-end click that feels unintuitive. The fix is straightforward: make the parent label itself navigate to the dashboard, and auto-show the sub-items whenever you're in that section.
+The date picker currently sits inside the Hero Banner, which implies it only controls that card. Since it actually filters data for the entire page (hero stats, YoY chart, capping), it belongs at the top of the page as a standalone filter bar.
+
+### Placement
+
+The date picker moves into a slim toolbar row that sits above all content sections:
+
+```text
++------------------------------------------+
+| Agent Performance        [Date Filter v]  |  <-- standalone filter bar
++------------------------------------------+
+| Hero Banner (stats only, no date picker) |
++------------------------------------------+
+| Year-over-Year Chart                     |
++------------------------------------------+
+| Capping Section                          |
++------------------------------------------+
+```
+
+This makes it immediately clear that the date range applies globally to everything below it.
 
 ### What Changes
 
-**1. "Agent" becomes a clickable link to `/agent/dashboard`**
-- Clicking the word "Agent" takes you straight to the Agent Dashboard
-- No more "click once to expand, then click again to go somewhere" pattern
+**1. Use `AgentFilterBar` as the page-level toolbar**
+- The project already has an `AgentFilterBar` component built for exactly this purpose -- it shows the "Agent Performance" title on the left and the date filter on the right
+- Render it at the top of the Dashboard page, above the hero banner
 
-**2. Submenu auto-expands when you're in the section**
-- If you're on any `/agent/*` route (Dashboard, Transactions, ICON Program), the submenu items are visible automatically
-- The submenu stays expanded as long as you're in that section -- no need to manually open it
-- You can still collapse it manually if you want, but navigating to any agent page re-expands it
+**2. Remove the date picker from `AgentHeroBanner`**
+- Strip out the `dateRange`, `onDateRangeChange` props and the entire Popover/Calendar block from the hero banner
+- The banner becomes a pure display card showing stats only
+- Keep the "PERFORMANCE" badge and title, but the title can simplify to just a contextual label or be removed entirely since the filter bar already says "Agent Performance"
 
-**3. Same pattern applied to other expandable menus**
-- "RevShare Earnings" and "Documents" follow the same logic: the parent item links to the first submenu destination, and the submenu auto-expands based on the current route
-- This keeps the sidebar behavior consistent across all sections
-
-**4. Applied to both desktop and mobile navigation**
-- Desktop sidebar (`Sidebar.tsx`) and mobile drawer (`MobileNavDrawer.tsx`) both get updated
+**3. Wire the date range through the page**
+- The `dateRange` state stays in `Dashboard.tsx` (where it already lives)
+- Pass it down to `AgentFilterBar` and to the hero banner (for display if needed)
+- Future: pass it to `YearOverYearChart` and `CappingSection` when those components support date filtering
 
 ### Technical Details
 
-**Files modified:**
+**`src/pages/agent/Dashboard.tsx`**
+- Import `AgentFilterBar`
+- Render `<AgentFilterBar>` as the first child, before the hero banner
+- Remove `dateRange` and `onDateRangeChange` props from `AgentHeroBanner`
 
-**`src/data/mockData.ts`**
-- Add a `url` field to the Agent nav item pointing to `/agent/dashboard`
-- Add a `url` field to RevShare Earnings pointing to `/revshare/dashboard`
-- Add a `url` field to Documents pointing to `/documents/all`
-- These items keep their `submenu` arrays -- they now have both a `url` and a `submenu`
+**`src/components/agent/AgentHeroBanner.tsx`**
+- Remove the `dateRange` and `onDateRangeChange` props
+- Remove the Popover, Calendar, and preset imports
+- Remove the date picker UI from the header row
+- Simplify the header -- either keep a shorter title or remove the duplicate "Agent Performance" text since the filter bar handles it
 
-**`src/components/layout/Sidebar.tsx`**
-- Update `handleItemClick`: if the item has both a `url` and a `submenu`, navigate to the URL and expand the submenu simultaneously
-- Update `renderNavItem` for the `hasSubmenu` case: wrap the parent label in an `<a>` tag (or use `react-router-dom`'s `Link`) pointing to `item.url`, while keeping the chevron as a separate expand/collapse toggle
-- Update auto-expand logic: use `location.pathname.startsWith()` to match section prefixes (e.g., `/agent/`) so the submenu stays open across all child routes, not just exact matches
-
-**`src/components/layout/MobileNavDrawer.tsx`**
-- Mirror the same changes: clicking the parent navigates and expands, submenu auto-expands based on current route prefix
-- Auto-expand on mount by checking the current path against submenu URLs
-
-### Interaction Flow
-
-```text
-Before:
-  Click "Agent"     --> submenu expands (no navigation)
-  Click "Dashboard" --> navigates to /agent/dashboard
-
-After:
-  Click "Agent"      --> navigates to /agent/dashboard AND submenu expands
-  Click "Transactions" --> navigates to /agent/transactions (submenu stays open)
-  Navigate away       --> submenu collapses automatically
-```
+**`src/components/agent/AgentFilterBar.tsx`**
+- Already exists with the right layout -- no major changes needed, just ensure it's being used
