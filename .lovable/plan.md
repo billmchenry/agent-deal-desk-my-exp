@@ -1,42 +1,46 @@
 
 
-## Fix Capping History Table UX + Add Sorting
+## Polish Capping History Table -- Design & Functional Improvements
 
-Two issues to address: the filter row still looks heavy/weird, and there's no way to sort columns.
+Six targeted refinements across two files to tighten alignment, improve visual consistency, and add small affordances.
 
-### Problem 1: Filter Row Still Looks Odd
-The screenshot shows the filter inputs are visible and taking up a lot of space. The `showFilters` toggle defaults to `false`, but the filter row itself uses full-width inputs inside `TableHead` cells which looks awkward. We should make the filters more compact and ensure they're truly hidden by default.
+---
 
-### Problem 2: No Sorting
-Users should be able to click column headers to sort ascending/descending.
+### 1. Unified Headers (CappingSection.tsx)
 
-### Changes
+Move the "Capping Status" title inside the Card so it shares the same container as the progress ring and history table. Remove the separate sticky `div` wrapper outside the card. The title becomes part of `CardContent`, sitting above the flex row.
 
-**File: `src/components/agent/CappingHistorySection.tsx`**
+### 2. Balance Column Widths (CappingHistorySection.tsx)
 
-1. **Add sort state** -- track `sortKey` (which column) and `sortDir` ("asc" | "desc"), defaulting to Start Date descending (newest first).
+Reduce `min-w` on Start Date and End Date columns from `100px` to `80px`. Give "Cap Reached" a wider `min-w-[120px]` so badges and dates have breathing room. This eliminates dead white space on date columns and makes data feel intentional.
 
-2. **Make column headers clickable** -- add a click handler and a small arrow indicator (ChevronUp/ChevronDown from lucide) to show current sort direction. Use `cursor-pointer select-none` styling on headers.
+### 3. Consistent Status Pills (CappingHistorySection.tsx)
 
-3. **Sorting logic** -- sort the filtered data before rendering:
-   - Start Date / End Date / Cap Reached: parse as dates (treat "-" / "In Progress" as a far-future date so they sort last)
-   - Cap %: parse as float
+Replace the plain green text for "100%" with a green-tinted Badge (`bg-exp-green/10 text-exp-green border-exp-green/20`). Keep "In Progress" as a secondary Badge and "0%" as muted text. This gives users that instant "win" feeling when scanning capped years.
 
-4. **Tighten filter row styling** -- reduce padding on the filter inputs, make them slightly smaller (`h-6` instead of `h-7`), and add a subtle top border to visually separate filters from headers.
+### 4. Tuck Result Count (CappingHistorySection.tsx)
 
-5. **Keep `showFilters` defaulting to `false`** -- the toggle button already works, just ensure the initial render is clean.
+Move the "5 Results" count from the far-right toolbar to sit directly after the Filter button, separated by a subtle dot or pipe. This groups it with the toolset instead of floating it as an orphan.
 
-### Sort UX
-- Click a column header to sort ascending
-- Click again to sort descending  
-- Click a third time to return to default (no sort)
-- Small chevron icon appears next to the active sort column
+### 5. Search Icon in Filter Inputs (CappingHistorySection.tsx)
+
+When filters are visible, wrap each `Input` in a `relative` container and add a small `Search` icon (from lucide-react) positioned inside the left side of the input. Update placeholder to just "Search..." and add `pl-7` padding. This gives power users the "search me" affordance.
+
+### 6. No Conflict with Global Date Picker
+
+The capping history table filters only operate on the static `cappingHistoryData` array (local mock data). They do not interact with the global `AgentFilterBar` date range at all, so there is no conflict. No code change needed here -- this is already correctly isolated.
+
+---
 
 ### Technical Details
 
-- Import `ArrowUpDown`, `ChevronUp`, `ChevronDown` from lucide-react
-- Sort state: `sortKey: "startDate" | "endDate" | "capReached" | "capPercentage" | null` and `sortDir: "asc" | "desc"`
-- Date parsing helper: split "MM/DD/YYYY" and create Date objects for comparison
-- Cap % parsing: `parseFloat(pct)` for numeric comparison
-- Apply `useMemo` or inline sort on `filteredData` before mapping to rows
+**File: `src/components/agent/CappingSection.tsx`**
+- Remove the sticky header `div` with "Capping Status" title
+- Add a title row inside `CardContent`, above the flex layout: `<h2 className="text-sm font-semibold text-foreground mb-3">Capping Status</h2>`
 
+**File: `src/components/agent/CappingHistorySection.tsx`**
+- Import `Search` from lucide-react
+- Adjust column `min-w` values: Start Date and End Date to `min-w-[80px]`, Cap Reached to `min-w-[120px]`
+- Replace `getCapColor` rendering for 100% values with a Badge: `<Badge className="text-[10px] px-1.5 py-0 bg-exp-green/10 text-exp-green border-exp-green/20">100%</Badge>`
+- Move result count next to Filter button: `<Button>Filter</Button> <span className="text-[10px] text-muted-foreground">{count}</span>`
+- Wrap filter inputs in `relative` divs, add `<Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />` and `pl-7` class on inputs, change placeholder to "Search..."
