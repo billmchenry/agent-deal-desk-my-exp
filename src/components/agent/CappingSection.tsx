@@ -32,20 +32,20 @@ export function CappingSection({ capCurrent, capTarget, capPercentage }: Capping
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
             {/* Left: Progress Ring + Stats */}
             <div className="flex flex-col items-center justify-center shrink-0 sm:w-[180px] sm:border-r sm:pr-6 border-border">
-              <div className="relative h-20 w-20 shrink-0">
-                <svg className="h-20 w-20 -rotate-90 transform" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="hsl(var(--muted))" strokeWidth="8" />
+              <div className="relative h-28 w-28 shrink-0">
+                <svg className="h-28 w-28 -rotate-90 transform" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="hsl(var(--muted))" strokeWidth="7" />
                   <circle
                     cx="50" cy="50" r="40" fill="none"
                     stroke="hsl(var(--exp-green))"
-                    strokeWidth="8"
+                    strokeWidth="7"
                     strokeDasharray={`${capPercentage * 2.51} 251`}
                     strokeLinecap="round"
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-lg font-bold text-foreground">{capPercentage}%</span>
-                  <span className="text-xs sm:text-[9px] text-muted-foreground">Complete</span>
+                  <span className="text-xl font-bold text-foreground">{capPercentage}%</span>
+                  <span className="text-xs text-muted-foreground">Complete</span>
                 </div>
               </div>
               <div className="mt-2 text-center space-y-0.5">
