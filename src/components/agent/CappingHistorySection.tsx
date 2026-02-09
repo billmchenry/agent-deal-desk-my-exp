@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Download, SlidersHorizontal, ArrowUpDown, ChevronUp, ChevronDown } from "lucide-react";
+import { Download, SlidersHorizontal, ArrowUpDown, ChevronUp, ChevronDown, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -96,13 +96,11 @@ export function CappingHistoryTable() {
             <SlidersHorizontal className="h-3 w-3" />
             Filter
           </Button>
+          <span className="text-[10px] text-muted-foreground">{sortedData.length} Results</span>
           <Button variant="outline" size="sm" className="gap-2 text-xs h-7">
             <Download className="h-3 w-3" />
             Download
           </Button>
-          <span className="text-xs text-muted-foreground">
-            {sortedData.length} Results
-          </span>
         </div>
       </div>
       <div className="border rounded-lg overflow-hidden">
@@ -118,7 +116,7 @@ export function CappingHistoryTable() {
                 ] as [SortKey, string][]).map(([key, label]) => (
                   <TableHead
                     key={key}
-                    className="font-semibold min-w-[100px] text-xs h-9 px-3 cursor-pointer select-none"
+                    className={`font-semibold text-xs h-9 px-3 cursor-pointer select-none ${key === "capReached" ? "min-w-[120px]" : "min-w-[80px]"}`}
                     onClick={() => handleSort(key)}
                   >
                     <span className="inline-flex items-center gap-1">
@@ -132,12 +130,15 @@ export function CappingHistoryTable() {
                 <TableRow className="border-t">
                   {(["startDate", "endDate", "capReached", "capPercentage"] as SortKey[]).map((key) => (
                     <TableHead key={key} className="py-1 px-3">
-                      <Input
-                        placeholder="Filter..."
-                        value={filters[key]}
-                        onChange={(e) => setFilters((p) => ({ ...p, [key]: e.target.value }))}
-                        className="h-6 text-xs"
-                      />
+                      <div className="relative">
+                        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+                        <Input
+                          placeholder="Search..."
+                          value={filters[key]}
+                          onChange={(e) => setFilters((p) => ({ ...p, [key]: e.target.value }))}
+                          className="h-6 text-xs pl-7"
+                        />
+                      </div>
                     </TableHead>
                   ))}
                 </TableRow>
@@ -155,8 +156,14 @@ export function CappingHistoryTable() {
                         <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-normal">In Progress</Badge>
                       ) : row.capReached}
                     </TableCell>
-                    <TableCell className={`py-2 px-3 text-xs ${getCapColor(row.capPercentage)}`}>
-                      {row.capPercentage}
+                    <TableCell className="py-2 px-3 text-xs">
+                      {parseFloat(row.capPercentage) >= 100 ? (
+                        <Badge className="text-[10px] px-1.5 py-0 font-semibold bg-exp-green/10 text-exp-green border-exp-green/20">100%</Badge>
+                      ) : parseFloat(row.capPercentage) === 0 ? (
+                        <span className="text-muted-foreground">{row.capPercentage}</span>
+                      ) : (
+                        <span className="text-exp-blue font-medium">{row.capPercentage}</span>
+                      )}
                     </TableCell>
                   </TableRow>
                 );

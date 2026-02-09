@@ -18,12 +18,9 @@ export function CappingSection({ capCurrent, capTarget, capPercentage }: Capping
 
   return (
     <section className="space-y-3">
-      <div className="sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b px-0 py-2">
-        <h2 className="text-sm font-semibold text-foreground">Capping Status</h2>
-      </div>
-
       <Card>
         <CardContent className="p-4">
+          <h2 className="text-sm font-semibold text-foreground mb-3">Capping Status</h2>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
             {/* Left: Progress Ring + Stats */}
             <div className="flex flex-col items-center justify-center shrink-0 sm:w-[180px] sm:border-r sm:pr-6 border-border">
