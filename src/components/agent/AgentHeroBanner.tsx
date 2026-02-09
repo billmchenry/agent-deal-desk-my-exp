@@ -37,7 +37,7 @@ function MiniStatCard({
       </div>
       <div className="min-w-0">
         <p className="text-lg font-bold text-white truncate">{value}</p>
-        <p className="text-[11px] text-white/70">{label}</p>
+        <p className="text-sm sm:text-[11px] text-white/70">{label}</p>
       </div>
     </div>
   );
