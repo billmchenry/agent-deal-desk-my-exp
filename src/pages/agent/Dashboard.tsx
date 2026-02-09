@@ -16,7 +16,7 @@ export default function AgentDashboard() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-4">
+      <div className="space-y-4 pb-20">
         <AgentFilterBar
           dateRange={dateRange}
           onDateRangeChange={setDateRange}
