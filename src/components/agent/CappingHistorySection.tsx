@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Download, SlidersHorizontal, ArrowUpDown, ChevronUp, ChevronDown } from "lucide-react";
+import { Download, Search, ArrowUpDown, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -43,8 +43,7 @@ function getCapColor(pct: string) {
 }
 
 export function CappingHistoryTable() {
-  const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState({ startDate: "", endDate: "", capReached: "", capPercentage: "" });
+  const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
@@ -64,12 +63,13 @@ export function CappingHistoryTable() {
   };
 
   const sortedData = useMemo(() => {
-    const filtered = cappingHistoryData.filter((row) => (
-      row.startDate.toLowerCase().includes(filters.startDate.toLowerCase()) &&
-      row.endDate.toLowerCase().includes(filters.endDate.toLowerCase()) &&
-      (row.capReached === "-" ? "in progress" : row.capReached).toLowerCase().includes(filters.capReached.toLowerCase()) &&
-      row.capPercentage.toLowerCase().includes(filters.capPercentage.toLowerCase())
-    ));
+    const q = search.toLowerCase();
+    const filtered = cappingHistoryData.filter((row) => {
+      if (!q) return true;
+      const capLabel = row.capReached === "-" ? "in progress" : row.capReached;
+      return [row.startDate, row.endDate, capLabel, row.capPercentage]
+        .some((v) => v.toLowerCase().includes(q));
+    });
     if (!sortKey) return filtered;
     return [...filtered].sort((a, b) => {
       let cmp = 0;
@@ -80,28 +80,28 @@ export function CappingHistoryTable() {
       }
       return sortDir === "asc" ? cmp : -cmp;
     });
-  }, [filters, sortKey, sortDir]);
+  }, [search, sortKey, sortDir]);
 
   return (
     <div className="flex-1 min-w-0">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
         <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">History</h3>
         <div className="flex items-center gap-2">
-          <Button
-            variant={showFilters ? "secondary" : "ghost"}
-            size="sm"
-            className="gap-1.5 text-xs h-7 px-2"
-            onClick={() => setShowFilters((v) => !v)}
-          >
-            <SlidersHorizontal className="h-3 w-3" />
-            Filter
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2 text-xs h-7">
+          <div className="relative">
+            <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+            <Input
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="h-7 w-[130px] pl-7 text-xs"
+            />
+          </div>
+          <Button variant="outline" size="sm" className="gap-1.5 text-xs h-7">
             <Download className="h-3 w-3" />
-            Download
+            <span className="hidden sm:inline">Download</span>
           </Button>
           <span className="text-xs text-muted-foreground">
-            {sortedData.length} Results
+            {sortedData.length}
           </span>
         </div>
       </div>
@@ -128,20 +128,6 @@ export function CappingHistoryTable() {
                   </TableHead>
                 ))}
               </TableRow>
-              {showFilters && (
-                <TableRow className="border-t">
-                  {(["startDate", "endDate", "capReached", "capPercentage"] as SortKey[]).map((key) => (
-                    <TableHead key={key} className="py-1 px-3">
-                      <Input
-                        placeholder="Filter..."
-                        value={filters[key]}
-                        onChange={(e) => setFilters((p) => ({ ...p, [key]: e.target.value }))}
-                        className="h-6 text-xs"
-                      />
-                    </TableHead>
-                  ))}
-                </TableRow>
-              )}
             </TableHeader>
             <TableBody>
               {sortedData.map((row, i) => {
