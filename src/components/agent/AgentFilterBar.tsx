@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Filter, CalendarIcon } from "lucide-react";
+import { SlidersHorizontal, CalendarIcon } from "lucide-react";
 import { format, startOfYear, startOfMonth, subWeeks, subYears } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -49,7 +49,7 @@ export function AgentFilterBar({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="gap-2 text-sm">
-            <Filter className="h-4 w-4" />
+            <SlidersHorizontal className="h-4 w-4" />
             {dateRange.from && dateRange.to ? (
               <>
                 {format(dateRange.from, "MM/dd/yyyy")} –{" "}
