@@ -1,55 +1,38 @@
 
 
-## Move Date Picker to Page-Level Filter Bar
+## Add Month/Year Dropdowns to the Agent Filter Calendar
 
-The date picker currently sits inside the Hero Banner, which implies it only controls that card. Since it actually filters data for the entire page (hero stats, YoY chart, capping), it belongs at the top of the page as a standalone filter bar.
-
-### Placement
-
-The date picker moves into a slim toolbar row that sits above all content sections:
-
-```text
-+------------------------------------------+
-| Agent Performance        [Date Filter v]  |  <-- standalone filter bar
-+------------------------------------------+
-| Hero Banner (stats only, no date picker) |
-+------------------------------------------+
-| Year-over-Year Chart                     |
-+------------------------------------------+
-| Capping Section                          |
-+------------------------------------------+
-```
-
-This makes it immediately clear that the date range applies globally to everything below it.
+The calendar in the AgentFilterBar currently shows "February 2026" / "March 2026" as static text with only left/right arrow navigation. To quickly jump to a different month or year, the calendar needs dropdown selectors.
 
 ### What Changes
 
-**1. Use `AgentFilterBar` as the page-level toolbar**
-- The project already has an `AgentFilterBar` component built for exactly this purpose -- it shows the "Agent Performance" title on the left and the date filter on the right
-- Render it at the top of the Dashboard page, above the hero banner
+Add three props to the `Calendar` component in `AgentFilterBar.tsx`:
 
-**2. Remove the date picker from `AgentHeroBanner`**
-- Strip out the `dateRange`, `onDateRangeChange` props and the entire Popover/Calendar block from the hero banner
-- The banner becomes a pure display card showing stats only
-- Keep the "PERFORMANCE" badge and title, but the title can simplify to just a contextual label or be removed entirely since the filter bar already says "Agent Performance"
+- `captionLayout="dropdown-buttons"` -- switches the month/year headers from plain text to dropdown selects
+- `fromYear={2015}` -- sets the earliest selectable year
+- `toYear={new Date().getFullYear() + 1}` -- sets the latest selectable year (2027)
 
-**3. Wire the date range through the page**
-- The `dateRange` state stays in `Dashboard.tsx` (where it already lives)
-- Pass it down to `AgentFilterBar` and to the hero banner (for display if needed)
-- Future: pass it to `YearOverYearChart` and `CappingSection` when those components support date filtering
+The Calendar component already has built-in styling for dropdowns (the chevron indicator and hover states we fixed earlier), so no additional CSS work is needed.
 
 ### Technical Details
 
-**`src/pages/agent/Dashboard.tsx`**
-- Import `AgentFilterBar`
-- Render `<AgentFilterBar>` as the first child, before the hero banner
-- Remove `dateRange` and `onDateRangeChange` props from `AgentHeroBanner`
+**File: `src/components/agent/AgentFilterBar.tsx`** (line ~80)
 
-**`src/components/agent/AgentHeroBanner.tsx`**
-- Remove the `dateRange` and `onDateRangeChange` props
-- Remove the Popover, Calendar, and preset imports
-- Remove the date picker UI from the header row
-- Simplify the header -- either keep a shorter title or remove the duplicate "Agent Performance" text since the filter bar handles it
+Update the `<Calendar>` element to include:
 
-**`src/components/agent/AgentFilterBar.tsx`**
-- Already exists with the right layout -- no major changes needed, just ensure it's being used
+```tsx
+<Calendar
+  mode="range"
+  captionLayout="dropdown-buttons"
+  fromYear={2015}
+  toYear={new Date().getFullYear() + 1}
+  selected={dateRange}
+  onSelect={(range) =>
+    onDateRangeChange({ from: range?.from, to: range?.to })
+  }
+  numberOfMonths={2}
+  className={cn("p-3 pointer-events-auto")}
+/>
+```
+
+This is a single-line addition -- no other files need changes.
