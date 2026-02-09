@@ -85,18 +85,18 @@ export function CappingHistoryTable() {
   return (
     <div className="flex-1 min-w-0">
       <div className="flex items-center justify-between mb-2 flex-wrap gap-1">
-        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">History</h3>
+        <h3 className="text-sm sm:text-xs font-semibold text-muted-foreground uppercase tracking-wide">History</h3>
         <div className="flex items-center gap-1.5 flex-wrap">
           <Button
             variant={showFilters ? "secondary" : "ghost"}
             size="sm"
-            className="gap-1.5 text-xs h-7 px-2 min-h-[44px] sm:min-h-0"
+            className="gap-1.5 text-sm sm:text-xs h-9 sm:h-7 px-3 sm:px-2 min-h-[44px] sm:min-h-0"
             onClick={() => setShowFilters((v) => !v)}
           >
-            <SlidersHorizontal className="h-3 w-3" />
+            <SlidersHorizontal className="h-4 w-4 sm:h-3 sm:w-3" />
             Filter
           </Button>
-          <span className="text-[10px] text-muted-foreground">{sortedData.length} Results</span>
+          <span className="text-xs sm:text-[10px] text-muted-foreground">{sortedData.length} Results</span>
           <Button variant="outline" size="sm" className="gap-2 text-xs h-7 hidden sm:inline-flex">
             <Download className="h-3 w-3" />
             Download
@@ -109,14 +109,14 @@ export function CappingHistoryTable() {
             <TableHeader>
               <TableRow className="bg-muted/50">
                 {([
-                  ["startDate", "Start Date"],
-                  ["endDate", "End Date"],
+                  ["startDate", "Start"],
+                  ["endDate", "End"],
                   ["capReached", "Cap Reached"],
                   ["capPercentage", "Cap %"],
                 ] as [SortKey, string][]).map(([key, label]) => (
                   <TableHead
                     key={key}
-                    className={`font-semibold text-xs h-9 px-3 cursor-pointer select-none ${key === "capReached" ? "min-w-[120px]" : "min-w-[80px]"}`}
+                    className={`font-semibold text-sm sm:text-xs h-11 sm:h-9 px-3 cursor-pointer select-none ${key === "capReached" ? "min-w-[110px]" : "min-w-[70px]"}`}
                     onClick={() => handleSort(key)}
                   >
                     <span className="inline-flex items-center gap-1">
@@ -136,7 +136,7 @@ export function CappingHistoryTable() {
                           placeholder="Search..."
                           value={filters[key]}
                           onChange={(e) => setFilters((p) => ({ ...p, [key]: e.target.value }))}
-                          className="h-6 text-xs pl-7"
+                          className="h-8 sm:h-6 text-sm sm:text-xs pl-7"
                         />
                       </div>
                     </TableHead>
@@ -148,17 +148,17 @@ export function CappingHistoryTable() {
               {sortedData.map((row, i) => {
                 const active = isActiveRow(row.startDate, row.endDate);
                 return (
-                  <TableRow key={i} className={active ? "bg-primary/5 border-l-2 border-l-primary" : ""}>
-                    <TableCell className="py-2 px-3 text-xs">{row.startDate}</TableCell>
-                    <TableCell className="py-2 px-3 text-xs">{row.endDate}</TableCell>
-                    <TableCell className="py-2 px-3 text-xs">
+                  <TableRow key={i} className={`min-h-[44px] ${active ? "bg-primary/5 border-l-2 border-l-primary" : ""}`}>
+                    <TableCell className="py-3 sm:py-2 px-3 text-sm sm:text-xs">{row.startDate}</TableCell>
+                    <TableCell className="py-3 sm:py-2 px-3 text-sm sm:text-xs">{row.endDate}</TableCell>
+                    <TableCell className="py-3 sm:py-2 px-3 text-sm sm:text-xs">
                       {row.capReached === "-" ? (
-                        <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-normal">In Progress</Badge>
+                        <Badge variant="secondary" className="text-xs sm:text-[10px] px-2 sm:px-1.5 py-0.5 sm:py-0 font-normal">In Progress</Badge>
                       ) : row.capReached}
                     </TableCell>
-                    <TableCell className="py-2 px-3 text-xs">
+                    <TableCell className="py-3 sm:py-2 px-3 text-sm sm:text-xs">
                       {parseFloat(row.capPercentage) >= 100 ? (
-                        <Badge className="text-[10px] px-1.5 py-0 font-semibold bg-exp-green/10 text-exp-green border-exp-green/20">100%</Badge>
+                        <Badge className="text-xs sm:text-[10px] px-2 sm:px-1.5 py-0.5 sm:py-0 font-semibold bg-exp-green/10 text-exp-green border-exp-green/20">100%</Badge>
                       ) : parseFloat(row.capPercentage) === 0 ? (
                         <span className="text-muted-foreground">{row.capPercentage}</span>
                       ) : (

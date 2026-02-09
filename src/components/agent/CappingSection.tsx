@@ -20,7 +20,7 @@ export function CappingSection({ capCurrent, capTarget, capPercentage }: Capping
     <section className="space-y-3">
       <Card>
         <CardContent className="p-4">
-          <h2 className="text-sm font-semibold text-foreground mb-3">Capping Status</h2>
+          <h2 className="text-base sm:text-sm font-semibold text-foreground mb-3">Capping Status</h2>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
             {/* Left: Progress Ring + Stats */}
             <div className="flex flex-col items-center justify-center shrink-0 sm:w-[180px] sm:border-r sm:pr-6 border-border">
@@ -37,14 +37,14 @@ export function CappingSection({ capCurrent, capTarget, capPercentage }: Capping
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-lg font-bold text-foreground">{capPercentage}%</span>
-                  <span className="text-[9px] text-muted-foreground">Complete</span>
+                  <span className="text-xs sm:text-[9px] text-muted-foreground">Complete</span>
                 </div>
               </div>
               <div className="mt-2 text-center space-y-0.5">
-                <p className="text-xs font-semibold text-foreground">
+                <p className="text-sm sm:text-xs font-semibold text-foreground">
                   {formatCurrency(capCurrent)} <span className="text-muted-foreground font-normal">/ {formatCurrency(capTarget)}</span>
                 </p>
-                <p className="text-[10px] text-muted-foreground">
+                <p className="text-xs sm:text-[10px] text-muted-foreground">
                   {formatCurrency(remaining)} remaining
                 </p>
               </div>
