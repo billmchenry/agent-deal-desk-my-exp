@@ -26,7 +26,7 @@ export function CappingSection({ capCurrent, capTarget, capPercentage }: Capping
       {/* Cap Progress Card */}
       <Card>
         <CardContent className="p-4 sm:p-6">
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-6 sm:justify-center">
             {/* Progress Ring */}
             <div className="relative h-24 w-24 sm:h-28 sm:w-28 shrink-0">
               <svg className="h-24 w-24 sm:h-28 sm:w-28 -rotate-90 transform" viewBox="0 0 100 100">
@@ -46,14 +46,14 @@ export function CappingSection({ capCurrent, capTarget, capPercentage }: Capping
             </div>
 
             {/* Cap Details */}
-            <div className="space-y-1.5 min-w-0">
+            <div className="space-y-1.5 min-w-0 text-center sm:text-left">
               <p className="text-sm font-semibold text-foreground">
                 {formatCurrency(capCurrent)} <span className="text-muted-foreground font-normal">of {formatCurrency(capTarget)}</span>
               </p>
               <p className="text-xs text-muted-foreground">
                 {formatCurrency(remaining)} remaining to cap
               </p>
-              <div className="w-full bg-muted rounded-full h-2 mt-2">
+              <div className="w-48 mx-auto sm:mx-0 bg-muted rounded-full h-2 mt-2">
                 <div
                   className="bg-exp-green h-2 rounded-full transition-all duration-500"
                   style={{ width: `${Math.min(capPercentage, 100)}%` }}
