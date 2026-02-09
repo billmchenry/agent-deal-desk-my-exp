@@ -84,20 +84,20 @@ export function CappingHistoryTable() {
 
   return (
     <div className="flex-1 min-w-0">
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-2 flex-wrap gap-1">
         <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">History</h3>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 flex-wrap">
           <Button
             variant={showFilters ? "secondary" : "ghost"}
             size="sm"
-            className="gap-1.5 text-xs h-7 px-2"
+            className="gap-1.5 text-xs h-7 px-2 min-h-[44px] sm:min-h-0"
             onClick={() => setShowFilters((v) => !v)}
           >
             <SlidersHorizontal className="h-3 w-3" />
             Filter
           </Button>
           <span className="text-[10px] text-muted-foreground">{sortedData.length} Results</span>
-          <Button variant="outline" size="sm" className="gap-2 text-xs h-7">
+          <Button variant="outline" size="sm" className="gap-2 text-xs h-7 hidden sm:inline-flex">
             <Download className="h-3 w-3" />
             Download
           </Button>
@@ -105,7 +105,7 @@ export function CappingHistoryTable() {
       </div>
       <div className="border rounded-lg overflow-hidden">
         <ScrollArea className="w-full">
-          <Table>
+          <Table className="min-w-[420px]">
             <TableHeader>
               <TableRow className="bg-muted/50">
                 {([
