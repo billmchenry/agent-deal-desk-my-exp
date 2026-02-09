@@ -48,7 +48,7 @@ export function YearOverYearChart() {
       </CardHeader>
       <CardContent className="px-2 sm:px-4 pb-6">
         <ResponsiveContainer width="100%" height={320}>
-          <BarChart data={yearOverYearData}>
+          <BarChart data={yearOverYearData} barCategoryGap="20%" barGap={4}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
             <YAxis tick={{ fontSize: 12 }} />
