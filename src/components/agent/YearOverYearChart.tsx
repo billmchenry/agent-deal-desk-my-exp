@@ -14,7 +14,7 @@ import {
   Cell,
 } from "recharts";
 
-const yearOverYearData = [
+const unitsData = [
   { month: "Jan", currentYear: 2, previousYear: 1 },
   { month: "Feb", currentYear: 5, previousYear: 3 },
   { month: "Mar", currentYear: 7, previousYear: 5 },
@@ -28,6 +28,42 @@ const yearOverYearData = [
   { month: "Nov", currentYear: 7, previousYear: 5 },
   { month: "Dec", currentYear: 6, previousYear: 4 },
 ];
+
+const volumeData = [
+  { month: "Jan", currentYear: 450000, previousYear: 320000 },
+  { month: "Feb", currentYear: 620000, previousYear: 480000 },
+  { month: "Mar", currentYear: 780000, previousYear: 550000 },
+  { month: "Apr", currentYear: 890000, previousYear: 670000 },
+  { month: "May", currentYear: 1784000, previousYear: 920000 },
+  { month: "Jun", currentYear: 1250000, previousYear: 850000 },
+  { month: "Jul", currentYear: 980000, previousYear: 760000 },
+  { month: "Aug", currentYear: 870000, previousYear: 710000 },
+  { month: "Sep", currentYear: 750000, previousYear: 640000 },
+  { month: "Oct", currentYear: 820000, previousYear: 580000 },
+  { month: "Nov", currentYear: 690000, previousYear: 520000 },
+  { month: "Dec", currentYear: 560000, previousYear: 430000 },
+];
+
+const commissionData = [
+  { month: "Jan", currentYear: 1200, previousYear: 800 },
+  { month: "Feb", currentYear: 2100, previousYear: 1500 },
+  { month: "Mar", currentYear: 2800, previousYear: 1900 },
+  { month: "Apr", currentYear: 3200, previousYear: 2400 },
+  { month: "May", currentYear: 8500, previousYear: 3600 },
+  { month: "Jun", currentYear: 6200, previousYear: 3100 },
+  { month: "Jul", currentYear: 4100, previousYear: 2800 },
+  { month: "Aug", currentYear: 3500, previousYear: 2500 },
+  { month: "Sep", currentYear: 2900, previousYear: 2200 },
+  { month: "Oct", currentYear: 3100, previousYear: 2000 },
+  { month: "Nov", currentYear: 2600, previousYear: 1700 },
+  { month: "Dec", currentYear: 2200, previousYear: 1400 },
+];
+
+const dataByTab: Record<string, typeof unitsData> = {
+  units: unitsData,
+  volume: volumeData,
+  commission: commissionData,
+};
 
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
@@ -48,8 +84,23 @@ export function YearOverYearChart() {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
+  const chartData = dataByTab[chartTab] || unitsData;
+
+  const formatValue = (val: number) => {
+    if (chartTab === "volume") {
+      if (val >= 1000000) return `$${(val / 1000000).toFixed(1)}M`;
+      if (val >= 1000) return `$${(val / 1000).toFixed(0)}K`;
+      return `$${val}`;
+    }
+    if (chartTab === "commission") {
+      if (val >= 1000) return `$${(val / 1000).toFixed(1)}K`;
+      return `$${val}`;
+    }
+    return val.toString();
+  };
+
   const selectedData = selectedMonth
-    ? yearOverYearData.find((d) => d.month === selectedMonth)
+    ? chartData.find((d) => d.month === selectedMonth)
     : null;
 
   const handleBarClick = (data: any) => {
@@ -67,7 +118,7 @@ export function YearOverYearChart() {
           <CardTitle className="text-sm font-semibold">
             Year-over-Year Comparison
           </CardTitle>
-          <Tabs value={chartTab} onValueChange={setChartTab}>
+          <Tabs value={chartTab} onValueChange={(v) => { setChartTab(v); setSelectedMonth(null); }}>
             <TabsList className="bg-muted h-8">
               <TabsTrigger value="units" className="text-xs h-7 px-3">Units</TabsTrigger>
               <TabsTrigger value="volume" className="text-xs h-7 px-3">Volume</TabsTrigger>
@@ -79,14 +130,14 @@ export function YearOverYearChart() {
       <CardContent className="px-2 sm:px-4 pb-6">
         <ResponsiveContainer width="100%" height={320}>
           <BarChart
-            data={yearOverYearData}
+            data={chartData}
             barCategoryGap="20%"
             barGap={4}
             onClick={handleBarClick}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} width={30} />
+            <YAxis tick={{ fontSize: 12 }} width={chartTab === "units" ? 30 : 50} tickFormatter={(v) => formatValue(v)} />
             {!isMobile && (
               <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))' }} />
             )}
@@ -100,7 +151,7 @@ export function YearOverYearChart() {
               fill="hsl(var(--exp-blue))"
               radius={[4, 4, 0, 0]}
             >
-              {yearOverYearData.map((entry) => (
+              {chartData.map((entry) => (
                 <Cell
                   key={entry.month}
                   fill={
@@ -119,7 +170,7 @@ export function YearOverYearChart() {
               fill="hsl(var(--exp-navy-light))"
               radius={[4, 4, 0, 0]}
             >
-              {yearOverYearData.map((entry) => (
+              {chartData.map((entry) => (
                 <Cell
                   key={entry.month}
                   fill={
@@ -140,10 +191,10 @@ export function YearOverYearChart() {
               <div className="flex items-center gap-4">
                 <span className="font-semibold text-sm text-foreground">{selectedData.month}</span>
                 <span className="text-xs text-exp-blue">
-                  Current: <span className="font-semibold">{selectedData.currentYear}</span>
+                  Current: <span className="font-semibold">{formatValue(selectedData.currentYear)}</span>
                 </span>
                 <span className="text-xs text-exp-navy">
-                  Previous: <span className="font-semibold">{selectedData.previousYear}</span>
+                  Previous: <span className="font-semibold">{formatValue(selectedData.previousYear)}</span>
                 </span>
               </div>
             ) : (
