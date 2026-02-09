@@ -1,8 +1,15 @@
 import { useState } from "react";
-import { Download } from "lucide-react";
+import { Download, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -123,27 +130,24 @@ const fmt = (n: number) =>
 export function MasterTransactionTable() {
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [filters, setFilters] = useState({
-    status: "",
-    transactionId: "",
-    closeDate: "",
-    salesPrice: "",
-    gci: "",
-    address: "",
-    capPayment: "",
-  });
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const filteredData = transactionsData.filter((row) => {
-    const closeDate = row.actualCloseDate !== "-" ? row.actualCloseDate : row.scheduledCloseDate;
-    return (
-      row.status.toLowerCase().includes(filters.status.toLowerCase()) &&
-      row.transactionId.toLowerCase().includes(filters.transactionId.toLowerCase()) &&
-      closeDate.toLowerCase().includes(filters.closeDate.toLowerCase()) &&
-      row.salesPrice.toString().includes(filters.salesPrice) &&
-      row.gciSum.toString().includes(filters.gci) &&
-      row.propertyAddress.toLowerCase().includes(filters.address.toLowerCase()) &&
-      row.firstCap.toLowerCase().includes(filters.capPayment.toLowerCase())
-    );
+    if (statusFilter !== "all" && row.status.toLowerCase() !== statusFilter) return false;
+    if (search) {
+      const s = search.toLowerCase();
+      const closeDate = row.actualCloseDate !== "-" ? row.actualCloseDate : row.scheduledCloseDate;
+      return (
+        row.transactionId.toLowerCase().includes(s) ||
+        row.propertyAddress.toLowerCase().includes(s) ||
+        row.salesPrice.toString().includes(s) ||
+        row.gciSum.toString().includes(s) ||
+        closeDate.toLowerCase().includes(s) ||
+        row.firstCap.toLowerCase().includes(s)
+      );
+    }
+    return true;
   });
 
   const handleRowClick = (txn: Transaction) => {
@@ -155,17 +159,35 @@ export function MasterTransactionTable() {
     <section>
       {/* Sticky header */}
       <div className="sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b px-0 py-2">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-foreground">Transactions</h2>
-          <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="gap-2 text-xs h-8">
-              <Download className="h-3.5 w-3.5" />
-              Download
-            </Button>
-            <span className="text-sm text-muted-foreground">
-              {filteredData.length} Results
-            </span>
+        <div className="flex items-center gap-3 flex-wrap">
+          <h2 className="text-sm font-semibold text-foreground mr-auto">Transactions</h2>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="h-8 w-[140px] text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="paid">Paid</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="withdrawn">Withdrawn</SelectItem>
+            </SelectContent>
+          </Select>
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+            <Input
+              placeholder="Search transactions..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="h-8 w-[180px] pl-8 text-xs"
+            />
           </div>
+          <Button variant="outline" size="sm" className="gap-2 text-xs h-8">
+            <Download className="h-3.5 w-3.5" />
+            Download
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            {filteredData.length} Results
+          </span>
         </div>
       </div>
 
@@ -183,19 +205,6 @@ export function MasterTransactionTable() {
                   <TableHead className="font-semibold min-w-[90px]">GCI</TableHead>
                   <TableHead className="font-semibold min-w-[200px]">Address</TableHead>
                   <TableHead className="font-semibold min-w-[120px]">Amt Toward Cap</TableHead>
-                </TableRow>
-                {/* Filter row */}
-                <TableRow>
-                  {(["status", "transactionId", "closeDate", "salesPrice", "gci", "address", "capPayment"] as const).map((key) => (
-                    <TableHead key={key} className="py-2">
-                      <Input
-                        placeholder="Contains"
-                        value={filters[key]}
-                        onChange={(e) => setFilters((p) => ({ ...p, [key]: e.target.value }))}
-                        className="h-8 text-sm"
-                      />
-                    </TableHead>
-                  ))}
                 </TableRow>
               </TableHeader>
               <TableBody>
