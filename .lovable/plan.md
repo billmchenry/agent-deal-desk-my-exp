@@ -1,39 +1,41 @@
 
 
-## Make the Capping History Table More Intuitive
+## Streamline Transaction Table Filtering
 
-The current table has some UX issues: the "Contains" placeholder is unclear, the filter row adds visual noise for a small dataset, and there's no visual distinction between active/current rows vs. completed ones.
+Replace the seven per-column "Contains" filter inputs with a clean toolbar containing a single search bar and a status dropdown.
 
-### Improvements
+### New Toolbar Layout
 
-**1. Replace "Contains" placeholders with "Filter..."**
-- Change all filter input placeholders from "Contains" to "Filter..." -- shorter, more universally understood.
+```text
+Transactions    [All Statuses v]  [Search transactions...]  [Download]  5 Results
+```
 
-**2. Add visual cues to the Cap % column**
-- Show a small inline progress bar or colored text for the Cap % value (green for 100%, muted for 0%, brand blue for in-progress percentages). This makes it scannable at a glance.
+### Changes
 
-**3. Highlight the current/active capping year**
-- The top row (2026, currently in progress) should have a subtle left-border accent or light background tint to indicate it's the active period.
+**File: `src/components/agent/MasterTransactionTable.tsx`**
 
-**4. Replace "-" with more descriptive text**
-- Change "Cap Reached: -" to "In Progress" or "Not Yet" so users don't have to guess what the dash means.
+1. **Replace filter state** -- remove the seven individual filter keys, replace with two states:
+   - `search` (string) -- global text search
+   - `statusFilter` (string) -- "all" | "paid" | "pending" | "withdrawn"
 
-**5. Collapse filter row by default (optional toggle)**
-- Since this is a small table (5 rows), having a permanent filter row is heavy. Instead, add a small filter icon toggle in the header that shows/hides the filter inputs. This keeps the table clean by default.
+2. **Update filtering logic** -- filter rows by:
+   - Status: exact match against `statusFilter` (skip if "all")
+   - Search: case-insensitive match against transaction ID, address, sale price, GCI, close date, and cap amount
 
-### Files to Modify
+3. **Move controls into sticky header** -- place the status `<Select>` dropdown and search `<Input>` into the existing sticky header bar, alongside the Download button and result count
 
-**`src/components/agent/CappingHistorySection.tsx`**
-- Update placeholder text from "Contains" to "Filter..."
-- Add a `showFilters` toggle state with a filter icon button in the header
-- Conditionally render the filter row based on toggle
-- Add colored styling to Cap % values (green for 100%, muted for 0%, blue for in-progress)
-- Highlight the first row (active year) with a subtle `bg-primary/5` or left border accent
-- Replace "-" in Cap Reached with "In Progress" label using a subtle badge
+4. **Remove the filter `<TableRow>`** -- delete the entire second header row that currently renders seven filter inputs
 
-### Technical Details
+5. **Add imports** -- add `Search` icon from lucide-react, and `Select`/`SelectTrigger`/`SelectContent`/`SelectItem`/`SelectValue` from the UI library
 
-- Cap % color logic: parse the percentage string, apply `text-exp-green` for 100%, `text-muted-foreground` for 0%, `text-exp-blue` for anything in between
-- Active row detection: check if the current date falls within the start/end date range
-- Filter toggle: small `Filter` or `SlidersHorizontal` icon button next to the "History" header
+### Status Dropdown Options
+- All Statuses (default, shows everything)
+- Paid
+- Pending
+- Withdrawn
 
+### Result
+
+- Table header goes from 2 rows to 1 -- much cleaner
+- Filtering is intuitive: type anything in search, or pick a status from the dropdown
+- Consistent with the streamlined approach used in the capping history table
