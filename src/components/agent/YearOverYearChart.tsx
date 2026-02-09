@@ -51,7 +51,7 @@ export function YearOverYearChart() {
           <BarChart data={yearOverYearData} barCategoryGap="20%" barGap={4}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} width={30} />
             <Tooltip />
             <Legend />
             <Bar
