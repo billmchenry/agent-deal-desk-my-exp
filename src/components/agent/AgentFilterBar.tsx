@@ -79,6 +79,9 @@ export function AgentFilterBar({
           {/* Calendar */}
           <Calendar
             mode="range"
+            captionLayout="dropdown-buttons"
+            fromYear={2015}
+            toYear={new Date().getFullYear() + 1}
             selected={dateRange}
             onSelect={(range) =>
               onDateRangeChange({ from: range?.from, to: range?.to })
