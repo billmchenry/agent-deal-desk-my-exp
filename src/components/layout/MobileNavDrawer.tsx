@@ -56,7 +56,7 @@ interface MobileNavDrawerProps {
 export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [manuallyCollapsed, setManuallyCollapsed] = useState<string | null>(null);
+  const [manuallyToggled, setManuallyToggled] = useState<Set<string>>(new Set());
 
   const isActive = (url?: string) => {
     if (!url) return false;
@@ -65,20 +65,33 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
   const isExpanded = (item: SidebarNavItem): boolean => {
     const inSection = isInSection(location.pathname, item);
-    if (inSection && manuallyCollapsed === item.title) return false;
+    const toggled = manuallyToggled.has(item.title);
+    // If manually toggled, flip the default state
+    if (toggled) return !inSection;
     return inSection;
   };
 
-  // Reset manual collapse when route changes sections
+  // Reset manual toggles when route changes
   useEffect(() => {
-    setManuallyCollapsed(null);
+    setManuallyToggled(new Set());
   }, [location.pathname]);
 
+  const toggleSection = (title: string) => {
+    setManuallyToggled((prev) => {
+      const next = new Set(prev);
+      if (next.has(title)) {
+        next.delete(title);
+      } else {
+        next.add(title);
+      }
+      return next;
+    });
+  };
+
   const handleParentClick = (item: SidebarNavItem) => {
-    if (item.submenu && item.url) {
-      navigate(item.url);
-      setManuallyCollapsed(null);
-      onClose();
+    if (item.submenu) {
+      // Toggle submenu only, don't navigate
+      toggleSection(item.title);
     } else if (item.url) {
       navigate(item.url);
       onClose();
@@ -88,15 +101,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const handleChevronClick = (e: React.MouseEvent, item: SidebarNavItem) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isInSection(location.pathname, item)) {
-      setManuallyCollapsed((prev) => (prev === item.title ? null : item.title));
-    } else {
-      // If not in section, clicking chevron navigates + opens
-      if (item.url) {
-        navigate(item.url);
-        onClose();
-      }
-    }
+    toggleSection(item.title);
   };
 
   const handleSubItemClick = (url: string) => {
