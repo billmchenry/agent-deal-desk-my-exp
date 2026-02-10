@@ -100,18 +100,18 @@ export function AgentHeroBanner({
             <div className="rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light">
               <FileText className="h-4 w-4" />
             </div>
-            <div className="flex gap-3 min-w-0">
-              <div className="text-center">
+            <div className="flex gap-2 sm:gap-3 min-w-0 overflow-hidden">
+              <div className="text-center min-w-0">
                 <p className="text-lg font-bold text-white">{transactionsClosed}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">Closed</p>
+                <p className="text-xs text-white/70 truncate">Closed</p>
               </div>
-              <div className="text-center">
+              <div className="text-center min-w-0">
                 <p className="text-lg font-bold text-white">{transactionsPending}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">Pending</p>
+                <p className="text-xs text-white/70 truncate">Pending</p>
               </div>
-              <div className="text-center">
+              <div className="text-center min-w-0">
                 <p className="text-lg font-bold text-white">{transactionsWithdrawn}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">Withdrawn</p>
+                <p className="text-xs text-white/70 truncate">W/drawn</p>
               </div>
             </div>
           </div>
