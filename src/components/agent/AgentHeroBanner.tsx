@@ -76,8 +76,8 @@ export function AgentHeroBanner({
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+        {/* Stats Grid - Row 1 */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
           <MiniStatCard
             icon={<Home className="h-4 w-4" />}
             value={units.toString()}
@@ -96,25 +96,28 @@ export function AgentHeroBanner({
             label="Commission"
             color="green"
           />
-          <div className="flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-2 sm:px-3 py-2.5 min-w-0">
-            <div className="rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light hidden sm:block">
-              <FileText className="h-4 w-4" />
-            </div>
-            <div className="grid grid-cols-3 gap-1 sm:gap-3 flex-1 min-w-0">
-              <div className="text-center min-w-0">
-                <p className="text-lg font-bold text-white">{transactionsClosed}</p>
-                <p className="text-[11px] text-white/70">Closed</p>
-              </div>
-              <div className="text-center min-w-0">
-                <p className="text-lg font-bold text-white">{transactionsPending}</p>
-                <p className="text-[11px] text-white/70">Pending</p>
-              </div>
-              <div className="text-center min-w-0">
-                <p className="text-lg font-bold text-white">{transactionsWithdrawn}</p>
-                <p className="text-[11px] text-white/70">Withdrawn</p>
-              </div>
-            </div>
-          </div>
+        </div>
+
+        {/* Stats Grid - Row 2: Transactions */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-2 sm:mt-3">
+          <MiniStatCard
+            icon={<FileText className="h-4 w-4" />}
+            value={transactionsClosed.toString()}
+            label="Closed"
+            color="gold"
+          />
+          <MiniStatCard
+            icon={<FileText className="h-4 w-4" />}
+            value={transactionsPending.toString()}
+            label="Pending"
+            color="gold"
+          />
+          <MiniStatCard
+            icon={<FileText className="h-4 w-4" />}
+            value={transactionsWithdrawn.toString()}
+            label="Withdrawn"
+            color="gold"
+          />
         </div>
       </div>
     </Card>
