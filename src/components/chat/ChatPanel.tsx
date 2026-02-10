@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
@@ -50,6 +51,52 @@ const parseUserInput = (input: string): keyof typeof aiResponses | null => {
   return null;
 };
 
+// Route-based suggestion chips
+type SuggestionChip = { label: string; query: string };
+
+const ROUTE_SUGGESTIONS: Record<string, SuggestionChip[]> = {
+  '/agent/transactions': [
+    { label: "Pending Deals", query: "Show me my pending transactions" },
+    { label: "Closed This Month", query: "How many transactions did I close this month?" },
+    { label: "Avg Days to Close", query: "What's my average days to close?" },
+  ],
+  '/agent/dashboard': [
+    { label: "GCI Trends", query: "Show me my GCI trends" },
+    { label: "Listing Velocity", query: "How fast are my listings selling?" },
+    { label: "Active Pipeline", query: "What's in my active pipeline?" },
+  ],
+  '/agent/icon-program': [
+    { label: "ICON Progress", query: "How close am I to ICON status?" },
+    { label: "Cap Status", query: "Am I on track to hit my cap?" },
+    { label: "Production Goals", query: "What are my remaining production goals?" },
+  ],
+  '/revshare': [
+    { label: "RevShare Earnings", query: "Show me my revenue share earnings" },
+    { label: "Organization Growth", query: "How is my organization growing?" },
+    { label: "Sponsor Tree", query: "Show me my sponsor tree performance" },
+  ],
+  '/team': [
+    { label: "Team Performance", query: "How is my team performing?" },
+    { label: "Top Producers", query: "Who are my top producing agents?" },
+    { label: "Team Volume", query: "What's my team's total volume?" },
+  ],
+};
+
+const DEFAULT_SUGGESTIONS: SuggestionChip[] = [
+  { label: "GCI Trends", query: "Show me my GCI trends" },
+  { label: "Listing Velocity", query: "How fast are my listings selling?" },
+  { label: "Active Pipeline", query: "What's in my active pipeline?" },
+];
+
+function getSuggestionsForRoute(pathname: string): SuggestionChip[] {
+  // Exact match first
+  if (ROUTE_SUGGESTIONS[pathname]) return ROUTE_SUGGESTIONS[pathname];
+  // Prefix match (e.g. /revshare/trends matches /revshare)
+  const prefixMatch = Object.keys(ROUTE_SUGGESTIONS).find(route => pathname.startsWith(route) && route !== '/agent/dashboard');
+  if (prefixMatch) return ROUTE_SUGGESTIONS[prefixMatch];
+  return DEFAULT_SUGGESTIONS;
+}
+
 // Shared chat content component
 interface ChatContentProps {
   showHistory: boolean;
@@ -71,6 +118,7 @@ interface ChatContentProps {
   setSwipedId: (id: string | null) => void;
   isMobile: boolean;
   onClose: () => void;
+  suggestions: SuggestionChip[];
 }
 
 function ChatContent({
@@ -93,6 +141,7 @@ function ChatContent({
   setSwipedId,
   isMobile,
   onClose,
+  suggestions,
 }: ChatContentProps) {
   return (
     <div 
@@ -149,11 +198,7 @@ function ChatContent({
 
         <div className="p-3 sm:p-4 border-t bg-background shrink-0 space-y-2">
           <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
-            {[
-              { label: "GCI Trends", query: "Show me my GCI trends" },
-              { label: "Listing Velocity", query: "How fast are my listings selling?" },
-              { label: "Active Pipeline", query: "What's in my active pipeline?" },
-            ].map((chip) => (
+            {suggestions.map((chip) => (
               <Button
                 key={chip.label}
                 variant="outline"
@@ -292,6 +337,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     pendingQuery,
     clearPendingQuery,
   } = useMiraChat();
+  const location = useLocation();
   const [inputValue, setInputValue] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -427,6 +473,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     setSwipedId,
     isMobile,
     onClose,
+    suggestions: getSuggestionsForRoute(location.pathname),
   };
 
   // Mobile: Use Drawer (slides up from bottom)
