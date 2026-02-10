@@ -41,49 +41,103 @@ export default function IconProgram() {
           <TabsContent value="production">
             <h2 className="text-lg font-semibold text-foreground mb-6">ICON Production Overview</h2>
 
+            {/* Top Row: Company Commission + Capped Transaction Fees */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <Card>
+                <CardContent className="p-6 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-medium text-foreground">Company Commission</h3>
+                    <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
+                      In Progress
+                    </Badge>
+                  </div>
+                  <Progress value={26.16} className="h-2" />
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center rounded bg-foreground text-background text-xs font-semibold px-2 py-0.5">
+                      $4,186.17
+                    </span>
+                    <span className="text-sm font-medium text-foreground">26.16%</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Complete $16K to achieve the company commission goal
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-medium text-foreground">Capped Transaction Fees</h3>
+                    <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
+                      In Progress
+                    </Badge>
+                  </div>
+                  <Progress value={0} className="h-2" />
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex items-center rounded bg-foreground text-background text-xs font-semibold px-2 py-0.5">
+                      $0.00
+                    </span>
+                    <span className="text-sm font-medium text-foreground">0%</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Complete $5K to achieve the capped transaction fees goal
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Qualify - Option 2 */}
             <Card className="mb-6">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-medium">Company Commission</CardTitle>
+                <CardTitle className="text-base font-medium">Qualify - Option 2</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Individual Cap */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {/* Company Commission */}
                   <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-foreground">Company Commission</h4>
+                    <Progress value={26.16} className="h-2" />
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-foreground">Individual Cap</h3>
-                      <div className="flex items-center gap-3">
-                        <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
-                          In Progress
-                        </Badge>
-                      </div>
+                      <span className="inline-flex items-center rounded bg-foreground text-background text-xs font-semibold px-2 py-0.5">
+                        $4,186.17
+                      </span>
+                      <span className="text-sm font-medium text-foreground">26.16%</span>
                     </div>
-                    <Progress value={3.01} className="h-2" />
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">$481.90 earned</span>
-                      <span className="text-sm font-medium text-foreground">3.01%</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Note: Complete $16K to achieve the company commission goal
-                    </p>
+                    <p className="text-xs text-muted-foreground">Goal: $16K</p>
                   </div>
 
-                  {/* Team Cap */}
+                  {/* GCI */}
                   <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-foreground">GCI</h4>
+                    <Progress value={4.19} className="h-2" />
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-foreground">Team Cap</h3>
-                      <div className="flex items-center gap-3">
-                        <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
-                          In Progress
-                        </Badge>
-                      </div>
+                      <span className="inline-flex items-center rounded bg-foreground text-background text-xs font-semibold px-2 py-0.5">
+                        $20,930.87
+                      </span>
+                      <span className="text-sm font-medium text-foreground">4.19%</span>
                     </div>
-                    <Progress value={31.17} className="h-2" />
+                    <p className="text-xs text-muted-foreground">Goal: $500K</p>
+                  </div>
+
+                  {/* Closed Transactions */}
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-foreground">Closed Transactions</h4>
+                    <Progress value={50} className="h-2" />
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">$12,469.00 earned</span>
-                      <span className="text-sm font-medium text-foreground">31.17%</span>
+                      <span className="inline-flex items-center rounded bg-foreground text-background text-xs font-semibold px-2 py-0.5">
+                        5 of 10
+                      </span>
+                      <span className="text-sm font-medium text-foreground">50%</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      Note: Complete $40K to achieve the team commission goal
+                    <p className="text-xs text-muted-foreground">Close 10 transactions</p>
+                  </div>
+
+                  {/* ICON Qualifying Fee */}
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-foreground">ICON Qualifying Fee</h4>
+                    <Badge variant="destructive" className="mt-1">Not Paid</Badge>
+                    <p className="text-xs text-muted-foreground">
+                      A one-time qualifying fee must be paid to complete ICON qualification.
                     </p>
                   </div>
                 </div>
