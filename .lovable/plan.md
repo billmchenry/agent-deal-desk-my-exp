@@ -1,46 +1,34 @@
 
 
-## Polish Capping History Table -- Design & Functional Improvements
+# Context-Aware Mira Welcome Message
 
-Six targeted refinements across two files to tighten alignment, improve visual consistency, and add small affordances.
+## Overview
+Update Mira's welcome/introduction message to be page-aware, similar to how suggestion chips already adapt per route. This way, when a user opens the chat on the Transactions page, Mira's greeting references transactions rather than GCI trends.
 
----
+## Changes
 
-### 1. Unified Headers (CappingSection.tsx)
+**File: `src/components/chat/ChatPanel.tsx`**
 
-Move the "Capping Status" title inside the Card so it shares the same container as the progress ring and history table. Remove the separate sticky `div` wrapper outside the card. The title becomes part of `CardContent`, sitting above the flex row.
+Add a route-based welcome message map alongside the existing `ROUTE_SUGGESTIONS`:
 
-### 2. Balance Column Widths (CappingHistorySection.tsx)
+| Route | Welcome Message |
+|-------|----------------|
+| `/agent/transactions` | "Hi! I'm Mira, your AI assistant. I can help you analyze your transactions -- ask about pending deals, closing timelines, or volume breakdowns!" |
+| `/agent/dashboard` | (Current default message about GCI, velocity, pipeline) |
+| `/agent/icon-program` | "Hi! I'm Mira, your AI assistant. I can help you track your ICON progress -- ask about your cap status, production goals, or award tiers!" |
+| `/revshare` (prefix) | "Hi! I'm Mira, your AI assistant. I can help with your revenue share -- ask about earnings, organization growth, or sponsor tree performance!" |
+| `/team` (prefix) | "Hi! I'm Mira, your AI assistant. I can help you manage your team -- ask about team performance, top producers, or recruiting trends!" |
+| Default | Current generic message |
 
-Reduce `min-w` on Start Date and End Date columns from `100px` to `80px`. Give "Cap Reached" a wider `min-w-[120px]` so badges and dates have breathing room. This eliminates dead white space on date columns and makes data feel intentional.
+**Implementation details:**
+- Create a `getWelcomeMessageForRoute(pathname)` function using the same prefix-matching logic as `getSuggestionsForRoute`
+- When the chat opens or a new chat starts, generate the welcome message based on `location.pathname` instead of using the static `WELCOME_MESSAGE` constant
+- Pass the route-aware welcome message into `ChatContent` or set it when initializing `currentMessages`
+- The welcome message ID stays `'welcome'` so existing logic (e.g., filtering it out for previews) remains unchanged
 
-### 3. Consistent Status Pills (CappingHistorySection.tsx)
+**File: `src/contexts/MiraChatContext.tsx`**
+- Minor update: `startNewChat` and the initial state will need to accept a dynamic welcome message, or the welcome message replacement will happen in `ChatPanel` after mount. The simpler approach is to handle it entirely in `ChatPanel.tsx` by replacing the welcome message content based on route when rendering, keeping the context untouched.
 
-Replace the plain green text for "100%" with a green-tinted Badge (`bg-exp-green/10 text-exp-green border-exp-green/20`). Keep "In Progress" as a secondary Badge and "0%" as muted text. This gives users that instant "win" feeling when scanning capped years.
+## Technical Approach
+The cleanest path is to **not change the context** and instead override the welcome message at render time in `ChatPanel.tsx`. When mapping over `currentMessages`, if the message ID is `'welcome'`, substitute its content with the route-appropriate text. This avoids coupling routing logic into the context layer.
 
-### 4. Tuck Result Count (CappingHistorySection.tsx)
-
-Move the "5 Results" count from the far-right toolbar to sit directly after the Filter button, separated by a subtle dot or pipe. This groups it with the toolset instead of floating it as an orphan.
-
-### 5. Search Icon in Filter Inputs (CappingHistorySection.tsx)
-
-When filters are visible, wrap each `Input` in a `relative` container and add a small `Search` icon (from lucide-react) positioned inside the left side of the input. Update placeholder to just "Search..." and add `pl-7` padding. This gives power users the "search me" affordance.
-
-### 6. No Conflict with Global Date Picker
-
-The capping history table filters only operate on the static `cappingHistoryData` array (local mock data). They do not interact with the global `AgentFilterBar` date range at all, so there is no conflict. No code change needed here -- this is already correctly isolated.
-
----
-
-### Technical Details
-
-**File: `src/components/agent/CappingSection.tsx`**
-- Remove the sticky header `div` with "Capping Status" title
-- Add a title row inside `CardContent`, above the flex layout: `<h2 className="text-sm font-semibold text-foreground mb-3">Capping Status</h2>`
-
-**File: `src/components/agent/CappingHistorySection.tsx`**
-- Import `Search` from lucide-react
-- Adjust column `min-w` values: Start Date and End Date to `min-w-[80px]`, Cap Reached to `min-w-[120px]`
-- Replace `getCapColor` rendering for 100% values with a Badge: `<Badge className="text-[10px] px-1.5 py-0 bg-exp-green/10 text-exp-green border-exp-green/20">100%</Badge>`
-- Move result count next to Filter button: `<Button>Filter</Button> <span className="text-[10px] text-muted-foreground">{count}</span>`
-- Wrap filter inputs in `relative` divs, add `<Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />` and `pl-7` class on inputs, change placeholder to "Search..."
