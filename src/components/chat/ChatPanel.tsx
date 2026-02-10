@@ -355,7 +355,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
       timestamp: new Date(),
     };
 
-    setCurrentMessages([...currentMessages, userMessage]);
+    setCurrentMessages(prev => [...prev, userMessage]);
     setInputValue("");
 
     setTimeout(() => {
@@ -387,7 +387,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
         };
       }
 
-      setCurrentMessages([...currentMessages, userMessage, aiMessage]);
+      setCurrentMessages(prev => [...prev, aiMessage]);
     }, 800);
   };
 
