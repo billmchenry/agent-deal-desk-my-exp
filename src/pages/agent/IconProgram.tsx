@@ -49,7 +49,7 @@ export default function IconProgram() {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground whitespace-nowrap">Capping Year</span>
                 <Select defaultValue="2026">
-                  <SelectTrigger className="w-[200px]">
+                  <SelectTrigger className="w-auto">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -214,7 +214,7 @@ export default function IconProgram() {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
                 <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-[200px]">
+                  <SelectTrigger className="w-auto">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -250,7 +250,7 @@ export default function IconProgram() {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
                 <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-[200px]">
+                  <SelectTrigger className="w-auto">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -325,7 +325,7 @@ export default function IconProgram() {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
                 <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-[200px]">
+                  <SelectTrigger className="w-auto">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
