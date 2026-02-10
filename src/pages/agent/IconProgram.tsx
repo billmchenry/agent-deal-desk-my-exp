@@ -5,7 +5,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { CircleAlert, CheckCircle, ExternalLink, Check, Award } from "lucide-react";
+import { CircleAlert, CheckCircle, ExternalLink, Check, Award, DollarSign, FileText, TrendingUp, Home, Target } from "lucide-react";
 import { IconStatusBanner } from "@/components/agent/IconStatusBanner";
 
 export default function IconProgram() {
@@ -14,23 +14,39 @@ export default function IconProgram() {
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        {/* Unified Header with Year Selector */}
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-foreground">ICON Program</h1>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Year</span>
-            <Select defaultValue="2026">
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select year" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="2026">01/01/2026 - 12/31/2026</SelectItem>
-                <SelectItem value="2025">01/01/2025 - 12/31/2025</SelectItem>
-                <SelectItem value="2024">01/01/2024 - 12/31/2024</SelectItem>
-              </SelectContent>
-            </Select>
+        {/* Hero Banner */}
+        <Card className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--exp-navy))] via-[hsl(var(--exp-navy-light))] to-[hsl(var(--exp-blue))] p-4 sm:p-6 text-white">
+          <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
+            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-white" />
+            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-[hsl(var(--exp-gold))]" />
           </div>
-        </div>
+          <div className="relative z-10">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge className="bg-[hsl(var(--exp-gold))]/20 text-[hsl(var(--exp-gold-light))] border-[hsl(var(--exp-gold))]/30 hover:bg-[hsl(var(--exp-gold))]/30">
+                    <Target className="mr-1 h-3 w-3" />
+                    ICON PROGRAM
+                  </Badge>
+                </div>
+                <h1 className="text-xl sm:text-2xl font-bold text-white mt-2">ICON Program</h1>
+                <p className="text-sm text-white/70 mt-1">3 of 4 pillars complete — Keep going!</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Select defaultValue="2026">
+                  <SelectTrigger className="w-[170px] bg-white/10 border-white/20 text-white backdrop-blur-sm [&>svg]:text-white">
+                    <SelectValue placeholder="Select year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2026">01/01/2026 - 12/31/2026</SelectItem>
+                    <SelectItem value="2025">01/01/2025 - 12/31/2025</SelectItem>
+                    <SelectItem value="2024">01/01/2024 - 12/31/2024</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </Card>
 
         {/* Status Summary Banner */}
         <IconStatusBanner activeTab={activeTab} onTabChange={setActiveTab} />
@@ -46,7 +62,12 @@ export default function IconProgram() {
               <Card>
                 <CardContent className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-medium text-foreground">Company Commission</h3>
+                    <div className="flex items-center gap-2">
+                      <div className="rounded-lg p-2 bg-[hsl(var(--exp-blue))]/10">
+                        <DollarSign className="h-4 w-4 text-[hsl(var(--exp-blue))]" />
+                      </div>
+                      <h3 className="font-medium text-foreground">Company Commission</h3>
+                    </div>
                     <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
                       In Progress
                     </Badge>
@@ -67,7 +88,12 @@ export default function IconProgram() {
               <Card>
                 <CardContent className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-medium text-foreground">Capped Transaction Fees</h3>
+                    <div className="flex items-center gap-2">
+                      <div className="rounded-lg p-2 bg-[hsl(var(--exp-gold))]/10">
+                        <FileText className="h-4 w-4 text-[hsl(var(--exp-gold))]" />
+                      </div>
+                      <h3 className="font-medium text-foreground">Capped Transaction Fees</h3>
+                    </div>
                     <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
                       In Progress
                     </Badge>
@@ -95,7 +121,12 @@ export default function IconProgram() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Company Commission */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-foreground">Company Commission</h4>
+                    <div className="flex items-center gap-2">
+                      <div className="rounded-lg p-1.5 bg-[hsl(var(--exp-blue))]/10">
+                        <DollarSign className="h-3.5 w-3.5 text-[hsl(var(--exp-blue))]" />
+                      </div>
+                      <h4 className="text-sm font-medium text-foreground">Company Commission</h4>
+                    </div>
                     <Progress value={26.16} className="h-2" />
                     <div className="flex items-center justify-between">
                       <span className="inline-flex items-center rounded bg-foreground text-background text-xs font-semibold px-2 py-0.5">
@@ -108,7 +139,12 @@ export default function IconProgram() {
 
                   {/* GCI */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-foreground">GCI</h4>
+                    <div className="flex items-center gap-2">
+                      <div className="rounded-lg p-1.5 bg-[hsl(var(--exp-green))]/10">
+                        <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--exp-green))]" />
+                      </div>
+                      <h4 className="text-sm font-medium text-foreground">GCI</h4>
+                    </div>
                     <Progress value={4.19} className="h-2" />
                     <div className="flex items-center justify-between">
                       <span className="inline-flex items-center rounded bg-foreground text-background text-xs font-semibold px-2 py-0.5">
@@ -121,7 +157,12 @@ export default function IconProgram() {
 
                   {/* Closed Transactions */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-foreground">Closed Transactions</h4>
+                    <div className="flex items-center gap-2">
+                      <div className="rounded-lg p-1.5 bg-[hsl(var(--exp-purple))]/10">
+                        <Home className="h-3.5 w-3.5 text-[hsl(var(--exp-purple))]" />
+                      </div>
+                      <h4 className="text-sm font-medium text-foreground">Closed Transactions</h4>
+                    </div>
                     <Progress value={50} className="h-2" />
                     <div className="flex items-center justify-between">
                       <span className="inline-flex items-center rounded bg-foreground text-background text-xs font-semibold px-2 py-0.5">
@@ -134,7 +175,12 @@ export default function IconProgram() {
 
                   {/* ICON Qualifying Fee */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-foreground">ICON Qualifying Fee</h4>
+                    <div className="flex items-center gap-2">
+                      <div className="rounded-lg p-1.5 bg-[hsl(var(--exp-red))]/10">
+                        <Award className="h-3.5 w-3.5 text-[hsl(var(--exp-red))]" />
+                      </div>
+                      <h4 className="text-sm font-medium text-foreground">ICON Qualifying Fee</h4>
+                    </div>
                     <Badge variant="destructive" className="mt-1">Not Paid</Badge>
                     <p className="text-xs text-muted-foreground">
                       A one-time qualifying fee must be paid to complete ICON qualification.
@@ -249,7 +295,7 @@ export default function IconProgram() {
                 { title: "Event 1", amount: "$2,000" },
                 { title: "Event 2", amount: "$2,000" },
               ].map((grant) => (
-                <Card key={grant.title} className="text-center">
+                <Card key={grant.title} className="text-center border-t-2 border-t-[hsl(var(--exp-green))]">
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-foreground mb-3">{grant.title}</h3>
                     <div className="w-14 h-14 rounded-full bg-[hsl(var(--exp-green))]/10 flex items-center justify-center mx-auto mb-3">
