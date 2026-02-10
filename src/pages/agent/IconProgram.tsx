@@ -13,9 +13,9 @@ export default function IconProgram() {
 
   return (
     <DashboardLayout>
-      <div className="p-4 lg:p-6">
+      <div className="space-y-4 pb-20">
         {/* Unified Header with Year Selector */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold text-foreground">ICON Program</h1>
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">Year</span>
@@ -39,12 +39,12 @@ export default function IconProgram() {
 
           {/* ICON Production Tab */}
           <TabsContent value="production">
-            <h2 className="text-lg font-semibold text-foreground mb-6">ICON Production Overview</h2>
+            <h2 className="text-sm font-semibold text-foreground mb-4">ICON Production Overview</h2>
 
             {/* Top Row: Company Commission + Capped Transaction Fees */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
               <Card>
-                <CardContent className="p-6 space-y-3">
+                <CardContent className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <h3 className="font-medium text-foreground">Company Commission</h3>
                     <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
@@ -65,7 +65,7 @@ export default function IconProgram() {
               </Card>
 
               <Card>
-                <CardContent className="p-6 space-y-3">
+                <CardContent className="p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <h3 className="font-medium text-foreground">Capped Transaction Fees</h3>
                     <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
@@ -87,12 +87,12 @@ export default function IconProgram() {
             </div>
 
             {/* Qualify - Option 2 */}
-            <Card className="mb-6">
+            <Card className="mb-4">
               <CardHeader className="pb-2">
                 <CardTitle className="text-base font-medium">Qualify - Option 2</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Company Commission */}
                   <div className="space-y-3">
                     <h4 className="text-sm font-medium text-foreground">Company Commission</h4>
@@ -145,7 +145,7 @@ export default function IconProgram() {
             </Card>
 
             {/* Note Banner */}
-            <div className="bg-muted/50 border border-border rounded-lg p-4 flex gap-3">
+            <div className="bg-muted/50 border border-border rounded-lg p-3 flex gap-3">
               <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Note:</span> A representative of the ICON Program will notify qualified agents of their ICON status by the 25th of the month following achievement of the Production Award Requirement ("Production Requirement"). If an agent believes they have qualified for ICON status and have not received an email notification by the 25th of the following month, that agent should email{" "}
@@ -159,10 +159,10 @@ export default function IconProgram() {
 
           {/* ICON Cultural Tab */}
           <TabsContent value="cultural">
-            <h2 className="text-lg font-semibold text-foreground mb-6">ICON Cultural Commitment Points</h2>
+            <h2 className="text-sm font-semibold text-foreground mb-4">ICON Cultural Commitment Points</h2>
 
             {/* Compact success banner */}
-            <div className="bg-[hsl(var(--exp-green))]/10 border border-[hsl(var(--exp-green))]/20 rounded-lg p-4 flex items-center gap-3 mb-6">
+            <div className="bg-[hsl(var(--exp-green))]/10 border border-[hsl(var(--exp-green))]/20 rounded-lg p-3 flex items-center gap-3 mb-4">
               <CheckCircle className="h-5 w-5 text-[hsl(var(--exp-green))] flex-shrink-0" />
               <span className="text-sm font-medium text-foreground">
                 You have achieved your ICON Cultural goal for 2025 – 2026
@@ -170,7 +170,7 @@ export default function IconProgram() {
             </div>
 
             {/* Note Banner */}
-            <div className="bg-muted/50 border border-border rounded-lg p-4 flex gap-3">
+            <div className="bg-muted/50 border border-border rounded-lg p-3 flex gap-3">
               <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Note:</span> In the month following completion of the Cultural Requirements during the ICON Cultural Benefit Year, a final audit will be completed to verify if the ICON agent has met the Cultural Commitment points requirements to earn the additional stock award.
@@ -180,18 +180,18 @@ export default function IconProgram() {
 
           {/* Events Tab */}
           <TabsContent value="events">
-            <h2 className="text-lg font-semibold text-foreground mb-6">Event Overview</h2>
+            <h2 className="text-sm font-semibold text-foreground mb-4">Event Overview</h2>
 
             {/* Compact success banner */}
-            <div className="bg-[hsl(var(--exp-green))]/10 border border-[hsl(var(--exp-green))]/20 rounded-lg p-4 flex items-center gap-3 mb-6">
+            <div className="bg-[hsl(var(--exp-green))]/10 border border-[hsl(var(--exp-green))]/20 rounded-lg p-3 flex items-center gap-3 mb-4">
               <CheckCircle className="h-5 w-5 text-[hsl(var(--exp-green))] flex-shrink-0" />
               <span className="text-sm font-medium text-foreground">
                 You have achieved your events goal for 2025 – 2026
               </span>
             </div>
 
-            <Card className="mb-6">
-              <CardContent className="p-6">
+            <Card className="mb-4">
+              <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-foreground">Events Attended</h3>
                   <span className="text-2xl font-bold text-foreground">02</span>
@@ -204,7 +204,7 @@ export default function IconProgram() {
                   </div>
                   <span className="text-sm font-medium text-foreground">100%</span>
                 </div>
-                <p className="text-sm text-muted-foreground mb-6">Attend 2 events to achieve the goal</p>
+                <p className="text-sm text-muted-foreground mb-4">Attend 2 events to achieve the goal</p>
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between py-2 border-t border-border">
@@ -230,7 +230,7 @@ export default function IconProgram() {
             </Card>
 
             {/* Note Banner */}
-            <div className="bg-muted/50 border border-border rounded-lg p-4 flex gap-3">
+            <div className="bg-muted/50 border border-border rounded-lg p-3 flex gap-3">
               <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Note:</span> ICON agents have the opportunity to earn a stock award of up to an additional $4,000 worth of EXPI common stock in the month following attendance of eXp approved events; a stock award of $2,000 worth of EXPI common stock will be issued for each event attended, for a maximum of two events per ICON Cultural Benefit Year.
@@ -240,9 +240,9 @@ export default function IconProgram() {
 
           {/* Stock Grants Tab */}
           <TabsContent value="stockgrants">
-            <h2 className="text-lg font-semibold text-foreground mb-6">Grants Overview</h2>
+            <h2 className="text-sm font-semibold text-foreground mb-4">Grants Overview</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
               {[
                 { title: "Production", amount: "$8,000" },
                 { title: "Cultural", amount: "$4,000" },
@@ -250,7 +250,7 @@ export default function IconProgram() {
                 { title: "Event 2", amount: "$2,000" },
               ].map((grant) => (
                 <Card key={grant.title} className="text-center">
-                  <CardContent className="p-6">
+                  <CardContent className="p-4">
                     <h3 className="font-semibold text-foreground mb-3">{grant.title}</h3>
                     <div className="w-14 h-14 rounded-full bg-[hsl(var(--exp-green))]/10 flex items-center justify-center mx-auto mb-3">
                       <Award className="w-7 h-7 text-[hsl(var(--exp-green))]" />
@@ -265,7 +265,7 @@ export default function IconProgram() {
               ))}
             </div>
 
-            <div className="text-center mb-6">
+            <div className="text-center mb-4">
               <a
                 href="https://www.morganstanley.com"
                 target="_blank"
@@ -278,7 +278,7 @@ export default function IconProgram() {
             </div>
 
             {/* Note Banner */}
-            <div className="bg-muted/50 border border-border rounded-lg p-4 flex gap-3">
+            <div className="bg-muted/50 border border-border rounded-lg p-3 flex gap-3">
               <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Note:</span> All stock awards are subject to a one month delay, and will be posted by the last day of the month following the award date.
