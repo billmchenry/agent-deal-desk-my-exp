@@ -1,39 +1,46 @@
 
 
-# ICON Banner Mobile UX Improvements
+# ICON Production Tab -- Add Missing Sections
 
-## Goal
-Make the banner cards more intuitive as navigation elements on mobile, improve touch targets, and strengthen the visual connection between the selected card and its content.
+## What's Missing
+
+The Production tab currently only shows a single "Company Commission" card with "Individual Cap" and "Team Cap" sub-sections. The reference design shows a much richer layout:
+
+### Section 1: Top Row (already partially exists, needs restructuring)
+- **Company Commission** -- progress bar, 26.16%, $4,186.17 earned, goal $16K
+- **Capped Transaction Fees** -- progress bar, 0%, $0.00 earned, goal $5K
+
+### Section 2: Qualify - Option 2 (entirely missing)
+A separate card with 4 metrics in a grid:
+- **Company Commission** -- same progress as above (26.16%)
+- **GCI** -- 4.19%, $20,930.87 / $500K goal
+- **Closed Transactions** -- 50%, 5 out of 10 transactions
+- **ICON Qualifying Fee** -- "Not Paid" status badge with explanatory text
 
 ## Changes
 
-### 1. Improve tap affordance on banner cards
-**File: `src/components/agent/IconStatusBanner.tsx`**
-- Add a subtle bottom-border accent or arrow indicator on the active card pointing down toward the content
-- Add a slight scale or lift effect on the active card to reinforce selection
-- Increase minimum card height to `min-h-[88px]` for comfortable 44px+ touch targets
+### File: `src/pages/agent/IconProgram.tsx`
 
-### 2. Better low-percentage visibility on Production card
-**File: `src/components/agent/IconStatusBanner.tsx`**
-- When progress is below 10%, show a minimum visible width on the progress bar (e.g., `max(value, 8)%`) so the bar is never invisible
-- Make the percentage text slightly bolder/larger to compensate
+1. **Restructure the top card** -- Replace "Individual Cap" and "Team Cap" with "Company Commission" and "Capped Transaction Fees" to match the reference. Each shows a progress bar, percentage, dollar amount badge, and a note about the goal.
 
-### 3. Add active tab heading with transition
-**File: `src/pages/agent/IconProgram.tsx`**
-- Each `TabsContent` section already has an `h2` heading (e.g., "ICON Production Overview", "Event Overview"). These serve as the connection. No change needed here -- the headings are sufficient.
+2. **Add "Qualify - Option 2" card** -- A new Card below the first one containing a 4-column responsive grid:
+   - Company Commission (progress bar + dollar badge)
+   - GCI (progress bar + dollar badge)
+   - Closed Transactions (progress bar + count badge)
+   - ICON Qualifying Fee (status badge + description text, no progress bar)
 
-### 4. Mobile-specific spacing polish
-**File: `src/components/agent/IconStatusBanner.tsx`**
-- Reduce gap between cards from `gap-3` to `gap-2` on mobile to give each card a bit more breathing room within the grid
-- Ensure text doesn't truncate on small screens by using `text-xs` consistently for detail labels
+3. **Dollar amount badges** -- The reference shows current dollar amounts in dark tooltip-style badges below the progress bars. These will be styled as small inline badges (dark background, white text) positioned below each progress bar.
+
+4. **Layout** -- Top section uses a 2-column grid; Qualify - Option 2 uses a 4-column grid on desktop, stacking to 2 columns on tablet and 1 column on mobile.
 
 ## Technical Details
 
-All changes are in `src/components/agent/IconStatusBanner.tsx`:
+All changes are in `src/pages/agent/IconProgram.tsx` within the `production` TabsContent:
 
-- Active card: add `ring-2 ring-primary shadow-md` (already has ring) plus a small bottom indicator triangle or just rely on the stronger shadow
-- Add `min-h-[88px]` to each card for touch target compliance  
-- Progress bar minimum visible width: `Math.max(pillar.progress, 8)` when rendering the Progress value
-- Gap: `gap-2 lg:gap-3` on the grid container
-- Active card gets a subtle `transform scale-[1.02]` transition for tactile feedback
+- Replace the existing "Company Commission" card content (lines 44-91) with two new sections
+- Top card: 2-column grid with Company Commission and Capped Transaction Fees
+- Second card: titled "Qualify - Option 2", 4-column grid with Company Commission, GCI, Closed Transactions, ICON Qualifying Fee
+- Each metric card shows: label + status badge, progress bar, dollar/count badge, note text
+- Use mock data values matching the reference screenshot for now
+- Mobile responsive: `grid-cols-1 md:grid-cols-2 lg:grid-cols-4` for the Option 2 grid
 
