@@ -88,6 +88,24 @@ const DEFAULT_SUGGESTIONS: SuggestionChip[] = [
   { label: "Active Pipeline", query: "What's in my active pipeline?" },
 ];
 
+// Route-based welcome messages
+const ROUTE_WELCOME_MESSAGES: Record<string, string> = {
+  '/agent/transactions': "Hi! I'm Mira, your AI assistant. I can help you analyze your transactions — ask about pending deals, closing timelines, or volume breakdowns!",
+  '/agent/dashboard': "Hi! I'm Mira, your AI assistant. Ask me anything about your business and I'll give you insights you can pin to your dashboard! Try asking about your GCI trends, listing velocity, or pipeline.",
+  '/agent/icon-program': "Hi! I'm Mira, your AI assistant. I can help you track your ICON progress — ask about your cap status, production goals, or award tiers!",
+  '/revshare': "Hi! I'm Mira, your AI assistant. I can help with your revenue share — ask about earnings, organization growth, or sponsor tree performance!",
+  '/team': "Hi! I'm Mira, your AI assistant. I can help you manage your team — ask about team performance, top producers, or recruiting trends!",
+};
+
+const DEFAULT_WELCOME_MESSAGE = "Hi! I'm Mira, your AI assistant. Ask me anything about your business and I'll give you insights you can pin to your dashboard! Try asking about your GCI trends, listing velocity, or pipeline.";
+
+function getWelcomeMessageForRoute(pathname: string): string {
+  if (ROUTE_WELCOME_MESSAGES[pathname]) return ROUTE_WELCOME_MESSAGES[pathname];
+  const prefixMatch = Object.keys(ROUTE_WELCOME_MESSAGES).find(route => pathname.startsWith(route) && route !== '/agent/dashboard');
+  if (prefixMatch) return ROUTE_WELCOME_MESSAGES[prefixMatch];
+  return DEFAULT_WELCOME_MESSAGE;
+}
+
 function getSuggestionsForRoute(pathname: string): SuggestionChip[] {
   // Exact match first
   if (ROUTE_SUGGESTIONS[pathname]) return ROUTE_SUGGESTIONS[pathname];
@@ -119,6 +137,7 @@ interface ChatContentProps {
   isMobile: boolean;
   onClose: () => void;
   suggestions: SuggestionChip[];
+  pathname: string;
 }
 
 function ChatContent({
@@ -142,6 +161,7 @@ function ChatContent({
   isMobile,
   onClose,
   suggestions,
+  pathname,
 }: ChatContentProps) {
   return (
     <div 
@@ -185,13 +205,18 @@ function ChatContent({
 
         <ScrollArea className="flex-1 p-3 sm:p-4">
           <div className="flex flex-col gap-4 sm:gap-6">
-            {currentMessages.map((message) => (
-              <ChatMessage 
-                key={message.id} 
-                message={message} 
-                onFollowUp={handleFollowUp}
-              />
-            ))}
+            {currentMessages.map((message) => {
+              const displayMessage = message.id === 'welcome'
+                ? { ...message, content: getWelcomeMessageForRoute(pathname) }
+                : message;
+              return (
+                <ChatMessage 
+                  key={displayMessage.id} 
+                  message={displayMessage} 
+                  onFollowUp={handleFollowUp}
+                />
+              );
+            })}
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
@@ -474,6 +499,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     isMobile,
     onClose,
     suggestions: getSuggestionsForRoute(location.pathname),
+    pathname: location.pathname,
   };
 
   // Mobile: Use Drawer (slides up from bottom)
