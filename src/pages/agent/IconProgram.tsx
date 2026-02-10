@@ -32,18 +32,7 @@ export default function IconProgram() {
                 <h1 className="text-xl sm:text-2xl font-bold text-white mt-2">ICON Program</h1>
                 <p className="text-sm text-white/70 mt-1">3 of 4 pillars complete — Keep going!</p>
               </div>
-              <div className="flex items-center gap-2">
-                <Select defaultValue="2026">
-                  <SelectTrigger className="w-[170px] bg-white/10 border-white/20 text-white backdrop-blur-sm [&>svg]:text-white">
-                    <SelectValue placeholder="Select year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2026">01/01/2026 - 12/31/2026</SelectItem>
-                    <SelectItem value="2025">01/01/2025 - 12/31/2025</SelectItem>
-                    <SelectItem value="2024">01/01/2024 - 12/31/2024</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <div />
             </div>
           </div>
         </Card>
@@ -55,7 +44,22 @@ export default function IconProgram() {
 
           {/* ICON Production Tab */}
           <TabsContent value="production">
-            <h2 className="text-sm font-semibold text-foreground mb-4">ICON Production Overview</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-foreground">ICON Production Overview</h2>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground whitespace-nowrap">Capping Year</span>
+                <Select defaultValue="2026">
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2026">01/01/2026 - 12/31/2026</SelectItem>
+                    <SelectItem value="2025">01/01/2025 - 12/31/2025</SelectItem>
+                    <SelectItem value="2024">01/01/2024 - 12/31/2024</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
             {/* Top Row: Company Commission + Capped Transaction Fees */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
@@ -205,7 +209,22 @@ export default function IconProgram() {
 
           {/* ICON Cultural Tab */}
           <TabsContent value="cultural">
-            <h2 className="text-sm font-semibold text-foreground mb-4">ICON Cultural Commitment Points</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-foreground">ICON Cultural Commitment Points</h2>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
+                <Select defaultValue="2025-2026">
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2025-2026">06/01/2025 - 05/31/2026</SelectItem>
+                    <SelectItem value="2024-2025">06/01/2024 - 05/31/2025</SelectItem>
+                    <SelectItem value="2023-2024">06/01/2023 - 05/31/2024</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
             {/* Compact success banner */}
             <div className="bg-[hsl(var(--exp-green))]/10 border border-[hsl(var(--exp-green))]/20 rounded-lg p-3 flex items-center gap-3 mb-4">
@@ -226,7 +245,22 @@ export default function IconProgram() {
 
           {/* Events Tab */}
           <TabsContent value="events">
-            <h2 className="text-sm font-semibold text-foreground mb-4">Event Overview</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-foreground">Event Overview</h2>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
+                <Select defaultValue="2025-2026">
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2025-2026">06/01/2025 - 05/31/2026</SelectItem>
+                    <SelectItem value="2024-2025">06/01/2024 - 05/31/2025</SelectItem>
+                    <SelectItem value="2023-2024">06/01/2023 - 05/31/2024</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
             {/* Compact success banner */}
             <div className="bg-[hsl(var(--exp-green))]/10 border border-[hsl(var(--exp-green))]/20 rounded-lg p-3 flex items-center gap-3 mb-4">
@@ -286,7 +320,22 @@ export default function IconProgram() {
 
           {/* Stock Grants Tab */}
           <TabsContent value="stockgrants">
-            <h2 className="text-sm font-semibold text-foreground mb-4">Grants Overview</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-foreground">Grants Overview</h2>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
+                <Select defaultValue="2025-2026">
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2025-2026">06/01/2025 - 05/31/2026</SelectItem>
+                    <SelectItem value="2024-2025">06/01/2024 - 05/31/2025</SelectItem>
+                    <SelectItem value="2023-2024">06/01/2023 - 05/31/2024</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
               {[
