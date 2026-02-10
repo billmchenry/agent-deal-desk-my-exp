@@ -5,7 +5,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Info, CheckCircle, ExternalLink, Check, Award } from "lucide-react";
+import { CircleAlert, CheckCircle, ExternalLink, Check, Award } from "lucide-react";
 import { IconStatusBanner } from "@/components/agent/IconStatusBanner";
 
 export default function IconProgram() {
@@ -92,7 +92,7 @@ export default function IconProgram() {
 
             {/* Note Banner */}
             <div className="bg-muted/50 border border-border rounded-lg p-4 flex gap-3">
-              <Info className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+              <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Note:</span> A representative of the ICON Program will notify qualified agents of their ICON status by the 25th of the month following achievement of the Production Award Requirement ("Production Requirement"). If an agent believes they have qualified for ICON status and have not received an email notification by the 25th of the following month, that agent should email{" "}
                 <a href="mailto:iconaward@exprealty.net" className="text-primary hover:underline">
@@ -117,7 +117,7 @@ export default function IconProgram() {
 
             {/* Note Banner */}
             <div className="bg-muted/50 border border-border rounded-lg p-4 flex gap-3">
-              <Info className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+              <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Note:</span> In the month following completion of the Cultural Requirements during the ICON Cultural Benefit Year, a final audit will be completed to verify if the ICON agent has met the Cultural Commitment points requirements to earn the additional stock award.
               </p>
@@ -177,7 +177,7 @@ export default function IconProgram() {
 
             {/* Note Banner */}
             <div className="bg-muted/50 border border-border rounded-lg p-4 flex gap-3">
-              <Info className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+              <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Note:</span> ICON agents have the opportunity to earn a stock award of up to an additional $4,000 worth of EXPI common stock in the month following attendance of eXp approved events; a stock award of $2,000 worth of EXPI common stock will be issued for each event attended, for a maximum of two events per ICON Cultural Benefit Year.
               </p>
@@ -225,7 +225,7 @@ export default function IconProgram() {
 
             {/* Note Banner */}
             <div className="bg-muted/50 border border-border rounded-lg p-4 flex gap-3">
-              <Info className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+              <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Note:</span> All stock awards are subject to a one month delay, and will be posted by the last day of the month following the award date.
               </p>
