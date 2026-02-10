@@ -1,34 +1,75 @@
 
 
-# Context-Aware Mira Welcome Message
+# ICON Program UX Improvements
 
-## Overview
-Update Mira's welcome/introduction message to be page-aware, similar to how suggestion chips already adapt per route. This way, when a user opens the chat on the Transactions page, Mira's greeting references transactions rather than GCI trends.
+## Problems Identified
 
-## Changes
+1. **At-a-glance status is missing** -- When you land on the page, there's no quick summary. You have to click through 4 tabs to understand your overall ICON status. The agent just wants to know: "Where do I stand?"
 
-**File: `src/components/chat/ChatPanel.tsx`**
+2. **Progress tooltip overlaps the label** -- The floating dollar amount badge (e.g., "$481.90") sits above the progress bar and clips over the "Individual Cap" label text, especially at low percentages.
 
-Add a route-based welcome message map alongside the existing `ROUTE_SUGGESTIONS`:
+3. **Redundant "Congratulations" illustrations take up too much space** -- The Cultural and Events tabs are dominated by large success illustrations that push the actual content below the fold. When the goal is already achieved, a compact confirmation is sufficient.
 
-| Route | Welcome Message |
-|-------|----------------|
-| `/agent/transactions` | "Hi! I'm Mira, your AI assistant. I can help you analyze your transactions -- ask about pending deals, closing timelines, or volume breakdowns!" |
-| `/agent/dashboard` | (Current default message about GCI, velocity, pipeline) |
-| `/agent/icon-program` | "Hi! I'm Mira, your AI assistant. I can help you track your ICON progress -- ask about your cap status, production goals, or award tiers!" |
-| `/revshare` (prefix) | "Hi! I'm Mira, your AI assistant. I can help with your revenue share -- ask about earnings, organization growth, or sponsor tree performance!" |
-| `/team` (prefix) | "Hi! I'm Mira, your AI assistant. I can help you manage your team -- ask about team performance, top producers, or recruiting trends!" |
-| Default | Current generic message |
+4. **Stock Grants tab uses placeholder-style illustrations** -- The dashed-border chart icons look like empty states rather than awarded grants, which is confusing.
 
-**Implementation details:**
-- Create a `getWelcomeMessageForRoute(pathname)` function using the same prefix-matching logic as `getSuggestionsForRoute`
-- When the chat opens or a new chat starts, generate the welcome message based on `location.pathname` instead of using the static `WELCOME_MESSAGE` constant
-- Pass the route-aware welcome message into `ChatContent` or set it when initializing `currentMessages`
-- The welcome message ID stays `'welcome'` so existing logic (e.g., filtering it out for previews) remains unchanged
+5. **Year selector is inconsistent** -- Production uses "Capping Year" while Cultural/Events/Stock Grants use "Benefit Year" with different date ranges. This is data-driven so we'll keep labels accurate, but we can unify the visual placement.
 
-**File: `src/contexts/MiraChatContext.tsx`**
-- Minor update: `startNewChat` and the initial state will need to accept a dynamic welcome message, or the welcome message replacement will happen in `ChatPanel` after mount. The simpler approach is to handle it entirely in `ChatPanel.tsx` by replacing the welcome message content based on route when rendering, keeping the context untouched.
+6. **No overall progress indicator** -- There's nothing tying the 4 categories together to show how close the agent is to full ICON status.
 
-## Technical Approach
-The cleanest path is to **not change the context** and instead override the welcome message at render time in `ChatPanel.tsx`. When mapping over `currentMessages`, if the message ID is `'welcome'`, substitute its content with the route-appropriate text. This avoids coupling routing logic into the context layer.
+## Proposed Changes
+
+### 1. Add an ICON Status Summary Banner at the Top
+Before the tabs, add a compact hero row showing all 4 pillars at a glance:
+
+- **Production**: progress ring or bar showing percentage (e.g., "3%")
+- **Cultural**: checkmark/complete badge  
+- **Events**: "2/2" with checkmark
+- **Stock Grants**: "4/4 Awarded"
+
+This gives instant context so agents know exactly where they stand without clicking through tabs. Each pillar is clickable to jump to its tab.
+
+### 2. Fix Progress Bar Tooltip Positioning
+Move the dollar value label below the progress bar (or inline with the label row) instead of using absolute positioning above it. This eliminates the overlap issue at low percentages.
+
+### 3. Compact the "Congratulations" Sections
+Replace the large illustration + heading + paragraph with a single inline success banner (similar to the note banners already used). Example: a green-tinted card with a checkmark icon and "Cultural goal achieved for 2025-2026" on one line.
+
+### 4. Replace Stock Grant Placeholder Illustrations
+Replace the dashed-border chart icons with meaningful content: show the award amount (e.g., "$8,000" or "Pending") and a clean checkmark or clock icon. Remove the decorative dots/x marks.
+
+### 5. Unify Year Selector into Page Header
+Move the year selector out of individual tab content and into the page header area (next to "ICON Program" title), so it persists across tabs and reduces repeated UI.
+
+## Technical Details
+
+### File: `src/pages/agent/IconProgram.tsx`
+
+**Summary Banner (new section before Tabs)**
+- Add a 4-column grid of compact status cards above the tabs
+- Each card shows: icon, pillar name, status (progress % or "Complete"), and is clickable to set the active tab via controlled `Tabs` state
+- Convert from `defaultValue` to controlled `value` + `onValueChange` on the Tabs component
+
+**Progress bar fix**
+- Remove the `absolute -top-8` positioned tooltip div
+- Place the current value inline: to the right of the label or below the bar as a `text-sm` span
+
+**Compact success states**
+- Replace `SuccessIllustration` component usage with an inline success banner:
+  ```
+  <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3 mb-6">
+    <CheckCircle className="text-green-500" />
+    <span>You have achieved your ICON Cultural goal for 2025-2026</span>
+  </div>
+  ```
+
+**Stock Grant cards**
+- Remove `StockGrantIllustration` component
+- Replace with award amount text (e.g., "$8,000") or a large checkmark icon with clean styling (no dashed borders)
+
+**Year selector consolidation**
+- Move the Select component into the page header row
+- Tab content no longer renders its own year selector
+
+### File: `src/components/agent/IconStatusSummary.tsx`
+- No changes needed (this is the dashboard summary widget, already compact)
 
