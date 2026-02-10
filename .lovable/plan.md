@@ -1,46 +1,67 @@
 
 
-# ICON Production Tab -- Add Missing Sections
+# Refine ICON Program Page to Match Home & Agent Dashboard
 
-## What's Missing
+## What's Different Today
 
-The Production tab currently only shows a single "Company Commission" card with "Individual Cap" and "Team Cap" sub-sections. The reference design shows a much richer layout:
+The Home and Agent dashboards feel more polished because they use:
+- A **branded gradient hero banner** (navy-to-blue with decorative circles and frosted-glass elements)
+- **Colored icon badges** on stat/metric cards (blue, green, gold tints)
+- Consistent **section header style** (`text-sm font-semibold` with compact spacing)
+- Cards with subtle **visual hierarchy** (icon + bold value + muted label pattern)
 
-### Section 1: Top Row (already partially exists, needs restructuring)
-- **Company Commission** -- progress bar, 26.16%, $4,186.17 earned, goal $16K
-- **Capped Transaction Fees** -- progress bar, 0%, $0.00 earned, goal $5K
-
-### Section 2: Qualify - Option 2 (entirely missing)
-A separate card with 4 metrics in a grid:
-- **Company Commission** -- same progress as above (26.16%)
-- **GCI** -- 4.19%, $20,930.87 / $500K goal
-- **Closed Transactions** -- 50%, 5 out of 10 transactions
-- **ICON Qualifying Fee** -- "Not Paid" status badge with explanatory text
+The ICON Program page currently uses plain white cards with text-only headers and no visual anchoring element at the top. It feels flat by comparison.
 
 ## Changes
 
-### File: `src/pages/agent/IconProgram.tsx`
+### 1. Add a branded ICON Hero Banner
+Replace the plain "ICON Program" heading + year selector with a gradient hero banner matching the Agent Dashboard style.
 
-1. **Restructure the top card** -- Replace "Individual Cap" and "Team Cap" with "Company Commission" and "Capped Transaction Fees" to match the reference. Each shows a progress bar, percentage, dollar amount badge, and a note about the goal.
+- Uses the same `bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue` treatment
+- Contains the page title, year selector (styled for dark background), and a summary line like "3 of 4 pillars complete"
+- Includes the decorative background circles for visual consistency
 
-2. **Add "Qualify - Option 2" card** -- A new Card below the first one containing a 4-column responsive grid:
-   - Company Commission (progress bar + dollar badge)
-   - GCI (progress bar + dollar badge)
-   - Closed Transactions (progress bar + count badge)
-   - ICON Qualifying Fee (status badge + description text, no progress bar)
+### 2. Add colored icons to Production metric cards
+The top-row cards (Company Commission, Capped Transaction Fees) and Qualify Option 2 metrics currently have no icons. Add small colored icon badges to match the StatsRow pattern:
 
-3. **Dollar amount badges** -- The reference shows current dollar amounts in dark tooltip-style badges below the progress bars. These will be styled as small inline badges (dark background, white text) positioned below each progress bar.
+- Company Commission: DollarSign icon with blue tint
+- Capped Transaction Fees: FileText icon with gold tint
+- GCI: TrendingUp icon with green tint
+- Closed Transactions: Home icon with purple tint
+- ICON Qualifying Fee: Award icon with destructive/red tint
 
-4. **Layout** -- Top section uses a 2-column grid; Qualify - Option 2 uses a 4-column grid on desktop, stacking to 2 columns on tablet and 1 column on mobile.
+### 3. Polish the Stock Grants cards
+Add subtle gradient backgrounds or colored top-border accents to the grant cards to make them feel more premium, similar to how the Home dashboard stat cards use colored icon containers.
+
+### 4. Consistent card internal spacing
+Standardize all cards to use the same `CardContent className="p-4"` pattern with `space-y-3` internal spacing, matching the Agent Dashboard's CappingSection.
 
 ## Technical Details
 
-All changes are in `src/pages/agent/IconProgram.tsx` within the `production` TabsContent:
+### File: `src/pages/agent/IconProgram.tsx`
 
-- Replace the existing "Company Commission" card content (lines 44-91) with two new sections
-- Top card: 2-column grid with Company Commission and Capped Transaction Fees
-- Second card: titled "Qualify - Option 2", 4-column grid with Company Commission, GCI, Closed Transactions, ICON Qualifying Fee
-- Each metric card shows: label + status badge, progress bar, dollar/count badge, note text
-- Use mock data values matching the reference screenshot for now
-- Mobile responsive: `grid-cols-1 md:grid-cols-2 lg:grid-cols-4` for the Option 2 grid
+**Hero Banner** (replaces lines 18-33):
+- Wrap header in a Card with `bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue` and decorative circles
+- Move year Select inside the banner, styled with white/transparent colors
+- Add a summary Badge and subtitle text
 
+**Metric card icons** (lines 46-86 and 95-143):
+- Import additional icons: `DollarSign`, `FileText`, `TrendingUp`, `Home`
+- Add a small `rounded-lg p-2 bg-{color}/10` icon container before each metric title
+- Use the same color palette as `AgentHeroBanner` and `StatsRow`
+
+**Stock Grants polish** (lines 245-266):
+- Add a subtle top-border accent using `border-t-2 border-[hsl(var(--exp-green))]` to each awarded grant card
+
+### File: `src/components/agent/IconStatusBanner.tsx`
+
+- No changes needed -- the banner cards already use a consistent card pattern with icons and progress indicators
+
+## Summary of Visual Improvements
+
+| Element | Before | After |
+|---------|--------|-------|
+| Page header | Plain text + dropdown | Gradient hero banner with summary |
+| Metric cards | Text-only headers | Colored icon badges + headers |
+| Stock grant cards | Plain centered cards | Top-border accent for awarded status |
+| Overall feel | Flat, form-like | Matches dashboard polish level |
