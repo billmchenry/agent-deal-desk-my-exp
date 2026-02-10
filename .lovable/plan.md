@@ -1,55 +1,38 @@
 
 
-# Fix Year Selector: "Capping Year" vs "Benefit Year" Per Tab
+# Fix Mobile Nav: Don't Auto-Navigate on Parent Tap
 
 ## The Problem
 
-The current ICON Program page has a single year selector in the hero banner that shows the same label and date ranges regardless of which tab is active. In the production app:
-
-- **Production tab** uses the label **"Capping Year"** with calendar-year ranges (e.g., 01/01/2026 - 12/31/2026)
-- **Cultural, Events, and Stock Grants tabs** use the label **"Benefit Year"** with mid-year ranges (e.g., 06/01/2025 - 05/31/2026)
+On desktop, the "parent is the link" strategy works great because the sidebar is always visible. But on mobile, tapping a parent item (e.g., "Agent") immediately navigates to its dashboard page and closes the drawer. This means users can never simply expand a submenu to see its child links -- they're always forced to navigate first.
 
 ## The Fix
 
-Move the year selector out of the hero banner and into each tab's content area, so each tab can display the correct label and date range options.
+Change the mobile nav so that tapping a parent item with a submenu **only toggles the submenu open/closed** without navigating. Users then pick the specific sub-page they want from the expanded list.
 
-### File: `src/pages/agent/IconProgram.tsx`
+### Behavior Changes
 
-1. **Remove the year selector from the hero banner** -- Delete the Select dropdown from the gradient banner (lines 35-46). The banner will keep the title, badge, and progress summary only.
+| Action | Current Behavior | New Behavior |
+|--------|-----------------|-------------|
+| Tap parent with submenu (e.g. "Agent") | Navigates to dashboard + closes drawer | Toggles submenu open/closed (stays on drawer) |
+| Tap chevron arrow | Toggles submenu OR navigates if not in section | Toggles submenu open/closed (same as tapping parent) |
+| Tap a sub-item (e.g. "Transactions") | Navigates + closes drawer | No change -- same behavior |
+| Tap parent without submenu (e.g. "Home") | Navigates + closes drawer | No change -- same behavior |
 
-2. **Add a tab-specific header row to each TabsContent** -- Each tab will get a header row with the section title on the left and the appropriate year selector on the right:
+### Technical Details
 
-   - **Production tab**: Label reads "Capping Year", options use calendar-year ranges:
-     - 01/01/2026 - 12/31/2026
-     - 01/01/2025 - 12/31/2025
-     - 01/01/2024 - 12/31/2024
+**File: `src/components/layout/MobileNavDrawer.tsx`**
 
-   - **Cultural tab**: Label reads "Benefit Year", options use mid-year ranges:
-     - 06/01/2025 - 05/31/2026
-     - 06/01/2024 - 05/31/2025
-     - 06/01/2023 - 05/31/2024
+1. **Change `handleParentClick`** -- When the item has a submenu, toggle expansion state instead of navigating. Only navigate + close when the item has no submenu.
 
-   - **Events tab**: Same "Benefit Year" label and mid-year ranges as Cultural
+2. **Change `handleChevronClick`** -- Always toggle the submenu, regardless of whether the user is currently in that section. Remove the navigation fallback.
 
-   - **Stock Grants tab**: Same "Benefit Year" label and mid-year ranges as Cultural
+3. **Track manually expanded items** -- Replace the `manuallyCollapsed` state (which only tracks one collapsed section) with a `manuallyToggled` set that tracks which sections the user has explicitly opened or closed. This allows multiple sections to be expanded simultaneously.
 
-3. **Header row layout** -- Each tab header will use a flex row with `justify-between items-center`:
+4. **Update `isExpanded` logic** -- A section is expanded if:
+   - The user is currently in that section's routes (auto-expand), OR
+   - The user has manually toggled it open
+   - Unless the user has manually toggled it closed
 
-```text
-[Section Title]                    [Label]  [Dropdown]
-ICON Production Overview     Capping Year   01/01/2026 -...
-```
-
-This matches the production screenshots exactly.
-
-## Summary of Changes
-
-| Tab | Label | Date Range Format |
-|-----|-------|------------------|
-| Production | Capping Year | 01/01/YYYY - 12/31/YYYY |
-| Cultural | Benefit Year | 06/01/YYYY - 05/31/YYYY |
-| Events | Benefit Year | 06/01/YYYY - 05/31/YYYY |
-| Stock Grants | Benefit Year | 06/01/YYYY - 05/31/YYYY |
-
-Only one file is modified: `src/pages/agent/IconProgram.tsx`.
+This keeps the desktop sidebar behavior unchanged (it stays in `Sidebar.tsx`) while giving mobile users a browse-friendly experience.
 
