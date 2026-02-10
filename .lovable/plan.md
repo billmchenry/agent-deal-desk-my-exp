@@ -1,75 +1,39 @@
 
 
-# ICON Program UX Improvements
+# ICON Banner Mobile UX Improvements
 
-## Problems Identified
+## Goal
+Make the banner cards more intuitive as navigation elements on mobile, improve touch targets, and strengthen the visual connection between the selected card and its content.
 
-1. **At-a-glance status is missing** -- When you land on the page, there's no quick summary. You have to click through 4 tabs to understand your overall ICON status. The agent just wants to know: "Where do I stand?"
+## Changes
 
-2. **Progress tooltip overlaps the label** -- The floating dollar amount badge (e.g., "$481.90") sits above the progress bar and clips over the "Individual Cap" label text, especially at low percentages.
+### 1. Improve tap affordance on banner cards
+**File: `src/components/agent/IconStatusBanner.tsx`**
+- Add a subtle bottom-border accent or arrow indicator on the active card pointing down toward the content
+- Add a slight scale or lift effect on the active card to reinforce selection
+- Increase minimum card height to `min-h-[88px]` for comfortable 44px+ touch targets
 
-3. **Redundant "Congratulations" illustrations take up too much space** -- The Cultural and Events tabs are dominated by large success illustrations that push the actual content below the fold. When the goal is already achieved, a compact confirmation is sufficient.
+### 2. Better low-percentage visibility on Production card
+**File: `src/components/agent/IconStatusBanner.tsx`**
+- When progress is below 10%, show a minimum visible width on the progress bar (e.g., `max(value, 8)%`) so the bar is never invisible
+- Make the percentage text slightly bolder/larger to compensate
 
-4. **Stock Grants tab uses placeholder-style illustrations** -- The dashed-border chart icons look like empty states rather than awarded grants, which is confusing.
+### 3. Add active tab heading with transition
+**File: `src/pages/agent/IconProgram.tsx`**
+- Each `TabsContent` section already has an `h2` heading (e.g., "ICON Production Overview", "Event Overview"). These serve as the connection. No change needed here -- the headings are sufficient.
 
-5. **Year selector is inconsistent** -- Production uses "Capping Year" while Cultural/Events/Stock Grants use "Benefit Year" with different date ranges. This is data-driven so we'll keep labels accurate, but we can unify the visual placement.
-
-6. **No overall progress indicator** -- There's nothing tying the 4 categories together to show how close the agent is to full ICON status.
-
-## Proposed Changes
-
-### 1. Add an ICON Status Summary Banner at the Top
-Before the tabs, add a compact hero row showing all 4 pillars at a glance:
-
-- **Production**: progress ring or bar showing percentage (e.g., "3%")
-- **Cultural**: checkmark/complete badge  
-- **Events**: "2/2" with checkmark
-- **Stock Grants**: "4/4 Awarded"
-
-This gives instant context so agents know exactly where they stand without clicking through tabs. Each pillar is clickable to jump to its tab.
-
-### 2. Fix Progress Bar Tooltip Positioning
-Move the dollar value label below the progress bar (or inline with the label row) instead of using absolute positioning above it. This eliminates the overlap issue at low percentages.
-
-### 3. Compact the "Congratulations" Sections
-Replace the large illustration + heading + paragraph with a single inline success banner (similar to the note banners already used). Example: a green-tinted card with a checkmark icon and "Cultural goal achieved for 2025-2026" on one line.
-
-### 4. Replace Stock Grant Placeholder Illustrations
-Replace the dashed-border chart icons with meaningful content: show the award amount (e.g., "$8,000" or "Pending") and a clean checkmark or clock icon. Remove the decorative dots/x marks.
-
-### 5. Unify Year Selector into Page Header
-Move the year selector out of individual tab content and into the page header area (next to "ICON Program" title), so it persists across tabs and reduces repeated UI.
+### 4. Mobile-specific spacing polish
+**File: `src/components/agent/IconStatusBanner.tsx`**
+- Reduce gap between cards from `gap-3` to `gap-2` on mobile to give each card a bit more breathing room within the grid
+- Ensure text doesn't truncate on small screens by using `text-xs` consistently for detail labels
 
 ## Technical Details
 
-### File: `src/pages/agent/IconProgram.tsx`
+All changes are in `src/components/agent/IconStatusBanner.tsx`:
 
-**Summary Banner (new section before Tabs)**
-- Add a 4-column grid of compact status cards above the tabs
-- Each card shows: icon, pillar name, status (progress % or "Complete"), and is clickable to set the active tab via controlled `Tabs` state
-- Convert from `defaultValue` to controlled `value` + `onValueChange` on the Tabs component
-
-**Progress bar fix**
-- Remove the `absolute -top-8` positioned tooltip div
-- Place the current value inline: to the right of the label or below the bar as a `text-sm` span
-
-**Compact success states**
-- Replace `SuccessIllustration` component usage with an inline success banner:
-  ```
-  <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3 mb-6">
-    <CheckCircle className="text-green-500" />
-    <span>You have achieved your ICON Cultural goal for 2025-2026</span>
-  </div>
-  ```
-
-**Stock Grant cards**
-- Remove `StockGrantIllustration` component
-- Replace with award amount text (e.g., "$8,000") or a large checkmark icon with clean styling (no dashed borders)
-
-**Year selector consolidation**
-- Move the Select component into the page header row
-- Tab content no longer renders its own year selector
-
-### File: `src/components/agent/IconStatusSummary.tsx`
-- No changes needed (this is the dashboard summary widget, already compact)
+- Active card: add `ring-2 ring-primary shadow-md` (already has ring) plus a small bottom indicator triangle or just rely on the stronger shadow
+- Add `min-h-[88px]` to each card for touch target compliance  
+- Progress bar minimum visible width: `Math.max(pillar.progress, 8)` when rendering the Progress value
+- Gap: `gap-2 lg:gap-3` on the grid container
+- Active card gets a subtle `transform scale-[1.02]` transition for tactile feedback
 
