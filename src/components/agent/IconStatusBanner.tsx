@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, TrendingUp, Heart, Calendar, Award } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
@@ -44,8 +45,28 @@ const pillars = [
 ];
 
 export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerProps) {
+  const startY = useRef(0);
+  const scrolled = useRef(false);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    startY.current = e.touches[0].clientY;
+    scrolled.current = false;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (Math.abs(e.touches[0].clientY - startY.current) > 10) {
+      scrolled.current = true;
+    }
+  };
+
+  const handleTouchEnd = (key: string) => {
+    if (!scrolled.current) {
+      onTabChange(key);
+    }
+  };
+
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6" style={{ touchAction: 'pan-y' }}>
       {pillars.map((pillar) => {
         const Icon = pillar.icon;
         const isActive = activeTab === pillar.key;
@@ -53,29 +74,17 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
         return (
           <Card
             key={pillar.key}
-            onPointerUp={(e) => {
-              // Only select on clean taps, not after scrolling
-              if (e.pointerType === "touch") {
-                const target = e.currentTarget;
-                const rect = target.getBoundingClientRect();
-                const touch = { x: e.clientX, y: e.clientY };
-                // If pointer is still within the card bounds, treat as tap
-                if (
-                  touch.x >= rect.left &&
-                  touch.x <= rect.right &&
-                  touch.y >= rect.top &&
-                  touch.y <= rect.bottom
-                ) {
-                  onTabChange(pillar.key);
-                }
-              } else {
-                onTabChange(pillar.key);
-              }
+            onClick={() => onTabChange(pillar.key)}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={(e) => {
+              e.preventDefault(); // prevent click from also firing
+              handleTouchEnd(pillar.key);
             }}
-            className={`p-4 min-h-[88px] cursor-pointer transition-all duration-200 hover:shadow-md select-none touch-manipulation ${
+            className={`p-4 min-h-[88px] cursor-pointer transition-all duration-200 select-none ${
               isActive
                 ? "ring-2 ring-primary border-primary shadow-md scale-[1.02]"
-                : "hover:border-primary/40"
+                : "active:lg:shadow-md"
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
