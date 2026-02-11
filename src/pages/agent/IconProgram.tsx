@@ -14,7 +14,10 @@ export default function IconProgram() {
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        {/* Hero Banner */}
+        {/* Page Title */}
+        <h1 className="text-lg font-semibold text-foreground">ICON Program</h1>
+
+        {/* Compact Hero Banner */}
         <Card className="overflow-hidden bg-gradient-to-br from-[hsl(var(--exp-navy))] via-[hsl(var(--exp-navy-light))] to-[hsl(var(--exp-blue))] p-3 sm:p-4 text-white">
           <div className="flex items-center gap-2 mb-1">
             <Badge className="bg-[hsl(var(--exp-gold))]/20 text-[hsl(var(--exp-gold-light))] border-[hsl(var(--exp-gold))]/30 hover:bg-[hsl(var(--exp-gold))]/30">
@@ -22,8 +25,7 @@ export default function IconProgram() {
               ICON PROGRAM
             </Badge>
           </div>
-          <h1 className="text-lg sm:text-xl font-bold text-white">ICON Program</h1>
-          <p className="text-sm text-white/70 mt-0.5">3 of 4 pillars complete — Keep going!</p>
+          <p className="text-sm text-white/70">3 of 4 pillars complete — Keep going!</p>
         </Card>
 
         {/* Status Summary Banner */}
