@@ -1,8 +1,6 @@
-import { useRef, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, TrendingUp, Heart, Calendar, Award } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface IconStatusBannerProps {
   activeTab: string;
@@ -46,30 +44,8 @@ const pillars = [
 ];
 
 export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerProps) {
-  const isMobile = useIsMobile();
-  const startY = useRef(0);
-  const scrolled = useRef(false);
-
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    startY.current = e.touches[0].clientY;
-    scrolled.current = false;
-  }, []);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (Math.abs(e.touches[0].clientY - startY.current) > 8) {
-      scrolled.current = true;
-    }
-  }, []);
-
-  const handleTouchEnd = useCallback((key: string, e: React.TouchEvent) => {
-    e.preventDefault(); // prevent ghost click
-    if (!scrolled.current) {
-      onTabChange(key);
-    }
-  }, [onTabChange]);
-
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6" style={{ touchAction: 'pan-y' }}>
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6">
       {pillars.map((pillar) => {
         const Icon = pillar.icon;
         const isActive = activeTab === pillar.key;
@@ -77,16 +53,7 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
         return (
           <Card
             key={pillar.key}
-            {...(isMobile
-              ? {
-                  onTouchStart: handleTouchStart,
-                  onTouchMove: handleTouchMove,
-                  onTouchEnd: (e: React.TouchEvent<HTMLDivElement>) => handleTouchEnd(pillar.key, e),
-                }
-              : {
-                  onClick: () => onTabChange(pillar.key),
-                }
-            )}
+            onClick={() => onTabChange(pillar.key)}
             className={`tap-card p-4 min-h-[88px] cursor-pointer select-none ${
               isActive
                 ? "ring-2 ring-primary border-primary shadow-md lg:scale-[1.02]"
