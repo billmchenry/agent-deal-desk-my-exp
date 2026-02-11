@@ -178,10 +178,19 @@
   @media (pointer: coarse) {
     .tap-card {
       cursor: default !important;
+      transition: none !important;
     }
-    .tap-card:hover {
+    .tap-card *,
+    .tap-card::before,
+    .tap-card::after {
+      transition: none !important;
+    }
+    .tap-card:hover,
+    .tap-card:active {
       border-color: inherit !important;
       box-shadow: inherit !important;
+      transform: none !important;
+      background-color: inherit !important;
     }
   }
 
