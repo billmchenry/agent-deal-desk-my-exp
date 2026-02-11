@@ -45,6 +45,9 @@ export function Header({ onMenuClick }: HeaderProps) {
         {/* Right Section */}
         <div className="flex items-center gap-2">
           {/* Get Help */}
+          <Button variant="ghost" size="icon" className="sm:hidden">
+            <HelpCircle className="h-5 w-5" />
+          </Button>
           <Button variant="ghost" size="sm" className="hidden sm:flex gap-2">
             <HelpCircle className="h-4 w-4" />
             <span>Get Help</span>
