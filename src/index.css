@@ -159,6 +159,15 @@
     background: linear-gradient(135deg, hsl(var(--exp-blue)) 0%, hsl(var(--exp-blue-light)) 100%);
   }
 
+  /* Suppress tap highlight on touch-interactive cards */
+  .tap-card {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  .tap-card:active {
+    /* No visual change on touch hold — selection is handled in JS */
+  }
+
    /* Safe area for devices with home indicators */
    .pb-safe {
      padding-bottom: env(safe-area-inset-bottom);

@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, TrendingUp, Heart, Calendar, Award } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface IconStatusBannerProps {
   activeTab: string;
@@ -45,25 +46,27 @@ const pillars = [
 ];
 
 export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerProps) {
+  const isMobile = useIsMobile();
   const startY = useRef(0);
   const scrolled = useRef(false);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
     startY.current = e.touches[0].clientY;
     scrolled.current = false;
-  };
+  }, []);
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (Math.abs(e.touches[0].clientY - startY.current) > 10) {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (Math.abs(e.touches[0].clientY - startY.current) > 8) {
       scrolled.current = true;
     }
-  };
+  }, []);
 
-  const handleTouchEnd = (key: string) => {
+  const handleTouchEnd = useCallback((key: string, e: React.TouchEvent) => {
+    e.preventDefault(); // prevent ghost click
     if (!scrolled.current) {
       onTabChange(key);
     }
-  };
+  }, [onTabChange]);
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6" style={{ touchAction: 'pan-y' }}>
@@ -74,18 +77,20 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
         return (
           <Card
             key={pillar.key}
-            onClick={() => onTabChange(pillar.key)}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              handleTouchEnd(pillar.key);
-            }}
-            style={{ WebkitTapHighlightColor: 'transparent' }}
-            className={`p-4 min-h-[88px] cursor-pointer select-none ${
+            {...(isMobile
+              ? {
+                  onTouchStart: handleTouchStart,
+                  onTouchMove: handleTouchMove,
+                  onTouchEnd: (e: React.TouchEvent<HTMLDivElement>) => handleTouchEnd(pillar.key, e),
+                }
+              : {
+                  onClick: () => onTabChange(pillar.key),
+                }
+            )}
+            className={`tap-card p-4 min-h-[88px] cursor-pointer select-none ${
               isActive
                 ? "ring-2 ring-primary border-primary shadow-md scale-[1.02]"
-                : ""
+                : "lg:hover:shadow-md lg:hover:border-primary/40"
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
