@@ -126,7 +126,7 @@ interface ChatContentProps {
   setInputValue: (value: string) => void;
   handleKeyPress: (e: React.KeyboardEvent) => void;
   handleSend: () => void;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesContainerRef: React.RefObject<HTMLDivElement>;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   filteredConversations: any[];
@@ -150,7 +150,7 @@ function ChatContent({
   setInputValue,
   handleKeyPress,
   handleSend,
-  messagesEndRef,
+  messagesContainerRef,
   searchQuery,
   setSearchQuery,
   filteredConversations,
@@ -165,11 +165,11 @@ function ChatContent({
 }: ChatContentProps) {
   return (
     <div 
-      className="flex w-[200%] h-full transition-transform duration-300 ease-out"
+      className="flex w-[200%] h-full min-h-0 transition-transform duration-300 ease-out"
       style={{ transform: showHistory ? 'translateX(-50%)' : 'translateX(0)' }}
     >
       {/* Chat View */}
-      <div className="w-1/2 h-full flex flex-col">
+      <div className="w-1/2 h-full flex flex-col min-h-0">
         <div className="px-3 sm:px-4 py-3 border-b shrink-0 bg-background relative z-10">
           <div className={`flex items-center justify-between w-full ${isMobile ? "" : "pr-8"}`}>
             <div className="flex items-center gap-2">
@@ -203,7 +203,7 @@ function ChatContent({
           </div>
         </div>
 
-        <ScrollArea className="flex-1 p-3 sm:p-4">
+        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 sm:p-4 min-h-0">
           <div className="flex flex-col gap-4 sm:gap-6">
             {currentMessages.map((message) => {
               const displayMessage = message.id === 'welcome'
@@ -217,9 +217,8 @@ function ChatContent({
                 />
               );
             })}
-            <div ref={messagesEndRef} />
           </div>
-        </ScrollArea>
+        </div>
 
         <div className="p-3 sm:p-4 border-t bg-background shrink-0 space-y-2">
           <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
@@ -252,7 +251,7 @@ function ChatContent({
       </div>
 
       {/* History View */}
-      <div className="w-1/2 h-full flex flex-col bg-background">
+      <div className="w-1/2 h-full flex flex-col bg-background min-h-0">
         <div className="px-3 sm:px-4 py-3 border-b shrink-0">
           <div className="flex items-center gap-2">
             <Button 
@@ -367,7 +366,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const [showHistory, setShowHistory] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [swipedId, setSwipedId] = useState<string | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const handleLoadConversation = (id: string) => {
     loadConversation(id);
@@ -394,8 +393,8 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [currentMessages]);
 
@@ -488,7 +487,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     setInputValue,
     handleKeyPress,
     handleSend,
-    messagesEndRef,
+    messagesContainerRef,
     searchQuery,
     setSearchQuery,
     filteredConversations,
@@ -506,7 +505,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <DrawerContent hideHandle className="h-[85vh] p-0 flex flex-col overflow-hidden">
+        <DrawerContent hideHandle className="h-[85vh] p-0 flex flex-col overflow-hidden min-h-0">
           <ChatContent {...contentProps} />
         </DrawerContent>
       </Drawer>
