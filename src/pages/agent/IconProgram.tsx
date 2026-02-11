@@ -18,14 +18,22 @@ export default function IconProgram() {
         <h1 className="text-lg font-semibold text-foreground">ICON Program</h1>
 
         {/* Compact Hero Banner */}
-        <Card className="overflow-hidden bg-gradient-to-br from-[hsl(var(--exp-navy))] via-[hsl(var(--exp-navy-light))] to-[hsl(var(--exp-blue))] p-3 sm:p-4 text-white">
-          <div className="flex items-center gap-2 mb-1">
-            <Badge className="bg-[hsl(var(--exp-gold))]/20 text-[hsl(var(--exp-gold-light))] border-[hsl(var(--exp-gold))]/30 hover:bg-[hsl(var(--exp-gold))]/30">
-              <Target className="mr-1 h-3 w-3" />
-              ICON PROGRAM
-            </Badge>
+        <Card className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--exp-navy))] via-[hsl(var(--exp-navy-light))] to-[hsl(var(--exp-blue))] p-4 sm:p-6 text-white">
+          {/* Decorative background */}
+          <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
+            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-white" />
+            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-[hsl(var(--exp-gold))]" />
           </div>
-          <p className="text-sm text-white/70">3 of 4 pillars complete — Keep going!</p>
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-3">
+              <Badge className="bg-[hsl(var(--exp-gold))]/20 text-[hsl(var(--exp-gold-light))] border-[hsl(var(--exp-gold))]/30 hover:bg-[hsl(var(--exp-gold))]/30">
+                <Target className="mr-1 h-3 w-3" />
+                ICON PROGRAM
+              </Badge>
+            </div>
+            <p className="text-xl sm:text-2xl font-bold text-white mb-1">3 of 4 pillars complete</p>
+            <p className="text-sm text-white/70">Keep going — you're almost there!</p>
+          </div>
         </Card>
 
         {/* Status Summary Banner */}
