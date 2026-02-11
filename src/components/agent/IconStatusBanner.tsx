@@ -89,7 +89,7 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
             )}
             className={`tap-card p-4 min-h-[88px] cursor-pointer select-none ${
               isActive
-                ? "ring-2 ring-primary border-primary shadow-md scale-[1.02]"
+                ? "ring-2 ring-primary border-primary shadow-md lg:scale-[1.02]"
                 : "lg:hover:shadow-md lg:hover:border-primary/40"
             }`}
           >
