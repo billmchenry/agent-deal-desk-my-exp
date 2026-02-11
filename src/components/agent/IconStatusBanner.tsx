@@ -60,20 +60,12 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
                 : "hover:border-primary/40"
             }`}
           >
-            <div className="flex items-center gap-3 mb-2">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  pillar.complete
-                    ? "bg-[hsl(var(--exp-green))]/10"
-                    : "bg-primary/10"
-                }`}
-              >
-                {pillar.complete ? (
-                  <CheckCircle className="w-4 h-4 text-[hsl(var(--exp-green))]" />
-                ) : (
-                  <Icon className="w-4 h-4 text-primary" />
-                )}
-              </div>
+            <div className="flex items-center gap-2 mb-2">
+              {pillar.complete ? (
+                <CheckCircle className="w-4 h-4 text-[hsl(var(--exp-green))]" />
+              ) : (
+                <Icon className="w-4 h-4 text-primary" />
+              )}
               <span className="text-sm font-medium text-foreground">{pillar.label}</span>
             </div>
 
