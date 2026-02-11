@@ -50,7 +50,38 @@ export default function IconProgram() {
               </div>
             </div>
 
-            {/* Top row cards removed — data shown in Qualify section below */}
+
+            {/* Top Row: Company Commission + Capped Transaction Fees */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
+              <Card>
+                <CardContent className="p-4 space-y-3">
+                  <h3 className="font-medium text-foreground">Company Commission</h3>
+                  <Progress value={26.16} className="h-2" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-foreground">$4,186.17</span>
+                    <span className="text-sm font-medium text-foreground">26.16%</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Complete $16K to achieve the company commission goal
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4 space-y-3">
+                  <h3 className="font-medium text-foreground">Capped Transaction Fees</h3>
+                  <Progress value={0} className="h-2" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-foreground">$0.00</span>
+                    <span className="text-sm font-medium text-foreground">0%</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Complete $5K to achieve the capped transaction fees goal
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
 
             {/* Qualify - Option 2 */}
             <Card className="mb-4">
