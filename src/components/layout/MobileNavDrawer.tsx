@@ -116,42 +116,42 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
     return (
       <div key={item.title}>
-        <div className="flex items-center">
+        <div className="flex items-center mx-2">
           <button
             onClick={() => handleParentClick(item)}
             className={cn(
-              "flex flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-              "text-foreground hover:bg-muted",
-              isActive(item.url) && "bg-muted text-exp-blue"
+              "flex flex-1 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "text-sidebar-foreground hover:bg-sidebar-accent",
+              isActive(item.url) && "bg-sidebar-accent"
             )}
           >
-            {Icon && <Icon className="h-5 w-5 shrink-0" />}
+            {Icon && <Icon className="h-4 w-4 shrink-0" />}
             <span className="flex-1 text-left">{item.title}</span>
           </button>
           {hasSubmenu && (
             <button
               onClick={(e) => handleChevronClick(e, item)}
-              className="p-2 rounded-lg hover:bg-muted transition-colors"
+              className="p-1.5 rounded-md hover:bg-sidebar-accent transition-colors"
             >
               {expanded ? (
-                <ChevronDown className="h-4 w-4 shrink-0" />
+                <ChevronDown className="h-4 w-4 text-sidebar-foreground/50 shrink-0" />
               ) : (
-                <ChevronRight className="h-4 w-4 shrink-0" />
+                <ChevronRight className="h-4 w-4 text-sidebar-foreground/50 shrink-0" />
               )}
             </button>
           )}
         </div>
 
         {hasSubmenu && expanded && (
-          <div className="ml-8 mt-1 space-y-1 border-l border-border pl-3">
+          <div className="ml-9 mt-1 space-y-0.5">
             {item.submenu?.map((subItem) => (
               <button
                 key={subItem.url}
                 onClick={() => handleSubItemClick(subItem.url)}
                 className={cn(
-                  "flex w-full items-center rounded-lg px-3 py-2 text-sm transition-colors",
-                  "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  isActive(subItem.url) && "bg-muted text-exp-blue font-medium"
+                  "mx-2 flex w-full items-center rounded-lg px-3 py-1.5 text-sm transition-colors",
+                  "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground",
+                  isActive(subItem.url) && "bg-sidebar-accent text-sidebar-foreground font-medium"
                 )}
               >
                 {subItem.title}
@@ -166,7 +166,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent side="left" className="w-full sm:max-w-sm p-0 bg-sidebar">
-        <SheetHeader className="flex h-16 items-center justify-between border-b px-4">
+        <SheetHeader className="flex h-16 items-center justify-between border-b border-border px-5 bg-white">
           <SheetTitle className="flex items-center gap-1">
             <span className="text-xl font-bold text-foreground">MY</span>
             <span className="text-xl text-muted-foreground">|</span>
@@ -174,33 +174,33 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
           </SheetTitle>
         </SheetHeader>
 
-        <nav className="flex flex-col gap-4 overflow-y-auto p-4">
+        <nav className="flex flex-col overflow-y-auto py-4">
           {/* MY DESK Section */}
-          <div>
-            <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="mb-4">
+            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
               {sidebarNavigation.myDesk.label}
             </span>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {sidebarNavigation.myDesk.items.map(renderNavItem)}
             </div>
           </div>
 
           {/* BUSINESS & GROWTH Section */}
-          <div>
-            <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="mb-4 mt-4">
+            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
               {sidebarNavigation.businessGrowth.label}
             </span>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {sidebarNavigation.businessGrowth.items.map(renderNavItem)}
             </div>
           </div>
 
           {/* RESOURCES Section */}
-          <div>
-            <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="mt-4">
+            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
               {sidebarNavigation.resources.label}
             </span>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {sidebarNavigation.resources.items.map(renderNavItem)}
             </div>
           </div>
