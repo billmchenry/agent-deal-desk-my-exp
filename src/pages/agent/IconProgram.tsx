@@ -43,12 +43,12 @@ export default function IconProgram() {
 
           {/* ICON Production Tab */}
           <TabsContent value="production">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="text-sm font-semibold text-foreground">ICON Production Overview</h2>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground whitespace-nowrap">Capping Year</span>
                 <Select defaultValue="2026">
-                  <SelectTrigger className="w-auto">
+                  <SelectTrigger className="w-auto min-w-0">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -160,12 +160,12 @@ export default function IconProgram() {
 
           {/* ICON Cultural Tab */}
           <TabsContent value="cultural">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="text-sm font-semibold text-foreground">ICON Cultural Commitment Points</h2>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
                 <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-auto">
+                  <SelectTrigger className="w-auto min-w-0">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -196,12 +196,12 @@ export default function IconProgram() {
 
           {/* Events Tab */}
           <TabsContent value="events">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="text-sm font-semibold text-foreground">Event Overview</h2>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
                 <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-auto">
+                  <SelectTrigger className="w-auto min-w-0">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -271,12 +271,12 @@ export default function IconProgram() {
 
           {/* Stock Grants Tab */}
           <TabsContent value="stockgrants">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="text-sm font-semibold text-foreground">Grants Overview</h2>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
                 <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-auto">
+                  <SelectTrigger className="w-auto min-w-0">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
