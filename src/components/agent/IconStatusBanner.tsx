@@ -53,8 +53,26 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
         return (
           <Card
             key={pillar.key}
-            onClick={() => onTabChange(pillar.key)}
-            className={`p-4 min-h-[88px] cursor-pointer transition-all duration-200 hover:shadow-md ${
+            onPointerUp={(e) => {
+              // Only select on clean taps, not after scrolling
+              if (e.pointerType === "touch") {
+                const target = e.currentTarget;
+                const rect = target.getBoundingClientRect();
+                const touch = { x: e.clientX, y: e.clientY };
+                // If pointer is still within the card bounds, treat as tap
+                if (
+                  touch.x >= rect.left &&
+                  touch.x <= rect.right &&
+                  touch.y >= rect.top &&
+                  touch.y <= rect.bottom
+                ) {
+                  onTabChange(pillar.key);
+                }
+              } else {
+                onTabChange(pillar.key);
+              }
+            }}
+            className={`p-4 min-h-[88px] cursor-pointer transition-all duration-200 hover:shadow-md select-none touch-manipulation ${
               isActive
                 ? "ring-2 ring-primary border-primary shadow-md scale-[1.02]"
                 : "hover:border-primary/40"
