@@ -5,11 +5,79 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { CircleAlert, CheckCircle, ExternalLink, Check, Target } from "lucide-react";
 import { IconStatusBanner } from "@/components/agent/IconStatusBanner";
+import { useIsMobile } from "@/hooks/use-mobile";
+
+type YearOption = { value: string; label: string };
+
+function YearToggle({
+  options,
+  value,
+  onChange,
+  label,
+}: {
+  options: YearOption[];
+  value: string;
+  onChange: (v: string) => void;
+  label: string;
+}) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <div className="flex gap-1.5">
+        {options.map((opt) => (
+          <Button
+            key={opt.value}
+            size="sm"
+            variant={value === opt.value ? "default" : "secondary"}
+            className="min-h-[44px] px-3 text-xs font-medium"
+            onClick={() => onChange(opt.value)}
+          >
+            {opt.label}
+          </Button>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-muted-foreground whitespace-nowrap">{label}</span>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="w-auto min-w-0">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((opt) => (
+            <SelectItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+
+const cappingYearOptions: YearOption[] = [
+  { value: "2026", label: "2026" },
+  { value: "2025", label: "2025" },
+  { value: "2024", label: "2024" },
+];
+
+const benefitYearOptions: YearOption[] = [
+  { value: "2025-2026", label: "2025-26" },
+  { value: "2024-2025", label: "2024-25" },
+  { value: "2023-2024", label: "2023-24" },
+];
 
 export default function IconProgram() {
   const [activeTab, setActiveTab] = useState("production");
+  const [cappingYear, setCappingYear] = useState("2026");
+  const [benefitYear, setBenefitYear] = useState("2025-2026");
 
   return (
     <DashboardLayout>
@@ -45,19 +113,7 @@ export default function IconProgram() {
           <TabsContent value="production">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="text-sm font-semibold text-foreground">ICON Production Overview</h2>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground whitespace-nowrap">Capping Year</span>
-                <Select defaultValue="2026">
-                  <SelectTrigger className="w-auto min-w-0">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2026">01/01/2026 - 12/31/2026</SelectItem>
-                    <SelectItem value="2025">01/01/2025 - 12/31/2025</SelectItem>
-                    <SelectItem value="2024">01/01/2024 - 12/31/2024</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <YearToggle options={cappingYearOptions} value={cappingYear} onChange={setCappingYear} label="Capping Year" />
             </div>
 
 
@@ -162,19 +218,7 @@ export default function IconProgram() {
           <TabsContent value="cultural">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="text-sm font-semibold text-foreground">ICON Cultural Commitment Points</h2>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
-                <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-auto min-w-0">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2025-2026">06/01/2025 - 05/31/2026</SelectItem>
-                    <SelectItem value="2024-2025">06/01/2024 - 05/31/2025</SelectItem>
-                    <SelectItem value="2023-2024">06/01/2023 - 05/31/2024</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <YearToggle options={benefitYearOptions} value={benefitYear} onChange={setBenefitYear} label="Benefit Year" />
             </div>
 
             {/* Compact success banner */}
@@ -198,19 +242,7 @@ export default function IconProgram() {
           <TabsContent value="events">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="text-sm font-semibold text-foreground">Event Overview</h2>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
-                <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-auto min-w-0">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2025-2026">06/01/2025 - 05/31/2026</SelectItem>
-                    <SelectItem value="2024-2025">06/01/2024 - 05/31/2025</SelectItem>
-                    <SelectItem value="2023-2024">06/01/2023 - 05/31/2024</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <YearToggle options={benefitYearOptions} value={benefitYear} onChange={setBenefitYear} label="Benefit Year" />
             </div>
 
             {/* Compact success banner */}
@@ -273,19 +305,7 @@ export default function IconProgram() {
           <TabsContent value="stockgrants">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <h2 className="text-sm font-semibold text-foreground">Grants Overview</h2>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground whitespace-nowrap">Benefit Year</span>
-                <Select defaultValue="2025-2026">
-                  <SelectTrigger className="w-auto min-w-0">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2025-2026">06/01/2025 - 05/31/2026</SelectItem>
-                    <SelectItem value="2024-2025">06/01/2024 - 05/31/2025</SelectItem>
-                    <SelectItem value="2023-2024">06/01/2023 - 05/31/2024</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <YearToggle options={benefitYearOptions} value={benefitYear} onChange={setBenefitYear} label="Benefit Year" />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
