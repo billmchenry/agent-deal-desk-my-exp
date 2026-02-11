@@ -99,7 +99,7 @@ export default function IconProgram() {
                 ICON PROGRAM
               </Badge>
             </div>
-            <p className="text-xl sm:text-2xl font-bold text-white mb-1">3 of 4 pillars complete</p>
+            <p className="text-xl sm:text-2xl font-bold text-white mb-1">1 of 3 pillars complete</p>
             <p className="text-sm text-white/70">Keep going — you're almost there!</p>
           </div>
         </Card>
