@@ -78,13 +78,14 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={(e) => {
-              e.preventDefault(); // prevent click from also firing
+              e.preventDefault();
               handleTouchEnd(pillar.key);
             }}
-            className={`p-4 min-h-[88px] cursor-pointer transition-all duration-200 select-none ${
+            style={{ WebkitTapHighlightColor: 'transparent' }}
+            className={`p-4 min-h-[88px] cursor-pointer select-none ${
               isActive
                 ? "ring-2 ring-primary border-primary shadow-md scale-[1.02]"
-                : "active:lg:shadow-md"
+                : ""
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
