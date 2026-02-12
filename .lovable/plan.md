@@ -1,36 +1,19 @@
 
 
-## Separate Stock Grants from the 3 Pillars
+## Show Pillar Completion as a Percentage
 
 ### What Changes
-Visually distinguish the 3 ICON pillars (Production, Cultural, Events) from Stock Grants, which is an outcome/reward — not a pillar. This resolves the confusion where the hero says "1 of 3 pillars complete" but 4 equal tiles are shown.
+Replace the "1 of 3 pillars complete" text in the ICON Program hero banner with a percentage — e.g., "33% complete" — for a cleaner, more intuitive read.
 
-### Layout
+### How It Works
+Since 1 out of 3 pillars is complete, the display will show **33%**. The calculation is straightforward: `Math.round((completedPillars / 3) * 100)`.
 
-**Desktop (lg+)**
-```text
-[Production]    [Cultural]     [Events]
-[Award icon]  Stock Grants: $16,000 earned  [>]
-```
-
-**Mobile (390px)**
-```text
-[Production]  [Cultural]
-[Events    ]
-[Award  Stock Grants: $16K earned  >]
-```
-
-### File: `src/components/agent/IconStatusBanner.tsx`
-
-1. Split the `pillars` array — filter out `stockgrants` from the main grid loop
-2. Change grid from `grid-cols-2 lg:grid-cols-4` to `grid-cols-2 lg:grid-cols-3`
-3. Add a new full-width Stock Grants banner below the pillar grid:
-   - Styled as a subtle card with left Award icon, summary text ("Stock Grants: 4/4 awarded"), and a chevron-right indicator
-   - Uses the same `tap-card` class for touch suppression
-   - Triggers `onTabChange('stockgrants')` on tap
-   - Active state: ring + border highlight matching the pillar cards
-   - Completed state: green check icon + "All awarded" text
-4. Import `ChevronRight` from lucide-react
+### File: `src/pages/agent/IconProgram.tsx`
+- Update the hero banner summary line from:
+  `1 of 3 pillars complete`
+  to:
+  `33% of pillars complete`
+- The motivational subtitle ("Keep going — you're almost there!") stays as-is
 
 ### No other files change
-The tab system in `IconProgram.tsx` remains untouched — tapping the Stock Grants banner still switches to the `stockgrants` tab content as before.
+
