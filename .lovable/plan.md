@@ -1,46 +1,36 @@
 
 
-# Simplify Year Selectors to Short Labels
+## Separate Stock Grants from the 3 Pillars
 
-## What Changes
+### What Changes
+Visually distinguish the 3 ICON pillars (Production, Cultural, Events) from Stock Grants, which is an outcome/reward — not a pillar. This resolves the confusion where the hero says "1 of 3 pillars complete" but 4 equal tiles are shown.
 
-Replace the verbose date range labels (e.g., "06/01/2025 - 05/31/2026") with short year labels (e.g., "2025-26") across all tabs on the ICON Program page. On mobile, render segmented toggle buttons instead of dropdowns. On desktop, keep a compact dropdown with the same short labels.
+### Layout
 
-## Why
-
-Agents already know the standard date boundaries for Capping Year and Benefit Year -- showing full date ranges adds visual noise without helping comprehension.
-
-## Labels
-
-| Tab | Current Label | New Label |
-|-----|--------------|-----------|
-| Production (Capping Year) | 01/01/2026 - 12/31/2026 | 2026 |
-| Production (Capping Year) | 01/01/2025 - 12/31/2025 | 2025 |
-| Production (Capping Year) | 01/01/2024 - 12/31/2024 | 2024 |
-| Cultural / Events / Stock Grants (Benefit Year) | 06/01/2025 - 05/31/2026 | 2025-26 |
-| Cultural / Events / Stock Grants (Benefit Year) | 06/01/2024 - 05/31/2025 | 2024-25 |
-| Cultural / Events / Stock Grants (Benefit Year) | 06/01/2023 - 05/31/2024 | 2023-24 |
-
-## Implementation
-
-### File: `src/pages/agent/IconProgram.tsx`
-
-1. Import `useIsMobile` from `@/hooks/use-mobile`
-2. Add controlled state for each year selector (production year, benefit year) replacing `defaultValue`
-3. Create an inline `YearToggle` component:
-   - **Mobile**: renders a horizontal row of pill buttons (min-h-[44px] touch targets, `bg-primary text-primary-foreground` for active, `bg-muted` for inactive)
-   - **Desktop**: renders the existing `Select` dropdown but with short labels
-4. Replace all 4 tab header selectors with `YearToggle`
-5. Remove the "Capping Year" / "Benefit Year" text label on mobile (the tab context already tells the user what it is), keep it on desktop
-
-### Mobile Result (390px)
+**Desktop (lg+)**
 ```text
-ICON Production Overview
-[2026] [2025] [2024]
+[Production]    [Cultural]     [Events]
+[Award icon]  Stock Grants: $16,000 earned  [>]
 ```
 
-### Desktop Result
+**Mobile (390px)**
 ```text
-ICON Production Overview          Capping Year [2026 v]
+[Production]  [Cultural]
+[Events    ]
+[Award  Stock Grants: $16K earned  >]
 ```
 
+### File: `src/components/agent/IconStatusBanner.tsx`
+
+1. Split the `pillars` array — filter out `stockgrants` from the main grid loop
+2. Change grid from `grid-cols-2 lg:grid-cols-4` to `grid-cols-2 lg:grid-cols-3`
+3. Add a new full-width Stock Grants banner below the pillar grid:
+   - Styled as a subtle card with left Award icon, summary text ("Stock Grants: 4/4 awarded"), and a chevron-right indicator
+   - Uses the same `tap-card` class for touch suppression
+   - Triggers `onTabChange('stockgrants')` on tap
+   - Active state: ring + border highlight matching the pillar cards
+   - Completed state: green check icon + "All awarded" text
+4. Import `ChevronRight` from lucide-react
+
+### No other files change
+The tab system in `IconProgram.tsx` remains untouched — tapping the Stock Grants banner still switches to the `stockgrants` tab content as before.
