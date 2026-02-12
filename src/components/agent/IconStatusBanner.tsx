@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { CheckCircle, TrendingUp, Heart, Calendar, Award } from "lucide-react";
+import { CheckCircle, TrendingUp, Heart, Calendar, Award, ChevronRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface IconStatusBannerProps {
@@ -33,59 +33,90 @@ const pillars = [
     detail: "All attended",
     complete: true,
   },
-  {
-    key: "stockgrants",
-    label: "Stock Grants",
-    icon: Award,
-    status: "4 / 4",
-    detail: "All awarded",
-    complete: true,
-  },
 ];
 
+const stockGrants = {
+  key: "stockgrants",
+  label: "Stock Grants",
+  status: "4 / 4",
+  detail: "$16,000 earned",
+  complete: true,
+};
+
 export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerProps) {
+  const isStockActive = activeTab === stockGrants.key;
+
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6">
-      {pillars.map((pillar) => {
-        const Icon = pillar.icon;
-        const isActive = activeTab === pillar.key;
+    <div className="space-y-2 mb-6">
+      {/* 3 Pillar Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-3">
+        {pillars.map((pillar) => {
+          const Icon = pillar.icon;
+          const isActive = activeTab === pillar.key;
 
-        return (
-          <Card
-            key={pillar.key}
-            onClick={() => onTabChange(pillar.key)}
-            className={`tap-card p-4 min-h-[88px] cursor-pointer select-none ${
-              isActive
-                ? "ring-2 ring-primary border-primary shadow-md lg:scale-[1.02]"
-                : "lg:hover:shadow-md lg:hover:border-primary/40"
-            }`}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              {pillar.complete ? (
-                <CheckCircle className="w-4 h-4 text-[hsl(var(--exp-green))]" />
+          return (
+            <Card
+              key={pillar.key}
+              onClick={() => onTabChange(pillar.key)}
+              className={`tap-card p-4 min-h-[88px] cursor-pointer select-none ${
+                isActive
+                  ? "ring-2 ring-primary border-primary shadow-md lg:scale-[1.02]"
+                  : "lg:hover:shadow-md lg:hover:border-primary/40"
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                {pillar.complete ? (
+                  <CheckCircle className="w-4 h-4 text-[hsl(var(--exp-green))]" />
+                ) : (
+                  <Icon className="w-4 h-4 text-primary" />
+                )}
+                <span className="text-sm font-medium text-foreground">{pillar.label}</span>
+              </div>
+
+              {pillar.progress !== undefined ? (
+                <div className="space-y-1.5">
+                  <Progress value={Math.max(pillar.progress, 8)} className="h-1.5" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">{pillar.detail}</span>
+                    <span className="text-sm font-bold text-foreground">{pillar.status}</span>
+                  </div>
+                </div>
               ) : (
-                <Icon className="w-4 h-4 text-primary" />
-              )}
-              <span className="text-sm font-medium text-foreground">{pillar.label}</span>
-            </div>
-
-            {pillar.progress !== undefined ? (
-              <div className="space-y-1.5">
-                <Progress value={Math.max(pillar.progress, 8)} className="h-1.5" />
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">{pillar.detail}</span>
-                  <span className="text-sm font-bold text-foreground">{pillar.status}</span>
+                  <span className="text-xs font-semibold text-[hsl(var(--exp-green))]">{pillar.status}</span>
                 </div>
-              </div>
+              )}
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Stock Grants Banner */}
+      <Card
+        onClick={() => onTabChange(stockGrants.key)}
+        className={`tap-card cursor-pointer select-none px-4 py-3 ${
+          isStockActive
+            ? "ring-2 ring-primary border-primary shadow-md"
+            : "lg:hover:shadow-md lg:hover:border-primary/40"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {stockGrants.complete ? (
+              <CheckCircle className="w-4 h-4 text-[hsl(var(--exp-green))] flex-shrink-0" />
             ) : (
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">{pillar.detail}</span>
-                <span className="text-xs font-semibold text-[hsl(var(--exp-green))]">{pillar.status}</span>
-              </div>
+              <Award className="w-4 h-4 text-primary flex-shrink-0" />
             )}
-          </Card>
-        );
-      })}
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-foreground">{stockGrants.label}</span>
+              <span className="text-xs text-muted-foreground">·</span>
+              <span className="text-xs text-muted-foreground">{stockGrants.detail}</span>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+        </div>
+      </Card>
     </div>
   );
 }
