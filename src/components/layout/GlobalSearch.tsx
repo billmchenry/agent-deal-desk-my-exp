@@ -26,10 +26,10 @@ import { cn } from "@/lib/utils";
 
 interface SearchItem {
   title: string;
+  description?: string;
   url?: string;
   icon: string;
   category: string;
-  keywords?: string[];
   action?: () => void;
 }
 
@@ -46,16 +46,17 @@ function buildSearchItems(onAskMira: () => void): SearchItem[] {
       if (item.url) {
         items.push({
           title: item.title,
+          description: item.submenu ? `${item.submenu.map(s => s.title).join(", ")}` : undefined,
           url: item.url,
           icon: item.icon,
           category: section.label,
-          keywords: item.title === "Agent" ? ["GCI", "capping", "production"] : undefined,
         });
       }
       if (item.submenu) {
         for (const sub of item.submenu) {
           items.push({
-            title: `${item.title} › ${sub.title}`,
+            title: sub.title,
+            description: `${item.title} › ${sub.title}`,
             url: sub.url,
             icon: item.icon,
             category: section.label,
@@ -66,11 +67,11 @@ function buildSearchItems(onAskMira: () => void): SearchItem[] {
   }
 
   items.push(
-    { title: "Ask Mira", icon: "MessageSquare", category: "ACTIONS", action: onAskMira, keywords: ["AI", "chat", "assistant"] },
-    { title: "Personal Details", icon: "User", category: "ACTIONS", url: "/profile/personal-details", keywords: ["profile", "account"] },
-    { title: "Settings", icon: "Settings", category: "ACTIONS", url: "/profile/settings", keywords: ["preferences", "config"] },
-    { title: "Pulse", icon: "Search", category: "ACTIONS", url: "/pulse", keywords: ["news", "updates"] },
-    { title: "Mira History", icon: "MessageSquare", category: "ACTIONS", url: "/mira/history", keywords: ["conversations", "chat history"] },
+    { title: "Ask Mira", description: "AI assistant", icon: "MessageSquare", category: "ACTIONS", action: onAskMira },
+    { title: "Personal Details", description: "View and edit your profile", icon: "User", category: "ACTIONS", url: "/profile/personal-details" },
+    { title: "Settings", description: "Preferences and configuration", icon: "Settings", category: "ACTIONS", url: "/profile/settings" },
+    { title: "Pulse", description: "News and updates", icon: "Search", category: "ACTIONS", url: "/pulse" },
+    { title: "Mira History", description: "Past conversations", icon: "MessageSquare", category: "ACTIONS", url: "/mira/history" },
   );
 
   return items;
@@ -96,7 +97,7 @@ export function GlobalSearch() {
     if (!query.trim()) return searchItems;
     const q = query.toLowerCase();
     return searchItems.filter((item) => {
-      const searchText = [item.title, ...(item.keywords || [])].join(" ").toLowerCase();
+      const searchText = [item.title, item.description || ""].join(" ").toLowerCase();
       return searchText.includes(q);
     });
   }, [query, searchItems]);
@@ -286,7 +287,12 @@ function DropdownResults({
                 )}
               >
                 {Icon && <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />}
-                <span>{item.title}</span>
+                <div className="flex flex-col min-w-0">
+                  <span className="truncate">{item.title}</span>
+                  {item.description && (
+                    <span className="text-xs text-muted-foreground truncate">{item.description}</span>
+                  )}
+                </div>
               </button>
             );
           })}
