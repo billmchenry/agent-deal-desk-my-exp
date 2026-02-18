@@ -195,40 +195,54 @@ export function GlobalSearch() {
   if (isMobile) {
     return (
       <div ref={containerRef} className="relative">
-        {!mobileOpen ? (
-          <Button variant="ghost" size="icon" onClick={() => { setMobileOpen(true); setTimeout(() => inputRef.current?.focus(), 50); }}>
-            <Search className="h-5 w-5" />
-          </Button>
-        ) : (
-          <div className="fixed inset-x-0 top-0 z-50 flex items-center gap-2 bg-background border-b border-border px-3 h-16">
-            <Search className="h-4 w-4 text-muted-foreground shrink-0" />
-            <input
-              ref={inputRef}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onFocus={() => setIsFocused(true)}
-              placeholder="Search..."
-              className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+        <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px]" onClick={() => { setMobileOpen(true); setTimeout(() => inputRef.current?.focus(), 50); }}>
+          <Search className="h-5 w-5" />
+        </Button>
+        {mobileOpen && (
+          <>
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm"
+              onClick={() => { setMobileOpen(false); setQuery(""); setIsFocused(false); }}
             />
-            <Button variant="ghost" size="sm" onClick={() => { setMobileOpen(false); setQuery(""); setIsFocused(false); }}>
-              Cancel
-            </Button>
-            {showDropdown && (
-              <div className="absolute left-0 right-0 top-16 max-h-[60vh] overflow-y-auto bg-popover border-b border-border shadow-lg">
-                <DropdownResults
-                  grouped={grouped}
-                  flatFiltered={flatFiltered}
-                  highlightedIndex={highlightedIndex}
-                  onSelect={handleSelect}
-                  onHover={setHighlightedIndex}
-                  query={query}
-                  miraIndex={miraIndex}
-                  onMiraSelect={handleMiraSelect}
+            {/* Search bar */}
+            <div className="fixed inset-x-0 top-0 z-[70] bg-background border-b border-border shadow-md">
+              <div className="flex items-center gap-2 px-3 h-16">
+                <Search className="h-4 w-4 text-muted-foreground shrink-0" />
+                <input
+                  ref={inputRef}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => setIsFocused(true)}
+                  placeholder="Search..."
+                  className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                 />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="min-h-[44px]"
+                  onClick={() => { setMobileOpen(false); setQuery(""); setIsFocused(false); }}
+                >
+                  Cancel
+                </Button>
               </div>
-            )}
-          </div>
+              {showDropdown && (
+                <div className="max-h-[60vh] overflow-y-auto border-t border-border bg-popover">
+                  <DropdownResults
+                    grouped={grouped}
+                    flatFiltered={flatFiltered}
+                    highlightedIndex={highlightedIndex}
+                    onSelect={handleSelect}
+                    onHover={setHighlightedIndex}
+                    query={query}
+                    miraIndex={miraIndex}
+                    onMiraSelect={handleMiraSelect}
+                  />
+                </div>
+              )}
+            </div>
+          </>
         )}
       </div>
     );
