@@ -83,9 +83,72 @@ const generatePreview = (messages: ChatMessageData[]): string => {
   return firstAIResponse.content.slice(0, 100) + (firstAIResponse.content.length > 100 ? '...' : '');
 };
 
+const MOCK_CONVERSATIONS: Conversation[] = [
+  {
+    id: 'conv-mock-1',
+    title: 'GCI Analysis',
+    messages: [
+      { id: 'welcome', sender: 'ai', content: '', timestamp: new Date(Date.now() - 3600000) },
+      { id: 'u1', sender: 'user', content: 'Show me my GCI trends', timestamp: new Date(Date.now() - 3500000) },
+      { id: 'a1', sender: 'ai', content: 'Your GCI is trending upward! You\'ve earned $279K this year, which is 23% higher than last year.', widget: { type: 'forecast', id: 'forecast-mock-1', title: 'Monthly GCI Trend' }, timestamp: new Date(Date.now() - 3400000) },
+    ],
+    createdAt: new Date(Date.now() - 3600000),
+    updatedAt: new Date(Date.now() - 3400000),
+    preview: 'Your GCI is trending upward! You\'ve earned $279K this year, which is 23% higher than last year.',
+  },
+  {
+    id: 'conv-mock-2',
+    title: 'Listing Velocity',
+    messages: [
+      { id: 'welcome', sender: 'ai', content: '', timestamp: new Date(Date.now() - 86400000) },
+      { id: 'u2', sender: 'user', content: 'How fast are my listings selling?', timestamp: new Date(Date.now() - 86300000) },
+      { id: 'a2', sender: 'ai', content: 'Great news! Your listings are selling faster than the market average. Average days on market is 18 days vs 32 market average.', widget: { type: 'velocity', id: 'velocity-mock-1', title: 'Listing Velocity' }, timestamp: new Date(Date.now() - 86200000) },
+    ],
+    createdAt: new Date(Date.now() - 86400000),
+    updatedAt: new Date(Date.now() - 86200000),
+    preview: 'Great news! Your listings are selling faster than the market average. Average days on market is 18 days...',
+  },
+  {
+    id: 'conv-mock-3',
+    title: 'Pipeline Overview',
+    messages: [
+      { id: 'welcome', sender: 'ai', content: '', timestamp: new Date(Date.now() - 172800000) },
+      { id: 'u3', sender: 'user', content: 'What\'s in my active pipeline?', timestamp: new Date(Date.now() - 172700000) },
+      { id: 'a3', sender: 'ai', content: 'You have 7 active deals in your pipeline totaling $2.1M in volume. 3 are in escrow and 4 are pending.', widget: { type: 'pipeline', id: 'pipeline-mock-1', title: 'Active Pipeline' }, timestamp: new Date(Date.now() - 172600000) },
+    ],
+    createdAt: new Date(Date.now() - 172800000),
+    updatedAt: new Date(Date.now() - 172600000),
+    preview: 'You have 7 active deals in your pipeline totaling $2.1M in volume. 3 are in escrow and 4 are pending.',
+  },
+  {
+    id: 'conv-mock-4',
+    title: 'Cap Status Check',
+    messages: [
+      { id: 'welcome', sender: 'ai', content: '', timestamp: new Date(Date.now() - 259200000) },
+      { id: 'u4', sender: 'user', content: 'Am I on track to hit my cap?', timestamp: new Date(Date.now() - 259100000) },
+      { id: 'a4', sender: 'ai', content: 'You\'re 3% toward your $16K cap with $482 contributed so far. At your current pace, you\'ll cap in approximately 8 months.', timestamp: new Date(Date.now() - 259000000) },
+    ],
+    createdAt: new Date(Date.now() - 259200000),
+    updatedAt: new Date(Date.now() - 259000000),
+    preview: 'You\'re 3% toward your $16K cap with $482 contributed so far. At your current pace, you\'ll cap in...',
+  },
+  {
+    id: 'conv-mock-5',
+    title: 'Revenue Projections',
+    messages: [
+      { id: 'welcome', sender: 'ai', content: '', timestamp: new Date(Date.now() - 604800000) },
+      { id: 'u5', sender: 'user', content: 'What are my projected earnings for Q2?', timestamp: new Date(Date.now() - 604700000) },
+      { id: 'a5', sender: 'ai', content: 'Based on your current trajectory, Q2 projected GCI is $82K — a 15% increase over Q1. Your strongest month will likely be June.', widget: { type: 'forecast', id: 'forecast-mock-2', title: 'Q2 Revenue Forecast' }, timestamp: new Date(Date.now() - 604600000) },
+    ],
+    createdAt: new Date(Date.now() - 604800000),
+    updatedAt: new Date(Date.now() - 604600000),
+    preview: 'Based on your current trajectory, Q2 projected GCI is $82K — a 15% increase over Q1.',
+  },
+];
+
 export function MiraChatProvider({ children }: { children: ReactNode }) {
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>(MOCK_CONVERSATIONS);
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
   const [currentMessages, setCurrentMessages] = useState<ChatMessageData[]>([WELCOME_MESSAGE]);
   const [focusWidgetId, setFocusWidgetId] = useState<string | null>(null);
