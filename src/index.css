@@ -187,10 +187,8 @@
     }
     .tap-card:hover,
     .tap-card:active {
-      border-color: inherit !important;
       box-shadow: inherit !important;
       transform: none !important;
-      background-color: inherit !important;
     }
   }
 
