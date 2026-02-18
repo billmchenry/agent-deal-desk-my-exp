@@ -1,46 +1,32 @@
 
+# Fix: Blue Outline and Mobile Toggle on ICON Pillar Cards
 
-# Unified Search: Autocomplete + Mira AI Integration
+## Problems Identified
 
-## Overview
-Enhance the global search bar to serve as both a navigation autocomplete and a gateway to Mira AI. As agents type, they see two distinct sections: matching pages/actions at the top for quick navigation, and a persistent "Ask Mira" prompt at the bottom that carries their search query directly into the Mira chat.
+1. **Thick blue outline on active card**: The active pillar card uses `ring-2 ring-primary` which renders as a heavy blue border (visible in the screenshot). This should be a subtler indicator.
 
-## How It Works
+2. **Toggle appears broken on mobile**: The `tap-card` CSS class (in `index.css`) includes `@media (pointer: coarse)` rules that force `border-color: inherit !important` and `box-shadow: inherit !important` on hover/active states. Since Tailwind's `ring-*` utilities compile to `box-shadow`, the active card's ring is being stripped away on touch devices. The tap still fires the `onClick`, but because the visual active state is suppressed, it looks like nothing happens.
 
-1. **Agent clicks into the search bar or presses Cmd+K**
-2. **As they type**, two sections appear in the dropdown:
-   - **Pages and Actions** -- filtered results matching their query (same as today)
-   - **Ask Mira** -- a persistent bottom section showing "Ask Mira: [their query]" that opens the chat with their exact question pre-filled
-3. **If no page results match**, the Mira option becomes the primary suggestion, encouraging agents to ask Mira instead
-4. **Selecting a page result** navigates there; **selecting the Mira option** opens the chat panel with the query ready to go
+## Solution
 
-## What the Agent Sees
+### 1. Replace `ring-2` with a left-border accent (matches existing design patterns)
 
-- Typing "GCI" shows:
-  - No matching pages (since we removed keyword hacks)
-  - A bottom row: "Ask Mira: GCI" with a Sparkles icon -- clicking it opens Mira chat with "GCI" as the query
-- Typing "transactions" shows:
-  - Matching page results (Agent > Transactions)
-  - Bottom row: "Ask Mira about transactions" as a fallback
-- Typing a full question like "how do I increase my production" shows:
-  - Few or no page matches
-  - "Ask Mira: how do I increase my production" as the primary action
+In `src/components/agent/IconStatusBanner.tsx`, change the active card styling from:
+```
+ring-2 ring-primary border-primary shadow-md
+```
+to:
+```
+border-l-[3px] border-l-primary bg-primary/5
+```
 
-## Technical Details
+This uses a left-border accent and subtle background tint -- consistent with the status indicator patterns already used elsewhere in the app. These styles use `border` and `background-color`, not `box-shadow`, so they won't be suppressed by the `tap-card` CSS.
 
-### File: `src/components/layout/GlobalSearch.tsx`
+### 2. Exempt active-state border from the `tap-card` override
 
-**Changes to the dropdown rendering:**
-- After the grouped page/action results, always render a "Mira" section at the bottom when there is a query
-- The Mira row uses `openChatWithQuery(query)` from `MiraChatContext` to open the chat with the typed text
-- The Mira row is styled distinctly with a Sparkles icon and a subtle highlight to differentiate it from navigation results
-- When there are zero page matches, the Mira suggestion is promoted to the only visible option with slightly more prominent styling and helper text like "No pages found -- ask Mira instead"
-- The Mira row is included in keyboard navigation (ArrowDown/ArrowUp and Enter) as the last item in the list
+In `src/index.css`, update the coarse-pointer rules to not override `border-color` and `background-color` when a card has an explicit active state. Specifically, change the `.tap-card:hover, .tap-card:active` rule to only suppress `transform` and `box-shadow` (the hover effects), leaving border/background alone so the selected state remains visible.
 
-**Changes to the dropdown visibility:**
-- `showDropdown` remains gated on `query.trim().length > 0` so nothing shows on empty focus
+## Files Changed
 
-### No other files change
-- `MiraChatContext` already exposes `openChatWithQuery` which is exactly what we need
-- No new dependencies required
-
+- `src/components/agent/IconStatusBanner.tsx` -- Update active card classes
+- `src/index.css` -- Relax the coarse-pointer overrides to preserve border-color and background-color on active state
