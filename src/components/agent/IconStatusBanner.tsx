@@ -45,7 +45,7 @@ const pillars = [
 
 export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerProps) {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6 max-w-full overflow-hidden">
       {pillars.map((pillar) => {
         const Icon = pillar.icon;
         const isActive = activeTab === pillar.key;
@@ -54,9 +54,9 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
           <Card
             key={pillar.key}
             onClick={() => onTabChange(pillar.key)}
-            className={`tap-card p-4 min-h-[88px] cursor-pointer select-none ${
+            className={`tap-card p-3 sm:p-4 min-h-[88px] cursor-pointer select-none overflow-hidden ${
               isActive
-                ? "ring-2 ring-primary border-primary shadow-md lg:scale-[1.02]"
+                ? "ring-2 ring-primary border-primary shadow-md"
                 : "lg:hover:shadow-md lg:hover:border-primary/40"
             }`}
           >

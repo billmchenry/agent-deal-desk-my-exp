@@ -215,13 +215,17 @@ export function GlobalSearch() {
         </Button>
         {mobileOpen && (
           <>
-            {/* Full-screen overlay to prevent interaction with content behind */}
+            {/* Full-screen overlay - use min-h with dvh for mobile Safari */}
             <div
               className="fixed inset-0 z-[60] bg-background"
+              style={{ minHeight: '100dvh' }}
               onClick={closeMobileSearch}
             />
             {/* Search bar + results */}
-            <div className="fixed inset-x-0 top-0 z-[70] flex flex-col max-h-screen bg-background">
+            <div
+              className="fixed inset-0 z-[70] flex flex-col bg-background"
+              style={{ minHeight: '100dvh' }}
+            >
               <div className="flex items-center gap-2 px-3 h-16 shrink-0 border-b border-border">
                 <Search className="h-4 w-4 text-muted-foreground shrink-0" />
                 <input
