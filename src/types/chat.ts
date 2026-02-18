@@ -15,6 +15,7 @@ export interface ChatMessageData {
   };
   action?: ChatMessageAction;
   timestamp: Date;
+  isStreaming?: boolean;
 }
 
 export interface Conversation {

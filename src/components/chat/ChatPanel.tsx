@@ -11,7 +11,7 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { ChatMessageData } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { VoiceMode } from "./VoiceMode";
+import { VoiceInputBar } from "./VoiceMode";
 
 interface ChatPanelProps {
   isOpen: boolean;
@@ -141,8 +141,10 @@ interface ChatContentProps {
   pathname: string;
   isExpanded?: boolean;
   onToggleExpand?: () => void;
-  voiceOpen: boolean;
-  setVoiceOpen: (open: boolean) => void;
+  isVoiceListening: boolean;
+  onStartVoiceListening: () => void;
+  onStopVoiceListening: () => void;
+  onVoiceTranscript: (text: string) => void;
 }
 
 function ChatContent({
@@ -169,8 +171,10 @@ function ChatContent({
   pathname,
   isExpanded,
   onToggleExpand,
-  voiceOpen,
-  setVoiceOpen,
+  isVoiceListening,
+  onStartVoiceListening,
+  onStopVoiceListening,
+  onVoiceTranscript,
 }: ChatContentProps) {
   // History sidebar content (reused in both layouts)
   const historyContent = (
@@ -282,15 +286,6 @@ function ChatContent({
   // Chat main content
   const chatContent = (
     <div className="h-full flex flex-col min-h-0 relative">
-      {/* Voice Mode Overlay */}
-      <VoiceMode
-        isOpen={voiceOpen}
-        onClose={() => setVoiceOpen(false)}
-        onTranscript={(text) => {
-          setVoiceOpen(false);
-          processMessage(text);
-        }}
-      />
       <div className="px-3 sm:px-4 py-3 border-b shrink-0 bg-background relative z-10">
         <div className={`flex items-center justify-between w-full ${isMobile ? "" : "pr-8"}`}>
           <div className="flex items-center gap-2">
@@ -369,27 +364,36 @@ function ChatContent({
           ))}
         </div>
         
-        <div className="flex items-center gap-2">
-          <Input
-            placeholder="Ask about your insights..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className="flex-1 text-sm"
-          />
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setVoiceOpen(true)}
-            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
-            title="Voice mode"
-          >
-            <Mic className="h-4 w-4" />
-          </Button>
-          <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0">
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
+        {/* Voice listening bar */}
+        <VoiceInputBar
+          isListening={isVoiceListening}
+          onStopListening={onStopVoiceListening}
+          onTranscript={onVoiceTranscript}
+        />
+
+        {!isVoiceListening && (
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder="Ask about your insights..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="flex-1 text-sm"
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onStartVoiceListening}
+              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
+              title="Voice mode"
+            >
+              <Mic className="h-4 w-4" />
+            </Button>
+            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0">
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -441,7 +445,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [swipedId, setSwipedId] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [voiceOpen, setVoiceOpen] = useState(false);
+  const [isVoiceListening, setIsVoiceListening] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const handleLoadConversation = (id: string) => {
@@ -524,6 +528,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
             title: response.widgetTitle!,
           },
           timestamp: new Date(),
+          isStreaming: true,
         };
       } else {
         aiMessage = {
@@ -531,6 +536,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
           sender: 'ai',
           content: "I can help you with insights about your GCI trends, listing velocity, or pipeline. Try asking something like 'Analyze my GCI trends' or 'How fast are my listings selling?'",
           timestamp: new Date(),
+          isStreaming: true,
         };
       }
 
@@ -578,8 +584,10 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     pathname: location.pathname,
     isExpanded,
     onToggleExpand: () => setIsExpanded(prev => !prev),
-    voiceOpen,
-    setVoiceOpen,
+    isVoiceListening,
+    onStartVoiceListening: () => setIsVoiceListening(true),
+    onStopVoiceListening: () => setIsVoiceListening(false),
+    onVoiceTranscript: (text: string) => processMessage(text),
   };
 
   // Mobile: Use Drawer (slides up from bottom)
