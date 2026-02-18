@@ -678,7 +678,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     onToggleExpand: () => setIsExpanded(prev => !prev),
     isVoiceMode,
     isVoiceListening,
-    onStartVoiceMode: () => setIsVoiceMode(true),
+    onStartVoiceMode: () => { setIsVoiceMode(true); setIsVoiceListening(true); },
     onEndVoiceMode: () => { setIsVoiceMode(false); setIsVoiceListening(false); },
     onStartVoiceListening: () => setIsVoiceListening(true),
     onStopVoiceListening: () => setIsVoiceListening(false),
