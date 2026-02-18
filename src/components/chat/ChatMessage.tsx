@@ -1,4 +1,5 @@
-import { Sparkles, MapPin } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Sparkles, MapPin, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WidgetPreview } from "./WidgetPreview";
 import { ChatMessageData } from "@/types/chat";
@@ -16,13 +17,58 @@ function renderMarkdown(text: string) {
   });
 }
 
+// Typewriter hook: reveals text word-by-word
+function useTypewriter(fullText: string, isStreaming: boolean, speed = 40) {
+  const [displayed, setDisplayed] = useState(isStreaming ? "" : fullText);
+  const [done, setDone] = useState(!isStreaming);
+  const indexRef = useRef(0);
+
+  useEffect(() => {
+    if (!isStreaming) {
+      setDisplayed(fullText);
+      setDone(true);
+      return;
+    }
+    setDisplayed("");
+    indexRef.current = 0;
+    setDone(false);
+
+    const words = fullText.split(/(\s+)/); // preserve whitespace
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < words.length) {
+        setDisplayed(prev => prev + words[i]);
+        i++;
+      } else {
+        clearInterval(interval);
+        setDone(true);
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [fullText, isStreaming, speed]);
+
+  return { displayed, done };
+}
+
 interface ChatMessageProps {
   message: ChatMessageData;
   onFollowUp?: (question: string) => void;
+  onStreamingDone?: () => void;
 }
 
-export function ChatMessage({ message, onFollowUp }: ChatMessageProps) {
+export function ChatMessage({ message, onFollowUp, onStreamingDone }: ChatMessageProps) {
   const isAI = message.sender === 'ai';
+  const { displayed, done } = useTypewriter(
+    message.content, 
+    !!message.isStreaming
+  );
+
+  // Notify parent when streaming finishes
+  useEffect(() => {
+    if (message.isStreaming && done && onStreamingDone) {
+      onStreamingDone();
+    }
+  }, [done, message.isStreaming, onStreamingDone]);
 
   return (
     <div className={`flex gap-2 sm:gap-3 ${isAI ? '' : 'flex-row-reverse'}`}>
@@ -46,10 +92,23 @@ export function ChatMessage({ message, onFollowUp }: ChatMessageProps) {
             ? 'bg-muted text-foreground rounded-tl-sm' 
             : 'bg-primary text-primary-foreground rounded-tr-sm'
         }`}>
-          <p className="text-[11px] sm:text-sm leading-relaxed">{renderMarkdown(message.content)}</p>
+          <p className="text-[11px] sm:text-sm leading-relaxed">
+            {renderMarkdown(displayed)}
+            {isAI && message.isStreaming && !done && (
+              <span className="inline-block w-1.5 h-4 bg-primary ml-0.5 animate-pulse rounded-sm align-middle" />
+            )}
+          </p>
+          
+          {/* Speaking indicator while streaming */}
+          {isAI && message.isStreaming && !done && (
+            <div className="flex items-center gap-1.5 mt-1.5 text-primary">
+              <Volume2 className="h-3 w-3 animate-pulse" />
+              <span className="text-[10px]">Speaking...</span>
+            </div>
+          )}
           
           {/* Inline action button */}
-          {message.action && (
+          {message.action && done && (
             <Button
               variant="ghost"
               size="sm"
@@ -67,8 +126,8 @@ export function ChatMessage({ message, onFollowUp }: ChatMessageProps) {
           Just now
         </span>
         
-        {/* Widget preview with insights and follow-ups */}
-        {message.widget && (
+        {/* Widget preview - only show after streaming done */}
+        {message.widget && done && (
           <WidgetPreview 
             type={message.widget.type}
             id={message.widget.id}
