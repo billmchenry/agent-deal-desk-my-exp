@@ -17,6 +17,7 @@ import {
   Settings,
   Bell,
   MessageSquare,
+  Sparkles,
 } from "lucide-react";
 import { sidebarNavigation } from "@/data/mockData";
 import { useMiraChat } from "@/contexts/MiraChatContext";
@@ -83,7 +84,7 @@ export function GlobalSearch() {
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const { openChat } = useMiraChat();
+  const { openChat, openChatWithQuery } = useMiraChat();
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -114,7 +115,7 @@ export function GlobalSearch() {
   }, [filtered]);
 
   const flatFiltered = useMemo(() => filtered, [filtered]);
-  const showDropdown = isFocused && query.trim().length > 0 && flatFiltered.length > 0;
+  const showDropdown = isFocused && query.trim().length > 0;
 
   // Reset highlight when results change
   useEffect(() => {
@@ -155,17 +156,31 @@ export function GlobalSearch() {
     }
   };
 
+  const handleMiraSelect = () => {
+    const q = query.trim();
+    setQuery("");
+    setIsFocused(false);
+    inputRef.current?.blur();
+    openChatWithQuery(q);
+  };
+
+  // Total items for keyboard nav = filtered results + 1 Mira row
+  const totalNavItems = flatFiltered.length + 1;
+  const miraIndex = flatFiltered.length;
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!showDropdown) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setHighlightedIndex((i) => Math.min(i + 1, flatFiltered.length - 1));
+      setHighlightedIndex((i) => Math.min(i + 1, totalNavItems - 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setHighlightedIndex((i) => Math.max(i - 1, 0));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      if (flatFiltered[highlightedIndex]) {
+      if (highlightedIndex === miraIndex) {
+        handleMiraSelect();
+      } else if (flatFiltered[highlightedIndex]) {
         handleSelect(flatFiltered[highlightedIndex]);
       }
     } else if (e.key === "Escape") {
@@ -207,6 +222,9 @@ export function GlobalSearch() {
                   highlightedIndex={highlightedIndex}
                   onSelect={handleSelect}
                   onHover={setHighlightedIndex}
+                  query={query}
+                  miraIndex={miraIndex}
+                  onMiraSelect={handleMiraSelect}
                 />
               </div>
             )}
@@ -243,6 +261,9 @@ export function GlobalSearch() {
             highlightedIndex={highlightedIndex}
             onSelect={handleSelect}
             onHover={setHighlightedIndex}
+            query={query}
+            miraIndex={miraIndex}
+            onMiraSelect={handleMiraSelect}
           />
         </div>
       )}
@@ -256,18 +277,26 @@ function DropdownResults({
   highlightedIndex,
   onSelect,
   onHover,
+  query,
+  miraIndex,
+  onMiraSelect,
 }: {
   grouped: Map<string, SearchItem[]>;
   flatFiltered: SearchItem[];
   highlightedIndex: number;
   onSelect: (item: SearchItem) => void;
   onHover: (index: number) => void;
+  query: string;
+  miraIndex: number;
+  onMiraSelect: () => void;
 }) {
   let globalIndex = 0;
+  const hasResults = flatFiltered.length > 0;
+  const isMiraHighlighted = highlightedIndex === miraIndex;
 
   return (
     <div className="py-1">
-      {Array.from(grouped.entries()).map(([category, items]) => (
+      {hasResults && Array.from(grouped.entries()).map(([category, items]) => (
         <div key={category}>
           <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             {category}
@@ -298,6 +327,32 @@ function DropdownResults({
           })}
         </div>
       ))}
+
+      {/* Mira AI suggestion */}
+      {query.trim() && (
+        <>
+          {hasResults && <div className="mx-3 border-t border-border" />}
+          <button
+            onClick={onMiraSelect}
+            onMouseEnter={() => onHover(miraIndex)}
+            className={cn(
+              "flex w-full items-center gap-2 px-3 py-2.5 text-sm text-left transition-colors",
+              isMiraHighlighted ? "bg-primary/10 text-primary" : "hover:bg-primary/5",
+              !hasResults && "py-3"
+            )}
+          >
+            <Sparkles className={cn("h-4 w-4 shrink-0", isMiraHighlighted ? "text-primary" : "text-primary/70")} />
+            <div className="flex flex-col min-w-0">
+              <span className="truncate font-medium">
+                Ask Mira: "{query.trim()}"
+              </span>
+              {!hasResults && (
+                <span className="text-xs text-muted-foreground">No pages found — ask Mira instead</span>
+              )}
+            </div>
+          </button>
+        </>
+      )}
     </div>
   );
 }
