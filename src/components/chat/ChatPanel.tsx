@@ -167,106 +167,10 @@ function ChatContent({
   isExpanded,
   onToggleExpand,
 }: ChatContentProps) {
-  return (
-    <div 
-      className="flex w-[200%] h-full min-h-0 transition-transform duration-300 ease-out"
-      style={{ transform: showHistory ? 'translateX(-50%)' : 'translateX(0)' }}
-    >
-      {/* Chat View */}
-      <div className="w-1/2 h-full flex flex-col min-h-0">
-        <div className="px-3 sm:px-4 py-3 border-b shrink-0 bg-background relative z-10">
-          <div className={`flex items-center justify-between w-full ${isMobile ? "" : "pr-8"}`}>
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-                <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
-              </div>
-              <span className="font-semibold text-sm sm:text-base">Mira AI</span>
-            </div>
-            
-            <div className="flex items-center gap-1 shrink-0">
-              {!isMobile && onToggleExpand && (
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={onToggleExpand} 
-                  className="h-8 w-8 shrink-0"
-                  title={isExpanded ? "Exit full screen" : "Full screen"}
-                >
-                  {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                </Button>
-              )}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setShowHistory(true)} 
-                className="h-8 w-8 shrink-0"
-                title="History"
-              >
-                <History className="h-4 w-4" />
-              </Button>
-              {isMobile && (
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={onClose} 
-                  className="h-8 w-8 shrink-0"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 sm:p-4 min-h-0">
-          <div className="flex flex-col gap-4 sm:gap-6">
-            {currentMessages.map((message) => {
-              const displayMessage = message.id === 'welcome'
-                ? { ...message, content: getWelcomeMessageForRoute(pathname) }
-                : message;
-              return (
-                <ChatMessage 
-                  key={displayMessage.id} 
-                  message={displayMessage} 
-                  onFollowUp={handleFollowUp}
-                />
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="p-3 sm:p-4 border-t bg-background shrink-0 space-y-2">
-          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
-            {suggestions.map((chip) => (
-              <Button
-                key={chip.label}
-                variant="outline"
-                size="sm"
-                onClick={() => processMessage(chip.query)}
-                className="h-7 sm:h-8 px-2.5 sm:px-3 text-[11px] sm:text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5 whitespace-nowrap shrink-0"
-              >
-                {chip.label}
-              </Button>
-            ))}
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <Input
-              placeholder="Ask about your insights..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="flex-1 text-sm"
-            />
-            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10">
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* History View */}
-      <div className="w-1/2 h-full flex flex-col bg-background min-h-0">
+  // History sidebar content (reused in both layouts)
+  const historyContent = (
+    <div className="h-full flex flex-col bg-background min-h-0">
+      {!isExpanded && (
         <div className="px-3 sm:px-4 py-3 border-b shrink-0">
           <div className="flex items-center gap-2">
             <Button 
@@ -280,86 +184,218 @@ function ChatContent({
             <h2 className="font-semibold text-sm sm:text-base">Chat History</h2>
           </div>
         </div>
+      )}
 
-        {/* Search Bar */}
-        <div className="px-3 sm:px-4 py-2 border-b shrink-0">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search conversations..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 h-9 text-sm"
-            />
-          </div>
+      {isExpanded && (
+        <div className="px-3 sm:px-4 py-3 border-b shrink-0">
+          <h2 className="font-semibold text-sm sm:text-base">History</h2>
         </div>
+      )}
 
-        <ScrollArea className="flex-1">
-          {filteredConversations.length > 0 ? (
-            <div className="p-2">
-              {filteredConversations.map((conv) => (
-                <div
-                  key={conv.id}
-                  className="relative group"
-                  onTouchStart={() => isMobile && setSwipedId(conv.id)}
-                  onTouchEnd={() => isMobile && setTimeout(() => setSwipedId(null), 3000)}
+      {/* Search Bar */}
+      <div className="px-3 sm:px-4 py-2 border-b shrink-0">
+        <div className="relative">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search conversations..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-8 h-9 text-sm"
+          />
+        </div>
+      </div>
+
+      <ScrollArea className="flex-1">
+        {filteredConversations.length > 0 ? (
+          <div className="p-2">
+            {filteredConversations.map((conv) => (
+              <div
+                key={conv.id}
+                className="relative group"
+                onTouchStart={() => isMobile && setSwipedId(conv.id)}
+                onTouchEnd={() => isMobile && setTimeout(() => setSwipedId(null), 3000)}
+              >
+                <button
+                  onClick={() => handleLoadConversation(conv.id)}
+                  className={`w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
+                    swipedId === conv.id ? 'translate-x-[-60px]' : ''
+                  }`}
                 >
-                  <button
-                    onClick={() => handleLoadConversation(conv.id)}
-                    className={`w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
-                      swipedId === conv.id ? 'translate-x-[-60px]' : ''
-                    }`}
-                  >
-                    <MessageSquare className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">{conv.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {formatDistanceToNow(conv.updatedAt, { addSuffix: true })} · {conv.messages.length} messages
-                      </p>
-                    </div>
-                    
-                    {/* Desktop hover delete button */}
-                    {!isMobile && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={(e) => handleDeleteConversation(e, conv.id)}
-                        className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive shrink-0"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </button>
+                  <MessageSquare className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm truncate">{conv.title}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {formatDistanceToNow(conv.updatedAt, { addSuffix: true })} · {conv.messages.length} messages
+                    </p>
+                  </div>
                   
-                  {/* Mobile swipe delete button */}
-                  {isMobile && swipedId === conv.id && (
+                  {/* Desktop hover delete button */}
+                  {!isMobile && (
                     <Button
-                      variant="destructive"
+                      variant="ghost"
                       size="icon"
                       onClick={(e) => handleDeleteConversation(e, conv.id)}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-14 rounded-lg"
+                      className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive shrink-0"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   )}
-                </div>
-              ))}
+                </button>
+                
+                {/* Mobile swipe delete button */}
+                {isMobile && swipedId === conv.id && (
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    onClick={(e) => handleDeleteConversation(e, conv.id)}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 h-10 w-14 rounded-lg"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : searchQuery ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <Search className="h-10 w-10 mx-auto mb-3 opacity-50" />
+            <p className="text-sm">No results for "{searchQuery}"</p>
+            <p className="text-xs mt-1">Try a different search term</p>
+          </div>
+        ) : (
+          <div className="text-center py-12 text-muted-foreground">
+            <MessageSquare className="h-10 w-10 mx-auto mb-3 opacity-50" />
+            <p className="text-sm">No conversations yet</p>
+            <p className="text-xs mt-1">Start chatting with Mira!</p>
+          </div>
+        )}
+      </ScrollArea>
+    </div>
+  );
+
+  // Chat main content
+  const chatContent = (
+    <div className="h-full flex flex-col min-h-0">
+      <div className="px-3 sm:px-4 py-3 border-b shrink-0 bg-background relative z-10">
+        <div className={`flex items-center justify-between w-full ${isMobile ? "" : "pr-8"}`}>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
             </div>
-          ) : searchQuery ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <Search className="h-10 w-10 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">No results for "{searchQuery}"</p>
-              <p className="text-xs mt-1">Try a different search term</p>
-            </div>
-          ) : (
-            <div className="text-center py-12 text-muted-foreground">
-              <MessageSquare className="h-10 w-10 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">No conversations yet</p>
-              <p className="text-xs mt-1">Start chatting with Mira!</p>
-            </div>
-          )}
-        </ScrollArea>
+            <span className="font-semibold text-sm sm:text-base">Mira AI</span>
+          </div>
+          
+          <div className="flex items-center gap-1 shrink-0">
+            {!isMobile && onToggleExpand && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={onToggleExpand} 
+                className="h-8 w-8 shrink-0"
+                title={isExpanded ? "Exit full screen" : "Full screen"}
+              >
+                {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+              </Button>
+            )}
+            {!isExpanded && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setShowHistory(true)} 
+                className="h-8 w-8 shrink-0"
+                title="History"
+              >
+                <History className="h-4 w-4" />
+              </Button>
+            )}
+            {isMobile && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={onClose} 
+                className="h-8 w-8 shrink-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 sm:p-4 min-h-0">
+        <div className="flex flex-col gap-4 sm:gap-6">
+          {currentMessages.map((message) => {
+            const displayMessage = message.id === 'welcome'
+              ? { ...message, content: getWelcomeMessageForRoute(pathname) }
+              : message;
+            return (
+              <ChatMessage 
+                key={displayMessage.id} 
+                message={displayMessage} 
+                onFollowUp={handleFollowUp}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="p-3 sm:p-4 border-t bg-background shrink-0 space-y-2">
+        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1">
+          {suggestions.map((chip) => (
+            <Button
+              key={chip.label}
+              variant="outline"
+              size="sm"
+              onClick={() => processMessage(chip.query)}
+              className="h-7 sm:h-8 px-2.5 sm:px-3 text-[11px] sm:text-xs rounded-full border-border/50 hover:border-primary/50 hover:bg-primary/5 whitespace-nowrap shrink-0"
+            >
+              {chip.label}
+            </Button>
+          ))}
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <Input
+            placeholder="Ask about your insights..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            className="flex-1 text-sm"
+          />
+          <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10">
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Expanded: side-by-side layout with history on the left
+  if (isExpanded) {
+    return (
+      <div className="flex h-full min-h-0">
+        <div className="w-72 border-r shrink-0 h-full">
+          {historyContent}
+        </div>
+        <div className="flex-1 h-full min-w-0">
+          {chatContent}
+        </div>
+      </div>
+    );
+  }
+
+  // Normal: sliding panel layout
+  return (
+    <div 
+      className="flex w-[200%] h-full min-h-0 transition-transform duration-300 ease-out"
+      style={{ transform: showHistory ? 'translateX(-50%)' : 'translateX(0)' }}
+    >
+      <div className="w-1/2 h-full">
+        {chatContent}
+      </div>
+      <div className="w-1/2 h-full">
+        {historyContent}
       </div>
     </div>
   );
