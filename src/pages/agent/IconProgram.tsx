@@ -27,7 +27,7 @@ function YearToggle({
 
   if (isMobile) {
     return (
-      <div className="flex gap-1.5">
+      <div className="flex gap-1.5 flex-wrap">
         {options.map((opt) => (
           <Button
             key={opt.value}
