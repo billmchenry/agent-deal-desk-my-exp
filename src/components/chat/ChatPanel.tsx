@@ -679,7 +679,12 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     isVoiceMode,
     isVoiceListening,
     onStartVoiceMode: () => { setIsVoiceMode(true); setIsVoiceListening(true); },
-    onEndVoiceMode: () => { setIsVoiceMode(false); setIsVoiceListening(false); },
+    onEndVoiceMode: () => {
+      setIsVoiceMode(false);
+      setIsVoiceListening(false);
+      // Clear streaming flags so messages don't re-animate in normal chat
+      setCurrentMessages(prev => prev.map(m => m.isStreaming ? { ...m, isStreaming: false } : m));
+    },
     onStartVoiceListening: () => setIsVoiceListening(true),
     onStopVoiceListening: () => setIsVoiceListening(false),
     onVoiceTranscript: (text: string) => processMessage(text),
