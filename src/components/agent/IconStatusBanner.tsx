@@ -54,9 +54,9 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
           <Card
             key={pillar.key}
             onClick={() => onTabChange(pillar.key)}
-            className={`tap-card p-3 sm:p-4 min-h-[88px] cursor-pointer select-none overflow-hidden ${
+            className={`tap-card p-3 sm:p-4 min-h-[88px] cursor-pointer select-none ${
               isActive
-                ? "border-l-[3px] border-l-[hsl(var(--exp-navy))] shadow-sm"
+                ? "border-l-4 border-l-[hsl(var(--exp-navy))] shadow-md"
                 : "lg:hover:shadow-md lg:hover:border-primary/40"
             }`}
           >
