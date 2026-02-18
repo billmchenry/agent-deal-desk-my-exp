@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import { Mic, Square, Ellipsis } from "lucide-react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { Mic, Square, Ellipsis, Plus, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChatMessageData } from "@/types/chat";
+import { ChatMessageData, ChatAttachment } from "@/types/chat";
 
 const FAKE_TRANSCRIPTS = [
   "Show me my GCI trends",
@@ -42,7 +42,21 @@ function VoiceMessage({ message }: { message: ChatMessageData }) {
 
   if (isUser) {
     return (
-      <div className="flex justify-end">
+      <div className="flex flex-col items-end gap-1">
+        {message.attachments && message.attachments.length > 0 && (
+          <div className="flex gap-2 flex-wrap justify-end">
+            {message.attachments.map(att => (
+              att.type.startsWith('image/') ? (
+                <img key={att.id} src={att.url} alt={att.name} className="h-20 w-20 rounded-lg object-cover" />
+              ) : (
+                <div key={att.id} className="flex items-center gap-1.5 bg-muted rounded-lg px-3 py-1.5">
+                  <FileText className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="text-xs">{att.name}</span>
+                </div>
+              )
+            ))}
+          </div>
+        )}
         <div className="bg-muted text-foreground rounded-full px-4 py-2 max-w-[80%]">
           <p className="text-sm">"{message.content}"</p>
         </div>
@@ -81,7 +95,23 @@ export function VoiceModeView({
 }: VoiceModeViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
+  const [pendingAttachments, setPendingAttachments] = useState<ChatAttachment[]>([]);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    const newAttachments: ChatAttachment[] = Array.from(files).slice(0, 5).map(file => ({
+      id: `att-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      url: URL.createObjectURL(file),
+    }));
+    setPendingAttachments(prev => [...prev, ...newAttachments].slice(0, 10));
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -138,7 +168,31 @@ export function VoiceModeView({
 
       {/* Bottom bar */}
       <div className="p-3 border-t bg-background shrink-0">
-        <div className="flex items-center gap-2">
+        {pendingAttachments.length > 0 && (
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {pendingAttachments.map(att => (
+              <div key={att.id} className="relative shrink-0 group">
+                {att.type.startsWith('image/') ? (
+                  <img src={att.url} alt={att.name} className="h-14 w-14 rounded-lg object-cover border border-border" />
+                ) : (
+                  <div className="h-14 w-14 rounded-lg border border-border bg-muted flex flex-col items-center justify-center gap-0.5">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-[8px] text-muted-foreground">{att.name.split('.').pop()}</span>
+                  </div>
+                )}
+                <button
+                  onClick={() => { const a = pendingAttachments.find(x => x.id === att.id); if (a) URL.revokeObjectURL(a.url); setPendingAttachments(prev => prev.filter(x => x.id !== att.id)); }}
+                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"
+                >×</button>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="flex items-center gap-1.5">
+          <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.csv" onChange={handleFileSelect} className="hidden" />
+          <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()} className="h-10 w-10 shrink-0 text-muted-foreground">
+            <Plus className="h-4 w-4" />
+          </Button>
           <Input
             placeholder="Type"
             value={inputValue}

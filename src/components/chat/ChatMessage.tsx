@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Sparkles, MapPin, Volume2 } from "lucide-react";
+import { Sparkles, MapPin, Volume2, FileText, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WidgetPreview } from "./WidgetPreview";
 import { ChatMessageData } from "@/types/chat";
@@ -33,7 +33,7 @@ function useTypewriter(fullText: string, isStreaming: boolean, speed = 40) {
     indexRef.current = 0;
     setDone(false);
 
-    const words = fullText.split(/(\s+)/); // preserve whitespace
+    const words = fullText.split(/(\s+)/);
     let i = 0;
     const interval = setInterval(() => {
       if (i < words.length) {
@@ -48,6 +48,26 @@ function useTypewriter(fullText: string, isStreaming: boolean, speed = 40) {
   }, [fullText, isStreaming, speed]);
 
   return { displayed, done };
+}
+
+// Attachment preview component
+function AttachmentPreview({ attachment }: { attachment: { name: string; type: string; url: string } }) {
+  const isImage = attachment.type.startsWith('image/');
+  
+  if (isImage) {
+    return (
+      <div className="mt-2 rounded-lg overflow-hidden max-w-[200px]">
+        <img src={attachment.url} alt={attachment.name} className="w-full h-auto rounded-lg" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-2 flex items-center gap-2 bg-background/50 rounded-lg px-3 py-2 max-w-[200px]">
+      <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
+      <span className="text-xs truncate">{attachment.name}</span>
+    </div>
+  );
 }
 
 interface ChatMessageProps {
@@ -86,18 +106,29 @@ export function ChatMessage({ message, onFollowUp, onStreamingDone }: ChatMessag
       </div>
       
       <div className={`flex flex-col min-w-0 max-w-[calc(100%-2.5rem)] sm:max-w-[85%] ${isAI ? '' : 'items-end'}`}>
+        {/* Attachments (shown above bubble for user messages) */}
+        {!isAI && message.attachments && message.attachments.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-1 justify-end">
+            {message.attachments.map(att => (
+              <AttachmentPreview key={att.id} attachment={att} />
+            ))}
+          </div>
+        )}
+
         {/* Message bubble */}
         <div className={`rounded-2xl px-2.5 sm:px-4 py-2 sm:py-3 ${
           isAI 
             ? 'bg-muted text-foreground rounded-tl-sm' 
             : 'bg-primary text-primary-foreground rounded-tr-sm'
         }`}>
-          <p className="text-[11px] sm:text-sm leading-relaxed">
-            {renderMarkdown(displayed)}
-            {isAI && message.isStreaming && !done && (
-              <span className="inline-block w-1.5 h-4 bg-primary ml-0.5 animate-pulse rounded-sm align-middle" />
-            )}
-          </p>
+          {message.content && (
+            <p className="text-[11px] sm:text-sm leading-relaxed">
+              {renderMarkdown(displayed)}
+              {isAI && message.isStreaming && !done && (
+                <span className="inline-block w-1.5 h-4 bg-primary ml-0.5 animate-pulse rounded-sm align-middle" />
+              )}
+            </p>
+          )}
           
           {/* Speaking indicator while streaming */}
           {isAI && message.isStreaming && !done && (

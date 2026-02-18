@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2, AudioWaveform } from "lucide-react";
+import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2, AudioWaveform, Plus, FileText } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "./ChatMessage";
 import { useMiraChat } from "@/contexts/MiraChatContext";
-import { ChatMessageData } from "@/types/chat";
+import { ChatMessageData, ChatAttachment } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { VoiceModeView } from "./VoiceMode";
@@ -122,7 +122,7 @@ interface ChatContentProps {
   setShowHistory: (show: boolean) => void;
   currentMessages: ChatMessageData[];
   handleFollowUp: (question: string) => void;
-  processMessage: (content: string) => void;
+  processMessage: (content: string, attachments?: ChatAttachment[]) => void;
   inputValue: string;
   setInputValue: (value: string) => void;
   handleKeyPress: (e: React.KeyboardEvent) => void;
@@ -182,6 +182,42 @@ function ChatContent({
   onStopVoiceListening,
   onVoiceTranscript,
 }: ChatContentProps) {
+  const [pendingAttachments, setPendingAttachments] = React.useState<ChatAttachment[]>([]);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    const newAttachments: ChatAttachment[] = Array.from(files).slice(0, 5).map(file => ({
+      id: `att-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      url: URL.createObjectURL(file),
+    }));
+    setPendingAttachments(prev => [...prev, ...newAttachments].slice(0, 10));
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const removeAttachment = (id: string) => {
+    setPendingAttachments(prev => {
+      const att = prev.find(a => a.id === id);
+      if (att) URL.revokeObjectURL(att.url);
+      return prev.filter(a => a.id !== id);
+    });
+  };
+
+  const handleSendWithAttachments = () => {
+    const content = inputValue.trim();
+    if (!content && pendingAttachments.length === 0) return;
+    processMessage(
+      content || `Shared ${pendingAttachments.length} file(s)`,
+      pendingAttachments.length > 0 ? pendingAttachments : undefined
+    );
+    setInputValue('');
+    setPendingAttachments([]);
+  };
+
   // History sidebar content (reused in both layouts)
   const historyContent = (
     <div className="h-full flex flex-col bg-background min-h-0">
@@ -370,12 +406,53 @@ function ChatContent({
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Pending attachment previews */}
+        {pendingAttachments.length > 0 && (
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {pendingAttachments.map(att => (
+              <div key={att.id} className="relative shrink-0 group">
+                {att.type.startsWith('image/') ? (
+                  <img src={att.url} alt={att.name} className="h-16 w-16 rounded-lg object-cover border border-border" />
+                ) : (
+                  <div className="h-16 w-16 rounded-lg border border-border bg-muted flex flex-col items-center justify-center gap-1 px-1">
+                    <FileText className="h-5 w-5 text-muted-foreground" />
+                    <span className="text-[9px] text-muted-foreground truncate w-full text-center">{att.name.split('.').pop()}</span>
+                  </div>
+                )}
+                <button
+                  onClick={() => removeAttachment(att.id)}
+                  className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="flex items-center gap-1.5">
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/*,.pdf,.doc,.docx,.txt,.csv"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => fileInputRef.current?.click()}
+            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
+            title="Attach files"
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
           <Input
             placeholder="Ask about your insights..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendWithAttachments(); } }}
             className="flex-1 text-sm"
           />
           <Button
@@ -387,7 +464,7 @@ function ChatContent({
           >
             <AudioWaveform className="h-4 w-4" />
           </Button>
-          <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0">
+          <Button size="icon" onClick={handleSendWithAttachments} disabled={!inputValue.trim() && pendingAttachments.length === 0} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0">
             <Send className="h-4 w-4" />
           </Button>
         </div>
@@ -512,11 +589,12 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     }
   }, [isOpen, pendingQuery, clearPendingQuery]);
 
-  const processMessage = (content: string) => {
+  const processMessage = (content: string, attachments?: ChatAttachment[]) => {
     const userMessage: ChatMessageData = {
       id: `user-${Date.now()}`,
       sender: 'user',
       content,
+      attachments,
       timestamp: new Date(),
     };
 

@@ -1,3 +1,11 @@
+export interface ChatAttachment {
+  id: string;
+  name: string;
+  type: string; // MIME type
+  size: number;
+  url: string; // object URL for client-side preview
+}
+
 export interface ChatMessageAction {
   label: string;
   icon?: 'focus' | 'pin';
@@ -14,6 +22,7 @@ export interface ChatMessageData {
     title: string;
   };
   action?: ChatMessageAction;
+  attachments?: ChatAttachment[];
   timestamp: Date;
   isStreaming?: boolean;
 }
