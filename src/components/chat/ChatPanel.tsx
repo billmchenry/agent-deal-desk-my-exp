@@ -572,7 +572,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     return (
       <Sheet open={isOpen} onOpenChange={(open) => { if (!open) { setIsExpanded(false); onClose(); } }}>
         <SheetContent side="right" className="w-full sm:max-w-none inset-0 p-0 flex flex-col overflow-hidden">
-          <div className="max-w-4xl w-full mx-auto h-full flex flex-col">
+          <div className="w-full h-full flex flex-col">
             <ChatContent {...contentProps} />
           </div>
         </SheetContent>
