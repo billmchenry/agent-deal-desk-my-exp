@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2 } from "lucide-react";
+import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2, Mic } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { ChatMessageData } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { VoiceMode } from "./VoiceMode";
 
 interface ChatPanelProps {
   isOpen: boolean;
@@ -140,6 +141,8 @@ interface ChatContentProps {
   pathname: string;
   isExpanded?: boolean;
   onToggleExpand?: () => void;
+  voiceOpen: boolean;
+  setVoiceOpen: (open: boolean) => void;
 }
 
 function ChatContent({
@@ -166,6 +169,8 @@ function ChatContent({
   pathname,
   isExpanded,
   onToggleExpand,
+  voiceOpen,
+  setVoiceOpen,
 }: ChatContentProps) {
   // History sidebar content (reused in both layouts)
   const historyContent = (
@@ -276,7 +281,16 @@ function ChatContent({
 
   // Chat main content
   const chatContent = (
-    <div className="h-full flex flex-col min-h-0">
+    <div className="h-full flex flex-col min-h-0 relative">
+      {/* Voice Mode Overlay */}
+      <VoiceMode
+        isOpen={voiceOpen}
+        onClose={() => setVoiceOpen(false)}
+        onTranscript={(text) => {
+          setVoiceOpen(false);
+          processMessage(text);
+        }}
+      />
       <div className="px-3 sm:px-4 py-3 border-b shrink-0 bg-background relative z-10">
         <div className={`flex items-center justify-between w-full ${isMobile ? "" : "pr-8"}`}>
           <div className="flex items-center gap-2">
@@ -363,7 +377,16 @@ function ChatContent({
             onKeyPress={handleKeyPress}
             className="flex-1 text-sm"
           />
-          <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setVoiceOpen(true)}
+            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
+            title="Voice mode"
+          >
+            <Mic className="h-4 w-4" />
+          </Button>
+          <Button size="icon" onClick={handleSend} disabled={!inputValue.trim()} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0">
             <Send className="h-4 w-4" />
           </Button>
         </div>
@@ -418,6 +441,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [swipedId, setSwipedId] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [voiceOpen, setVoiceOpen] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const handleLoadConversation = (id: string) => {
@@ -554,6 +578,8 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     pathname: location.pathname,
     isExpanded,
     onToggleExpand: () => setIsExpanded(prev => !prev),
+    voiceOpen,
+    setVoiceOpen,
   };
 
   // Mobile: Use Drawer (slides up from bottom)
