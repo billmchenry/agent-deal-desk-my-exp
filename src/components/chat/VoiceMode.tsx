@@ -21,10 +21,16 @@ function useVoiceTypewriter(text: string, active: boolean, speed = 30) {
     if (!active) { setDisplayed(text); setDone(true); return; }
     setDisplayed(""); setDone(false);
     const words = text.split(/(\s+)/);
-    let i = 0;
+    let idx = 0;
     const interval = setInterval(() => {
-      if (i < words.length) { setDisplayed(prev => prev + words[i]); i++; }
-      else { clearInterval(interval); setDone(true); }
+      if (idx < words.length) {
+        const word = words[idx];
+        idx++;
+        setDisplayed(prev => prev + word);
+      } else {
+        clearInterval(interval);
+        setDone(true);
+      }
     }, speed);
     return () => clearInterval(interval);
   }, [text, active, speed]);
