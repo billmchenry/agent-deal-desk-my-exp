@@ -172,7 +172,6 @@
   .tap-card:focus-visible,
   .tap-card:focus-within {
     outline: none !important;
-    box-shadow: inherit;
   }
 
   @media (pointer: coarse) {
@@ -187,7 +186,6 @@
     }
     .tap-card:hover,
     .tap-card:active {
-      box-shadow: inherit !important;
       transform: none !important;
     }
   }
