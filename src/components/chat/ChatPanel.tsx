@@ -560,7 +560,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <DrawerContent hideHandle className="h-[85vh] p-0 flex flex-col overflow-hidden min-h-0">
+        <DrawerContent hideHandle className="h-[100vh] p-0 flex flex-col overflow-hidden min-h-0">
           <ChatContent {...contentProps} />
         </DrawerContent>
       </Drawer>
