@@ -14,6 +14,7 @@ import { currentUser, userProfile } from "@/data/mockData";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { NotificationsSheet } from "./NotificationsSheet";
 import { AccountSheet } from "./AccountSheet";
+import { GlobalSearch } from "./GlobalSearch";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -39,11 +40,18 @@ export function Header({ onMenuClick }: HeaderProps) {
           </Button>
         </div>
 
-        {/* Spacer for desktop */}
-        <div className="hidden lg:block" />
+        {/* Desktop Search Bar */}
+        <div className="hidden lg:block">
+          <GlobalSearch />
+        </div>
 
         {/* Right Section */}
         <div className="flex items-center gap-2">
+          {/* Mobile Search */}
+          <div className="lg:hidden">
+            <GlobalSearch />
+          </div>
+
           {/* Get Help */}
           <Button variant="ghost" size="icon" className="sm:hidden">
             <HelpCircle className="h-5 w-5" />
