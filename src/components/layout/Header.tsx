@@ -46,7 +46,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           {/* Mobile Search */}
           <div className="lg:hidden">
             <GlobalSearch />

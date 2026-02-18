@@ -192,6 +192,21 @@ export function GlobalSearch() {
   // Mobile: toggle inline search
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Lock body scroll when mobile search is open
+  useEffect(() => {
+    if (!isMobile) return;
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = ''; };
+    }
+  }, [mobileOpen, isMobile]);
+
+  const closeMobileSearch = () => {
+    setMobileOpen(false);
+    setQuery("");
+    setIsFocused(false);
+  };
+
   if (isMobile) {
     return (
       <div ref={containerRef} className="relative">
@@ -200,14 +215,14 @@ export function GlobalSearch() {
         </Button>
         {mobileOpen && (
           <>
-            {/* Backdrop */}
+            {/* Full-screen overlay to prevent interaction with content behind */}
             <div
-              className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm"
-              onClick={() => { setMobileOpen(false); setQuery(""); setIsFocused(false); }}
+              className="fixed inset-0 z-[60] bg-background"
+              onClick={closeMobileSearch}
             />
-            {/* Search bar */}
-            <div className="fixed inset-x-0 top-0 z-[70] bg-background border-b border-border shadow-md">
-              <div className="flex items-center gap-2 px-3 h-16">
+            {/* Search bar + results */}
+            <div className="fixed inset-x-0 top-0 z-[70] flex flex-col max-h-screen bg-background">
+              <div className="flex items-center gap-2 px-3 h-16 shrink-0 border-b border-border">
                 <Search className="h-4 w-4 text-muted-foreground shrink-0" />
                 <input
                   ref={inputRef}
@@ -216,19 +231,19 @@ export function GlobalSearch() {
                   onKeyDown={handleKeyDown}
                   onFocus={() => setIsFocused(true)}
                   placeholder="Search..."
-                  className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                  className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground min-w-0"
                 />
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="min-h-[44px]"
-                  onClick={() => { setMobileOpen(false); setQuery(""); setIsFocused(false); }}
+                  className="min-h-[44px] shrink-0"
+                  onClick={closeMobileSearch}
                 >
                   Cancel
                 </Button>
               </div>
               {showDropdown && (
-                <div className="max-h-[60vh] overflow-y-auto border-t border-border bg-popover">
+                <div className="flex-1 overflow-y-auto bg-background">
                   <DropdownResults
                     grouped={grouped}
                     flatFiltered={flatFiltered}
