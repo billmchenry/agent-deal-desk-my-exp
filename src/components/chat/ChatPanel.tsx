@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X } from "lucide-react";
+import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2 } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
@@ -138,6 +138,8 @@ interface ChatContentProps {
   onClose: () => void;
   suggestions: SuggestionChip[];
   pathname: string;
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
 }
 
 function ChatContent({
@@ -162,6 +164,8 @@ function ChatContent({
   onClose,
   suggestions,
   pathname,
+  isExpanded,
+  onToggleExpand,
 }: ChatContentProps) {
   return (
     <div 
@@ -179,7 +183,18 @@ function ChatContent({
               <span className="font-semibold text-sm sm:text-base">Mira AI</span>
             </div>
             
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1 shrink-0">
+              {!isMobile && onToggleExpand && (
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={onToggleExpand} 
+                  className="h-8 w-8 shrink-0"
+                  title={isExpanded ? "Exit full screen" : "Full screen"}
+                >
+                  {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                </Button>
+              )}
               <Button 
                 variant="ghost" 
                 size="icon" 
@@ -366,6 +381,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const [showHistory, setShowHistory] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [swipedId, setSwipedId] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const handleLoadConversation = (id: string) => {
@@ -398,10 +414,11 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     }
   }, [currentMessages]);
 
-  // Reset history view when panel closes
+  // Reset history view and expanded state when panel closes
   useEffect(() => {
     if (!isOpen) {
       setShowHistory(false);
+      setIsExpanded(false);
     }
   }, [isOpen]);
 
@@ -499,6 +516,8 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     onClose,
     suggestions: getSuggestionsForRoute(location.pathname),
     pathname: location.pathname,
+    isExpanded,
+    onToggleExpand: () => setIsExpanded(prev => !prev),
   };
 
   // Mobile: Use Drawer (slides up from bottom)
@@ -511,6 +530,20 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
       </Drawer>
     );
   }
+
+  // Desktop expanded: Full-screen overlay
+  if (isExpanded) {
+    return (
+      <Sheet open={isOpen} onOpenChange={(open) => { if (!open) { setIsExpanded(false); onClose(); } }}>
+        <SheetContent side="right" className="w-full sm:max-w-none inset-0 p-0 flex flex-col overflow-hidden">
+          <div className="max-w-4xl w-full mx-auto h-full flex flex-col">
+            <ChatContent {...contentProps} />
+          </div>
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
   // Desktop: Use Sheet (slides in from right)
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
