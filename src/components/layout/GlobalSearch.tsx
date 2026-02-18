@@ -113,7 +113,7 @@ export function GlobalSearch() {
   }, [filtered]);
 
   const flatFiltered = useMemo(() => filtered, [filtered]);
-  const showDropdown = isFocused && flatFiltered.length > 0;
+  const showDropdown = isFocused && query.trim().length > 0 && flatFiltered.length > 0;
 
   // Reset highlight when results change
   useEffect(() => {
