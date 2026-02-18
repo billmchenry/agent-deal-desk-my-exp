@@ -309,7 +309,7 @@ function ChatContent({
                 <History className="h-4 w-4" />
               </Button>
             )}
-            {isMobile && (
+            {(isMobile || isExpanded) && (
               <Button 
                 variant="ghost" 
                 size="icon" 
