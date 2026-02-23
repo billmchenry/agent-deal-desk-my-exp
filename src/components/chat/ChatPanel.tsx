@@ -771,10 +771,10 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     );
   }
 
-  // Desktop: Fixed side panel (no overlay)
+  // Desktop: Floating chat popup (bottom-right, no overlay)
   if (!isOpen) return null;
   return (
-    <div className="fixed right-0 top-0 h-full w-full sm:max-w-md md:max-w-lg z-50 border-l bg-background shadow-lg flex flex-col overflow-hidden transition-transform duration-300 ease-out">
+    <div className="fixed bottom-6 right-6 w-[420px] h-[600px] z-50 border bg-background shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ease-out">
       <ChatContent {...contentProps} />
     </div>
   );
