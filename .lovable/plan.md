@@ -1,32 +1,28 @@
 
-# Fix: Blue Outline and Mobile Toggle on ICON Pillar Cards
 
-## Problems Identified
+## Remove Grayed-Out Background Overlay from Mira Chat Panel
 
-1. **Thick blue outline on active card**: The active pillar card uses `ring-2 ring-primary` which renders as a heavy blue border (visible in the screenshot). This should be a subtler indicator.
+**Problem**: When the Mira chat panel opens (both on desktop and mobile), a dark semi-transparent overlay covers the entire background, making the dashboard inaccessible. The chat should be a side panel that sits alongside the content, not a modal with a backdrop.
 
-2. **Toggle appears broken on mobile**: The `tap-card` CSS class (in `index.css`) includes `@media (pointer: coarse)` rules that force `border-color: inherit !important` and `box-shadow: inherit !important` on hover/active states. Since Tailwind's `ring-*` utilities compile to `box-shadow`, the active card's ring is being stripped away on touch devices. The tap still fires the `onClick`, but because the visual active state is suppressed, it looks like nothing happens.
+### Approach
 
-## Solution
+Replace the `Sheet`/`Drawer` wrapper components with a simple positioned `div` panel. The dashboard layout already handles content reflow via `lg:mr-[28rem]` when the chat is open, so we just need the panel itself without the modal overlay.
 
-### 1. Replace `ring-2` with a left-border accent (matches existing design patterns)
+### Changes
 
-In `src/components/agent/IconStatusBanner.tsx`, change the active card styling from:
-```
-ring-2 ring-primary border-primary shadow-md
-```
-to:
-```
-border-l-[3px] border-l-primary bg-primary/5
-```
+**1. `src/components/chat/ChatPanel.tsx`**
+- Remove the `Sheet` / `SheetContent` wrapper for the desktop (non-expanded) chat panel
+- Replace with a fixed-position `div` that slides in from the right (matching the current width/styling)
+- Remove the `Drawer` / `DrawerContent` wrapper for mobile
+- Replace with a fixed-position full-height `div` panel (no overlay behind it)
+- Keep the expanded (full-screen) mode using `Sheet` since that is intentionally a full takeover
+- Remove unused `Sheet`/`Drawer` imports if no longer needed
 
-This uses a left-border accent and subtle background tint -- consistent with the status indicator patterns already used elsewhere in the app. These styles use `border` and `background-color`, not `box-shadow`, so they won't be suppressed by the `tap-card` CSS.
+**2. Result**
+- The chat panel slides in from the right as before, but the rest of the page remains fully visible and interactive
+- On mobile, the chat panel covers the screen (as intended for mobile) but without the dark backdrop
+- The expanded mode continues to work as a full-screen overlay (intentional behavior)
 
-### 2. Exempt active-state border from the `tap-card` override
+### Technical Detail
+The desktop panel will be a `fixed right-0 top-0 h-full w-[28rem] z-50` div with a slide-in transition. The mobile panel will be `fixed inset-0 z-50` without an overlay. Both will have proper close handling and maintain all existing chat functionality.
 
-In `src/index.css`, update the coarse-pointer rules to not override `border-color` and `background-color` when a card has an explicit active state. Specifically, change the `.tap-card:hover, .tap-card:active` rule to only suppress `transform` and `box-shadow` (the hover effects), leaving border/background alone so the selected state remains visible.
-
-## Files Changed
-
-- `src/components/agent/IconStatusBanner.tsx` -- Update active card classes
-- `src/index.css` -- Relax the coarse-pointer overrides to preserve border-color and background-color on active state
