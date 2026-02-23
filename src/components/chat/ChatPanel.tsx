@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2, AudioWaveform, Plus, FileText, Mic, Square } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -390,7 +389,7 @@ function ChatContent({
                 <History className="h-4 w-4" />
               </Button>
             )}
-            {(isMobile || isExpanded) && (
+            {(
               <Button 
                 variant="ghost" 
                 size="icon" 
@@ -749,18 +748,17 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     onVoiceTranscript: (text: string) => processMessage(text),
   };
 
-  // Mobile: Use Drawer (slides up from bottom)
+  // Mobile: Fixed full-screen panel (no overlay)
   if (isMobile) {
+    if (!isOpen) return null;
     return (
-      <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <DrawerContent hideHandle className="h-[100vh] p-0 flex flex-col overflow-hidden min-h-0">
-          <ChatContent {...contentProps} />
-        </DrawerContent>
-      </Drawer>
+      <div className="fixed inset-0 z-50 bg-background flex flex-col overflow-hidden transition-transform duration-300 ease-out">
+        <ChatContent {...contentProps} />
+      </div>
     );
   }
 
-  // Desktop expanded: Full-screen overlay
+  // Desktop expanded: Full-screen overlay (intentional)
   if (isExpanded) {
     return (
       <Sheet open={isOpen} onOpenChange={(open) => { if (!open) { setIsExpanded(false); onClose(); } }}>
@@ -773,12 +771,11 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     );
   }
 
-  // Desktop: Use Sheet (slides in from right)
+  // Desktop: Fixed side panel (no overlay)
+  if (!isOpen) return null;
   return (
-    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent className="w-full sm:max-w-md md:max-w-lg p-0 flex flex-col overflow-hidden">
-        <ChatContent {...contentProps} />
-      </SheetContent>
-    </Sheet>
+    <div className="fixed right-0 top-0 h-full w-full sm:max-w-md md:max-w-lg z-50 border-l bg-background shadow-lg flex flex-col overflow-hidden transition-transform duration-300 ease-out">
+      <ChatContent {...contentProps} />
+    </div>
   );
 }
