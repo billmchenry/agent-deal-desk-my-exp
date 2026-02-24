@@ -198,25 +198,27 @@ export function Sidebar() {
 
         {/* Nav */}
         <nav className="flex flex-1 flex-col overflow-y-auto py-4">
+          {/* Collapse toggle aligned with first section */}
+          <div className={cn("mb-2 flex", isCollapsed ? "justify-center px-2" : "justify-end px-3")}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={toggleCollapse}
+                  className="flex h-7 w-7 items-center justify-center rounded-md text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
+                >
+                  {isCollapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                {isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              </TooltipContent>
+            </Tooltip>
+          </div>
+
           {renderSection(sidebarNavigation.myDesk)}
           {renderSection(sidebarNavigation.businessGrowth, "mt-4")}
           {renderSection(sidebarNavigation.resources, "mt-4")}
         </nav>
-
-        {/* Collapse toggle */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={toggleCollapse}
-              className="flex h-12 items-center justify-center border-t border-border text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
-            >
-              {isCollapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="right">
-            {isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          </TooltipContent>
-        </Tooltip>
       </aside>
     </TooltipProvider>
   );
