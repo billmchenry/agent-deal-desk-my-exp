@@ -1,28 +1,42 @@
 
 
-## Remove Grayed-Out Background Overlay from Mira Chat Panel
+## Fix Auto-Scrolling During AI Response Streaming
 
-**Problem**: When the Mira chat panel opens (both on desktop and mobile), a dark semi-transparent overlay covers the entire background, making the dashboard inaccessible. The chat should be a side panel that sits alongside the content, not a modal with a backdrop.
+**Problem**: The chat only scrolls to the bottom when a new message is added to `currentMessages`. During the typewriter animation, as the AI response text is revealed word-by-word, the content grows but the scroll position stays fixed -- so the user can't see the latest text being typed out.
 
-### Approach
+### Root Cause
+The `useEffect` that scrolls (line 622) depends on `[currentMessages]`, which only changes when a message is added/removed. The typewriter animation in `ChatMessage` updates internal state (`displayed` text), which doesn't trigger the parent's scroll logic.
 
-Replace the `Sheet`/`Drawer` wrapper components with a simple positioned `div` panel. The dashboard layout already handles content reflow via `lg:mr-[28rem]` when the chat is open, so we just need the panel itself without the modal overlay.
+### Solution
 
-### Changes
+**File: `src/components/chat/ChatPanel.tsx`**
 
-**1. `src/components/chat/ChatPanel.tsx`**
-- Remove the `Sheet` / `SheetContent` wrapper for the desktop (non-expanded) chat panel
-- Replace with a fixed-position `div` that slides in from the right (matching the current width/styling)
-- Remove the `Drawer` / `DrawerContent` wrapper for mobile
-- Replace with a fixed-position full-height `div` panel (no overlay behind it)
-- Keep the expanded (full-screen) mode using `Sheet` since that is intentionally a full takeover
-- Remove unused `Sheet`/`Drawer` imports if no longer needed
+1. Add a `scrollToBottom` helper function that smoothly scrolls the messages container to the bottom.
+2. Set up a polling interval (e.g., every 100ms) that auto-scrolls while any message has `isStreaming: true`. This keeps the view pinned to the bottom as text is revealed word-by-word.
+3. Clear the interval once streaming is done (no messages have `isStreaming`).
+4. Keep the existing `useEffect` on `[currentMessages]` for instant scroll on new messages (user sends, AI message appears).
 
-**2. Result**
-- The chat panel slides in from the right as before, but the rest of the page remains fully visible and interactive
-- On mobile, the chat panel covers the screen (as intended for mobile) but without the dark backdrop
-- The expanded mode continues to work as a full-screen overlay (intentional behavior)
+**File: `src/components/chat/ChatMessage.tsx`**
+
+No changes needed -- the typewriter hook already works correctly. The fix is entirely in the scroll logic of the parent container.
 
 ### Technical Detail
-The desktop panel will be a `fixed right-0 top-0 h-full w-[28rem] z-50` div with a slide-in transition. The mobile panel will be `fixed inset-0 z-50` without an overlay. Both will have proper close handling and maintain all existing chat functionality.
 
+```text
+// New useEffect in ChatPanel:
+useEffect(() => {
+  const hasStreaming = currentMessages.some(m => m.isStreaming);
+  if (!hasStreaming) return;
+
+  const interval = setInterval(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  }, 100);
+
+  return () => clearInterval(interval);
+}, [currentMessages]);
+```
+
+This polls while streaming is active and automatically cleans up once the streaming flag is cleared, ensuring the chat always stays scrolled to the latest word being revealed.
