@@ -161,13 +161,42 @@ export function Sidebar() {
     );
   };
 
-  const renderSection = (section: { label: string; items: SidebarNavItem[] }, className?: string) => (
+  const renderSection = (section: { label: string; items: SidebarNavItem[] }, className?: string, showToggle?: boolean) => (
     <div className={cn("mb-4", className)}>
-      {!isCollapsed && (
-        <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
-          {section.label}
-        </span>
-      )}
+      {!isCollapsed ? (
+        <div className="mx-3 mb-2 flex items-center justify-between">
+          <span className="mx-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+            {section.label}
+          </span>
+          {showToggle && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={toggleCollapse}
+                  className="flex h-6 w-6 items-center justify-center rounded-md text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
+                >
+                  <ChevronsLeft className="h-3.5 w-3.5" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Collapse sidebar</TooltipContent>
+            </Tooltip>
+          )}
+        </div>
+      ) : showToggle ? (
+        <div className="mb-2 flex justify-center">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={toggleCollapse}
+                className="flex h-8 w-8 items-center justify-center rounded-md text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
+              >
+                <ChevronsRight className="h-4 w-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right">Expand sidebar</TooltipContent>
+          </Tooltip>
+        </div>
+      ) : null}
       <div className={cn("space-y-0.5", isCollapsed && "flex flex-col items-center")}>
         {section.items.map(renderNavItem)}
       </div>
@@ -198,24 +227,7 @@ export function Sidebar() {
 
         {/* Nav */}
         <nav className="flex flex-1 flex-col overflow-y-auto py-4">
-          {/* Collapse toggle aligned with first section */}
-          <div className={cn("mb-2 flex", isCollapsed ? "justify-center px-2" : "justify-end px-3")}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={toggleCollapse}
-                  className="flex h-7 w-7 items-center justify-center rounded-md text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
-                >
-                  {isCollapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                {isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-              </TooltipContent>
-            </Tooltip>
-          </div>
-
-          {renderSection(sidebarNavigation.myDesk)}
+          {renderSection(sidebarNavigation.myDesk, undefined, true)}
           {renderSection(sidebarNavigation.businessGrowth, "mt-4")}
           {renderSection(sidebarNavigation.resources, "mt-4")}
         </nav>
