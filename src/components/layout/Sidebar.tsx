@@ -1,42 +1,21 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  User,
-  Users,
-  DollarSign,
-  FileText,
-  Calendar,
-  GraduationCap,
-  Wrench,
-  BookOpen,
-  HelpCircle,
-  Home,
-  LayoutDashboard,
-  Award,
-  ChevronRight,
-  Store,
+  User, Users, DollarSign, FileText, Calendar, GraduationCap,
+  Wrench, BookOpen, HelpCircle, Home, LayoutDashboard, Award,
+  ChevronRight, Store, ChevronsLeft, ChevronsRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Home,
-  LayoutDashboard,
-  User,
-  Users,
-  DollarSign,
-  FileText,
-  Calendar,
-  GraduationCap,
-  Wrench,
-  BookOpen,
-  HelpCircle,
-  Award,
-  Store,
+  Home, LayoutDashboard, User, Users, DollarSign, FileText,
+  Calendar, GraduationCap, Wrench, BookOpen, HelpCircle, Award, Store,
 };
 
-/** Check if the current path belongs to a submenu section */
 function isInSection(pathname: string, item: SidebarNavItem): boolean {
   if (!item.submenu) return false;
   return item.submenu.some((sub) => pathname.startsWith(sub.url.split("/").slice(0, 3).join("/")));
@@ -46,8 +25,8 @@ export function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [manuallyCollapsed, setManuallyCollapsed] = useState<string | null>(null);
+  const { isCollapsed, toggleCollapse } = useSidebarCollapse();
 
-  // Determine which section should be expanded based on current route
   const getAutoExpandedItem = (pathname: string): string | null => {
     for (const section of Object.values(sidebarNavigation)) {
       for (const item of section.items) {
@@ -59,7 +38,6 @@ export function Sidebar() {
 
   const autoExpanded = getAutoExpandedItem(location.pathname);
 
-  // Reset manual collapse when navigating to a different section
   useEffect(() => {
     if (manuallyCollapsed && autoExpanded !== manuallyCollapsed) {
       setManuallyCollapsed(null);
@@ -97,12 +75,32 @@ export function Sidebar() {
     const hasSubmenu = !!item.submenu;
     const expanded = hasSubmenu && isExpanded(item);
 
+    // Collapsed mode: icon-only with tooltip
+    if (isCollapsed) {
+      return (
+        <Tooltip key={item.title}>
+          <TooltipTrigger asChild>
+            <a
+              href={item.url}
+              className={cn(
+                "mx-auto flex h-10 w-10 items-center justify-center rounded-lg text-sidebar-foreground transition-colors hover:bg-sidebar-accent",
+                isActive(item.url) && "bg-sidebar-accent"
+              )}
+            >
+              {Icon && <Icon className="h-4 w-4" />}
+            </a>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            {item.title}
+          </TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    // Expanded mode (existing logic)
     if (hasSubmenu) {
       return (
-        <Collapsible
-          key={item.title}
-          open={expanded}
-        >
+        <Collapsible key={item.title} open={expanded}>
           <div className="flex items-center mx-2">
             <button
               onClick={() => handleParentClick(item)}
@@ -163,46 +161,63 @@ export function Sidebar() {
     );
   };
 
-  return (
-    <aside className="hidden lg:block fixed left-0 top-0 z-50 h-screen w-64 bg-sidebar">
-      {/* Sidebar Header with Logo */}
-      <div className="flex h-16 items-center gap-1 px-5 border-b border-border bg-white">
-        <span className="text-xl font-bold leading-none text-foreground">MY</span>
-        <span className="text-xl leading-none text-muted-foreground">|</span>
-        <span className="text-xl font-bold leading-none text-exp-blue">eXp</span>
+  const renderSection = (section: { label: string; items: SidebarNavItem[] }, className?: string) => (
+    <div className={cn("mb-4", className)}>
+      {!isCollapsed && (
+        <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+          {section.label}
+        </span>
+      )}
+      <div className={cn("space-y-0.5", isCollapsed && "flex flex-col items-center")}>
+        {section.items.map(renderNavItem)}
       </div>
+    </div>
+  );
 
-      <nav className="flex h-[calc(100%-4rem)] flex-col overflow-y-auto py-4">
-        {/* MY DESK Section */}
-        <div className="mb-4">
-          <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
-            {sidebarNavigation.myDesk.label}
-          </span>
-          <div className="space-y-0.5">
-            {sidebarNavigation.myDesk.items.map(renderNavItem)}
-          </div>
+  return (
+    <TooltipProvider delayDuration={0}>
+      <aside
+        className={cn(
+          "hidden lg:flex flex-col fixed left-0 top-0 z-50 h-screen bg-sidebar transition-all duration-300",
+          isCollapsed ? "w-16" : "w-64"
+        )}
+      >
+        {/* Header */}
+        <div className={cn(
+          "flex h-16 items-center border-b border-border bg-white transition-all duration-300",
+          isCollapsed ? "justify-center px-2" : "gap-1 px-5"
+        )}>
+          <span className="text-xl font-bold leading-none text-foreground">MY</span>
+          {!isCollapsed && (
+            <>
+              <span className="text-xl leading-none text-muted-foreground">|</span>
+              <span className="text-xl font-bold leading-none text-exp-blue">eXp</span>
+            </>
+          )}
         </div>
 
-        {/* BUSINESS & GROWTH Section */}
-        <div className="mb-4 mt-4">
-          <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
-            {sidebarNavigation.businessGrowth.label}
-          </span>
-          <div className="space-y-0.5">
-            {sidebarNavigation.businessGrowth.items.map(renderNavItem)}
-          </div>
-        </div>
+        {/* Nav */}
+        <nav className="flex flex-1 flex-col overflow-y-auto py-4">
+          {renderSection(sidebarNavigation.myDesk)}
+          {renderSection(sidebarNavigation.businessGrowth, "mt-4")}
+          {renderSection(sidebarNavigation.resources, "mt-4")}
+        </nav>
 
-        {/* RESOURCES Section */}
-        <div className="mt-4">
-          <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
-            {sidebarNavigation.resources.label}
-          </span>
-          <div className="space-y-0.5">
-            {sidebarNavigation.resources.items.map(renderNavItem)}
-          </div>
-        </div>
-      </nav>
-    </aside>
+        {/* Collapse toggle */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={toggleCollapse}
+              className="flex h-12 items-center justify-center border-t border-border text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
+            >
+              {isCollapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            {isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          </TooltipContent>
+        </Tooltip>
+      </aside>
+    </TooltipProvider>
   );
 }

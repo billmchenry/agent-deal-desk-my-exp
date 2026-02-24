@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 import { Sparkles } from "lucide-react";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 import { MobileNavDrawer } from "./MobileNavDrawer";
 import { ChatPanel } from "@/components/chat/ChatPanel";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useMiraChat } from "@/contexts/MiraChatContext";
 
 interface DashboardLayoutProps {
@@ -13,6 +15,7 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { isChatOpen, openChat, closeChat } = useMiraChat();
+  const { isCollapsed } = useSidebarCollapse();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -27,7 +30,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       />
       
       {/* Main Content - Shrinks when chat panel is open on desktop */}
-      <main className="lg:ml-64 min-h-screen px-4 lg:px-6 pt-20 pb-6 max-w-full overflow-x-hidden transition-all duration-300">
+      <main className={cn("min-h-screen px-4 lg:px-6 pt-20 pb-6 max-w-full overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:ml-16" : "lg:ml-64")}>
         {children}
       </main>
 
