@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Bell, HelpCircle, ChevronDown, Menu } from "lucide-react";
+import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -22,6 +24,7 @@ interface HeaderProps {
 
 export function Header({ onMenuClick }: HeaderProps) {
   const isMobile = useIsMobile();
+  const { isCollapsed } = useSidebarCollapse();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
 
@@ -32,7 +35,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 lg:left-64 z-40 flex h-16 items-center justify-between border-b bg-white px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden">
+      <header className={cn("fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-white px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:left-16" : "lg:left-64")}>
         {/* Left Section - Hamburger on mobile */}
         <div className="flex items-center lg:hidden">
           <Button variant="ghost" size="icon" onClick={onMenuClick}>
