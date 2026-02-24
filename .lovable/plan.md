@@ -1,42 +1,39 @@
 
 
-## Fix Auto-Scrolling During AI Response Streaming
+## Make the Sidebar Collapsible
 
-**Problem**: The chat only scrolls to the bottom when a new message is added to `currentMessages`. During the typewriter animation, as the AI response text is revealed word-by-word, the content grows but the scroll position stays fixed -- so the user can't see the latest text being typed out.
+Add a toggle to collapse the sidebar into a narrow icon-only rail (~64px / `w-16`), and expand it back to the full `w-64` width. The collapsed state persists via `localStorage`.
 
-### Root Cause
-The `useEffect` that scrolls (line 622) depends on `[currentMessages]`, which only changes when a message is added/removed. The typewriter animation in `ChatMessage` updates internal state (`displayed` text), which doesn't trigger the parent's scroll logic.
+### Changes
 
-### Solution
+**1. New context/hook: `src/hooks/use-sidebar-collapse.ts`**
+- Create a small hook using `useLocalStorage` to store `sidebarCollapsed: boolean`
+- Export `useSidebarCollapse()` returning `{ isCollapsed, toggleCollapse }`
 
-**File: `src/components/chat/ChatPanel.tsx`**
+**2. `src/components/layout/Sidebar.tsx`**
+- Import and use `useSidebarCollapse`
+- Toggle width between `w-64` (expanded) and `w-16` (collapsed) with a CSS transition
+- In collapsed mode:
+  - Hide section labels (MY DESK, BUSINESS & GROWTH, etc.)
+  - Show only icons (centered), hide text labels
+  - Hide submenu items and chevrons
+  - Show a tooltip on hover for each icon with the item title
+- Add a collapse/expand toggle button at the bottom of the sidebar (e.g., `ChevronsLeft` / `ChevronsRight` icon)
 
-1. Add a `scrollToBottom` helper function that smoothly scrolls the messages container to the bottom.
-2. Set up a polling interval (e.g., every 100ms) that auto-scrolls while any message has `isStreaming: true`. This keeps the view pinned to the bottom as text is revealed word-by-word.
-3. Clear the interval once streaming is done (no messages have `isStreaming`).
-4. Keep the existing `useEffect` on `[currentMessages]` for instant scroll on new messages (user sends, AI message appears).
+**3. `src/components/layout/Header.tsx`**
+- Import `useSidebarCollapse`
+- Change `lg:left-64` to dynamically use `lg:left-16` when collapsed, `lg:left-64` when expanded
 
-**File: `src/components/chat/ChatMessage.tsx`**
+**4. `src/components/layout/DashboardLayout.tsx`**
+- Import `useSidebarCollapse`
+- Change `lg:ml-64` on `<main>` to dynamically use `lg:ml-16` when collapsed, `lg:ml-64` when expanded
 
-No changes needed -- the typewriter hook already works correctly. The fix is entirely in the scroll logic of the parent container.
+**5. No changes to mobile** -- the mobile nav drawer is separate and unaffected.
 
-### Technical Detail
+### Behavior
+- Clicking the toggle button at the bottom of the sidebar collapses/expands it
+- Collapsed state shows icon-only nav items with tooltips on hover
+- Smooth width transition (`transition-all duration-300`)
+- State persists across page reloads via localStorage
+- Submenus are hidden in collapsed mode; hovering an icon with a submenu could show a tooltip with the parent label
 
-```text
-// New useEffect in ChatPanel:
-useEffect(() => {
-  const hasStreaming = currentMessages.some(m => m.isStreaming);
-  if (!hasStreaming) return;
-
-  const interval = setInterval(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
-    }
-  }, 100);
-
-  return () => clearInterval(interval);
-}, [currentMessages]);
-```
-
-This polls while streaming is active and automatically cleans up once the streaming flag is cleared, ensuring the chat always stays scrolled to the latest word being revealed.
