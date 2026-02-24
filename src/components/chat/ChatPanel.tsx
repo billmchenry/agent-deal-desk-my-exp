@@ -625,6 +625,20 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     }
   }, [currentMessages]);
 
+  // Auto-scroll while AI is streaming (typewriter animation)
+  useEffect(() => {
+    const hasStreaming = currentMessages.some(m => m.isStreaming);
+    if (!hasStreaming) return;
+
+    const interval = setInterval(() => {
+      if (messagesContainerRef.current) {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [currentMessages]);
+
   // Reset history view and expanded state when panel closes
   useEffect(() => {
     if (!isOpen) {
