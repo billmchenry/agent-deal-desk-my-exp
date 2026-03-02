@@ -30,7 +30,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       />
       
       {/* Main Content - Shrinks when chat panel is open on desktop */}
-      <main className={cn("min-h-screen px-4 lg:px-6 pt-20 pb-6 max-w-full overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:ml-16" : "lg:ml-64")}>
+      <main className={cn("min-h-screen px-4 lg:px-6 pt-20 pb-6 max-w-full overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:ml-16" : "lg:ml-16 xl:ml-64")}>
         {children}
       </main>
 

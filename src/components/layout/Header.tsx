@@ -35,7 +35,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <>
-      <header className={cn("fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-white px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:left-16" : "lg:left-64")}>
+      <header className={cn("fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-white px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:left-16" : "lg:left-16 xl:left-64")}>
         {/* Left Section - Hamburger on mobile */}
         <div className="flex items-center lg:hidden">
           <Button variant="ghost" size="icon" onClick={onMenuClick}>
