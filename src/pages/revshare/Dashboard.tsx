@@ -104,10 +104,10 @@ export default function RevShareDashboard() {
               </Badge>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               {/* Revenue Share */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
                   <div className="rounded-md p-1.5 shrink-0 bg-exp-green/20 text-exp-green-light">
                     <DollarSign className="h-3.5 w-3.5" />
                   </div>
@@ -117,14 +117,14 @@ export default function RevShareDashboard() {
                   <p className="text-xl font-bold text-white">$264,138.52</p>
                   <span className="text-xs text-white/50">After Adj.</span>
                 </div>
-                <div className="space-y-0.5 text-xs text-white/50">
+                <div className="mt-1 space-y-1 text-xs text-white/50">
                   <p>Before Adj. $242,857.04</p>
                   <p>Adjustment +$21,281.48</p>
                 </div>
               </div>
 
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
                   <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
                     <Users className="h-3.5 w-3.5" />
                   </div>
@@ -133,8 +133,8 @@ export default function RevShareDashboard() {
                 <p className="text-xl font-bold text-white mb-1">24</p>
               </div>
 
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
                   <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
                     <Users className="h-3.5 w-3.5" />
                   </div>
@@ -150,7 +150,7 @@ export default function RevShareDashboard() {
                     <p className="text-xs text-white/50">After Bonus</p>
                   </div>
                 </div>
-                <p className="text-xs text-exp-gold-light mt-0.5">You are in level 3. Add 2 more agents to reach level 4</p>
+                <p className="text-xs text-exp-gold-light mt-2">You are in level 3. Add 2 more agents to reach level 4</p>
               </div>
             </div>
           </div>
