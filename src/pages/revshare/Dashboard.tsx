@@ -106,52 +106,52 @@ export default function RevShareDashboard() {
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
               {/* Revenue Share */}
-              <div className="col-span-2 flex items-center gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="rounded-lg p-2 shrink-0 bg-exp-green/20 text-exp-green-light">
+              <div className="col-span-2 flex items-start gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="rounded-lg p-2 shrink-0 bg-exp-green/20 text-exp-green-light mt-0.5">
                   <DollarSign className="h-4 w-4" />
                 </div>
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 space-y-0.5">
                   <div className="flex items-baseline gap-2">
                     <p className="text-lg font-bold text-white">$264,138.52</p>
                     <span className="text-[10px] text-white/50">After Adj.</span>
                   </div>
                   <p className="text-xs text-white/70">Revenue Share</p>
-                  <div className="flex gap-3 mt-1 text-[10px] text-white/70">
-                    <span>Before Adj. $242,857.04</span>
-                    <span>Adjustment +$21,281.48</span>
+                  <div className="mt-1 space-y-0.5 text-[10px] text-white/70">
+                    <p>Before Adj. $242,857.04</p>
+                    <p>Adjustment +$21,281.48</p>
                   </div>
                 </div>
               </div>
 
               {/* FLA */}
-              <div className="flex items-center gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="rounded-lg p-2 shrink-0 bg-white/15 text-white">
+              <div className="flex items-start gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="rounded-lg p-2 shrink-0 bg-white/15 text-white mt-0.5">
                   <Users className="h-4 w-4" />
                 </div>
-                <div className="min-w-0">
-                  <p className="text-lg font-bold text-white">24</p>
-                  <p className="text-xs text-white/70">FLA</p>
+                <div className="min-w-0 space-y-0.5">
+                  <p className="text-lg font-bold text-white leading-none">24</p>
+                  <p className="text-xs text-white/70 leading-none">FLA</p>
                   <p className="text-[10px] text-white/50">Front Line Agents</p>
                 </div>
               </div>
 
               {/* FLQA */}
-              <div className="flex items-center gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light">
+              <div className="flex items-start gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light mt-0.5">
                   <Users className="h-4 w-4" />
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 space-y-0.5">
                   <div className="flex gap-3">
                     <div>
-                      <p className="text-lg font-bold text-white">18</p>
+                      <p className="text-lg font-bold text-white leading-none">18</p>
                       <p className="text-[10px] text-white/50">Actual</p>
                     </div>
                     <div>
-                      <p className="text-lg font-bold text-white">30</p>
+                      <p className="text-lg font-bold text-white leading-none">30</p>
                       <p className="text-[10px] text-white/50">After Bonus</p>
                     </div>
                   </div>
-                  <p className="text-xs text-white/70">FLQA</p>
+                  <p className="text-xs text-white/70 leading-none">FLQA</p>
                   <p className="text-[10px] text-white/50">Front Line Qualifying Agents</p>
                   <p className="text-[10px] text-exp-gold-light mt-0.5">You are in level 3. Add 2 more agents to reach level 4</p>
                 </div>
