@@ -1,84 +1,71 @@
 
 
-# RevShare Dashboard -- Complete Rebuild
+# Restyle RevShare Dashboard to Match Agent Dashboard Design
 
-Full rewrite of `src/pages/revshare/Dashboard.tsx` to match all three screenshots, with improved layout spacing, visual hierarchy, and responsive behavior.
+## Problem
+The RevShare Dashboard uses a completely different visual language from the Agent Dashboard. It has oversized headings, loose spacing, generic Tailwind colors, and large padded cards -- none of which match the compact, branded style seen in the Agent section screenshot.
 
----
+## Design System to Follow (from Agent Dashboard)
 
-## What Gets Removed
+The Agent Dashboard pattern is:
+- **Page title**: H1 via `AgentFilterBar` (text-xl font-bold), compact top bar
+- **Hero banner**: Gradient card (`bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue`) with decorative circles, Badge labels, and `MiniStatCard` glass-morphism tiles (`bg-white/10 backdrop-blur-sm`)
+- **Section cards**: `Card` with `border shadow-sm`, compact `CardHeader` with `text-sm font-semibold` titles, `px-4 sm:px-6` padding
+- **Spacing**: `space-y-4` between sections, `gap-2 sm:gap-3` within grids
+- **Colors**: eXp brand variables (`exp-navy`, `exp-blue`, `exp-green`, `exp-gold`) instead of generic Tailwind colors
+- **Typography**: Small, dense -- `text-sm`, `text-xs`, nothing larger than `text-xl` inside cards
 
-- CTA Banner ("Want to Grow Your Rev Share?")
-- Old 4-card stats grid (FLA/FLQA/New Agents/Prospective Agents)
-- Old Revenue Share Group card with Lineage/Contributor tabs
-- Old Payout Details card
-- Co Sponsees card
-- Old mock data arrays (`levelData`, `coSponsees`)
+## What Changes
 
----
-
-## What Gets Built (4 Sections)
+### File: `src/pages/revshare/Dashboard.tsx` (full restyle)
 
 ### Section 1: Revenue Share & Agent Metrics
-
-- **Section header row**: "Revenue Share & Agent Metrics" title on the left, period filter ("Showing metrics for selected period" text + "Year to Date" Select dropdown) on the right
-- **3-column grid** (`grid-cols-1 md:grid-cols-3`):
-  - **Revenue Share card** -- dark primary background (`bg-primary text-primary-foreground`), DollarSign icon, three line items with "Before Adjustment", "Adjustment", and a large bold "After Adjustment" total
-  - **FLA card** -- white card with teal left accent (`border-l-4 border-primary`), Users icon, "Front Line Agents" subtitle, large "24" metric, "View FLA list" link
-  - **FLQA card** -- white card with teal left accent, Users icon, "Front Line Qualifying Agents" subtitle, level progress text in primary color, two side-by-side metrics (Actual: 18, After Bonus: 30), footer links for "View FLQA list" and "Levels"
+**Before**: Large `text-2xl` heading, `bg-primary` card, `border-l-4 border-l-primary` accent cards with `p-6`
+**After**: 
+- Replace with a gradient hero banner matching Agent style (`bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue`) with decorative circles
+- Revenue Share, FLA, and FLQA become glass-morphism `MiniStatCard`-style tiles inside the banner (`bg-white/10 backdrop-blur-sm`)
+- Badge label: "REVENUE SHARE" with gold styling (matching "PERFORMANCE" badge pattern)
+- Period filter moves into the page header row (same pattern as `AgentFilterBar`)
 
 ### Section 2: Current Payout Status
-
-- **Header row**: "Current Payout Status" title with Info icon on left, "View Periodic Overview" link on right
-- **Info banner**: Muted callout about Pay Now processing times
-- **3-column grid** (`grid-cols-1 md:grid-cols-3`):
-  - **Unpaid** -- amber left border (`border-l-4 border-amber-400`), Clock icon, amount "$1,869.20", "View details" link
-  - **Expected Next** -- blue left border (`border-l-4 border-blue-500`), Calendar icon, amount "$1,869.20", "View details" link + "Get Paid Now" primary Button
-  - **Last Paid** -- green left border (`border-l-4 border-green-500`), CheckCircle icon, amount "$986.92", "View details" link
+**Before**: Oversized cards with `border-l-4` using `amber-400`, `blue-500`, `green-500`, large `text-3xl` amounts
+**After**:
+- Wrap in a single `Card` with `border shadow-sm` (matching `CappingSection` pattern)
+- Section title uses `text-sm font-semibold` inside `CardContent`
+- Three payout items as a compact grid with `text-lg` amounts instead of `text-3xl`
+- Use eXp brand colors: `exp-gold` for unpaid, `exp-blue` for expected, `exp-green` for paid
+- Info banner stays but uses smaller text and tighter padding
+- "Get Paid Now" uses a small `Button size="sm"`
 
 ### Section 3: RevShare Group Distribution
-
-- **Header**: "RevShare Group Distribution" title with Info icon
-- **2-column grid** (`grid-cols-1 lg:grid-cols-2`):
-  - **By Level card**: Donut chart (center text "17,816 Agents"), Agents/RevShare tab toggle, legend with 7 levels showing color dot, level name, percentage, and agent count with chevron
-  - **By Country card**: Donut chart (center text "17,816 Agents"), Agents/RevShare tab toggle, legend with 7 countries (US, UK, Canada, Germany, Australia, Brazil, France) with colored dots matching the screenshot palette
+**Before**: Large section heading, oversized donut charts in separate cards
+**After**:
+- Single `Card` wrapper with `border shadow-sm` (matching `YearOverYearChart` card style)
+- `CardHeader` with `text-sm font-semibold` title and Agents/RevShare tab toggle (matching the Units/Volume/Commission tab pattern)
+- Two donut charts side by side inside `CardContent`
+- Donut chart colors use eXp brand variables where possible
+- Legend text stays `text-xs`/`text-sm` -- already compact
 
 ### Section 4: Revenue Share Comparison
+**Before**: Separate card with large header, TrendingUp icon, external links
+**After**:
+- Same `Card` with `border shadow-sm` wrapper pattern as `YearOverYearChart`
+- `CardHeader` with `text-sm font-semibold` title and tab toggle (Yearly/Quarterly/Monthly matching the Units/Volume/Commission pattern)
+- Bar colors use `hsl(var(--exp-blue))` and `hsl(var(--exp-navy-light))` instead of generic fills
+- Line color uses `hsl(var(--exp-green))`
 
-- **Full-width card** with header: TrendingUp icon + "Revenue Share Comparison" title + Info icon, right side has "View Trends Report" link + Yearly/Quarterly/Monthly tab toggle + color legend
-- **Combo chart**: recharts `ComposedChart` with `Bar` (dark navy fill) for Revenue + `Line` (green stroke) for Growth. X-axis: 2024, 2025, 2026. Y-axis: $0.0M-$4.0M. Data label "$285K" on last bar
-
----
-
-## Layout Improvements
-
-- Consistent `space-y-8` vertical spacing between all sections for breathing room
-- Section headers use a flex row with `items-center justify-between` for title/action alignment
-- All grids use `gap-6` for uniform card spacing
-- Cards use consistent `p-6` internal padding
-- Responsive breakpoints: single column on mobile, 2-col for distribution, 3-col for metrics/payouts
-- Info banners use `bg-muted/50 rounded-lg p-4` with icon + text pattern
-
----
+### Page-Level Changes
+- Page title: `text-xl font-bold` (not `text-2xl`) with period filter on the right (same layout as `AgentFilterBar`)
+- Outer spacing: `space-y-4` (not `space-y-8`)
+- Remove `p-4 lg:p-6` wrapper (DashboardLayout already handles padding)
+- Add `pb-20` to match Agent Dashboard bottom padding
 
 ## Technical Details
 
-### File: `src/pages/revshare/Dashboard.tsx` (full rewrite)
-
-**New imports** (all available, no new dependencies):
-- `Clock`, `Calendar`, `CheckCircle2`, `TrendingUp`, `Users`, `DollarSign`, `ExternalLink` from `lucide-react`
-- `ComposedChart`, `Bar`, `Line`, `XAxis`, `YAxis`, `CartesianGrid`, `Tooltip`, `Legend` from `recharts`
-- Existing: `Card`, `Tabs`, `Select`, `Button`, `Info`, `ChevronRight`, `PieChart`, `Pie`, `Cell`, `ResponsiveContainer`
-
-**New mock data constants**:
-- `levelDistribution` -- 7 entries with name, value (percentage), agents count, color (matching screenshot grayscale-to-navy gradient)
-- `countryDistribution` -- 7 entries with country name, agents count, color (purple, blue, teal, orange, pink, yellow, indigo matching screenshot)
-- `revenueComparisonData` -- 3 entries for 2024/2025/2026 with revenue and growth values
-
-**Styling** follows existing design system:
-- Uses CSS variables from `index.css` (primary = blue, exp-navy, etc.)
-- All cards use shadcn `Card`/`CardContent`/`CardHeader` primitives
-- Tabs use shadcn `Tabs`/`TabsList`/`TabsTrigger`/`TabsContent`
-- Donut charts reuse the existing `PieChart`/`Pie`/`Cell` + absolute center overlay pattern
-- No new files or components needed -- everything in one page file
-
+- All colors switch from generic Tailwind (`amber-400`, `blue-500`, `green-500`, `bg-primary`) to eXp brand CSS variables (`exp-navy`, `exp-blue`, `exp-green`, `exp-gold`)
+- Card padding reduces from `p-6` to `p-4` throughout
+- Section headings reduce from `text-lg font-semibold` to `text-sm font-semibold`
+- Amount typography reduces from `text-3xl`/`text-4xl` to `text-lg`/`text-xl`
+- Grid gaps reduce from `gap-6` to `gap-2 sm:gap-3`
+- No new files or dependencies needed
+- Single file change: `src/pages/revshare/Dashboard.tsx`
