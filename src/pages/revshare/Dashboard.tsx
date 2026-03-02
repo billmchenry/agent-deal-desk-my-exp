@@ -116,6 +116,10 @@ export default function RevShareDashboard() {
                     <span className="text-[10px] text-white/50">After Adj.</span>
                   </div>
                   <p className="text-xs text-white/70">Revenue Share</p>
+                  <div className="flex gap-3 mt-1 text-[10px] text-white/70">
+                    <span>Before Adj. $242,857.04</span>
+                    <span>Adjustment +$21,281.48</span>
+                  </div>
                 </div>
               </div>
 
@@ -127,6 +131,7 @@ export default function RevShareDashboard() {
                 <div className="min-w-0">
                   <p className="text-lg font-bold text-white">24</p>
                   <p className="text-xs text-white/70">FLA</p>
+                  <p className="text-[10px] text-white/50">Front Line Agents</p>
                 </div>
               </div>
 
@@ -147,6 +152,8 @@ export default function RevShareDashboard() {
                     </div>
                   </div>
                   <p className="text-xs text-white/70">FLQA</p>
+                  <p className="text-[10px] text-white/50">Front Line Qualifying Agents</p>
+                  <p className="text-[10px] text-exp-gold-light mt-0.5">You are in level 3. Add 2 more agents to reach level 4</p>
                 </div>
               </div>
             </div>
