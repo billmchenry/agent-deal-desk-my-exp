@@ -128,10 +128,9 @@ export default function RevShareDashboard() {
                   <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
                     <Users className="h-3.5 w-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-white">FLA</span>
+                  <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
                 </div>
                 <p className="text-xl font-bold text-white mb-1">24</p>
-                <p className="text-xs text-white/50">Front Line Agents</p>
               </div>
 
               <div className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
@@ -139,7 +138,7 @@ export default function RevShareDashboard() {
                   <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
                     <Users className="h-3.5 w-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-white">FLQA</span>
+                  <span className="text-xs font-semibold text-white">FLQA · Front Line Qualifying Agents</span>
                 </div>
                 <div className="flex gap-4 mb-1">
                   <div>
@@ -151,7 +150,6 @@ export default function RevShareDashboard() {
                     <p className="text-xs text-white/50">After Bonus</p>
                   </div>
                 </div>
-                <p className="text-xs text-white/50">Front Line Qualifying Agents</p>
                 <p className="text-xs text-exp-gold-light mt-0.5">You are in level 3. Add 2 more agents to reach level 4</p>
               </div>
             </div>
