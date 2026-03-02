@@ -1,21 +1,32 @@
 
 
-# Fix Awkward Hero Banner Tile Layout
+# Fix Accessibility: Replace All 10px Font Sizes with 12px Minimum
 
 ## Problem
-The current layout uses a 4-column grid where Revenue Share spans 2 columns, making it twice as wide as FLA/FLQA. Combined with `items-start`, the FLA tile looks tiny and disconnected. The screenshot shows all three tiles should feel balanced and roughly equal in height.
+The RevShare Dashboard uses `text-[10px]` (10pt) extensively, which fails WCAG accessibility guidelines. The project standard requires a minimum of 12px (`text-xs`) on all viewports.
 
 ## Solution
-Switch from a 4-column grid to a **3-column grid** where:
-- Revenue Share gets `col-span-1` (same width as the others, not double)
-- All three tiles stretch to equal height (remove `items-start`, use default `items-stretch`)
-- This naturally balances the layout since all tiles are the same width and height
+Replace every instance of `text-[10px]` with `text-xs` (12px) across the entire file. This affects ~20 occurrences in:
 
-### File: `src/pages/revshare/Dashboard.tsx` (lines 107-158)
+### File: `src/pages/revshare/Dashboard.tsx`
 
-1. Change the grid from `grid-cols-2 lg:grid-cols-4` to `grid-cols-1 sm:grid-cols-3`
-2. Remove `items-start` (let tiles stretch to equal height -- this works now because same-width tiles have similar content density)
-3. Remove `col-span-2` from the Revenue Share tile
+**Hero Banner (Section 1)**
+- "After Adj." label
+- Before Adj / Adjustment breakdown lines
+- "Front Line Agents" subtitle
+- "Actual" / "After Bonus" labels
+- "Front Line Qualifying Agents" subtitle
+- Level progress text
 
-This matches the screenshot where all three tiles sit side-by-side at equal widths and heights.
+**Distribution Charts (Section 3)**
+- Tab triggers (Agents/RevShare) -- also increase tab height from `h-5` to `h-6` for tap targets
+- Donut chart center labels ("Agents")
+- Level percentage labels
+- Agent count labels
+
+**Revenue Comparison (Section 4)**
+- Tab triggers (Yearly/Quarterly/Monthly) -- same height increase
+- Legend labels (Revenue/Growth)
+
+All `text-[10px]` becomes `text-xs`. Tab trigger heights go from `h-5` to `h-6` and padding adjusts to maintain proportion. No layout or design changes beyond the font size bump.
 
