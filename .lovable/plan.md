@@ -1,24 +1,23 @@
 
 
-# Add Missing Information to Hero Banner Tiles
+# Fix Stretched/Unbalanced Hero Banner Tiles
 
-## File: `src/pages/revshare/Dashboard.tsx`
+## Problem
+The 4-column grid forces all tiles to the same height. The Revenue Share tile (col-span-2) and FLQA tile have lots of content, but the FLA tile has very little -- so it stretches vertically with empty space, looking unbalanced.
 
-Only the hero banner tiles (Section 1, lines 107-151) need updating. No design changes -- just adding the missing text content.
+## Solution
+Change the grid layout so tiles are not forced to stretch equally. Two adjustments:
 
-### Change 1: Revenue Share tile (lines 108-120)
-Add two additional lines below the main amount showing the breakdown:
-- "Before Adj." with "$242,857.04" (white/70 muted text)
-- "Adjustment" with "+$21,281.48" (white/70 muted text)
+### File: `src/pages/revshare/Dashboard.tsx` (lines 107-158)
 
-### Change 2: FLA tile (lines 122-131)
-Add subtitle text "Front Line Agents" below the "FLA" label (white/50 muted text, text-[10px])
+1. **Split into two rows instead of one 4-column grid**:
+   - **Row 1**: Revenue Share tile at full width (remove col-span-2, make it a standalone row)
+   - **Row 2**: FLA and FLQA side by side in a 2-column grid (`grid-cols-2`)
+   
+   This way FLA and FLQA each size to their own content height independently of the Revenue Share tile.
 
-### Change 3: FLQA tile (lines 133-151)
-Add:
-- "Front Line Qualifying Agents" subtitle below "FLQA" label
-- Level progress text: "You are in level 3. Add 2 more agents to reach level 4" (exp-gold-light colored text, text-[10px])
+2. **Alternative (simpler)**: Keep the current 4-column grid but add `items-start` to the grid container (line 107) so tiles align to the top and don't stretch to match the tallest sibling:
+   - Change `grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3` to `grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 items-start`
 
-### No other sections change
-Sections 2 (Payout Status), 3 (Distribution), and 4 (Comparison) remain untouched.
+The simpler approach (option 2) is recommended -- it's a single class addition that stops tiles from stretching to fill the row height.
 
