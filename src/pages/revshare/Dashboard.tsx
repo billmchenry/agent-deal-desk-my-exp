@@ -131,7 +131,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
                 </div>
                 <p className="text-xl font-bold text-white mb-2">24</p>
-                <button className="text-xs text-white/70 hover:text-white flex items-center gap-1 transition-colors">
+                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-2.5 py-1 text-xs font-medium text-white transition-colors">
                   View FLA List <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -154,7 +154,7 @@ export default function RevShareDashboard() {
                   </div>
                 </div>
                 <p className="text-xs text-exp-gold-light mt-2">You are in level 3. Add 2 more agents to reach level 4</p>
-                <button className="text-xs text-white/70 hover:text-white flex items-center gap-1 mt-2 transition-colors">
+                <button className="mt-2 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-2.5 py-1 text-xs font-medium text-white transition-colors">
                   View FLQA List <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
