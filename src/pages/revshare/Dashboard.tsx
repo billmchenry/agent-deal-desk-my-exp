@@ -106,52 +106,50 @@ export default function RevShareDashboard() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
               {/* Revenue Share */}
-              <div className="flex items-start gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="rounded-lg p-2 shrink-0 bg-exp-green/20 text-exp-green-light mt-0.5">
-                  <DollarSign className="h-4 w-4" />
-                </div>
-                <div className="min-w-0 flex-1 space-y-0.5">
-                  <p className="text-xl font-bold text-white">$264,138.52</p>
-                  <p className="text-xs font-medium text-white/70">Revenue Share</p>
-                  <div className="mt-1 space-y-0.5 text-xs text-white/50">
-                    <p>Before Adj. $242,857.04</p>
-                    <p>Adjustment +$21,281.48</p>
+              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="rounded-md p-1.5 shrink-0 bg-exp-green/20 text-exp-green-light">
+                    <DollarSign className="h-3.5 w-3.5" />
                   </div>
+                  <span className="text-xs font-semibold text-white">Revenue Share</span>
+                </div>
+                <p className="text-xl font-bold text-white mb-1">$264,138.52</p>
+                <div className="space-y-0.5 text-xs text-white/50">
+                  <p>Before Adj. $242,857.04</p>
+                  <p>Adjustment +$21,281.48</p>
                 </div>
               </div>
 
-              {/* FLA */}
-              <div className="flex items-start gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="rounded-lg p-2 shrink-0 bg-white/15 text-white mt-0.5">
-                  <Users className="h-4 w-4" />
+              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
+                    <Users className="h-3.5 w-3.5" />
+                  </div>
+                  <span className="text-xs font-semibold text-white">FLA</span>
                 </div>
-                <div className="min-w-0 space-y-0.5">
-                  <p className="text-xl font-bold text-white leading-none">24</p>
-                  <p className="text-xs font-medium text-white/70">FLA</p>
-                  <p className="text-xs text-white/50">Front Line Agents</p>
-                </div>
+                <p className="text-xl font-bold text-white mb-1">24</p>
+                <p className="text-xs text-white/50">Front Line Agents</p>
               </div>
 
-              {/* FLQA */}
-              <div className="flex items-start gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                <div className="rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light mt-0.5">
-                  <Users className="h-4 w-4" />
-                </div>
-                <div className="min-w-0 space-y-0.5">
-                  <div className="flex gap-4">
-                    <div>
-                      <p className="text-xl font-bold text-white leading-none">18</p>
-                      <p className="text-xs text-white/50">Actual</p>
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-white leading-none">30</p>
-                      <p className="text-xs text-white/50">After Bonus</p>
-                    </div>
+              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
+                    <Users className="h-3.5 w-3.5" />
                   </div>
-                  <p className="text-xs font-medium text-white/70">FLQA</p>
-                  <p className="text-xs text-white/50">Front Line Qualifying Agents</p>
-                  <p className="text-xs text-exp-gold-light mt-0.5">You are in level 3. Add 2 more agents to reach level 4</p>
+                  <span className="text-xs font-semibold text-white">FLQA</span>
                 </div>
+                <div className="flex gap-4 mb-1">
+                  <div>
+                    <p className="text-xl font-bold text-white leading-none">18</p>
+                    <p className="text-xs text-white/50">Actual</p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-white leading-none">30</p>
+                    <p className="text-xs text-white/50">After Bonus</p>
+                  </div>
+                </div>
+                <p className="text-xs text-white/50">Front Line Qualifying Agents</p>
+                <p className="text-xs text-exp-gold-light mt-0.5">You are in level 3. Add 2 more agents to reach level 4</p>
               </div>
             </div>
           </div>
