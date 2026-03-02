@@ -113,10 +113,10 @@ export default function RevShareDashboard() {
                 <div className="min-w-0 flex-1 space-y-0.5">
                   <div className="flex items-baseline gap-2">
                     <p className="text-lg font-bold text-white">$264,138.52</p>
-                    <span className="text-[10px] text-white/50">After Adj.</span>
+                    <span className="text-xs text-white/50">After Adj.</span>
                   </div>
                   <p className="text-xs text-white/70">Revenue Share</p>
-                  <div className="mt-1 space-y-0.5 text-[10px] text-white/70">
+                  <div className="mt-1 space-y-0.5 text-xs text-white/70">
                     <p>Before Adj. $242,857.04</p>
                     <p>Adjustment +$21,281.48</p>
                   </div>
@@ -131,7 +131,7 @@ export default function RevShareDashboard() {
                 <div className="min-w-0 space-y-0.5">
                   <p className="text-lg font-bold text-white leading-none">24</p>
                   <p className="text-xs text-white/70 leading-none">FLA</p>
-                  <p className="text-[10px] text-white/50">Front Line Agents</p>
+                  <p className="text-xs text-white/50">Front Line Agents</p>
                 </div>
               </div>
 
@@ -144,16 +144,16 @@ export default function RevShareDashboard() {
                   <div className="flex gap-3">
                     <div>
                       <p className="text-lg font-bold text-white leading-none">18</p>
-                      <p className="text-[10px] text-white/50">Actual</p>
+                      <p className="text-xs text-white/50">Actual</p>
                     </div>
                     <div>
                       <p className="text-lg font-bold text-white leading-none">30</p>
-                      <p className="text-[10px] text-white/50">After Bonus</p>
+                      <p className="text-xs text-white/50">After Bonus</p>
                     </div>
                   </div>
                   <p className="text-xs text-white/70 leading-none">FLQA</p>
-                  <p className="text-[10px] text-white/50">Front Line Qualifying Agents</p>
-                  <p className="text-[10px] text-exp-gold-light mt-0.5">You are in level 3. Add 2 more agents to reach level 4</p>
+                  <p className="text-xs text-white/50">Front Line Qualifying Agents</p>
+                  <p className="text-xs text-exp-gold-light mt-0.5">You are in level 3. Add 2 more agents to reach level 4</p>
                 </div>
               </div>
             </div>
@@ -241,8 +241,8 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-medium text-muted-foreground">By Level</span>
                   <Tabs defaultValue="agents">
                     <TabsList className="h-7">
-                      <TabsTrigger value="agents" className="text-[10px] px-2 py-0.5 h-5">Agents</TabsTrigger>
-                      <TabsTrigger value="revshare" className="text-[10px] px-2 py-0.5 h-5">RevShare</TabsTrigger>
+                      <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-6">Agents</TabsTrigger>
+                      <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-6">RevShare</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </div>
@@ -267,8 +267,8 @@ export default function RevShareDashboard() {
                       </PieChart>
                     </ResponsiveContainer>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
-                      <span className="text-[10px] text-muted-foreground">Agents</span>
+                    <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                      <span className="text-xs text-muted-foreground">Agents</span>
                     </div>
                   </div>
                   <div className="flex-1 space-y-0.5">
@@ -277,9 +277,9 @@ export default function RevShareDashboard() {
                         <div className="flex items-center gap-1.5">
                           <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: level.color }} />
                           <span className="text-foreground">{level.name}</span>
-                          <span className="text-muted-foreground text-[10px]">({level.value}%)</span>
+                          <span className="text-muted-foreground text-xs">({level.value}%)</span>
                         </div>
-                        <div className="flex items-center gap-1 text-muted-foreground text-[10px]">
+                        <div className="flex items-center gap-1 text-muted-foreground text-xs">
                           <span>{level.agents.toLocaleString()}</span>
                           <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
@@ -295,8 +295,8 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-medium text-muted-foreground">By Country</span>
                   <Tabs defaultValue="agents">
                     <TabsList className="h-7">
-                      <TabsTrigger value="agents" className="text-[10px] px-2 py-0.5 h-5">Agents</TabsTrigger>
-                      <TabsTrigger value="revshare" className="text-[10px] px-2 py-0.5 h-5">RevShare</TabsTrigger>
+                      <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-6">Agents</TabsTrigger>
+                      <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-6">RevShare</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </div>
@@ -321,8 +321,8 @@ export default function RevShareDashboard() {
                       </PieChart>
                     </ResponsiveContainer>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
-                      <span className="text-[10px] text-muted-foreground">Agents</span>
+                    <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                      <span className="text-xs text-muted-foreground">Agents</span>
                     </div>
                   </div>
                   <div className="flex-1 space-y-0.5">
@@ -332,7 +332,7 @@ export default function RevShareDashboard() {
                           <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: country.color }} />
                           <span className="text-foreground">{country.name}</span>
                         </div>
-                        <div className="flex items-center gap-1 text-muted-foreground text-[10px]">
+                        <div className="flex items-center gap-1 text-muted-foreground text-xs">
                           <span>{country.agents.toLocaleString()}</span>
                           <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
@@ -360,12 +360,12 @@ export default function RevShareDashboard() {
                 </button>
                 <Tabs defaultValue="yearly">
                   <TabsList className="h-7">
-                    <TabsTrigger value="yearly" className="text-[10px] px-2 py-0.5 h-5">Yearly</TabsTrigger>
-                    <TabsTrigger value="quarterly" className="text-[10px] px-2 py-0.5 h-5">Quarterly</TabsTrigger>
-                    <TabsTrigger value="monthly" className="text-[10px] px-2 py-0.5 h-5">Monthly</TabsTrigger>
+                    <TabsTrigger value="yearly" className="text-xs px-2 py-0.5 h-6">Yearly</TabsTrigger>
+                    <TabsTrigger value="quarterly" className="text-xs px-2 py-0.5 h-6">Quarterly</TabsTrigger>
+                    <TabsTrigger value="monthly" className="text-xs px-2 py-0.5 h-6">Monthly</TabsTrigger>
                   </TabsList>
                 </Tabs>
-                <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" />
                     Revenue
