@@ -1,12 +1,11 @@
-import { useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'sidebarCollapsed';
+const SIDEBAR_CHANGE_EVENT = 'sidebar-collapse-change';
 
-type Listener = () => void;
-const listeners = new Set<Listener>();
-
-function readFromStorage(): boolean {
+function readCollapsed(): boolean {
   if (typeof window === 'undefined') return false;
+
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     return raw ? Boolean(JSON.parse(raw)) : false;
@@ -15,54 +14,36 @@ function readFromStorage(): boolean {
   }
 }
 
-let collapsedState = readFromStorage();
+function persistCollapsed(value: boolean) {
+  if (typeof window === 'undefined') return;
 
-function emit() {
-  listeners.forEach((listener) => listener());
-}
-
-function setCollapsed(next: boolean) {
-  collapsedState = next;
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  }
-  emit();
-}
-
-function subscribe(listener: Listener) {
-  listeners.add(listener);
-
-  const onStorage = (event: StorageEvent) => {
-    if (event.key !== STORAGE_KEY) return;
-    collapsedState = readFromStorage();
-    emit();
-  };
-
-  if (typeof window !== 'undefined') {
-    window.addEventListener('storage', onStorage);
-  }
-
-  return () => {
-    listeners.delete(listener);
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('storage', onStorage);
-    }
-  };
-}
-
-function getSnapshot() {
-  return collapsedState;
-}
-
-function getServerSnapshot() {
-  return false;
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+  window.dispatchEvent(new Event(SIDEBAR_CHANGE_EVENT));
 }
 
 export function useSidebarCollapse() {
-  const isCollapsed = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(() => readCollapsed());
+
+  useEffect(() => {
+    const syncState = () => {
+      setIsCollapsed(readCollapsed());
+    };
+
+    window.addEventListener('storage', syncState);
+    window.addEventListener(SIDEBAR_CHANGE_EVENT, syncState);
+
+    return () => {
+      window.removeEventListener('storage', syncState);
+      window.removeEventListener(SIDEBAR_CHANGE_EVENT, syncState);
+    };
+  }, []);
 
   const toggleCollapse = useCallback(() => {
-    setCollapsed(!getSnapshot());
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      persistCollapsed(next);
+      return next;
+    });
   }, []);
 
   return { isCollapsed, toggleCollapse };
