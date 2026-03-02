@@ -1,28 +1,27 @@
 
 
-# Make FLA / FLQA Full Names Visible in Title Row
+# Ease Tile Spacing in Hero Banner
 
 ## Problem
-The full names "Front Line Agents" and "Front Line Qualifying Agents" are placed at the bottom of each tile in small, low-opacity text (`text-xs text-white/50`). They get lost beneath the numbers.
+The three hero tiles (Revenue Share, FLA, FLQA) feel cramped. Padding is tight (`px-3 py-2.5`) and internal margins between elements are minimal (`mb-1`, `gap-2`).
 
-## Solution
-Merge the full name into the title row next to the abbreviation and remove the redundant bottom label.
+## Changes — `src/pages/revshare/Dashboard.tsx`
 
-## File: `src/pages/revshare/Dashboard.tsx`
+### 1. Increase tile padding
+- Change `px-3 py-2.5` to `px-4 py-3.5` on all three tiles for more breathing room
 
-### FLA Tile (around line 128)
-- Change the title span from `FLA` to `FLA · Front Line Agents`
-- Remove the standalone `<p>Front Line Agents</p>` line at the bottom of the tile
+### 2. Increase spacing between title row and metric
+- Change `mb-1` on title rows to `mb-2` so the label isn't sitting right on top of the number
 
-### FLQA Tile (around line 138)
-- Change the title span from `FLQA` to `FLQA · Front Line Qualifying Agents`
-- Remove the standalone `<p>Front Line Qualifying Agents</p>` line at the bottom
-- Keep the level progress line ("You are in level 3...") as-is since it serves a different purpose
+### 3. Increase gap between tiles
+- Change `gap-2 sm:gap-3` on the grid to `gap-3 sm:gap-4`
 
-### Result
-Each tile header reads clearly:
-- **FLA · Front Line Agents** — 24
-- **FLQA · Front Line Qualifying Agents** — 18 / 30
+### 4. Add spacing in Revenue Share breakdown
+- Change `space-y-0.5` to `space-y-1` on the Before/After breakdown lines
+- Add `mt-1` before the breakdown section for separation from the headline number
 
-No layout restructuring needed, just text changes.
+### 5. FLQA tile internal spacing
+- Change `mt-0.5` on the level progress text to `mt-2` for separation from the numbers
+
+These are small padding/margin tweaks across 6-8 lines — no layout restructuring needed.
 
