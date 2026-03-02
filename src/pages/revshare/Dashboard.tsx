@@ -113,8 +113,10 @@ export default function RevShareDashboard() {
                   </div>
                   <span className="text-xs font-semibold text-white">Revenue Share</span>
                 </div>
-                <p className="text-xl font-bold text-white">$264,138.52</p>
-                <p className="text-xs text-white/50 mb-1">After Adj.</p>
+                <div className="flex items-baseline gap-1.5 mb-1">
+                  <p className="text-xl font-bold text-white">$264,138.52</p>
+                  <span className="text-xs text-white/50">After Adj.</span>
+                </div>
                 <div className="space-y-0.5 text-xs text-white/50">
                   <p>Before Adj. $242,857.04</p>
                   <p>Adjustment +$21,281.48</p>
