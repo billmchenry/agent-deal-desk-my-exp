@@ -1,32 +1,28 @@
 
 
-# Fix Accessibility: Replace All 10px Font Sizes with 12px Minimum
+# Make FLA / FLQA Full Names Visible in Title Row
 
 ## Problem
-The RevShare Dashboard uses `text-[10px]` (10pt) extensively, which fails WCAG accessibility guidelines. The project standard requires a minimum of 12px (`text-xs`) on all viewports.
+The full names "Front Line Agents" and "Front Line Qualifying Agents" are placed at the bottom of each tile in small, low-opacity text (`text-xs text-white/50`). They get lost beneath the numbers.
 
 ## Solution
-Replace every instance of `text-[10px]` with `text-xs` (12px) across the entire file. This affects ~20 occurrences in:
+Merge the full name into the title row next to the abbreviation and remove the redundant bottom label.
 
-### File: `src/pages/revshare/Dashboard.tsx`
+## File: `src/pages/revshare/Dashboard.tsx`
 
-**Hero Banner (Section 1)**
-- "After Adj." label
-- Before Adj / Adjustment breakdown lines
-- "Front Line Agents" subtitle
-- "Actual" / "After Bonus" labels
-- "Front Line Qualifying Agents" subtitle
-- Level progress text
+### FLA Tile (around line 128)
+- Change the title span from `FLA` to `FLA · Front Line Agents`
+- Remove the standalone `<p>Front Line Agents</p>` line at the bottom of the tile
 
-**Distribution Charts (Section 3)**
-- Tab triggers (Agents/RevShare) -- also increase tab height from `h-5` to `h-6` for tap targets
-- Donut chart center labels ("Agents")
-- Level percentage labels
-- Agent count labels
+### FLQA Tile (around line 138)
+- Change the title span from `FLQA` to `FLQA · Front Line Qualifying Agents`
+- Remove the standalone `<p>Front Line Qualifying Agents</p>` line at the bottom
+- Keep the level progress line ("You are in level 3...") as-is since it serves a different purpose
 
-**Revenue Comparison (Section 4)**
-- Tab triggers (Yearly/Quarterly/Monthly) -- same height increase
-- Legend labels (Revenue/Growth)
+### Result
+Each tile header reads clearly:
+- **FLA · Front Line Agents** — 24
+- **FLQA · Front Line Qualifying Agents** — 18 / 30
 
-All `text-[10px]` becomes `text-xs`. Tab trigger heights go from `h-5` to `h-6` and padding adjusts to maintain proportion. No layout or design changes beyond the font size bump.
+No layout restructuring needed, just text changes.
 
