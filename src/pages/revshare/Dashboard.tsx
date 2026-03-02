@@ -191,7 +191,7 @@ export default function RevShareDashboard() {
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Calculated but not paid out</p>
                 <p className="text-lg font-bold text-foreground mb-2">$1,869.20</p>
-                <button className="text-xs text-exp-blue hover:underline flex items-center gap-1">
+                <button className="inline-flex items-center gap-1 rounded-md bg-muted hover:bg-muted/80 px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
                   View details <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -205,7 +205,7 @@ export default function RevShareDashboard() {
                 <p className="text-xs text-muted-foreground mb-2">Due in February</p>
                 <p className="text-lg font-bold text-foreground mb-2">$1,869.20</p>
                 <div className="flex items-center gap-2">
-                  <button className="text-xs text-exp-blue hover:underline flex items-center gap-1">
+                  <button className="inline-flex items-center gap-1 rounded-md bg-muted hover:bg-muted/80 px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
                     View details <ChevronRight className="h-3 w-3" />
                   </button>
                   <Button size="sm" className="h-6 text-xs px-2">Get Paid Now</Button>
@@ -220,7 +220,7 @@ export default function RevShareDashboard() {
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Paid to you</p>
                 <p className="text-lg font-bold text-foreground mb-2">$986.92</p>
-                <button className="text-xs text-exp-blue hover:underline flex items-center gap-1">
+                <button className="inline-flex items-center gap-1 rounded-md bg-muted hover:bg-muted/80 px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
                   View details <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
