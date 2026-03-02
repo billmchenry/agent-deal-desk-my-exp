@@ -1,27 +1,22 @@
 
 
-# Ease Tile Spacing in Hero Banner
+# Unify CTA Styles Across Hero Banner and Payout Status
 
 ## Problem
-The three hero tiles (Revenue Share, FLA, FLQA) feel cramped. Padding is tight (`px-3 py-2.5`) and internal margins between elements are minimal (`mb-1`, `gap-2`).
+The hero banner uses styled pill buttons (`bg-white/15`, rounded, padded) for "View FLA/FLQA List", while the Payout Status cards use plain text links (`text-exp-blue hover:underline`) for "View details". These should share a consistent action style.
 
-## Changes — `src/pages/revshare/Dashboard.tsx`
+## Approach
+Since the Payout Status cards have light backgrounds, we can't use the same semi-transparent white style. Instead, we'll upgrade the three "View details" links to match the pill button pattern, adapted for light backgrounds:
+- Style: `inline-flex items-center gap-1 rounded-md bg-muted hover:bg-muted/80 px-2.5 py-1 text-xs font-medium text-foreground transition-colors`
+- This gives them the same shape, padding, and feel as the hero CTAs but with colors suited to the light card context.
 
-### 1. Increase tile padding
-- Change `px-3 py-2.5` to `px-4 py-3.5` on all three tiles for more breathing room
+## Changes -- `src/pages/revshare/Dashboard.tsx`
 
-### 2. Increase spacing between title row and metric
-- Change `mb-1` on title rows to `mb-2` so the label isn't sitting right on top of the number
+1. **Unpaid card "View details"** (line 194): Replace plain text link with pill button style
+2. **Expected Next card "View details"** (line 208): Same treatment
+3. **Last Paid card "View details"** (line ~223): Same treatment
 
-### 3. Increase gap between tiles
-- Change `gap-2 sm:gap-3` on the grid to `gap-3 sm:gap-4`
+All three get the same class: `inline-flex items-center gap-1 rounded-md bg-muted hover:bg-muted/80 px-2.5 py-1 text-xs font-medium text-foreground transition-colors`
 
-### 4. Add spacing in Revenue Share breakdown
-- Change `space-y-0.5` to `space-y-1` on the Before/After breakdown lines
-- Add `mt-1` before the breakdown section for separation from the headline number
-
-### 5. FLQA tile internal spacing
-- Change `mt-0.5` on the level progress text to `mt-2` for separation from the numbers
-
-These are small padding/margin tweaks across 6-8 lines — no layout restructuring needed.
+This creates a unified CTA language: pill-shaped buttons with contextual coloring (white/15 on dark, muted on light).
 
