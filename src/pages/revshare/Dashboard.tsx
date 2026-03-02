@@ -204,11 +204,11 @@ export default function RevShareDashboard() {
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Due in February</p>
                 <p className="text-lg font-bold text-foreground mb-2">$1,869.20</p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
                   <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
                     View details <ChevronRight className="h-3 w-3" />
                   </button>
-                  <Button size="sm" className="h-6 text-xs px-2">Get Paid Now</Button>
+                  <Button size="sm" className="h-7 text-xs px-3">Get Paid Now</Button>
                 </div>
               </div>
 
