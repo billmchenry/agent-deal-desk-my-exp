@@ -114,12 +114,12 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-white">Revenue Share</span>
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <p className="text-2xl font-bold text-white">$264,138.52</p>
+                  <p className="text-2xl font-bold text-white">$264,138.52 <span className="text-sm font-medium text-white/60">USD</span></p>
                   <span className="text-xs text-white/50">After Adj.</span>
                 </div>
                 <div className="mt-1 space-y-1 text-xs text-white/50">
-                  <p>Before Adj. $242,857.04</p>
-                  <p>Adjustment +$21,281.48</p>
+                  <p>Before Adj. $242,857.04 USD</p>
+                  <p>Adjustment +$21,281.48 USD</p>
                 </div>
               </div>
 
@@ -190,7 +190,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-foreground">Unpaid</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Calculated but not paid out</p>
-                <p className="text-lg font-bold text-foreground mb-2">$1,869.20</p>
+                <p className="text-lg font-bold text-foreground mb-2">$1,869.20 <span className="text-xs font-medium text-muted-foreground">USD</span></p>
                 <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
                   View details <ChevronRight className="h-3 w-3" />
                 </button>
@@ -203,7 +203,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-foreground">Expected Next</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Due in February</p>
-                <p className="text-lg font-bold text-foreground mb-2">$1,869.20</p>
+                <p className="text-lg font-bold text-foreground mb-2">$1,869.20 <span className="text-xs font-medium text-muted-foreground">USD</span></p>
                 <div className="flex items-center justify-between">
                   <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
                     View details <ChevronRight className="h-3 w-3" />
@@ -219,7 +219,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-foreground">Last Paid</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Paid to you</p>
-                <p className="text-lg font-bold text-foreground mb-2">$986.92</p>
+                <p className="text-lg font-bold text-foreground mb-2">$986.92 <span className="text-xs font-medium text-muted-foreground">USD</span></p>
                 <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
                   View details <ChevronRight className="h-3 w-3" />
                 </button>
