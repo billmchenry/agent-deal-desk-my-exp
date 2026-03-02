@@ -114,7 +114,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-white">Revenue Share</span>
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <p className="text-xl font-bold text-white">$264,138.52</p>
+                  <p className="text-2xl font-bold text-white">$264,138.52</p>
                   <span className="text-xs text-white/50">After Adj.</span>
                 </div>
                 <div className="mt-1 space-y-1 text-xs text-white/50">
@@ -130,7 +130,7 @@ export default function RevShareDashboard() {
                   </div>
                   <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
                 </div>
-                <p className="text-xl font-bold text-white mb-2">24</p>
+                <p className="text-2xl font-bold text-white mb-2">24</p>
                 <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-2.5 py-1 text-xs font-medium text-white transition-colors">
                   View FLA List <ChevronRight className="h-3 w-3" />
                 </button>
@@ -145,11 +145,11 @@ export default function RevShareDashboard() {
                 </div>
                 <div className="flex gap-4 mb-1">
                   <div>
-                    <p className="text-xl font-bold text-white leading-none">18</p>
+                    <p className="text-2xl font-bold text-white leading-none">18</p>
                     <p className="text-xs text-white/50">Actual</p>
                   </div>
                   <div>
-                    <p className="text-xl font-bold text-white leading-none">30</p>
+                    <p className="text-2xl font-bold text-white leading-none">30</p>
                     <p className="text-xs text-white/50">After Bonus</p>
                   </div>
                 </div>
