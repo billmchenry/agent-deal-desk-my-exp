@@ -6,6 +6,9 @@
 
 @layer base {
   :root {
+    --font-primary: 'Manrope', sans-serif;
+    --font-secondary: 'Roboto', sans-serif;
+
     --background: 210 20% 98%;
     --foreground: 222 47% 11%;
 
@@ -117,6 +120,7 @@
 
   body {
     @apply bg-background text-foreground overflow-x-hidden;
+    font-family: var(--font-primary);
   }
 
   #root {

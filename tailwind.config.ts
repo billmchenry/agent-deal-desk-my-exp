@@ -21,6 +21,10 @@ export default {
       "2xl": "1536px",
     },
     extend: {
+      fontFamily: {
+        primary: "var(--font-primary)",
+        secondary: "var(--font-secondary)",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
