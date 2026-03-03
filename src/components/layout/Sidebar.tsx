@@ -10,10 +10,36 @@ import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Home, LayoutDashboard, User, Users, DollarSign, FileText,
   Calendar, GraduationCap, Wrench, BookOpen, HelpCircle, Award, Store,
+};
+
+const NAV_KEYS: Record<string, string> = {
+  "MY DESK": "nav.myDesk",
+  "BUSINESS & GROWTH": "nav.businessGrowth",
+  "RESOURCES": "nav.resources",
+  "Home": "nav.home",
+  "Agent": "nav.agent",
+  "Dashboard": "nav.dashboard",
+  "Transactions": "nav.transactions",
+  "ICON Program": "nav.iconProgram",
+  "Documents": "nav.documents",
+  "All Documents": "nav.allDocuments",
+  "Templates": "nav.templates",
+  "Events Calendar": "nav.eventsCalendar",
+  "Team": "nav.team",
+  "RevShare Earnings": "nav.revshareEarnings",
+  "Organization": "nav.organization",
+  "Organization Tree": "nav.organizationTree",
+  "My RevShare Trends": "nav.myRevshareTrends",
+  "Mentor Program": "nav.mentorProgram",
+  "Report Marketplace": "nav.reportMarketplace",
+  "Tools": "nav.tools",
+  "Knowledge Base": "nav.knowledgeBase",
+  "Help Center": "nav.helpCenter",
 };
 
 function isInSection(pathname: string, item: SidebarNavItem): boolean {
@@ -26,6 +52,9 @@ export function Sidebar() {
   const navigate = useNavigate();
   const [manuallyCollapsed, setManuallyCollapsed] = useState<string | null>(null);
   const { isCollapsed, toggleCollapse } = useSidebarCollapse();
+  const { t } = useTranslation();
+
+  const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
   const getAutoExpandedItem = (pathname: string): string | null => {
     for (const section of Object.values(sidebarNavigation)) {
@@ -75,7 +104,6 @@ export function Sidebar() {
     const hasSubmenu = !!item.submenu;
     const expanded = hasSubmenu && isExpanded(item);
 
-    // Collapsed mode: icon-only with tooltip
     if (isCollapsed) {
       return (
         <Tooltip key={item.title}>
@@ -91,13 +119,12 @@ export function Sidebar() {
             </a>
           </TooltipTrigger>
           <TooltipContent side="right">
-            {item.title}
+            {tn(item.title)}
           </TooltipContent>
         </Tooltip>
       );
     }
 
-    // Expanded mode (existing logic)
     if (hasSubmenu) {
       return (
         <Collapsible key={item.title} open={expanded}>
@@ -110,13 +137,13 @@ export function Sidebar() {
               )}
             >
               {Icon && <Icon className="h-4 w-4" />}
-              <span>{item.title}</span>
+              <span>{tn(item.title)}</span>
             </button>
             <CollapsibleTrigger asChild>
               <button
                 onClick={(e) => handleChevronClick(e, item)}
                 className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-sidebar-accent transition-colors"
-                aria-label={`${expanded ? "Collapse" : "Expand"} ${item.title}`}
+                aria-label={`${expanded ? "Collapse" : "Expand"} ${tn(item.title)}`}
               >
                 <ChevronRight
                   className={cn(
@@ -138,7 +165,7 @@ export function Sidebar() {
                     isActive(subItem.url) && "bg-sidebar-accent text-sidebar-foreground font-medium"
                   )}
                 >
-                  {subItem.title}
+                  {tn(subItem.title)}
                 </a>
               ))}
             </div>
@@ -157,7 +184,7 @@ export function Sidebar() {
         )}
       >
         {Icon && <Icon className="h-4 w-4" />}
-        <span>{item.title}</span>
+        <span>{tn(item.title)}</span>
       </a>
     );
   };
@@ -167,7 +194,7 @@ export function Sidebar() {
       {!isCollapsed ? (
         <div className="mx-3 mb-2 flex items-center justify-between">
           <span className="mx-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
-            {section.label}
+            {tn(section.label)}
           </span>
           {showToggle && (
             <Tooltip>
@@ -179,7 +206,7 @@ export function Sidebar() {
                   <ChevronsLeft className="h-3.5 w-3.5" />
                 </button>
               </TooltipTrigger>
-              <TooltipContent side="right">Collapse sidebar</TooltipContent>
+              <TooltipContent side="right">{t("common.collapsed")}</TooltipContent>
             </Tooltip>
           )}
         </div>
@@ -194,7 +221,7 @@ export function Sidebar() {
                 <ChevronsRight className="h-4 w-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="right">Expand sidebar</TooltipContent>
+            <TooltipContent side="right">{t("common.expanded")}</TooltipContent>
           </Tooltip>
         </div>
       ) : null}
@@ -213,7 +240,6 @@ export function Sidebar() {
           isCollapsed ? "w-16" : "w-64"
         )}
       >
-        {/* Header */}
         <div className={cn(
           "flex h-16 items-center border-b border-border bg-background transition-all duration-300",
           isCollapsed ? "justify-center px-2" : "gap-1 px-5"
@@ -227,7 +253,6 @@ export function Sidebar() {
           )}
         </div>
 
-        {/* Nav */}
         <nav className="flex flex-1 flex-col overflow-y-auto py-4">
           {renderSection(sidebarNavigation.myDesk, undefined, true)}
           {renderSection(sidebarNavigation.businessGrowth, "mt-4")}

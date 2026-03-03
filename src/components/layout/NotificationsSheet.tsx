@@ -1,4 +1,4 @@
-import { Bell, X } from "lucide-react";
+import { Bell } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -6,6 +6,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface NotificationsSheetProps {
   isOpen: boolean;
@@ -37,13 +38,15 @@ const mockNotifications = [
 ];
 
 export function NotificationsSheet({ isOpen, onClose }: NotificationsSheetProps) {
+  const { t } = useTranslation();
+  
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent side="right" className="w-full sm:max-w-sm p-0">
         <SheetHeader className="flex h-16 flex-row items-center justify-between border-b px-4">
           <SheetTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
-            Notifications
+            {t("header.notifications")}
           </SheetTitle>
         </SheetHeader>
 
@@ -70,7 +73,7 @@ export function NotificationsSheet({ isOpen, onClose }: NotificationsSheetProps)
 
           <div className="p-4">
             <Button variant="outline" className="w-full">
-              View all notifications
+              {t("common.viewAll")} {t("header.notifications").toLowerCase()}
             </Button>
           </div>
         </div>

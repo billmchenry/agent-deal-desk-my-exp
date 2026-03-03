@@ -18,6 +18,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { NotificationsSheet } from "./NotificationsSheet";
 import { AccountSheet } from "./AccountSheet";
 import { GlobalSearch } from "./GlobalSearch";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -29,6 +30,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const { t } = useTranslation();
 
   const cycleTheme = () => {
     if (theme === "light") setTheme("dark");
@@ -36,7 +38,7 @@ export function Header({ onMenuClick }: HeaderProps) {
     else setTheme("light");
   };
 
-  const themeLabel = theme === "light" ? "Switch to dark mode" : theme === "dark" ? "Switch to system mode" : "Switch to light mode";
+  const themeLabel = theme === "light" ? t("header.switchDark") : theme === "dark" ? t("header.switchSystem") : t("header.switchLight");
 
   const initials = currentUser.name
     .split(" ")
@@ -46,46 +48,39 @@ export function Header({ onMenuClick }: HeaderProps) {
   return (
     <>
       <header className={cn("fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-background px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:left-16" : "lg:left-64")}>
-        {/* Left Section - Hamburger on mobile */}
         <div className="flex items-center lg:hidden">
           <Button variant="ghost" size="icon" onClick={onMenuClick} aria-label="Open menu">
             <Menu className="h-5 w-5" />
           </Button>
         </div>
 
-        {/* Desktop Search Bar */}
         <div className="hidden lg:block">
           <GlobalSearch />
         </div>
 
-        {/* Right Section */}
         <div className="flex items-center gap-1 sm:gap-2">
-          {/* Mobile Search */}
           <div className="lg:hidden">
             <GlobalSearch />
           </div>
 
-          {/* Theme Toggle */}
           <Button variant="ghost" size="icon" onClick={cycleTheme} aria-label={themeLabel}>
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
 
-          {/* Get Help */}
-          <Button variant="ghost" size="icon" className="sm:hidden" aria-label="Get help">
+          <Button variant="ghost" size="icon" className="sm:hidden" aria-label={t("header.getHelp")}>
             <HelpCircle className="h-5 w-5" />
           </Button>
           <Button variant="ghost" size="sm" className="hidden sm:flex gap-2">
             <HelpCircle className="h-4 w-4" />
-            <span>Get Help</span>
+            <span>{t("header.getHelp")}</span>
           </Button>
 
-          {/* Notifications */}
           <Button 
             variant="ghost" 
             size="icon" 
             className="relative"
             onClick={() => isMobile && setNotificationsOpen(true)}
-            aria-label="Notifications, 3 unread"
+            aria-label={`${t("header.notifications")}, 3 unread`}
           >
             <Bell className="h-5 w-5" />
             <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-destructive text-[11px] font-bold text-destructive-foreground flex items-center justify-center" aria-hidden="true">
@@ -93,13 +88,12 @@ export function Header({ onMenuClick }: HeaderProps) {
             </span>
           </Button>
 
-          {/* User Menu */}
           {isMobile ? (
             <Button 
               variant="ghost" 
               className="flex items-center gap-2 pl-2 pr-1"
               onClick={() => setAccountOpen(true)}
-              aria-label="Account menu"
+              aria-label={t("header.accountMenu")}
             >
               <Avatar className="h-8 w-8">
                 <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
@@ -112,7 +106,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2 pl-2 pr-1" aria-label="Account menu">
+                <Button variant="ghost" className="flex items-center gap-2 pl-2 pr-1" aria-label={t("header.accountMenu")}>
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
                     <AvatarFallback className="bg-exp-blue text-white text-xs">
@@ -140,19 +134,19 @@ export function Header({ onMenuClick }: HeaderProps) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to="/profile/personal-details" className="cursor-pointer">
-                    Personal Details
+                    {t("header.personalDetails")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/profile/settings" className="cursor-pointer">
-                    Settings
+                    {t("header.settings")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive">Sign Out</DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive">{t("header.signOut")}</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <div className="px-2 py-1.5">
-                  <p className="text-xs text-muted-foreground">Version 2.1.0</p>
+                  <p className="text-xs text-muted-foreground">{t("header.version")} 2.1.0</p>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -160,7 +154,6 @@ export function Header({ onMenuClick }: HeaderProps) {
         </div>
       </header>
 
-      {/* Mobile Sheets */}
       <NotificationsSheet 
         isOpen={notificationsOpen} 
         onClose={() => setNotificationsOpen(false)} 
