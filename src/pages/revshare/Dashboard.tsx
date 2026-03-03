@@ -76,7 +76,7 @@ export default function RevShareDashboard() {
         <div className="flex items-center justify-between mb-2">
           <h1 className="text-xl font-bold text-foreground">Revenue Share</h1>
           <Select defaultValue="ytd">
-            <SelectTrigger className="w-[140px] h-8 text-xs">
+            <SelectTrigger className="w-[140px] h-8 min-h-[44px] sm:min-h-0 text-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -134,7 +134,7 @@ export default function RevShareDashboard() {
                   </div>
                 </div>
                 <p className="text-2xl font-bold text-white mb-2">24</p>
-                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-2.5 py-1 text-xs font-medium text-white transition-colors">
+                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors">
                   View FLA List <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -160,7 +160,7 @@ export default function RevShareDashboard() {
                   </div>
                 </div>
                 <p className="text-xs text-exp-gold-light mt-2">You are in level 3. Add 2 more agents to reach level 4</p>
-                <button className="mt-2 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-2.5 py-1 text-xs font-medium text-white transition-colors">
+                <button className="mt-2 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors">
                   View FLQA List <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -171,12 +171,12 @@ export default function RevShareDashboard() {
         {/* ═══ Section 2: Current Payout Status ═══ */}
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-3">
               <div>
                 <h2 className="text-sm font-semibold text-foreground">Current Payout Status</h2>
                 <p className="text-xs text-muted-foreground">Overview of your revenue share payout status and history</p>
               </div>
-              <button className="text-xs text-exp-blue hover:underline flex items-center gap-1">
+              <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0">
                 View Periodic Overview <ExternalLink className="h-3 w-3" />
               </button>
             </div>
@@ -197,7 +197,7 @@ export default function RevShareDashboard() {
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Calculated but not paid out</p>
                 <p className="text-lg font-bold text-foreground mb-2">$1,869.20 <span className="text-xs font-medium text-muted-foreground">USD</span></p>
-                <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
+                <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
                   View details <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -210,11 +210,11 @@ export default function RevShareDashboard() {
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Estimated next scheduled payout</p>
                 <p className="text-lg font-bold text-foreground mb-2">$1,869.20 <span className="text-xs font-medium text-muted-foreground">USD</span></p>
-                <div className="flex items-center justify-between">
-                  <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
+                  <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
                     View details <ChevronRight className="h-3 w-3" />
                   </button>
-                  <Button size="sm" className="h-7 text-xs px-3">Get Paid Now</Button>
+                  <Button size="sm" className="h-11 sm:h-7 text-xs px-3">Get Paid Now</Button>
                 </div>
               </div>
 
@@ -226,7 +226,7 @@ export default function RevShareDashboard() {
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Most recent payout amount</p>
                 <p className="text-lg font-bold text-foreground mb-2">$986.92 <span className="text-xs font-medium text-muted-foreground">USD</span></p>
-                <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
+                <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
                   View details <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -248,14 +248,14 @@ export default function RevShareDashboard() {
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-medium text-muted-foreground">By Level</span>
                   <Tabs defaultValue="agents">
-                    <TabsList className="h-7">
-                      <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-6">Agents</TabsTrigger>
-                      <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-6">RevShare</TabsTrigger>
+                    <TabsList className="h-9 sm:h-7">
+                      <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Agents</TabsTrigger>
+                      <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">RevShare</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-32 h-32 relative shrink-0">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 relative shrink-0">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -281,7 +281,7 @@ export default function RevShareDashboard() {
                   </div>
                   <div className="flex-1 space-y-0.5">
                     {levelDistribution.map((level) => (
-                      <div key={level.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5 -mx-1">
+                      <div key={level.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 sm:py-0.5 -mx-1">
                         <div className="flex items-center gap-1.5">
                           <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: level.color }} />
                           <span className="text-foreground">{level.name}</span>
@@ -298,18 +298,18 @@ export default function RevShareDashboard() {
               </div>
 
               {/* By Country */}
-              <div className="lg:border-l lg:pl-4 border-border">
+              <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-4 border-border">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-medium text-muted-foreground">By Country</span>
                   <Tabs defaultValue="agents">
-                    <TabsList className="h-7">
-                      <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-6">Agents</TabsTrigger>
-                      <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-6">RevShare</TabsTrigger>
+                    <TabsList className="h-9 sm:h-7">
+                      <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Agents</TabsTrigger>
+                      <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">RevShare</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-32 h-32 relative shrink-0">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 relative shrink-0">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -335,7 +335,7 @@ export default function RevShareDashboard() {
                   </div>
                   <div className="flex-1 space-y-0.5">
                     {countryDistribution.map((country) => (
-                      <div key={country.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5 -mx-1">
+                      <div key={country.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 sm:py-0.5 -mx-1">
                         <div className="flex items-center gap-1.5">
                           <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: country.color }} />
                           <span className="text-foreground">{country.name}</span>
@@ -365,14 +365,14 @@ export default function RevShareDashboard() {
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-wrap">
-                <button className="text-xs text-exp-blue hover:underline flex items-center gap-1">
+                <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0">
                   View Trends <ExternalLink className="h-3 w-3" />
                 </button>
                 <Tabs defaultValue="yearly">
-                  <TabsList className="h-7">
-                    <TabsTrigger value="yearly" className="text-xs px-2 py-0.5 h-6">Yearly</TabsTrigger>
-                    <TabsTrigger value="quarterly" className="text-xs px-2 py-0.5 h-6">Quarterly</TabsTrigger>
-                    <TabsTrigger value="monthly" className="text-xs px-2 py-0.5 h-6">Monthly</TabsTrigger>
+                  <TabsList className="h-9 sm:h-7">
+                    <TabsTrigger value="yearly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Yearly</TabsTrigger>
+                    <TabsTrigger value="quarterly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Quarterly</TabsTrigger>
+                    <TabsTrigger value="monthly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Monthly</TabsTrigger>
                   </TabsList>
                 </Tabs>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -387,7 +387,8 @@ export default function RevShareDashboard() {
                 </div>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={240}>
+            <div className="h-[200px] sm:h-[240px]">
+            <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={revenueComparisonData} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                 <XAxis
@@ -438,6 +439,7 @@ export default function RevShareDashboard() {
                 />
               </ComposedChart>
             </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
       </div>
