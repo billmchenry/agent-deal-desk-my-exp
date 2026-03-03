@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import {
   Info,
@@ -244,114 +244,176 @@ export default function RevShareDashboard() {
               <p className="text-xs text-muted-foreground">Agent distribution across levels (1-7) and regions</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {/* By Level */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-muted-foreground">By Level</span>
+            {isMobile ? (
+              /* ── Mobile: Tab switcher ── */
+              <Tabs defaultValue="level">
+                <div className="flex items-center justify-between mb-3">
+                  <TabsList className="h-9">
+                    <TabsTrigger value="level" className="text-xs px-3 min-h-[44px]">By Level</TabsTrigger>
+                    <TabsTrigger value="country" className="text-xs px-3 min-h-[44px]">By Country</TabsTrigger>
+                  </TabsList>
                   <Tabs defaultValue="agents">
-                    <TabsList className="h-9 sm:h-7">
-                      <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Agents</TabsTrigger>
-                      <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">RevShare</TabsTrigger>
+                    <TabsList className="h-9">
+                      <TabsTrigger value="agents" className="text-xs px-2 min-h-[44px]">Agents</TabsTrigger>
+                      <TabsTrigger value="revshare" className="text-xs px-2 min-h-[44px]">RevShare</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </div>
-                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-3 sm:gap-4">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 relative shrink-0">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={levelDistribution}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={isMobile ? 28 : 38}
-                          outerRadius={isMobile ? 42 : 56}
-                          dataKey="value"
-                          strokeWidth={2}
-                          stroke="hsl(var(--card))"
-                        >
-                          {levelDistribution.map((entry, i) => (
-                            <Cell key={i} fill={entry.color} />
-                          ))}
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
-                      <span className="text-xs text-muted-foreground">Agents</span>
-                    </div>
-                  </div>
-                  <div className="w-full sm:w-auto flex-1 space-y-0.5">
-                    {levelDistribution.map((level) => (
-                      <div key={level.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 sm:py-0.5 -mx-1">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: level.color }} />
-                          <span className="text-foreground">{level.name}</span>
-                          <span className="text-muted-foreground text-xs">({level.value}%)</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-muted-foreground text-xs">
-                          <span>{level.agents.toLocaleString()}</span>
-                          <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
 
-              {/* By Country */}
-              <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-4 border-border">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-muted-foreground">By Country</span>
-                  <Tabs defaultValue="agents">
-                    <TabsList className="h-9 sm:h-7">
-                      <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Agents</TabsTrigger>
-                      <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">RevShare</TabsTrigger>
-                    </TabsList>
-                  </Tabs>
-                </div>
-                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-3 sm:gap-4">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 relative shrink-0">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={countryDistribution}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={isMobile ? 28 : 38}
-                          outerRadius={isMobile ? 42 : 56}
-                          dataKey="agents"
-                          strokeWidth={2}
-                          stroke="hsl(var(--card))"
-                        >
-                          {countryDistribution.map((entry, i) => (
-                            <Cell key={i} fill={entry.color} />
-                          ))}
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
-                      <span className="text-xs text-muted-foreground">Agents</span>
+                <TabsContent value="level">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-28 h-28 relative shrink-0">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie data={levelDistribution} cx="50%" cy="50%" innerRadius={32} outerRadius={48} dataKey="value" strokeWidth={2} stroke="hsl(var(--card))">
+                            {levelDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                        <span className="text-xs text-muted-foreground">Agents</span>
+                      </div>
+                    </div>
+                    <div className="w-full space-y-0.5">
+                      {levelDistribution.map((level) => (
+                        <div key={level.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 -mx-1">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: level.color }} />
+                            <span className="text-foreground">{level.name}</span>
+                            <span className="text-muted-foreground">({level.value}%)</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <span>{level.agents.toLocaleString()}</span>
+                            <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="w-full sm:w-auto flex-1 space-y-0.5">
-                    {countryDistribution.map((country) => (
-                      <div key={country.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 sm:py-0.5 -mx-1">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: country.color }} />
-                          <span className="text-foreground">{country.name}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-muted-foreground text-xs">
-                          <span>{country.agents.toLocaleString()}</span>
-                          <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
+                </TabsContent>
+
+                <TabsContent value="country">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-28 h-28 relative shrink-0">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie data={countryDistribution} cx="50%" cy="50%" innerRadius={32} outerRadius={48} dataKey="agents" strokeWidth={2} stroke="hsl(var(--card))">
+                            {countryDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                        <span className="text-xs text-muted-foreground">Agents</span>
                       </div>
-                    ))}
+                    </div>
+                    <div className="w-full space-y-0.5">
+                      {countryDistribution.map((country) => (
+                        <div key={country.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 -mx-1">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: country.color }} />
+                            <span className="text-foreground">{country.name}</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <span>{country.agents.toLocaleString()}</span>
+                            <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            ) : (
+              /* ── Desktop: Side-by-side grid ── */
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {/* By Level */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-muted-foreground">By Level</span>
+                    <Tabs defaultValue="agents">
+                      <TabsList className="h-7">
+                        <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-6">Agents</TabsTrigger>
+                        <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-6">RevShare</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-32 h-32 relative shrink-0">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie data={levelDistribution} cx="50%" cy="50%" innerRadius={38} outerRadius={56} dataKey="value" strokeWidth={2} stroke="hsl(var(--card))">
+                            {levelDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                        <span className="text-xs text-muted-foreground">Agents</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 space-y-0.5">
+                      {levelDistribution.map((level) => (
+                        <div key={level.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5 -mx-1">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: level.color }} />
+                            <span className="text-foreground">{level.name}</span>
+                            <span className="text-muted-foreground">({level.value}%)</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <span>{level.agents.toLocaleString()}</span>
+                            <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* By Country */}
+                <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-4 border-border">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-muted-foreground">By Country</span>
+                    <Tabs defaultValue="agents">
+                      <TabsList className="h-7">
+                        <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-6">Agents</TabsTrigger>
+                        <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-6">RevShare</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-32 h-32 relative shrink-0">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie data={countryDistribution} cx="50%" cy="50%" innerRadius={38} outerRadius={56} dataKey="agents" strokeWidth={2} stroke="hsl(var(--card))">
+                            {countryDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                        <span className="text-xs text-muted-foreground">Agents</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 space-y-0.5">
+                      {countryDistribution.map((country) => (
+                        <div key={country.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 sm:py-0.5 -mx-1">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: country.color }} />
+                            <span className="text-foreground">{country.name}</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <span>{country.agents.toLocaleString()}</span>
+                            <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
