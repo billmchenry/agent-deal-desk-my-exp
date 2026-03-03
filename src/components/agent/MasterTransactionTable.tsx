@@ -125,10 +125,6 @@ function getStatusBadge(status: string) {
   }
 }
 
-const fmt = (n: number) => {
-  // Will be overridden in component, placeholder for module-level usage
-  return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-};
 
 export function MasterTransactionTable() {
   const { formatCurrency, formatDate } = useFormatters();
