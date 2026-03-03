@@ -15,6 +15,7 @@ import {
   ExternalLink,
   Target,
 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Select,
   SelectContent,
@@ -69,6 +70,7 @@ const TOTAL_AGENTS = 17816;
 /* ── Component ─────────────────────────────────────────── */
 
 export default function RevShareDashboard() {
+  const isMobile = useIsMobile();
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
@@ -254,7 +256,7 @@ export default function RevShareDashboard() {
                     </TabsList>
                   </Tabs>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-3 sm:gap-4">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 relative shrink-0">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
@@ -262,8 +264,8 @@ export default function RevShareDashboard() {
                           data={levelDistribution}
                           cx="50%"
                           cy="50%"
-                          innerRadius={38}
-                          outerRadius={56}
+                          innerRadius={isMobile ? 28 : 38}
+                          outerRadius={isMobile ? 42 : 56}
                           dataKey="value"
                           strokeWidth={2}
                           stroke="hsl(var(--card))"
@@ -279,7 +281,7 @@ export default function RevShareDashboard() {
                       <span className="text-xs text-muted-foreground">Agents</span>
                     </div>
                   </div>
-                  <div className="flex-1 space-y-0.5">
+                  <div className="w-full sm:w-auto flex-1 space-y-0.5">
                     {levelDistribution.map((level) => (
                       <div key={level.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 sm:py-0.5 -mx-1">
                         <div className="flex items-center gap-1.5">
@@ -308,7 +310,7 @@ export default function RevShareDashboard() {
                     </TabsList>
                   </Tabs>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-3 sm:gap-4">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 relative shrink-0">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
@@ -316,8 +318,8 @@ export default function RevShareDashboard() {
                           data={countryDistribution}
                           cx="50%"
                           cy="50%"
-                          innerRadius={38}
-                          outerRadius={56}
+                          innerRadius={isMobile ? 28 : 38}
+                          outerRadius={isMobile ? 42 : 56}
                           dataKey="agents"
                           strokeWidth={2}
                           stroke="hsl(var(--card))"
@@ -333,7 +335,7 @@ export default function RevShareDashboard() {
                       <span className="text-xs text-muted-foreground">Agents</span>
                     </div>
                   </div>
-                  <div className="flex-1 space-y-0.5">
+                  <div className="w-full sm:w-auto flex-1 space-y-0.5">
                     {countryDistribution.map((country) => (
                       <div key={country.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 sm:py-0.5 -mx-1">
                         <div className="flex items-center gap-1.5">
@@ -364,17 +366,19 @@ export default function RevShareDashboard() {
                   <p className="text-xs text-muted-foreground">Compare revenue share earnings across different time periods</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 flex-wrap">
-                <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0">
-                  View Trends <ExternalLink className="h-3 w-3" />
-                </button>
-                <Tabs defaultValue="yearly">
-                  <TabsList className="h-9 sm:h-7">
-                    <TabsTrigger value="yearly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Yearly</TabsTrigger>
-                    <TabsTrigger value="quarterly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Quarterly</TabsTrigger>
-                    <TabsTrigger value="monthly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Monthly</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                <div className="flex items-center gap-2">
+                  <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0">
+                    View Trends <ExternalLink className="h-3 w-3" />
+                  </button>
+                  <Tabs defaultValue="yearly">
+                    <TabsList className="h-9 sm:h-7">
+                      <TabsTrigger value="yearly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Yearly</TabsTrigger>
+                      <TabsTrigger value="quarterly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Quarterly</TabsTrigger>
+                      <TabsTrigger value="monthly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">Monthly</TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" />
@@ -424,7 +428,7 @@ export default function RevShareDashboard() {
                   barSize={48}
                   label={({ x, y, width, value }: any) =>
                     value < 1 ? (
-                      <text x={x + width / 2} y={y - 6} textAnchor="middle" fill="hsl(var(--muted-foreground))" fontSize={10} fontWeight={600}>
+                      <text x={x + width / 2} y={y - 6} textAnchor="middle" fill="hsl(var(--muted-foreground))" fontSize={12} fontWeight={600}>
                         ${Math.round(value * 1000)}K
                       </text>
                     ) : null
