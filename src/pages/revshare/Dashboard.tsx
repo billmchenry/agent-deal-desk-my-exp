@@ -124,13 +124,15 @@ export default function RevShareDashboard() {
               </div>
 
               <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-1">
                   <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
                     <Users className="h-3.5 w-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
+                  <div>
+                    <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
+                    <p className="text-[10px] text-white/40 leading-tight">Before and after concession adjustments</p>
+                  </div>
                 </div>
-                <p className="text-[10px] text-white/50 mb-1">Count before and after concession adjustments</p>
                 <p className="text-2xl font-bold text-white mb-2">24</p>
                 <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-2.5 py-1 text-xs font-medium text-white transition-colors">
                   View FLA List <ChevronRight className="h-3 w-3" />
@@ -138,13 +140,15 @@ export default function RevShareDashboard() {
               </div>
 
               <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-1">
                   <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
                     <Users className="h-3.5 w-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-white">FLQA · Front Line Qualifying Agents</span>
+                  <div>
+                    <span className="text-xs font-semibold text-white">FLQA · Front Line Qualifying Agents</span>
+                    <p className="text-[10px] text-white/40 leading-tight">Before and after concession adjustments</p>
+                  </div>
                 </div>
-                <p className="text-[10px] text-white/50 mb-1">Count before and after concession adjustments</p>
                 <div className="flex gap-4 mb-1">
                   <div>
                     <p className="text-2xl font-bold text-white leading-none">18</p>
