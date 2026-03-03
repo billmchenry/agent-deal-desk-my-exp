@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { format } from "date-fns";
 import { CalendarIcon, Camera } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { currentUser, userProfile } from "@/data/mockData";
+import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EditProfileSheetProps {
   open: boolean;
@@ -30,7 +31,9 @@ interface EditProfileSheetProps {
 }
 
 export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) {
-  // Initialize form state from mock data
+  const { formatDate } = useFormatters();
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     preferredName: userProfile.general.preferredName,
     birthday: userProfile.general.birthday,
@@ -71,7 +74,6 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
   };
 
   const handleSave = () => {
-    // In a real app, this would make an API call
     toast.success("Profile updated successfully");
     onOpenChange(false);
   };
@@ -89,7 +91,7 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-lg p-0 flex flex-col">
         <SheetHeader className="p-6 pb-0">
-          <SheetTitle className="text-xl font-semibold">Edit Profile</SheetTitle>
+          <SheetTitle className="text-xl font-semibold">{t("profile.editProfile")}</SheetTitle>
         </SheetHeader>
 
         <ScrollArea className="flex-1 px-6">
@@ -112,7 +114,7 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
 
             {/* General Section */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">General</h3>
+              <h3 className="font-semibold text-foreground">{t("profile.general")}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="preferredName">Preferred First Name</Label>
@@ -136,7 +138,7 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {birthdayDate
-                          ? format(birthdayDate, "MMM d")
+                          ? formatDate(birthdayDate)
                           : formData.birthday || "Select date"}
                       </Button>
                     </PopoverTrigger>
@@ -164,7 +166,7 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
 
             {/* Contact Section */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">Contact</h3>
+              <h3 className="font-semibold text-foreground">{t("profile.contact")}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="phoneNumber">Phone Number</Label>
@@ -193,15 +195,11 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="yes" id="receiveTextYes" />
-                    <Label htmlFor="receiveTextYes" className="font-normal cursor-pointer">
-                      Yes
-                    </Label>
+                    <Label htmlFor="receiveTextYes" className="font-normal cursor-pointer">Yes</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="no" id="receiveTextNo" />
-                    <Label htmlFor="receiveTextNo" className="font-normal cursor-pointer">
-                      No
-                    </Label>
+                    <Label htmlFor="receiveTextNo" className="font-normal cursor-pointer">No</Label>
                   </div>
                 </RadioGroup>
                 <p className="text-xs text-muted-foreground">
@@ -213,7 +211,7 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
 
             {/* Email Section */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-foreground">Email</h3>
+              <h3 className="font-semibold text-foreground">{t("profile.email")}</h3>
               <div className="space-y-2">
                 <Label htmlFor="forwardingAddress">Forwarding Address</Label>
                 <Input
@@ -235,46 +233,21 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="primaryName">Name</Label>
-                    <Input
-                      id="primaryName"
-                      value={formData.primaryEmergency.name}
-                      onChange={(e) =>
-                        handleEmergencyChange("primaryEmergency", "name", e.target.value)
-                      }
-                    />
+                    <Input id="primaryName" value={formData.primaryEmergency.name} onChange={(e) => handleEmergencyChange("primaryEmergency", "name", e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="primaryRelationship">Relationship</Label>
-                    <Input
-                      id="primaryRelationship"
-                      value={formData.primaryEmergency.relationship}
-                      onChange={(e) =>
-                        handleEmergencyChange("primaryEmergency", "relationship", e.target.value)
-                      }
-                    />
+                    <Input id="primaryRelationship" value={formData.primaryEmergency.relationship} onChange={(e) => handleEmergencyChange("primaryEmergency", "relationship", e.target.value)} />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="primaryPhone">Phone Number</Label>
-                    <Input
-                      id="primaryPhone"
-                      value={formData.primaryEmergency.phoneNumber}
-                      onChange={(e) =>
-                        handleEmergencyChange("primaryEmergency", "phoneNumber", e.target.value)
-                      }
-                    />
+                    <Input id="primaryPhone" value={formData.primaryEmergency.phoneNumber} onChange={(e) => handleEmergencyChange("primaryEmergency", "phoneNumber", e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="primaryEmail">Email</Label>
-                    <Input
-                      id="primaryEmail"
-                      type="email"
-                      value={formData.primaryEmergency.email}
-                      onChange={(e) =>
-                        handleEmergencyChange("primaryEmergency", "email", e.target.value)
-                      }
-                    />
+                    <Input id="primaryEmail" type="email" value={formData.primaryEmergency.email} onChange={(e) => handleEmergencyChange("primaryEmergency", "email", e.target.value)} />
                   </div>
                 </div>
               </div>
@@ -285,46 +258,21 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="secondaryName">Name</Label>
-                    <Input
-                      id="secondaryName"
-                      value={formData.secondaryEmergency.name}
-                      onChange={(e) =>
-                        handleEmergencyChange("secondaryEmergency", "name", e.target.value)
-                      }
-                    />
+                    <Input id="secondaryName" value={formData.secondaryEmergency.name} onChange={(e) => handleEmergencyChange("secondaryEmergency", "name", e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="secondaryRelationship">Relationship</Label>
-                    <Input
-                      id="secondaryRelationship"
-                      value={formData.secondaryEmergency.relationship}
-                      onChange={(e) =>
-                        handleEmergencyChange("secondaryEmergency", "relationship", e.target.value)
-                      }
-                    />
+                    <Input id="secondaryRelationship" value={formData.secondaryEmergency.relationship} onChange={(e) => handleEmergencyChange("secondaryEmergency", "relationship", e.target.value)} />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="secondaryPhone">Phone Number</Label>
-                    <Input
-                      id="secondaryPhone"
-                      value={formData.secondaryEmergency.phoneNumber}
-                      onChange={(e) =>
-                        handleEmergencyChange("secondaryEmergency", "phoneNumber", e.target.value)
-                      }
-                    />
+                    <Input id="secondaryPhone" value={formData.secondaryEmergency.phoneNumber} onChange={(e) => handleEmergencyChange("secondaryEmergency", "phoneNumber", e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="secondaryEmail">Email</Label>
-                    <Input
-                      id="secondaryEmail"
-                      type="email"
-                      value={formData.secondaryEmergency.email}
-                      onChange={(e) =>
-                        handleEmergencyChange("secondaryEmergency", "email", e.target.value)
-                      }
-                    />
+                    <Input id="secondaryEmail" type="email" value={formData.secondaryEmergency.email} onChange={(e) => handleEmergencyChange("secondaryEmergency", "email", e.target.value)} />
                   </div>
                 </div>
               </div>
@@ -335,10 +283,10 @@ export function EditProfileSheet({ open, onOpenChange }: EditProfileSheetProps) 
         <SheetFooter className="flex-col gap-3 p-6 pt-4 border-t">
           <div className="flex gap-3 w-full">
             <Button variant="outline" onClick={handleCancel} className="flex-1">
-              Cancel
+              {t("profile.cancel")}
             </Button>
             <Button onClick={handleSave} className="flex-1 bg-primary">
-              Save
+              {t("profile.save")}
             </Button>
           </div>
           <div className="flex items-start gap-2 p-3 bg-muted rounded-md">

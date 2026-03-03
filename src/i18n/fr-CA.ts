@@ -178,4 +178,17 @@ export const frCA: Record<string, string> = {
   "common.expanded": "Développer la barre latérale",
   "common.skipToMain": "Passer au contenu principal",
   "common.openMiraChat": "Ouvrir le chat Mira",
+
+  // Additional keys
+  "dashboard.cappingYear": "Année de plafonnement",
+  "dashboard.welcomeToExp": "Bienvenue chez eXp!",
+  "dashboard.hiUser": "Bonjour Clifford!",
+  "revshare.organizationReporting": "Rapports d'organisation",
+  "revshare.revShareTrends": "Tendances RevShare par niveau",
+  "header.version": "Version",
+  "team.units": "Unités",
+  "team.volume": "Volume",
+  "team.teamLeadSplit": "Part du chef d'équipe",
+  "team.commission": "Commission",
+  "team.capResetDate": "Date de réinitialisation du plafond",
 };

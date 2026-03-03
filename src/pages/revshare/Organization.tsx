@@ -5,6 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Info } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
+import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const agentAreasData = [
   { name: "Residential", value: 93.1, color: "#1e3a5f" },
@@ -29,32 +31,26 @@ const salesVolumeData = [
 
 export default function OrganizationReporting() {
   useDocumentTitle("Organization Reporting");
+  const { formatCurrency, formatNumber } = useFormatters();
+  const { t } = useTranslation();
+
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-foreground">Organization Reporting</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t("revshare.organizationReporting")}</h1>
         </div>
 
         <Tabs defaultValue="summary" className="w-full mb-6">
           <div className="flex items-center justify-between mb-4">
             <TabsList className="bg-transparent border-b border-border rounded-none h-auto p-0">
-              <TabsTrigger 
-                value="summary" 
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3"
-              >
+              <TabsTrigger value="summary" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3">
                 Summary
               </TabsTrigger>
-              <TabsTrigger 
-                value="offboarding" 
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3"
-              >
+              <TabsTrigger value="offboarding" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3">
                 Offboarding Overview
               </TabsTrigger>
-              <TabsTrigger 
-                value="detail" 
-                className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3"
-              >
+              <TabsTrigger value="detail" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3">
                 Detail Report
               </TabsTrigger>
             </TabsList>
@@ -73,12 +69,11 @@ export default function OrganizationReporting() {
           <TabsContent value="summary">
             <h2 className="text-lg font-semibold text-foreground mb-4">Performance Snapshot</h2>
 
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">233</span>
+                    <span className="text-3xl font-bold text-foreground">{formatNumber(233)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">Total Organization Size</p>
@@ -88,7 +83,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">5</span>
+                    <span className="text-3xl font-bold text-foreground">{formatNumber(5)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">Agents who have joined the organization (year-to-date)</p>
@@ -98,7 +93,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">1</span>
+                    <span className="text-3xl font-bold text-foreground">{formatNumber(1)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">Agents with ICON status</p>
@@ -108,7 +103,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">2</span>
+                    <span className="text-3xl font-bold text-foreground">{formatNumber(2)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">Count of Team Leaders</p>
@@ -116,12 +111,11 @@ export default function OrganizationReporting() {
               </Card>
             </div>
 
-            {/* Transaction Stats */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
               <Card className="bg-primary text-primary-foreground lg:col-span-2">
                 <CardContent className="p-6 grid grid-cols-2 gap-6">
                   <div>
-                    <p className="text-4xl font-bold mb-2">24</p>
+                    <p className="text-4xl font-bold mb-2">{formatNumber(24)}</p>
                     <p className="text-sm text-primary-foreground/80">
                       Total transactions for active agents in the organization (year-to-date)
                     </p>
@@ -141,12 +135,11 @@ export default function OrganizationReporting() {
                     <p className="text-sm text-primary-foreground/80">Total Revenue Share (USD)</p>
                     <Info className="h-4 w-4 text-primary-foreground/60" />
                   </div>
-                  <p className="text-4xl font-bold">$847.71</p>
+                  <p className="text-4xl font-bold">{formatCurrency(847.71)}</p>
                 </CardContent>
               </Card>
             </div>
 
-            {/* YTD Volume */}
             <Card className="mb-6">
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
@@ -154,15 +147,13 @@ export default function OrganizationReporting() {
                   <p className="text-sm text-muted-foreground">USD</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xl font-bold text-foreground">$10,774,400.00</span>
+                  <span className="text-xl font-bold text-foreground">{formatCurrency(10774400)}</span>
                   <Info className="h-4 w-4 text-muted-foreground" />
                 </div>
               </CardContent>
             </Card>
 
-            {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Agent Areas */}
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
@@ -174,14 +165,7 @@ export default function OrganizationReporting() {
                   <div className="h-48 relative">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
-                        <Pie
-                          data={agentAreasData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={50}
-                          outerRadius={80}
-                          dataKey="value"
-                        >
+                        <Pie data={agentAreasData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} dataKey="value">
                           {agentAreasData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
@@ -200,7 +184,6 @@ export default function OrganizationReporting() {
                 </CardContent>
               </Card>
 
-              {/* Influencer Group */}
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
@@ -212,14 +195,7 @@ export default function OrganizationReporting() {
                   <div className="h-48 relative">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
-                        <Pie
-                          data={influencerData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={50}
-                          outerRadius={80}
-                          dataKey="value"
-                        >
+                        <Pie data={influencerData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} dataKey="value">
                           {influencerData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
@@ -238,7 +214,6 @@ export default function OrganizationReporting() {
                 </CardContent>
               </Card>
 
-              {/* Sales Volume Chart */}
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -261,8 +236,8 @@ export default function OrganizationReporting() {
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={salesVolumeData}>
                         <XAxis dataKey="level" />
-                        <YAxis tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
-                        <Tooltip formatter={(value: number) => [`$${value.toLocaleString()}`, 'Volume']} />
+                        <YAxis tickFormatter={(value) => formatCurrency(value, { compact: true, decimals: 1 })} />
+                        <Tooltip formatter={(value: number) => [formatCurrency(value), 'Volume']} />
                         <Bar dataKey="volume" fill="#1e3a5f" />
                       </BarChart>
                     </ResponsiveContainer>
@@ -275,7 +250,7 @@ export default function OrganizationReporting() {
           <TabsContent value="offboarding">
             <Card>
               <CardContent className="p-6">
-                <p className="text-center text-muted-foreground py-8">Offboarding overview coming soon.</p>
+                <p className="text-center text-muted-foreground py-8">{t("common.comingSoon")}</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -283,7 +258,7 @@ export default function OrganizationReporting() {
           <TabsContent value="detail">
             <Card>
               <CardContent className="p-6">
-                <p className="text-center text-muted-foreground py-8">Detail report coming soon.</p>
+                <p className="text-center text-muted-foreground py-8">{t("common.comingSoon")}</p>
               </CardContent>
             </Card>
           </TabsContent>

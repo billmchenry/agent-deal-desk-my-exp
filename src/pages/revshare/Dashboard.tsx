@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useDocumentTitle } from "@/hooks/use-document-title";
+import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   Select,
   SelectContent,
@@ -73,6 +75,8 @@ const TOTAL_AGENTS = 17816;
 export default function RevShareDashboard() {
   const isMobile = useIsMobile();
   useDocumentTitle("Revenue Share");
+  const { formatNumber, formatCurrency } = useFormatters();
+  const { t } = useTranslation();
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
@@ -273,7 +277,7 @@ export default function RevShareDashboard() {
                         </PieChart>
                       </ResponsiveContainer>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                        <span className="text-sm font-bold text-foreground">{formatNumber(TOTAL_AGENTS)}</span>
                         <span className="text-xs text-muted-foreground">Agents</span>
                       </div>
                     </div>
@@ -286,7 +290,7 @@ export default function RevShareDashboard() {
                             <span className="text-muted-foreground">({level.value}%)</span>
                           </div>
                           <div className="flex items-center gap-1 text-muted-foreground">
-                            <span>{level.agents.toLocaleString()}</span>
+                            <span>{formatNumber(level.agents)}</span>
                             <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
                         </div>
@@ -306,7 +310,7 @@ export default function RevShareDashboard() {
                         </PieChart>
                       </ResponsiveContainer>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                        <span className="text-sm font-bold text-foreground">{formatNumber(TOTAL_AGENTS)}</span>
                         <span className="text-xs text-muted-foreground">Agents</span>
                       </div>
                     </div>
@@ -318,7 +322,7 @@ export default function RevShareDashboard() {
                             <span className="text-foreground">{country.name}</span>
                           </div>
                           <div className="flex items-center gap-1 text-muted-foreground">
-                            <span>{country.agents.toLocaleString()}</span>
+                            <span>{formatNumber(country.agents)}</span>
                             <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
                         </div>
@@ -351,7 +355,7 @@ export default function RevShareDashboard() {
                         </PieChart>
                       </ResponsiveContainer>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                        <span className="text-sm font-bold text-foreground">{formatNumber(TOTAL_AGENTS)}</span>
                         <span className="text-xs text-muted-foreground">Agents</span>
                       </div>
                     </div>
@@ -364,7 +368,7 @@ export default function RevShareDashboard() {
                             <span className="text-muted-foreground">({level.value}%)</span>
                           </div>
                           <div className="flex items-center gap-1 text-muted-foreground">
-                            <span>{level.agents.toLocaleString()}</span>
+                            <span>{formatNumber(level.agents)}</span>
                             <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
                         </div>
@@ -394,7 +398,7 @@ export default function RevShareDashboard() {
                         </PieChart>
                       </ResponsiveContainer>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-sm font-bold text-foreground">{TOTAL_AGENTS.toLocaleString()}</span>
+                        <span className="text-sm font-bold text-foreground">{formatNumber(TOTAL_AGENTS)}</span>
                         <span className="text-xs text-muted-foreground">Agents</span>
                       </div>
                     </div>
@@ -406,7 +410,7 @@ export default function RevShareDashboard() {
                             <span className="text-foreground">{country.name}</span>
                           </div>
                           <div className="flex items-center gap-1 text-muted-foreground">
-                            <span>{country.agents.toLocaleString()}</span>
+                            <span>{formatNumber(country.agents)}</span>
                             <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
                         </div>
@@ -469,13 +473,13 @@ export default function RevShareDashboard() {
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-                  tickFormatter={(v) => `$${v.toFixed(1)}M`}
+                  tickFormatter={(v) => formatCurrency(v, { compact: true, decimals: 1 })}
                   domain={[0, 4]}
                   width={50}
                 />
                 <Tooltip
                   formatter={(value: number, name: string) => [
-                    `$${value < 1 ? Math.round(value * 1000) + "K" : value.toFixed(2) + "M"}`,
+                    formatCurrency(value, { compact: true }),
                     name === "revenue" ? "Revenue" : "Growth",
                   ]}
                   contentStyle={{

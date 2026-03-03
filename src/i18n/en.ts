@@ -178,6 +178,19 @@ export const en = {
   "common.expanded": "Expand sidebar",
   "common.skipToMain": "Skip to main content",
   "common.openMiraChat": "Open Mira chat",
+
+  // Additional keys
+  "dashboard.cappingYear": "Capping Year",
+  "dashboard.welcomeToExp": "Welcome to eXp!",
+  "dashboard.hiUser": "Hi Clifford!",
+  "revshare.organizationReporting": "Organization Reporting",
+  "revshare.revShareTrends": "My RevShare Trends by Level",
+  "header.version": "Version",
+  "team.units": "Units",
+  "team.volume": "Volume",
+  "team.teamLeadSplit": "Team Lead Split",
+  "team.commission": "Commission",
+  "team.capResetDate": "Cap Reset Date",
 } as const;
 
 export type TranslationKey = keyof typeof en;

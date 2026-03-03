@@ -2,6 +2,8 @@ import { Home, DollarSign, Building2, Target, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AgentHeroBannerProps {
   units: number;
@@ -51,11 +53,8 @@ export function AgentHeroBanner({
   transactionsPending,
   transactionsWithdrawn,
 }: AgentHeroBannerProps) {
-  const formatCurrency = (value: number) => {
-    if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
-    if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`;
-    return `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  };
+  const { formatCurrency } = useFormatters();
+  const { t } = useTranslation();
 
   return (
     <Card className="relative overflow-hidden bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue p-4 sm:p-6 text-white">
@@ -81,19 +80,19 @@ export function AgentHeroBanner({
           <MiniStatCard
             icon={<Home className="h-4 w-4" />}
             value={units.toString()}
-            label="Units"
+            label={t("agent.units")}
             color="blue"
           />
           <MiniStatCard
             icon={<Building2 className="h-4 w-4" />}
-            value={formatCurrency(volume)}
-            label="Volume"
+            value={formatCurrency(volume, { compact: true })}
+            label={t("agent.volume")}
             color="purple"
           />
           <MiniStatCard
             icon={<DollarSign className="h-4 w-4" />}
-            value={formatCurrency(commission)}
-            label="Commission"
+            value={formatCurrency(commission, { compact: true })}
+            label={t("agent.commission")}
             color="green"
           />
           <div className="flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
@@ -103,15 +102,15 @@ export function AgentHeroBanner({
             <div className="flex gap-2 sm:gap-3 min-w-0">
               <div className="text-center">
                 <p className="text-lg font-bold text-white">{transactionsClosed}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">Closed</p>
+                <p className="text-xs sm:text-[11px] text-white/70">{t("txn.paid")}</p>
               </div>
               <div className="text-center">
                 <p className="text-lg font-bold text-white">{transactionsPending}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">Pending</p>
+                <p className="text-xs sm:text-[11px] text-white/70">{t("txn.pending")}</p>
               </div>
               <div className="text-center">
                 <p className="text-lg font-bold text-white">{transactionsWithdrawn}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">Withdrawn</p>
+                <p className="text-xs sm:text-[11px] text-white/70">{t("txn.withdrawn")}</p>
               </div>
             </div>
           </div>
