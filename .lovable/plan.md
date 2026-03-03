@@ -1,54 +1,46 @@
 
 
-## Mobile Responsiveness + Touch-Friendly CTAs for RevShare Dashboard
+## Fix Mobile Layout for Distribution Charts and Comparison Controls
 
-### Summary
-Make all interactive elements meet the 44px minimum touch target on mobile, improve layout stacking for 390px viewports, and ensure charts scale properly.
+### Problem
+On mobile (390px), both the Distribution section and the Comparison chart controls look cramped and poorly organized:
+- The donut charts sit side-by-side with the legend list, making both too small to read comfortably
+- The Comparison header has too many controls wrapping awkwardly in one row
 
-### All Changes in `src/pages/revshare/Dashboard.tsx`
+### Changes (all in `src/pages/revshare/Dashboard.tsx`)
 
-**1. Page Header — Select trigger touch target**
-- Line 79: Change `h-8` to `h-8 sm:h-8 min-h-[44px] sm:min-h-0` so the period selector is tappable on mobile.
+**1. Distribution Charts — Stack chart above legend on mobile**
 
-**2. Hero Banner CTA buttons (View FLA List, View FLQA List)**
-- Lines 137 and 163: These `button` elements currently use `px-2.5 py-1` which renders well under 44px tall. Update to `px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1` so they expand to thumb-friendly size on mobile while staying compact on desktop.
+Instead of the current side-by-side layout (donut left, legend right), stack them vertically on mobile so the donut chart is centered above the legend list. This gives both elements proper breathing room.
 
-**3. Current Payout Status header — stack on mobile**
-- Line 174: Change from `flex items-center justify-between` to `flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1` so the "View Periodic Overview" link wraps below the title on small screens.
-- Line 179 ("View Periodic Overview" link): Add `min-h-[44px] sm:min-h-0 flex items-center` for touch target.
+- Lines 257 and 311: Change `flex items-center gap-4` to `flex flex-col items-center sm:flex-row sm:items-center gap-3 sm:gap-4`
+- The donut container keeps `w-24 h-24 sm:w-32 sm:h-32` but now sits centered above the legend on mobile
+- The legend list (`flex-1`) gets full width on mobile with `w-full sm:w-auto`
 
-**4. Payout card CTAs (View details x3, Get Paid Now)**
-- Lines 200, 214, 229 ("View details" buttons): Change `px-2.5 py-1` to `px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1` for mobile touch targets.
-- Line 217 ("Get Paid Now" Button): Change `h-7` to `h-11 sm:h-7` for 44px on mobile.
-- Line 213: On mobile the two buttons should stack. Change `flex items-center justify-between` to `flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2`.
+**2. Reduce donut chart inner/outer radius on mobile**
 
-**5. Distribution section — mobile separator + smaller donuts**
-- Line 258 and 312 (donut containers): Change `w-32 h-32` to `w-24 h-24 sm:w-32 sm:h-32` so charts don't eat too much horizontal space on 390px.
-- Line 301 ("By Country" wrapper): Add `border-t pt-4 lg:border-t-0 lg:pt-0` for a visible mobile separator between the two chart sections.
-- Lines 251-253 and 304-308 (Tab triggers for Agents/RevShare): Change `h-6` triggers to `h-8 sm:h-6 min-h-[44px] sm:min-h-0` for touch targets, and TabsList from `h-7` to `h-9 sm:h-7`.
-- Lines 284 and 338 (legend rows): Change `py-0.5` to `py-2 sm:py-0.5` to increase row tap targets on mobile.
+The current `innerRadius={38} outerRadius={56}` is fine for the 128px desktop container but too large for the 96px mobile one — the ring gets clipped or looks cramped. Use the `useIsMobile` hook to set smaller radii on mobile:
+- Mobile: `innerRadius={28} outerRadius={42}`
+- Desktop: `innerRadius={38} outerRadius={56}`
 
-**6. Revenue Share Comparison — controls and chart height**
-- Lines 371-377 (Yearly/Quarterly/Monthly tabs): Same tab trigger treatment as above — `h-8 sm:h-6 min-h-[44px] sm:min-h-0`.
-- Line 368 ("View Trends" link): Add `min-h-[44px] sm:min-h-0 flex items-center`.
-- Line 390: Wrap `ResponsiveContainer` in a `div` with `h-[200px] sm:h-[240px]` and set height to `"100%"` for a shorter chart on mobile.
+Import `useIsMobile` from `@/hooks/use-mobile` at the top of the component.
 
-### Touch Target Summary
+**3. Comparison Chart Controls — Stack controls below header on mobile**
 
-| Element | Current Height | Mobile Target |
-|---------|---------------|---------------|
-| Period Select | 32px | 44px |
-| View FLA/FLQA List | ~28px | 44px |
-| View Periodic Overview | ~20px | 44px |
-| View details (x3) | ~28px | 44px |
-| Get Paid Now | 28px | 44px |
-| Tab triggers (x8) | 24px | 44px |
-| Distribution legend rows | ~24px | 40px+ |
-| View Trends link | ~20px | 44px |
+- Line 367: Change the controls wrapper from `flex items-center gap-3 flex-wrap` to `flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto`
+- Group the "View Trends" link and Tabs into one row, and the legend into its own row below, so the wrapping is intentional rather than chaotic
+- Wrap "View Trends" + Tabs in a `flex items-center gap-2` container
+- Keep legend as a separate `flex items-center gap-2` row
 
-### What stays the same
-- Overall page structure and section order
-- Color scheme, typography, and card layouts
-- All mock data unchanged
-- Desktop appearance virtually identical (changes only kick in below `sm` breakpoint)
+**4. Chart bar label font size**
+
+- Line 427: The bar label uses `fontSize={10}` which violates the 12px minimum accessibility rule. Change to `fontSize={12}`.
+
+### Technical Details
+
+- Import `useIsMobile` hook
+- Call `const isMobile = useIsMobile()` inside the component
+- Use `isMobile` to conditionally set pie chart radii
+- All other changes are pure Tailwind class adjustments
+- Desktop appearance remains virtually unchanged
 
