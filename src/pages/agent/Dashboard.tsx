@@ -1,28 +1,35 @@
 import { useState } from "react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { AgentFilterBar } from "@/components/agent/AgentFilterBar";
+import { UniversalFilterBar, DateRange } from "@/components/filters";
 import { AgentHeroBanner } from "@/components/agent/AgentHeroBanner";
 import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
 import { CappingSection } from "@/components/agent/CappingSection";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function AgentDashboard() {
   useDocumentTitle("Agent Dashboard");
-  const [dateRange, setDateRange] = useState<{
-    from: Date | undefined;
-    to: Date | undefined;
-  }>({
+  const { t } = useTranslation();
+  const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(2026, 0, 1),
     to: new Date(2026, 1, 6),
   });
+  const [includePipeline, setIncludePipeline] = useState(false);
 
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        <AgentFilterBar
-          dateRange={dateRange}
-          onDateRangeChange={setDateRange}
-        />
+        <UniversalFilterBar title={t("agent.agentPerformance")}>
+          <UniversalFilterBar.DateRange
+            value={dateRange}
+            onChange={setDateRange}
+          />
+          <UniversalFilterBar.Toggle
+            label={t("common.pending")}
+            checked={includePipeline}
+            onChange={setIncludePipeline}
+          />
+        </UniversalFilterBar>
         <AgentHeroBanner
           units={5}
           volume={1784000}

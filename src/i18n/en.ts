@@ -179,6 +179,22 @@ export const en = {
   "common.skipToMain": "Skip to main content",
   "common.openMiraChat": "Open Mira chat",
 
+  // Filters
+  "filter.ytd": "YTD",
+  "filter.mtd": "MTD",
+  "filter.lastWeek": "Last Week",
+  "filter.lastYear": "Last Year",
+  "filter.custom": "Custom",
+  "filter.selectDateRange": "Select date range",
+  "filter.search": "Search",
+  "filter.allTypes": "All Types",
+  "filter.priority": "Priority",
+  "filter.allCategories": "All Categories",
+  "filter.allTime": "All Time",
+  "filter.today": "Today",
+  "filter.thisWeek": "This Week",
+  "filter.thisMonth": "This Month",
+
   // Additional keys
   "dashboard.cappingYear": "Capping Year",
   "dashboard.welcomeToExp": "Welcome to eXp!",

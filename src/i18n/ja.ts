@@ -170,4 +170,20 @@ export const ja: Record<string, string> = {
   "common.expanded": "サイドバーを展開",
   "common.skipToMain": "メインコンテンツへスキップ",
   "common.openMiraChat": "Miraチャットを開く",
+
+  // Filters
+  "filter.ytd": "年初来",
+  "filter.mtd": "月初来",
+  "filter.lastWeek": "先週",
+  "filter.lastYear": "昨年",
+  "filter.custom": "カスタム",
+  "filter.selectDateRange": "期間を選択",
+  "filter.search": "検索",
+  "filter.allTypes": "すべてのタイプ",
+  "filter.priority": "優先度",
+  "filter.allCategories": "すべてのカテゴリ",
+  "filter.allTime": "全期間",
+  "filter.today": "今日",
+  "filter.thisWeek": "今週",
+  "filter.thisMonth": "今月",
 };

@@ -189,4 +189,20 @@ export const es: Record<string, string> = {
   "common.expanded": "Expandir barra lateral",
   "common.skipToMain": "Saltar al contenido principal",
   "common.openMiraChat": "Abrir chat Mira",
+
+  // Filters
+  "filter.ytd": "AcA",
+  "filter.mtd": "MaM",
+  "filter.lastWeek": "Última semana",
+  "filter.lastYear": "Último año",
+  "filter.custom": "Personalizado",
+  "filter.selectDateRange": "Seleccionar rango de fechas",
+  "filter.search": "Buscar",
+  "filter.allTypes": "Todos los tipos",
+  "filter.priority": "Prioridad",
+  "filter.allCategories": "Todas las categorías",
+  "filter.allTime": "Todo el tiempo",
+  "filter.today": "Hoy",
+  "filter.thisWeek": "Esta semana",
+  "filter.thisMonth": "Este mes",
 };

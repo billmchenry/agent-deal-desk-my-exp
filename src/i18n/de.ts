@@ -218,4 +218,20 @@ export const de: Record<string, string> = {
   "profile.licenses": "Lizenzen",
   "profile.mentor": "Mentor",
   "profile.partnerAgent": "Partneragent",
+
+  // Filters
+  "filter.ytd": "JBA",
+  "filter.mtd": "MBA",
+  "filter.lastWeek": "Letzte Woche",
+  "filter.lastYear": "Letztes Jahr",
+  "filter.custom": "Benutzerdefiniert",
+  "filter.selectDateRange": "Zeitraum wählen",
+  "filter.search": "Suchen",
+  "filter.allTypes": "Alle Typen",
+  "filter.priority": "Priorität",
+  "filter.allCategories": "Alle Kategorien",
+  "filter.allTime": "Gesamter Zeitraum",
+  "filter.today": "Heute",
+  "filter.thisWeek": "Diese Woche",
+  "filter.thisMonth": "Dieser Monat",
 };

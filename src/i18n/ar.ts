@@ -218,4 +218,20 @@ export const ar: Record<string, string> = {
   "profile.licenses": "التراخيص",
   "profile.mentor": "المرشد",
   "profile.partnerAgent": "الوكيل الشريك",
+
+  // Filters
+  "filter.ytd": "منذ بداية العام",
+  "filter.mtd": "منذ بداية الشهر",
+  "filter.lastWeek": "الأسبوع الماضي",
+  "filter.lastYear": "العام الماضي",
+  "filter.custom": "مخصص",
+  "filter.selectDateRange": "اختر نطاق التاريخ",
+  "filter.search": "بحث",
+  "filter.allTypes": "جميع الأنواع",
+  "filter.priority": "الأولوية",
+  "filter.allCategories": "جميع الفئات",
+  "filter.allTime": "كل الأوقات",
+  "filter.today": "اليوم",
+  "filter.thisWeek": "هذا الأسبوع",
+  "filter.thisMonth": "هذا الشهر",
 };
