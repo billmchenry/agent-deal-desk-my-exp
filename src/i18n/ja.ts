@@ -209,4 +209,22 @@ export const ja: Record<string, string> = {
   "filter.today": "今日",
   "filter.thisWeek": "今週",
   "filter.thisMonth": "今月",
+
+  // Team Reconciliation
+  "nav.teamReconciliation": "チーム照合",
+  "team.reconciliation": "チーム照合",
+  "team.number": "#",
+  "team.agentName": "エージェント名",
+  "team.uuid": "UUID",
+  "team.typeOfProperty": "物件タイプ",
+  "team.netCommission": "純手数料",
+  "team.viewBreakdown": "内訳を表示",
+  "team.backToTeam": "チームに戻る",
+  "team.paymentInitiatedDate": "支払開始日",
+  "team.buyerCommissionBase": "買い手手数料基準",
+  "team.commissionSale": "販売手数料",
+  "team.teamView": "チームビュー",
+  "team.remainingCommission": "残り手数料",
+  "team.totalDeductions": "控除合計",
+  "team.agentNet": "エージェント純額",
 };

@@ -278,4 +278,22 @@ export const frCA: Record<string, string> = {
   "filter.today": "Aujourd'hui",
   "filter.thisWeek": "Cette semaine",
   "filter.thisMonth": "Ce mois-ci",
+
+  // Team Reconciliation
+  "nav.teamReconciliation": "Réconciliation d'équipe",
+  "team.reconciliation": "Réconciliation d'équipe",
+  "team.number": "#",
+  "team.agentName": "Nom de l'agent",
+  "team.uuid": "UUID",
+  "team.typeOfProperty": "Type de propriété",
+  "team.netCommission": "Commission nette",
+  "team.viewBreakdown": "Voir le détail",
+  "team.backToTeam": "Retour à l'équipe",
+  "team.paymentInitiatedDate": "Date d'initiation du paiement",
+  "team.buyerCommissionBase": "Base de commission acheteur",
+  "team.commissionSale": "Commission de vente",
+  "team.teamView": "Vue d'équipe",
+  "team.remainingCommission": "Commission restante",
+  "team.totalDeductions": "Total des déductions",
+  "team.agentNet": "Net de l'agent",
 };

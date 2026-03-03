@@ -15,6 +15,7 @@ import AgentDashboard from "./pages/agent/Dashboard";
 import IconProgram from "./pages/agent/IconProgram";
 import AgentTransactions from "./pages/agent/Transactions";
 import TeamDashboard from "./pages/team/Dashboard";
+import TeamReconciliation from "./pages/team/Reconciliation";
 import RevShareDashboard from "./pages/revshare/Dashboard";
 import OrganizationReporting from "./pages/revshare/Organization";
 import OrganizationTree from "./pages/revshare/OrganizationTree";
@@ -45,6 +46,7 @@ const App = () => (
                 
                 <Route path="/agent/transactions" element={<AgentTransactions />} />
                 <Route path="/team/dashboard" element={<TeamDashboard />} />
+                <Route path="/team/reconciliation" element={<TeamReconciliation />} />
                 <Route path="/revshare/dashboard" element={<RevShareDashboard />} />
                 <Route path="/revshare/organization" element={<OrganizationReporting />} />
                 <Route path="/revshare/organization-tree" element={<OrganizationTree />} />

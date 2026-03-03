@@ -257,4 +257,22 @@ export const zh: Record<string, string> = {
   "filter.today": "今天",
   "filter.thisWeek": "本周",
   "filter.thisMonth": "本月",
+
+  // Team Reconciliation
+  "nav.teamReconciliation": "团队对账",
+  "team.reconciliation": "团队对账",
+  "team.number": "#",
+  "team.agentName": "经纪人姓名",
+  "team.uuid": "UUID",
+  "team.typeOfProperty": "物业类型",
+  "team.netCommission": "净佣金",
+  "team.viewBreakdown": "查看明细",
+  "team.backToTeam": "返回团队",
+  "team.paymentInitiatedDate": "付款发起日期",
+  "team.buyerCommissionBase": "买方佣金基数",
+  "team.commissionSale": "销售佣金",
+  "team.teamView": "团队视图",
+  "team.remainingCommission": "剩余佣金",
+  "team.totalDeductions": "总扣除",
+  "team.agentNet": "经纪人净额",
 };

@@ -228,4 +228,22 @@ export const es: Record<string, string> = {
   "filter.today": "Hoy",
   "filter.thisWeek": "Esta semana",
   "filter.thisMonth": "Este mes",
+
+  // Team Reconciliation
+  "nav.teamReconciliation": "Reconciliación del equipo",
+  "team.reconciliation": "Reconciliación del equipo",
+  "team.number": "#",
+  "team.agentName": "Nombre del agente",
+  "team.uuid": "UUID",
+  "team.typeOfProperty": "Tipo de propiedad",
+  "team.netCommission": "Comisión neta",
+  "team.viewBreakdown": "Ver desglose",
+  "team.backToTeam": "Volver al equipo",
+  "team.paymentInitiatedDate": "Fecha de inicio de pago",
+  "team.buyerCommissionBase": "Base de comisión del comprador",
+  "team.commissionSale": "Comisión de venta",
+  "team.teamView": "Vista del equipo",
+  "team.remainingCommission": "Comisión restante",
+  "team.totalDeductions": "Total de deducciones",
+  "team.agentNet": "Neto del agente",
 };

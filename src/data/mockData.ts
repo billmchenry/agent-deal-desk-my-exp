@@ -411,7 +411,15 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
   businessGrowth: {
     label: "BUSINESS & GROWTH",
     items: [
-      { title: "Team", icon: "Users", url: "/team/dashboard" },
+      {
+        title: "Team",
+        icon: "Users",
+        url: "/team/dashboard",
+        submenu: [
+          { title: "Dashboard", url: "/team/dashboard" },
+          { title: "Team Reconciliation", url: "/team/reconciliation" },
+        ],
+      },
       {
         title: "RevShare Earnings",
         icon: "DollarSign",
@@ -447,6 +455,11 @@ export const navItems = [
     title: "Team",
     icon: "Users",
     url: "/team/dashboard",
+    hasSubmenu: true,
+    submenu: [
+      { title: "Dashboard", url: "/team/dashboard" },
+      { title: "Team Reconciliation", url: "/team/reconciliation" },
+    ],
   },
   {
     title: "RevShare Earnings",
