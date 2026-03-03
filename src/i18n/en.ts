@@ -286,6 +286,24 @@ export const en = {
   "profile.licenses": "Licenses",
   "profile.mentor": "Mentor",
   "profile.partnerAgent": "Partner Agent",
+
+  // Team Reconciliation
+  "nav.teamReconciliation": "Team Reconciliation",
+  "team.reconciliation": "Team Reconciliation",
+  "team.number": "#",
+  "team.agentName": "Agent Name",
+  "team.uuid": "UUID",
+  "team.typeOfProperty": "Type of Property",
+  "team.netCommission": "Net Commission",
+  "team.viewBreakdown": "View Breakdown",
+  "team.backToTeam": "Back to Team",
+  "team.paymentInitiatedDate": "Payment Initiated Date",
+  "team.buyerCommissionBase": "Buyer Commission Base",
+  "team.commissionSale": "Commission Sale",
+  "team.teamView": "TeamView",
+  "team.remainingCommission": "Remaining Commission",
+  "team.totalDeductions": "Total Deductions",
+  "team.agentNet": "Agent Net",
 } as const;
 
 export type TranslationKey = keyof typeof en;

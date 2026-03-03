@@ -257,4 +257,22 @@ export const ar: Record<string, string> = {
   "filter.today": "اليوم",
   "filter.thisWeek": "هذا الأسبوع",
   "filter.thisMonth": "هذا الشهر",
+
+  // Team Reconciliation
+  "nav.teamReconciliation": "تسوية الفريق",
+  "team.reconciliation": "تسوية الفريق",
+  "team.number": "#",
+  "team.agentName": "اسم الوكيل",
+  "team.uuid": "UUID",
+  "team.typeOfProperty": "نوع العقار",
+  "team.netCommission": "صافي العمولة",
+  "team.viewBreakdown": "عرض التفصيل",
+  "team.backToTeam": "العودة إلى الفريق",
+  "team.paymentInitiatedDate": "تاريخ بدء الدفع",
+  "team.buyerCommissionBase": "أساس عمولة المشتري",
+  "team.commissionSale": "عمولة البيع",
+  "team.teamView": "عرض الفريق",
+  "team.remainingCommission": "العمولة المتبقية",
+  "team.totalDeductions": "إجمالي الاستقطاعات",
+  "team.agentNet": "صافي الوكيل",
 };

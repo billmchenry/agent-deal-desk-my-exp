@@ -257,4 +257,22 @@ export const de: Record<string, string> = {
   "filter.today": "Heute",
   "filter.thisWeek": "Diese Woche",
   "filter.thisMonth": "Dieser Monat",
+
+  // Team Reconciliation
+  "nav.teamReconciliation": "Team-Abstimmung",
+  "team.reconciliation": "Team-Abstimmung",
+  "team.number": "#",
+  "team.agentName": "Agentenname",
+  "team.uuid": "UUID",
+  "team.typeOfProperty": "Immobilientyp",
+  "team.netCommission": "Nettoprovision",
+  "team.viewBreakdown": "Aufschlüsselung anzeigen",
+  "team.backToTeam": "Zurück zum Team",
+  "team.paymentInitiatedDate": "Zahlungsinitiierungsdatum",
+  "team.buyerCommissionBase": "Käuferprovisionsbasis",
+  "team.commissionSale": "Verkaufsprovision",
+  "team.teamView": "Teamansicht",
+  "team.remainingCommission": "Verbleibende Provision",
+  "team.totalDeductions": "Gesamtabzüge",
+  "team.agentNet": "Agent netto",
 };
