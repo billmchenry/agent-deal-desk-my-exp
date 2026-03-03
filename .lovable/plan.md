@@ -1,110 +1,278 @@
 
+# Internationalization (i18n) and Locale-Aware Formatting System
 
-## WCAG 2.2 Level A and AA Compliance Plan
-
-This is a large, multi-area effort. Rather than trying to do everything at once, the plan is organized by WCAG principle (Perceivable, Operable, Understandable, Robust) with the specific gaps found in this codebase.
-
----
-
-### Phase 1: Structural and Navigation Foundations
-
-**1. Add Skip Navigation Link**
-- No skip link exists today. Add a "Skip to main content" link as the first focusable element in `DashboardLayout.tsx`
-- Add `id="main-content"` to the `<main>` element
-- Style it as `sr-only` until focused, then visually appear at the top of the page
-
-**2. Add Landmark Roles and Page Titles**
-- `DashboardLayout.tsx`: The `<main>` tag is already present (good), but the sidebar `<aside>` needs `aria-label="Main navigation"`
-- `Header.tsx`: Wrap header content in semantic `<header>` (already done) and add `role="banner"` or keep as-is since `<header>` implies it
-- Each page needs a unique document `<title>` -- currently all pages say "Lovable App". Add a simple `useEffect` in each page component to set `document.title`, or create a small `useDocumentTitle` hook
-
-**3. Fix the Sidebar Header (Dark Mode)**
-- `Sidebar.tsx` line 216-218: The header uses hardcoded `bg-white` -- needs to change to `bg-background` or a sidebar-appropriate variable for dark mode contrast compliance
+This plan adds a full internationalization system to the application, covering language translation, date/time formatting, number formatting, font size accessibility, and RTL layout support — all driven from the Settings tab.
 
 ---
 
-### Phase 2: Interactive Element Accessibility
+## Architecture Overview
 
-**4. Add Missing `aria-label`s to Icon-Only Buttons**
-- `Header.tsx`: The hamburger menu button (`<Menu>`) has no accessible name -- add `aria-label="Open menu"`
-- `Header.tsx`: The notification bell button needs `aria-label="Notifications, 3 unread"`
-- `Header.tsx`: The help button (mobile icon-only variant) needs `aria-label="Get help"`
-- `Header.tsx`: The theme toggle needs `aria-label` that updates with current theme state (e.g., "Switch to dark mode")
-- `DashboardLayout.tsx`: The floating Mira chat button needs `aria-label="Open Mira chat"`
-
-**5. Fix Non-Semantic Interactive Elements**
-- `Sidebar.tsx` lines 83-90: Uses `<a>` tags without `href` attributes for navigation -- should use proper `<Link>` from react-router-dom or `<button>` elements
-- `SettingsTab.tsx`: The setting cards use plain `<button>` elements without accessible names -- the icon buttons need `aria-label` attributes (e.g., "Edit Language", "Open Security settings")
-- `MobileNavDrawer.tsx` line 169: `SheetHeader` uses hardcoded `bg-white` -- dark mode contrast issue
-
-**6. Ensure Minimum Touch Targets (44x44px)**
-- Audit and enforce `min-h-[44px] min-w-[44px]` on all mobile interactive elements
-- `Sidebar.tsx` chevron toggles (line 116-127): Currently `p-1.5` which is ~30px -- needs to be at least 44px on touch devices
-- `MobileNavDrawer.tsx` chevron buttons (line 132-134): Same issue
-
----
-
-### Phase 3: Color and Visual Accessibility
-
-**7. Ensure Sufficient Color Contrast (4.5:1 for text, 3:1 for large text / UI components)**
-- `text-muted-foreground` in light mode is `hsl(215 16% 47%)` on `hsl(210 20% 98%)` -- this produces approximately 4.6:1 which passes, but should be verified on all background combinations
-- `text-sidebar-foreground/50` and `/70` opacity values in the sidebar may fail contrast requirements -- these semi-transparent text colors on the dark navy background need checking and possible adjustments (e.g., raising `/50` to `/60` or `/70`)
-- `text-white/40` and `text-white/50` used extensively in `revshare/Dashboard.tsx` hero banner -- these low-opacity values almost certainly fail WCAG AA contrast on the navy background. Raise minimum to `/70` or use distinct lighter colors
-- Notification badge: `bg-exp-red` with `text-white` at `text-[10px]` -- extremely small text needs extra contrast verification
-
-**8. Don't Rely on Color Alone (1.4.1)**
-- Active sidebar items only differ by `bg-sidebar-accent` -- should also show a visual indicator like a left border bar or bold text (bold is already applied, which helps)
-- Chart data in `YearOverYearChart.tsx` and donut charts should include patterns or labels, not just color coding
+```text
++---------------------------+
+|   LocaleContext (React)    |
+|  Stored in localStorage    |
++---------------------------+
+| language: en | fr-CA | es | zh | ja | de | ar
+| dateFormat: MM/DD/YYYY | DD/MM/YYYY | YYYY/MM/DD | ...
+| timeFormat: 12h | 24h
+| numberFormat: en-US | de-DE | en-IN (lakhs)
+| fontSize: normal | large | x-large
++---------------------------+
+        |
+        v
++---------------------------+
+|  Formatting Utilities      |
+|  formatNumber()            |
+|  formatCurrency()          |
+|  formatDate()              |
+|  formatTime()              |
+|  t() translation function  |
++---------------------------+
+        |
+        v
+  Used by ALL components
+```
 
 ---
 
-### Phase 4: Forms and Content
+## Phase 1: Locale Context and Settings UI
 
-**9. Form Input Labels and Error States**
-- `GlobalSearch.tsx`: The search input uses a raw `<input>` without a visible or associated `<label>` -- add `aria-label="Search"` or associate with a label
-- `AgentFilterBar.tsx`: The calendar popover trigger button is accessible (has text content), but the preset buttons should have more descriptive labels for screen readers
-- `EditProfileSheet.tsx`: Verify all form fields have proper label associations
+### 1.1 Create `src/contexts/LocaleContext.tsx`
 
-**10. Focus Management**
-- When mobile sheets/drawers open, focus should move to the sheet content (Radix Sheet handles this automatically -- verify)
-- When the Mira chat panel opens/closes, focus should be managed appropriately
-- The `.tap-card` CSS in `index.css` suppresses `outline: none !important` on focus -- this removes the focus indicator for keyboard users. This is a WCAG 2.4.7 failure. Change to only suppress on `:active` or use `:focus-visible` to preserve keyboard focus indicators while hiding them for touch/mouse
+A new React context that stores all locale preferences in localStorage via the existing `useLocalStorage` hook:
 
-**11. Page Language**
-- `index.html`: Already has `lang="en"` (good)
+- `language` — `"en"` (default), `"fr-CA"`, `"es"`, `"zh"`, `"ja"`, `"de"`, `"ar"`
+- `dateFormat` — `"MM/DD/YYYY"` (default), `"DD/MM/YYYY"`, `"YYYY/MM/DD"`, `"DD-MM-YYYY"`, `"MM-DD-YYYY"`, `"YYYY-MM-DD"`, `"DD Mon, YYYY"`
+- `timeFormat` — `"12h"` (default) or `"24h"`
+- `numberFormat` — `"en-US"` (1,000,000.50), `"de-DE"` (1.000.000,50), `"en-IN"` (10,00,000.50 lakhs)
+- `fontSize` — `"normal"`, `"large"`, `"x-large"` (WCAG 2.2 font size preference)
+
+The context will expose setter functions for each preference and be wrapped at the app root in `App.tsx`.
+
+### 1.2 Rebuild `src/components/profile/SettingsTab.tsx`
+
+Match the reference screenshot layout:
+- **Locale card** — shows flag emoji + "USA" with "Change Locale" button (placeholder toast for now)
+- **Preferences grid** (4 columns) — Language, Date Format, Time Format, Number Format. Each card's edit icon opens a **dialog** with radio-button options
+- **Font Size card** (new) — "Normal", "Large", "Extra Large" radio options for WCAG compliance
+- **Action cards** — Security and Login cards. Clicking either shows a toast: "This functionality is not yet available"
+- Remove "eXtend a Hand" card (not in reference screenshot)
+- **App Version** — update to `3.36.0` per screenshot
+
+Each dialog will:
+- Use `RadioGroup` from Radix for selection
+- Save the selection to `LocaleContext`
+- Show current value as the selected option
+
+**Date Format dialog options** (from reference image):
+- DD/MM/YYYY
+- MM/DD/YYYY
+- YYYY/MM/DD
+- DD-MM-YYYY
+- MM-DD-YYYY
+- YYYY-MM-DD
+- DD Mon, YYYY
 
 ---
 
-### Phase 5: Dynamic Content
+## Phase 2: Formatting Utilities
 
-**12. Status Messages and Live Regions**
-- Toast notifications (sonner/toaster) should use `role="status"` or `aria-live="polite"` -- verify the Radix/Sonner components handle this (they typically do)
-- When widgets are reordered via drag-and-drop, announce the change to screen readers with an `aria-live` region (e.g., "Widget moved to position 3")
+### 2.1 Create `src/lib/formatters.ts`
 
-**13. Drag and Drop Keyboard Support**
-- `CustomizableDashboard.tsx` already uses `KeyboardSensor` from dnd-kit -- verify keyboard reordering works end-to-end
-- Ensure the drag handle has proper `aria-roledescription="sortable"` and instructions
+Central formatting functions that read from locale context values:
+
+**`formatNumber(value, numberFormat, options?)`**
+- `"en-US"` — uses `Intl.NumberFormat('en-US')` producing `1,000,000.50`
+- `"de-DE"` — uses `Intl.NumberFormat('de-DE')` producing `1.000.000,50`
+- `"en-IN"` — uses `Intl.NumberFormat('en-IN')` producing `10,00,000.50`
+
+**`formatCurrency(value, numberFormat, options?)`**
+- Same locale mapping but with currency symbol prefix
+- Supports compact notation (e.g., `$1.78M`, `$2.67K`)
+
+**`formatDate(date, dateFormat)`**
+- Converts a Date or string to the user's chosen format using `date-fns` `format()` with the correct pattern
+
+**`formatTime(date, timeFormat)`**
+- 12h: `2:30 PM`
+- 24h: `14:30`
+
+### 2.2 Create `src/hooks/useFormatters.ts`
+
+A convenience hook that reads from `LocaleContext` and returns bound formatting functions so components don't need to pass format strings manually:
+
+```tsx
+const { formatNumber, formatCurrency, formatDate, formatTime } = useFormatters();
+// Then: formatCurrency(1780000) => "$1,780,000.00" or "$17,80,000.00" etc.
+```
 
 ---
 
-### Summary of Files to Modify
+## Phase 3: Translation System
 
-| File | Changes |
+### 3.1 Create translation files
+
+Directory: `src/i18n/`
+
+- `src/i18n/en.ts` — English (base, all keys)
+- `src/i18n/fr-CA.ts` — French Canadian
+- `src/i18n/es.ts` — Spanish
+- `src/i18n/zh.ts` — Chinese (Mandarin, Simplified)
+- `src/i18n/ja.ts` — Japanese
+- `src/i18n/de.ts` — German
+- `src/i18n/ar.ts` — Arabic
+- `src/i18n/index.ts` — exports a lookup map
+
+Each file exports a flat object with ~200-300 keys covering all UI strings:
+- Navigation labels (Home, Agent, Team, RevShare Earnings, etc.)
+- Page titles and headings
+- Button labels (Edit, Save, Cancel, Change Locale, etc.)
+- Settings labels (Language, Date Format, Time Format, etc.)
+- Dashboard card titles and labels
+- Profile field labels
+- Common words (Units, Volume, Commission, Status, etc.)
+
+### 3.2 Create `src/hooks/useTranslation.ts`
+
+Returns a `t(key)` function that looks up the current language from `LocaleContext` and returns the translated string, falling back to English if a key is missing.
+
+---
+
+## Phase 4: RTL Support for Arabic
+
+### 4.1 Update `index.html` and root layout
+
+- The `LocaleContext` will set `document.documentElement.dir = "rtl"` when Arabic is selected, and `"ltr"` otherwise
+- Also update `document.documentElement.lang` to match the selected language
+
+### 4.2 CSS adjustments in `src/index.css`
+
+Add RTL-aware utilities:
+- Sidebar should flip to the right side
+- Text alignment and flex direction should reverse
+- Use Tailwind's `rtl:` variant prefix where needed (e.g., `rtl:flex-row-reverse`, `rtl:text-right`)
+- Ensure `tailwind.config.ts` has RTL plugin or manual classes
+
+### 4.3 Component updates for RTL
+
+Key components that need RTL-aware styling:
+- `Sidebar.tsx` — flip position
+- `Header.tsx` — reverse flex order
+- `DashboardLayout.tsx` — reverse sidebar/main layout
+- All icon + text pairs — ensure spacing works in both directions using `gap` instead of `ml-`/`mr-` where possible, or add `rtl:` variants
+
+---
+
+## Phase 5: Apply Formatting System-Wide
+
+### 5.1 Files that need `formatCurrency` / `formatNumber` replacement
+
+Every hardcoded `toLocaleString("en-US")`, `toFixed()`, and `Intl.NumberFormat('en-US')` call needs to use the new `useFormatters()` hook instead. Key files:
+
+| File | Current pattern | Change to |
+|------|----------------|-----------|
+| `StatsRow.tsx` | `(value / 1000000).toFixed(2)` | `formatCurrency(value)` |
+| `CappingSection.tsx` | `toLocaleString("en-US")` | `formatCurrency(value)` |
+| `VitalSignsRow.tsx` | `toLocaleString("en-US")` | `formatNumber(value)` |
+| `MasterTransactionTable.tsx` | `toLocaleString("en-US")` | `formatCurrency(value)` |
+| `TransactionDetailsSheet.tsx` | `toLocaleString("en-US")` | `formatCurrency(value)` |
+| `AchievementsCard.tsx` | `toLocaleString()` | `formatCurrency(value)` |
+| `ActionCenterCard.tsx` | `toLocaleString()` | `formatCurrency(value)` |
+| `PipelineWidget.tsx` | `Intl.NumberFormat('en-US')` | `formatCurrency(value)` |
+| `YearOverYearChart.tsx` | `toFixed()` with `$` prefix | `formatCurrency(value)` |
+| `IconStatusSummary.tsx` | `toLocaleString("en-US")` | `formatCurrency(value)` |
+| `revshare/Dashboard.tsx` | Hardcoded `$` signs | `formatCurrency(value)` |
+| `revshare/Organization.tsx` | `toLocaleString()` + `toFixed()` | `formatCurrency(value)` |
+| `team/Dashboard.tsx` | Inline number formatting | `formatNumber / formatCurrency` |
+
+### 5.2 Files that need `formatDate` replacement
+
+| File | Current pattern | Change to |
+|------|----------------|-----------|
+| `AgentFilterBar.tsx` | `format(date, "MM/dd/yyyy")` | `formatDate(date)` |
+| `EditProfileSheet.tsx` | `format(date, "MMM d")` | `formatDate(date)` |
+| `MasterTransactionTable.tsx` | Raw date strings | Display through `formatDate()` |
+| `mockData.ts` | Hardcoded date strings | Keep as-is (raw data), format at display |
+
+### 5.3 Apply `t()` translations to all UI strings
+
+All static strings in components need to be wrapped with `t("key")`. Major areas:
+- Sidebar navigation labels
+- Header buttons and labels
+- Page titles and headings
+- Card titles, labels, and descriptions
+- Button text
+- Tab labels
+- Table headers
+- Filter labels and options
+- Toast messages
+
+---
+
+## Phase 6: Font Size (WCAG 2.2 Accessibility)
+
+### 6.1 Add font size setting to LocaleContext
+
+Three levels:
+- **Normal** — default (16px base)
+- **Large** — 18px base
+- **Extra Large** — 20px base
+
+### 6.2 Apply via CSS variable or `<html>` font-size
+
+When the user changes font size, set `document.documentElement.style.fontSize` to the chosen value. Since Tailwind uses `rem` units, this scales everything proportionally.
+
+### 6.3 Add Font Size card to SettingsTab
+
+A new card in the preferences grid with a radio dialog for the three options.
+
+---
+
+## Phase 7: Wire Up at App Root
+
+### 7.1 Update `App.tsx`
+
+Wrap with `LocaleProvider`:
+```text
+QueryClientProvider > ThemeProvider > LocaleProvider > MiraChatProvider > ...
+```
+
+### 7.2 Update `DashboardLayout.tsx`
+
+Apply `dir` attribute and `lang` attribute reactively based on locale context.
+
+---
+
+## Summary of New Files
+
+| File | Purpose |
 |------|---------|
-| `src/components/layout/DashboardLayout.tsx` | Skip nav link, main content ID, Mira button aria-label |
-| `src/components/layout/Header.tsx` | aria-labels on icon buttons, theme toggle label |
-| `src/components/layout/Sidebar.tsx` | aria-label on nav, fix `bg-white`, link semantics, touch targets |
-| `src/components/layout/MobileNavDrawer.tsx` | Fix `bg-white`, touch targets on chevrons |
-| `src/components/layout/GlobalSearch.tsx` | aria-label on search input |
-| `src/components/profile/SettingsTab.tsx` | aria-labels on icon buttons |
-| `src/index.css` | Fix `.tap-card` focus suppression |
-| `index.html` | Already has `lang="en"` -- no change needed |
-| `src/pages/*.tsx` | Add `useDocumentTitle` hook calls for unique page titles |
-| `src/hooks/use-document-title.ts` | New hook (simple `useEffect` setting `document.title`) |
-| `src/pages/revshare/Dashboard.tsx` | Fix low-opacity text colors for contrast |
+| `src/contexts/LocaleContext.tsx` | Locale preferences context + provider |
+| `src/lib/formatters.ts` | formatNumber, formatCurrency, formatDate, formatTime |
+| `src/hooks/useFormatters.ts` | Hook binding formatters to current locale |
+| `src/hooks/useTranslation.ts` | t() function hook |
+| `src/i18n/en.ts` | English translations |
+| `src/i18n/fr-CA.ts` | French Canadian translations |
+| `src/i18n/es.ts` | Spanish translations |
+| `src/i18n/zh.ts` | Chinese Mandarin translations |
+| `src/i18n/ja.ts` | Japanese translations |
+| `src/i18n/de.ts` | German translations |
+| `src/i18n/ar.ts` | Arabic translations |
+| `src/i18n/index.ts` | Translation registry |
 
-### What This Does NOT Cover
-- AAA-level requirements (not requested)
-- Automated testing tooling (axe-core, pa11y) -- can be added as a follow-up
-- Full audit of every component variant -- this plan covers the identified issues from the codebase review
+## Files Modified
 
+All ~20+ component files with hardcoded formatting, plus `App.tsx`, `DashboardLayout.tsx`, `Header.tsx`, `Sidebar.tsx`, `SettingsTab.tsx`, `index.css`, and `tailwind.config.ts`.
+
+---
+
+## Implementation Order
+
+1. LocaleContext + localStorage persistence
+2. Formatting utilities + useFormatters hook
+3. Rebuild SettingsTab UI with dialogs
+4. Translation system + all 7 language files
+5. Replace all hardcoded formatting calls across components
+6. RTL support for Arabic
+7. Font size WCAG feature
+8. Wire everything up at App root
