@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Home, DollarSign, Building2, Target, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,11 +20,13 @@ function MiniStatCard({
   value,
   label,
   color,
+  onClick,
 }: {
   icon: React.ReactNode;
   value: string;
   label: string;
   color: "blue" | "green" | "gold" | "purple";
+  onClick?: () => void;
 }) {
   const colorClasses = {
     blue: "bg-white/15 text-white",
@@ -33,7 +36,13 @@ function MiniStatCard({
   };
 
   return (
-    <div className="flex items-center gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex items-center gap-3 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-white/15 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+      role="link"
+      aria-label={`${label}: ${value}. View details`}
+    >
       <div className={cn("rounded-lg p-2 shrink-0", colorClasses[color])}>
         {icon}
       </div>
@@ -41,7 +50,7 @@ function MiniStatCard({
         <p className="text-lg font-bold text-white truncate">{value}</p>
         <p className="text-xs sm:text-[11px] text-white/70">{label}</p>
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -55,6 +64,12 @@ export function AgentHeroBanner({
 }: AgentHeroBannerProps) {
   const { formatCurrency } = useFormatters();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const goToTransactions = (status?: string) => {
+    const url = status ? `/agent/transactions?status=${status}` : "/agent/transactions";
+    navigate(url);
+  };
 
   return (
     <Card className="relative overflow-hidden bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue p-4 sm:p-6 text-white">
@@ -82,36 +97,55 @@ export function AgentHeroBanner({
             value={units.toString()}
             label={t("agent.units")}
             color="blue"
+            onClick={() => goToTransactions()}
           />
           <MiniStatCard
             icon={<Building2 className="h-4 w-4" />}
             value={formatCurrency(volume, { compact: true })}
             label={t("agent.volume")}
             color="purple"
+            onClick={() => goToTransactions()}
           />
           <MiniStatCard
             icon={<DollarSign className="h-4 w-4" />}
             value={formatCurrency(commission, { compact: true })}
             label={t("agent.commission")}
             color="green"
+            onClick={() => goToTransactions()}
           />
-          <div className="flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+          <div
+            className="flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-white/15 transition-colors"
+            role="link"
+            aria-label="View transaction details"
+          >
             <div className="hidden sm:flex rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light">
               <FileText className="h-4 w-4" />
             </div>
             <div className="flex gap-2 sm:gap-3 min-w-0">
-              <div className="text-center">
+              <button
+                type="button"
+                className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
+                onClick={() => goToTransactions("paid")}
+              >
                 <p className="text-lg font-bold text-white">{transactionsClosed}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.paid")}</p>
-              </div>
-              <div className="text-center">
+              </button>
+              <button
+                type="button"
+                className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
+                onClick={() => goToTransactions("pending")}
+              >
                 <p className="text-lg font-bold text-white">{transactionsPending}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.pending")}</p>
-              </div>
-              <div className="text-center">
+              </button>
+              <button
+                type="button"
+                className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
+                onClick={() => goToTransactions("withdrawn")}
+              >
                 <p className="text-lg font-bold text-white">{transactionsWithdrawn}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.withdrawn")}</p>
-              </div>
+              </button>
             </div>
           </div>
         </div>
