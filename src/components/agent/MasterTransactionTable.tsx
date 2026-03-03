@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useFormatters } from "@/hooks/useFormatters";
 import { Download, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -124,10 +125,13 @@ function getStatusBadge(status: string) {
   }
 }
 
-const fmt = (n: number) =>
-  "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmt = (n: number) => {
+  // Will be overridden in component, placeholder for module-level usage
+  return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
 
 export function MasterTransactionTable() {
+  const { formatCurrency, formatDate } = useFormatters();
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -218,9 +222,9 @@ export function MasterTransactionTable() {
                     >
                       <TableCell>{getStatusBadge(row.status)}</TableCell>
                       <TableCell>{row.transactionId}</TableCell>
-                      <TableCell>{closeDate}</TableCell>
-                      <TableCell>{fmt(row.salesPrice)}</TableCell>
-                      <TableCell>{fmt(row.gciSum)}</TableCell>
+                      <TableCell>{formatDate(closeDate)}</TableCell>
+                      <TableCell>{formatCurrency(row.salesPrice)}</TableCell>
+                      <TableCell>{formatCurrency(row.gciSum)}</TableCell>
                       <TableCell className="max-w-[200px] truncate" title={row.propertyAddress}>
                         {row.propertyAddress}
                       </TableCell>

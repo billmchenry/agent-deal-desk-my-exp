@@ -6,9 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { influencerTiers, achievements } from "@/data/mockData";
 import { cn } from "@/lib/utils";
 import { PromotionalCarousel } from "./PromotionalCarousel";
+import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function ActionCenterCard() {
   const currentTier = influencerTiers.filter((t) => t.completed).pop();
+  const { formatCurrency } = useFormatters();
+  const { t } = useTranslation();
 
   return (
     <Card>
@@ -89,10 +93,10 @@ export function ActionCenterCard() {
               </div>
               <div className="space-y-1">
                 <p className="text-2xl font-bold text-exp-blue">
-                  ${achievements.flqa.amount.toLocaleString()}
+                  {formatCurrency(achievements.flqa.amount)}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  As of {achievements.flqa.date}
+                  {t("dashboard.asOf")} {achievements.flqa.date}
                 </p>
               </div>
             </div>

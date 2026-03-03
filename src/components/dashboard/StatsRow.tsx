@@ -3,7 +3,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Home, DollarSign, Building2 } from "lucide-react";
 import { cappingData } from "@/data/mockData";
 import { useDashboard } from "@/contexts/DashboardContext";
- import { MiraSuggestionBar } from "./MiraSuggestionBar";
+import { MiraSuggestionBar } from "./MiraSuggestionBar";
+import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -15,20 +17,10 @@ interface StatCardProps {
 
 function StatCard({ icon, value, label, color, isLoading }: StatCardProps) {
   const colorClasses = {
-    blue: {
-      bg: "bg-exp-blue/10",
-      icon: "text-exp-blue",
-    },
-    green: {
-      bg: "bg-exp-green/10",
-      icon: "text-exp-green",
-    },
-    purple: {
-      bg: "bg-exp-purple/10",
-      icon: "text-exp-purple",
-    },
+    blue: { bg: "bg-exp-blue/10", icon: "text-exp-blue" },
+    green: { bg: "bg-exp-green/10", icon: "text-exp-green" },
+    purple: { bg: "bg-exp-purple/10", icon: "text-exp-purple" },
   };
-
   const colors = colorClasses[color];
 
   return (
@@ -54,45 +46,35 @@ function StatCard({ icon, value, label, color, isLoading }: StatCardProps) {
 
 export function StatsRow() {
   const { isRefreshing } = useDashboard();
-
-  const formatCurrency = (value: number) => {
-    if (value >= 1000000) {
-      return `$${(value / 1000000).toFixed(2)}M`;
-    }
-    if (value >= 1000) {
-      return `$${(value / 1000).toFixed(2)}K`;
-    }
-    return `$${value}`;
-  };
+  const { formatCurrency } = useFormatters();
+  const { t } = useTranslation();
 
   return (
-     <>
-     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard
           icon={<Home className="h-5 w-5" />}
           value={cappingData.units.toString()}
-          label="Units Closed"
+          label={t("dashboard.unitsClosed")}
           color="blue"
           isLoading={isRefreshing}
         />
         <StatCard
           icon={<DollarSign className="h-5 w-5" />}
-          value={formatCurrency(cappingData.gci)}
-          label="Gross Commission"
+          value={formatCurrency(cappingData.gci, { compact: true })}
+          label={t("dashboard.grossCommission")}
           color="green"
           isLoading={isRefreshing}
         />
         <StatCard
           icon={<Building2 className="h-5 w-5" />}
-          value={formatCurrency(cappingData.volume)}
-          label="Total Volume"
+          value={formatCurrency(cappingData.volume, { compact: true })}
+          label={t("dashboard.totalVolume")}
           color="purple"
           isLoading={isRefreshing}
         />
       </div>
-       
-       {/* Mira AI Suggestion Bar */}
-       <MiraSuggestionBar />
-     </>
+      <MiraSuggestionBar />
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DashboardProvider } from "@/contexts/DashboardContext";
 import { MiraChatProvider } from "@/contexts/MiraChatContext";
+import { LocaleProvider } from "@/contexts/LocaleContext";
 import { ThemeProvider } from "next-themes";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
@@ -28,9 +29,10 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <MiraChatProvider>
-        <DashboardProvider>
-          <TooltipProvider>
+      <LocaleProvider>
+        <MiraChatProvider>
+          <DashboardProvider>
+            <TooltipProvider>
             <Toaster />
             <Sonner />
             <BrowserRouter>
@@ -54,9 +56,10 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
-          </TooltipProvider>
-        </DashboardProvider>
-      </MiraChatProvider>
+            </TooltipProvider>
+          </DashboardProvider>
+        </MiraChatProvider>
+      </LocaleProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );

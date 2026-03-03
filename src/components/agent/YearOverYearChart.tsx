@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useFormatters } from "@/hooks/useFormatters";
 import {
   BarChart,
   Bar,
@@ -83,18 +84,16 @@ export function YearOverYearChart() {
   const [chartTab, setChartTab] = useState("units");
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const { formatCurrency: fmtCurr } = useFormatters();
 
   const chartData = dataByTab[chartTab] || unitsData;
 
   const formatValue = (val: number) => {
     if (chartTab === "volume") {
-      if (val >= 1000000) return `$${(val / 1000000).toFixed(1)}M`;
-      if (val >= 1000) return `$${(val / 1000).toFixed(0)}K`;
-      return `$${val}`;
+      return fmtCurr(val, { compact: true, decimals: 1 });
     }
     if (chartTab === "commission") {
-      if (val >= 1000) return `$${(val / 1000).toFixed(1)}K`;
-      return `$${val}`;
+      return fmtCurr(val, { compact: true, decimals: 1 });
     }
     return val.toString();
   };
