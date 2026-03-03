@@ -392,7 +392,7 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
         url: "/agent/dashboard",
         submenu: [
           { title: "Dashboard", url: "/agent/dashboard" },
-          { title: "Transactions", url: "/agent/transactions" },
+          { title: "Agent Production Details", url: "/agent/transactions" },
           { title: "ICON Program", url: "/agent/icon-program" },
         ],
       },
