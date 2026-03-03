@@ -239,4 +239,20 @@ export const frCA: Record<string, string> = {
   "profile.licenses": "Licences",
   "profile.mentor": "Mentor",
   "profile.partnerAgent": "Agent partenaire",
+
+  // Filters
+  "filter.ytd": "CDA",
+  "filter.mtd": "CDM",
+  "filter.lastWeek": "Semaine dernière",
+  "filter.lastYear": "Année dernière",
+  "filter.custom": "Personnalisé",
+  "filter.selectDateRange": "Sélectionner une période",
+  "filter.search": "Rechercher",
+  "filter.allTypes": "Tous les types",
+  "filter.priority": "Priorité",
+  "filter.allCategories": "Toutes les catégories",
+  "filter.allTime": "Tout le temps",
+  "filter.today": "Aujourd'hui",
+  "filter.thisWeek": "Cette semaine",
+  "filter.thisMonth": "Ce mois-ci",
 };

@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UniversalFilterBar } from "@/components/filters";
+import { useTranslation } from "@/hooks/useTranslation";
 import { 
   LayoutGrid, 
   List, 
-  Filter, 
   RefreshCw, 
   Plus, 
   Pin, 
@@ -85,56 +86,70 @@ const quickActions = [
 
 export default function Pulse() {
   useDocumentTitle("Pulse");
+  const { t } = useTranslation();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [timePeriod, setTimePeriod] = useState("1Y");
   const [insightFilter, setInsightFilter] = useState("daily");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
+
+  const typeOptions = [
+    { value: "all", label: t("filter.allTypes") },
+    { value: "risk", label: "Risk" },
+    { value: "trend", label: "Trend" },
+  ];
+
+  const priorityOptions = [
+    { value: "all", label: t("filter.priority") },
+    { value: "high", label: "High" },
+    { value: "medium", label: "Medium" },
+    { value: "low", label: "Low" },
+  ];
 
   return (
     <DashboardLayout>
       <div className="space-y-6 pb-24">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Pulse</h1>
-            <p className="text-sm text-muted-foreground">Drag to reorder</p>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center border border-border rounded-md">
-              <Button
-                variant={viewMode === "grid" ? "secondary" : "ghost"}
-                size="sm"
-                className="rounded-r-none"
-                onClick={() => setViewMode("grid")}
-              >
-                <LayoutGrid className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === "list" ? "secondary" : "ghost"}
-                size="sm"
-                className="rounded-l-none"
-                onClick={() => setViewMode("list")}
-              >
-                <List className="h-4 w-4" />
-              </Button>
-            </div>
-            <Button variant="outline" size="sm">
-              All Types
-              <Filter className="h-4 w-4 ml-2" />
+        <UniversalFilterBar title="Pulse" subtitle="Drag to reorder">
+          <div className="flex items-center border border-border rounded-md">
+            <Button
+              variant={viewMode === "grid" ? "secondary" : "ghost"}
+              size="sm"
+              className="rounded-r-none"
+              onClick={() => setViewMode("grid")}
+            >
+              <LayoutGrid className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="sm">
-              Priority
-              <Filter className="h-4 w-4 ml-2" />
-            </Button>
-            <Button variant="outline" size="sm">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh All
-            </Button>
-            <Button size="sm" className="bg-primary text-primary-foreground">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Template
+            <Button
+              variant={viewMode === "list" ? "secondary" : "ghost"}
+              size="sm"
+              className="rounded-l-none"
+              onClick={() => setViewMode("list")}
+            >
+              <List className="h-4 w-4" />
             </Button>
           </div>
-        </div>
+          <UniversalFilterBar.Dropdown
+            label={t("filter.allTypes")}
+            options={typeOptions}
+            value={typeFilter}
+            onChange={setTypeFilter}
+          />
+          <UniversalFilterBar.Dropdown
+            label={t("filter.priority")}
+            options={priorityOptions}
+            value={priorityFilter}
+            onChange={setPriorityFilter}
+          />
+          <Button variant="outline" size="sm">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh All
+          </Button>
+          <Button size="sm" className="bg-primary text-primary-foreground">
+            <Plus className="h-4 w-4 mr-2" />
+            Create Template
+          </Button>
+        </UniversalFilterBar>
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

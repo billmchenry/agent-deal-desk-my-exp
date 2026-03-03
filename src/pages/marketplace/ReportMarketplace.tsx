@@ -5,11 +5,11 @@ import { Store, Download } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MarketplaceFilters } from "@/components/marketplace/MarketplaceFilters";
+import { UniversalFilterBar } from "@/components/filters";
 import { TemplateCard } from "@/components/marketplace/TemplateCard";
 import { useDashboard } from "@/contexts/DashboardContext";
 import { mockTemplates } from "@/data/mockTemplates";
-import { TemplateCategory, DashboardTemplate } from "@/types/dashboard";
+import { TemplateCategory, DashboardTemplate, CATEGORY_STYLES } from "@/types/dashboard";
 import { toast } from "sonner";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -24,6 +24,20 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+const categories: { value: string; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'production', label: 'Production' },
+  { value: 'team', label: 'Team' },
+  { value: 'growth', label: 'Growth' },
+  { value: 'custom', label: 'Custom' },
+];
+
+const sortOptions = [
+  { value: 'popular', label: 'Popular' },
+  { value: 'newest', label: 'Newest' },
+  { value: 'installs', label: 'Most Installed' },
+];
+
 export default function ReportMarketplace() {
   useDocumentTitle("Report Marketplace");
   const navigate = useNavigate();
@@ -32,9 +46,8 @@ export default function ReportMarketplace() {
   const { t } = useTranslation();
   
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<TemplateCategory | 'all'>('all');
-  const [sortBy, setSortBy] = useState<'popular' | 'newest' | 'installs'>('popular');
-  const [showSharedOnly, setShowSharedOnly] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [sortBy, setSortBy] = useState('popular');
   const [confirmInstallId, setConfirmInstallId] = useState<string | null>(null);
 
   const allTemplates = useMemo(() => {
@@ -98,13 +111,33 @@ export default function ReportMarketplace() {
           </Button>
         </div>
 
-        <MarketplaceFilters
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
+        {/* Unified filter bar */}
+        <UniversalFilterBar>
+          <UniversalFilterBar.Search
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search templates..."
+            className="flex-1 min-w-[200px]"
+          />
+          <UniversalFilterBar.Dropdown
+            label={t("filter.allCategories")}
+            options={categories}
+            value={selectedCategory}
+            onChange={setSelectedCategory}
+          />
+          <UniversalFilterBar.Dropdown
+            label="Sort"
+            options={sortOptions}
+            value={sortBy}
+            onChange={setSortBy}
+          />
+        </UniversalFilterBar>
+
+        {/* Category pills */}
+        <UniversalFilterBar.Pills
+          options={categories}
+          value={selectedCategory}
+          onChange={setSelectedCategory}
         />
 
         <p className="text-sm text-muted-foreground">

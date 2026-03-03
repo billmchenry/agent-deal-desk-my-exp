@@ -218,4 +218,20 @@ export const zh: Record<string, string> = {
   "profile.licenses": "执照",
   "profile.mentor": "导师",
   "profile.partnerAgent": "合作经纪人",
+
+  // Filters
+  "filter.ytd": "年初至今",
+  "filter.mtd": "月初至今",
+  "filter.lastWeek": "上周",
+  "filter.lastYear": "去年",
+  "filter.custom": "自定义",
+  "filter.selectDateRange": "选择日期范围",
+  "filter.search": "搜索",
+  "filter.allTypes": "所有类型",
+  "filter.priority": "优先级",
+  "filter.allCategories": "所有类别",
+  "filter.allTime": "所有时间",
+  "filter.today": "今天",
+  "filter.thisWeek": "本周",
+  "filter.thisMonth": "本月",
 };
