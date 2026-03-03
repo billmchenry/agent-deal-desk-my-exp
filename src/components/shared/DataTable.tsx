@@ -55,6 +55,8 @@ export interface ColumnDef<T> {
   sortable?: boolean;
   filterable?: boolean;
   defaultVisible?: boolean;
+  /** For currency columns: key in data row that holds currency code (e.g. "USD") */
+  currencyCodeKey?: keyof T;
   render?: (value: T[keyof T], row: T) => ReactNode;
 }
 
@@ -213,8 +215,10 @@ export function DataTable<T extends Record<string, any>>({
     if (col.render) return col.render(row[col.key], row);
     const raw = row[col.key];
     switch (col.type) {
-      case "currency":
-        return formatCurrency(Number(raw) || 0);
+      case "currency": {
+        const code = col.currencyCodeKey ? String(row[col.currencyCodeKey] ?? "USD") : "USD";
+        return `${formatCurrency(Number(raw) || 0)} ${code}`;
+      }
       case "number":
         return formatNumber(Number(raw) || 0, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       case "date": {
@@ -419,9 +423,9 @@ export function DataTable<T extends Record<string, any>>({
                         key={String(col.key)}
                         role="columnheader"
                         aria-sort={ariaSort}
-                        className="font-semibold"
+                        className={cn("font-semibold", (col.type === "number" || col.type === "currency") && "text-right")}
                       >
-                        <div className="flex items-center gap-1">
+                        <div className={cn("flex items-center gap-1", (col.type === "number" || col.type === "currency") && "justify-end")}>
                           {col.sortable ? (
                             <button
                               className="flex items-center gap-1 hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -ml-1"
@@ -486,7 +490,10 @@ export function DataTable<T extends Record<string, any>>({
                       }}
                     >
                       {visibleCols.map((col) => (
-                        <TableCell key={String(col.key)} className={col.type === "string" ? "max-w-[200px] truncate" : ""}>
+                        <TableCell key={String(col.key)} className={cn(
+                          col.type === "string" && "max-w-[200px] truncate",
+                          (col.type === "number" || col.type === "currency") && "text-right tabular-nums"
+                        )}>
                           {formatCell(col, row)}
                         </TableCell>
                       ))}
