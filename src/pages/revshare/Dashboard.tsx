@@ -130,7 +130,7 @@ export default function RevShareDashboard() {
                   </div>
                   <div>
                     <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
-                    <p className="text-[10px] text-white/40 leading-tight">Before and after concession adjustments</p>
+                    <p className="text-xs text-white/40 leading-tight">Before and after concession adjustments</p>
                   </div>
                 </div>
                 <p className="text-2xl font-bold text-white mb-2">24</p>
@@ -146,7 +146,7 @@ export default function RevShareDashboard() {
                   </div>
                   <div>
                     <span className="text-xs font-semibold text-white">FLQA · Front Line Qualifying Agents</span>
-                    <p className="text-[10px] text-white/40 leading-tight">Before and after concession adjustments</p>
+                    <p className="text-xs text-white/40 leading-tight">Before and after concession adjustments</p>
                   </div>
                 </div>
                 <div className="flex gap-4 mb-2">
