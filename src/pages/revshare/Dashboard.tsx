@@ -130,6 +130,7 @@ export default function RevShareDashboard() {
                   </div>
                   <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
                 </div>
+                <p className="text-[10px] text-white/50 mb-1">Count before and after concession adjustments</p>
                 <p className="text-2xl font-bold text-white mb-2">24</p>
                 <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-2.5 py-1 text-xs font-medium text-white transition-colors">
                   View FLA List <ChevronRight className="h-3 w-3" />
@@ -143,6 +144,7 @@ export default function RevShareDashboard() {
                   </div>
                   <span className="text-xs font-semibold text-white">FLQA · Front Line Qualifying Agents</span>
                 </div>
+                <p className="text-[10px] text-white/50 mb-1">Count before and after concession adjustments</p>
                 <div className="flex gap-4 mb-1">
                   <div>
                     <p className="text-2xl font-bold text-white leading-none">18</p>
@@ -166,9 +168,9 @@ export default function RevShareDashboard() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
+              <div>
                 <h2 className="text-sm font-semibold text-foreground">Current Payout Status</h2>
-                <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                <p className="text-xs text-muted-foreground">Overview of your revenue share payout status and history</p>
               </div>
               <button className="text-xs text-exp-blue hover:underline flex items-center gap-1">
                 View Periodic Overview <ExternalLink className="h-3 w-3" />
@@ -202,7 +204,7 @@ export default function RevShareDashboard() {
                   <Calendar className="h-4 w-4 text-exp-blue" />
                   <span className="text-xs font-semibold text-foreground">Expected Next</span>
                 </div>
-                <p className="text-xs text-muted-foreground mb-2">Due in February</p>
+                <p className="text-xs text-muted-foreground mb-2">Estimated next scheduled payout</p>
                 <p className="text-lg font-bold text-foreground mb-2">$1,869.20 <span className="text-xs font-medium text-muted-foreground">USD</span></p>
                 <div className="flex items-center justify-between">
                   <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
@@ -218,7 +220,7 @@ export default function RevShareDashboard() {
                   <CheckCircle2 className="h-4 w-4 text-exp-green" />
                   <span className="text-xs font-semibold text-foreground">Last Paid</span>
                 </div>
-                <p className="text-xs text-muted-foreground mb-2">Paid to you</p>
+                <p className="text-xs text-muted-foreground mb-2">Most recent payout amount</p>
                 <p className="text-lg font-bold text-foreground mb-2">$986.92 <span className="text-xs font-medium text-muted-foreground">USD</span></p>
                 <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-2.5 py-1 text-xs font-medium text-foreground transition-colors">
                   View details <ChevronRight className="h-3 w-3" />
@@ -231,9 +233,9 @@ export default function RevShareDashboard() {
         {/* ═══ Section 3: RevShare Group Distribution ═══ */}
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="mb-3">
               <h2 className="text-sm font-semibold text-foreground">RevShare Group Distribution</h2>
-              <Info className="h-3.5 w-3.5 text-muted-foreground" />
+              <p className="text-xs text-muted-foreground">Agent distribution across levels (1-7) and regions</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -353,8 +355,10 @@ export default function RevShareDashboard() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-exp-blue" />
-                <h2 className="text-sm font-semibold text-foreground">Revenue Share Comparison</h2>
-                <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                <div>
+                  <h2 className="text-sm font-semibold text-foreground">Revenue Share Comparison</h2>
+                  <p className="text-xs text-muted-foreground">Compare revenue share earnings across different time periods</p>
+                </div>
               </div>
               <div className="flex items-center gap-3 flex-wrap">
                 <button className="text-xs text-exp-blue hover:underline flex items-center gap-1">
