@@ -1,48 +1,45 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  Home,
-  LayoutDashboard,
-  User,
-  Users,
-  DollarSign,
-  FileText,
-  Calendar,
-  GraduationCap,
-  Wrench,
-  BookOpen,
-  HelpCircle,
-  Award,
-  ChevronRight,
-  ChevronDown,
-  Store,
+  Home, LayoutDashboard, User, Users, DollarSign, FileText,
+  Calendar, GraduationCap, Wrench, BookOpen, HelpCircle, Award,
+  ChevronRight, ChevronDown, Store,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Home,
-  LayoutDashboard,
-  User,
-  Users,
-  DollarSign,
-  FileText,
-  Calendar,
-  GraduationCap,
-  Wrench,
-  BookOpen,
-  HelpCircle,
-  Award,
-  Store,
+  Home, LayoutDashboard, User, Users, DollarSign, FileText,
+  Calendar, GraduationCap, Wrench, BookOpen, HelpCircle, Award, Store,
 };
 
-/** Check if the current path belongs to a submenu section */
+const NAV_KEYS: Record<string, string> = {
+  "MY DESK": "nav.myDesk",
+  "BUSINESS & GROWTH": "nav.businessGrowth",
+  "RESOURCES": "nav.resources",
+  "Home": "nav.home",
+  "Agent": "nav.agent",
+  "Dashboard": "nav.dashboard",
+  "Transactions": "nav.transactions",
+  "ICON Program": "nav.iconProgram",
+  "Documents": "nav.documents",
+  "All Documents": "nav.allDocuments",
+  "Templates": "nav.templates",
+  "Events Calendar": "nav.eventsCalendar",
+  "Team": "nav.team",
+  "RevShare Earnings": "nav.revshareEarnings",
+  "Organization": "nav.organization",
+  "Organization Tree": "nav.organizationTree",
+  "My RevShare Trends": "nav.myRevshareTrends",
+  "Mentor Program": "nav.mentorProgram",
+  "Report Marketplace": "nav.reportMarketplace",
+  "Tools": "nav.tools",
+  "Knowledge Base": "nav.knowledgeBase",
+  "Help Center": "nav.helpCenter",
+};
+
 function isInSection(pathname: string, item: SidebarNavItem): boolean {
   if (!item.submenu) return false;
   return item.submenu.some((sub) => pathname.startsWith(sub.url.split("/").slice(0, 3).join("/")));
@@ -57,6 +54,9 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [manuallyToggled, setManuallyToggled] = useState<Set<string>>(new Set());
+  const { t } = useTranslation();
+
+  const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
   const isActive = (url?: string) => {
     if (!url) return false;
@@ -66,12 +66,10 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const isExpanded = (item: SidebarNavItem): boolean => {
     const inSection = isInSection(location.pathname, item);
     const toggled = manuallyToggled.has(item.title);
-    // If manually toggled, flip the default state
     if (toggled) return !inSection;
     return inSection;
   };
 
-  // Reset manual toggles when route changes
   useEffect(() => {
     setManuallyToggled(new Set());
   }, [location.pathname]);
@@ -79,18 +77,14 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const toggleSection = (title: string) => {
     setManuallyToggled((prev) => {
       const next = new Set(prev);
-      if (next.has(title)) {
-        next.delete(title);
-      } else {
-        next.add(title);
-      }
+      if (next.has(title)) next.delete(title);
+      else next.add(title);
       return next;
     });
   };
 
   const handleParentClick = (item: SidebarNavItem) => {
     if (item.submenu) {
-      // Toggle submenu only, don't navigate
       toggleSection(item.title);
     } else if (item.url) {
       navigate(item.url);
@@ -126,13 +120,13 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
             )}
           >
             {Icon && <Icon className="h-4 w-4 shrink-0" />}
-            <span className="flex-1 text-left">{item.title}</span>
+            <span className="flex-1 text-left">{tn(item.title)}</span>
           </button>
           {hasSubmenu && (
             <button
               onClick={(e) => handleChevronClick(e, item)}
               className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-sidebar-accent transition-colors"
-              aria-label={`${expanded ? "Collapse" : "Expand"} ${item.title}`}
+              aria-label={`${expanded ? "Collapse" : "Expand"} ${tn(item.title)}`}
             >
               {expanded ? (
                 <ChevronDown className="h-4 w-4 text-sidebar-foreground/60 shrink-0" />
@@ -155,7 +149,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
                   isActive(subItem.url) && "bg-sidebar-accent text-sidebar-foreground font-medium"
                 )}
               >
-                {subItem.title}
+                {tn(subItem.title)}
               </button>
             ))}
           </div>
@@ -176,30 +170,27 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
         </SheetHeader>
 
         <nav className="flex flex-col flex-1 overflow-y-auto py-4">
-          {/* MY DESK Section */}
           <div className="mb-4">
             <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
-              {sidebarNavigation.myDesk.label}
+              {tn(sidebarNavigation.myDesk.label)}
             </span>
             <div className="space-y-0.5">
               {sidebarNavigation.myDesk.items.map(renderNavItem)}
             </div>
           </div>
 
-          {/* BUSINESS & GROWTH Section */}
           <div className="mb-4 mt-4">
             <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
-              {sidebarNavigation.businessGrowth.label}
+              {tn(sidebarNavigation.businessGrowth.label)}
             </span>
             <div className="space-y-0.5">
               {sidebarNavigation.businessGrowth.items.map(renderNavItem)}
             </div>
           </div>
 
-          {/* RESOURCES Section */}
           <div className="mt-4">
             <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
-              {sidebarNavigation.resources.label}
+              {tn(sidebarNavigation.resources.label)}
             </span>
             <div className="space-y-0.5">
               {sidebarNavigation.resources.items.map(renderNavItem)}

@@ -7,6 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ChevronDown, Download, Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const totalSummaryData = [
   { field: "Transaction Count", jan2026: "12", dec2025: "27", nov2025: "18", oct2025: "23", sep2025: "28", aug2025: "16" },
@@ -54,6 +55,7 @@ const levelBreakdowns = [
 export default function RevShareTrends() {
   useDocumentTitle("RevShare Trends");
   const [openLevels, setOpenLevels] = useState<number[]>([1, 2, 3]);
+  const { t } = useTranslation();
 
   const toggleLevel = (level: number) => {
     setOpenLevels((prev) =>
@@ -65,44 +67,44 @@ export default function RevShareTrends() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-foreground">My RevShare Trends by Level</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t("revshare.revShareTrends")}</h1>
         </div>
 
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <div className="flex items-center gap-2 bg-muted/50 px-3 py-2 rounded-lg">
-            <span className="text-sm text-muted-foreground">Date Range :</span>
+            <span className="text-sm text-muted-foreground">{t("trends.dateRange")} :</span>
             <span className="text-sm font-medium text-foreground">Aug 2025 to Jan 2026</span>
           </div>
 
           <div className="flex-1" />
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span>Months View :</span>
-            <span className="font-medium text-foreground">Newest First</span>
+            <span>{t("trends.monthsView")} :</span>
+            <span className="font-medium text-foreground">{t("trends.newestFirst")}</span>
           </div>
 
           <Button variant="outline" className="gap-2">
             <Filter className="h-4 w-4" />
-            Filter
+            {t("common.filter")}
           </Button>
         </div>
 
         {/* Total Summary */}
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-base font-medium">$ Total Summary</CardTitle>
+            <CardTitle className="text-base font-medium">{t("trends.totalSummary")}</CardTitle>
             <Button variant="outline" size="sm" className="gap-2">
               <Download className="h-4 w-4" />
-              Download Total Summary
+              {t("agent.download")} {t("trends.totalSummary")}
             </Button>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">Global totals across all regions and levels</p>
+            <p className="text-sm text-muted-foreground mb-4">{t("trends.globalTotals")}</p>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[200px]">Field</TableHead>
+                  <TableHead className="w-[200px]">{t("trends.field")}</TableHead>
                   <TableHead>Jan 2026</TableHead>
                   <TableHead>Dec 2025</TableHead>
                   <TableHead>Nov 2025</TableHead>
@@ -132,14 +134,14 @@ export default function RevShareTrends() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-semibold text-foreground">Level Data for United States</h2>
-              <p className="text-sm text-muted-foreground">Change country to view level summary and breakdown for specific country</p>
+              <h2 className="text-lg font-semibold text-foreground">{t("trends.levelData")}</h2>
+              <p className="text-sm text-muted-foreground">{t("trends.changeCountry")}</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Country :</span>
+              <span className="text-sm text-muted-foreground">{t("trends.country")} :</span>
               <Select defaultValue="us">
                 <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Select country" />
+                  <SelectValue placeholder={t("trends.selectCountry")} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="us">United States</SelectItem>
@@ -153,19 +155,19 @@ export default function RevShareTrends() {
           <Card className="mb-6">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-base font-medium">All Levels Summary (United States)</CardTitle>
-                <p className="text-sm text-muted-foreground">Combined contribution of all levels for United States</p>
+                <CardTitle className="text-base font-medium">{t("trends.allLevelsSummary")}</CardTitle>
+                <p className="text-sm text-muted-foreground">{t("trends.combinedContribution")}</p>
               </div>
               <Button variant="outline" size="sm" className="gap-2">
                 <Download className="h-4 w-4" />
-                Download Level Summary
+                {t("agent.download")} {t("trends.levelSummary")}
               </Button>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[200px]">Field</TableHead>
+                    <TableHead className="w-[200px]">{t("trends.field")}</TableHead>
                     <TableHead>Jan 2026</TableHead>
                     <TableHead>Dec 2025</TableHead>
                     <TableHead>Nov 2025</TableHead>
@@ -193,10 +195,10 @@ export default function RevShareTrends() {
 
           {/* Level-wise Breakdown */}
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-foreground">Level-wise Breakdown (United States)</h3>
+            <h3 className="font-semibold text-foreground">{t("trends.levelBreakdown")}</h3>
             <Button variant="outline" size="sm" className="gap-2">
               <Download className="h-4 w-4" />
-              Download Level Breakdown
+              {t("agent.download")} {t("trends.levelBreakdown")}
             </Button>
           </div>
 
@@ -225,7 +227,7 @@ export default function RevShareTrends() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[200px]">Field</TableHead>
+                          <TableHead className="w-[200px]">{t("trends.field")}</TableHead>
                           <TableHead>Jan 2026</TableHead>
                           <TableHead>Dec 2025</TableHead>
                           <TableHead>Nov 2025</TableHead>

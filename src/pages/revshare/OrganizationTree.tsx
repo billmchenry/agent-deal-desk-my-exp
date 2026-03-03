@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Download, Search } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Fake names for the organization tree
 const orgTreeAgents = [
@@ -34,44 +35,40 @@ const orgTreeAgents = [
 
 const getLevelColor = (level: number) => {
   const colors: Record<number, string> = {
-    1: "bg-yellow-400",
-    2: "bg-green-400",
-    3: "bg-blue-400",
-    4: "bg-purple-400",
-    5: "bg-pink-400",
-    6: "bg-orange-400",
-    7: "bg-red-400",
+    1: "bg-yellow-400", 2: "bg-green-400", 3: "bg-blue-400", 4: "bg-purple-400",
+    5: "bg-pink-400", 6: "bg-orange-400", 7: "bg-red-400",
   };
   return colors[level] || "bg-gray-400";
 };
 
 export default function OrganizationTree() {
   useDocumentTitle("Organization Tree");
+  const { t } = useTranslation();
+
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-foreground">Organization Tree</h1>
+            <h1 className="text-2xl font-bold text-foreground">{t("nav.organizationTree")}</h1>
             <span className="text-primary hover:underline cursor-pointer text-sm">View in Beta</span>
           </div>
         </div>
 
-        {/* Filters */}
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <Select defaultValue="high-low">
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Sort by Rev Share" />
+              <SelectValue placeholder={t("orgTree.sortByRevShare")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="high-low">Contributed Rev Share: High to Low</SelectItem>
-              <SelectItem value="low-high">Contributed Rev Share: Low to High</SelectItem>
+              <SelectItem value="high-low">{t("orgTree.highToLow")}</SelectItem>
+              <SelectItem value="low-high">{t("orgTree.lowToHigh")}</SelectItem>
             </SelectContent>
           </Select>
 
           <Button variant="outline" className="gap-2">
             <Download className="h-4 w-4" />
-            Download
+            {t("agent.download")}
           </Button>
 
           <div className="flex-1" />
@@ -79,19 +76,17 @@ export default function OrganizationTree() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
-              placeholder="Search first/last name or Location (min 3 characters)" 
+              placeholder={t("common.search")} 
               className="pl-9 w-[350px]"
             />
           </div>
         </div>
 
-        {/* Current User */}
         <div className="mb-6">
           <p className="text-lg font-medium text-foreground mb-2">Michael Thompson - Level 0</p>
           <p className="text-sm text-muted-foreground">63 FLAs</p>
         </div>
 
-        {/* Agent Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {orgTreeAgents.map((agent) => (
             <Card key={agent.id} className="overflow-hidden">
@@ -117,22 +112,22 @@ export default function OrganizationTree() {
 
                 <div className="space-y-1 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Contributed Rev Share:</span>
+                    <span className="text-muted-foreground">{t("orgTree.contributedRevShare")}:</span>
                     <span className="font-medium text-yellow-600">{agent.revShare}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Individual Rev Share Contribution:</span>
+                    <span className="text-muted-foreground">{t("orgTree.individualContribution")}:</span>
                     <span className="text-foreground">{agent.contribution}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Org Size:</span>
+                    <span className="text-muted-foreground">{t("orgTree.orgSize")}:</span>
                     <span className="text-foreground">{agent.orgSize}</span>
                   </div>
                 </div>
 
                 {agent.orgSize > 0 && (
                   <Badge variant="outline" className="mt-3 text-xs text-primary border-primary">
-                    View Org
+                    {t("orgTree.viewOrg")}
                   </Badge>
                 )}
               </CardContent>

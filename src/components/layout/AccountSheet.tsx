@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { currentUser, userProfile } from "@/data/mockData";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AccountSheetProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface AccountSheetProps {
 
 export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   const initials = currentUser.name
     .split(" ")
@@ -33,11 +35,10 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent side="right" className="w-full sm:max-w-sm p-0">
         <SheetHeader className="flex h-16 flex-row items-center border-b px-4">
-          <SheetTitle>Account</SheetTitle>
+          <SheetTitle>{t("header.accountMenu")}</SheetTitle>
         </SheetHeader>
 
         <div className="flex flex-col">
-          {/* User Info */}
           <div className="flex items-center gap-4 p-4">
             <Avatar className="h-14 w-14">
               <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
@@ -53,14 +54,13 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
 
           <Separator />
 
-          {/* Menu Items */}
           <div className="flex flex-col py-2">
             <button
               onClick={() => handleNavigate("/profile/personal-details")}
               className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors"
             >
               <User className="h-5 w-5 text-muted-foreground" />
-              <span className="text-sm font-medium">Personal Details</span>
+              <span className="text-sm font-medium">{t("header.personalDetails")}</span>
             </button>
 
             <button
@@ -68,7 +68,7 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
               className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors"
             >
               <Settings className="h-5 w-5 text-muted-foreground" />
-              <span className="text-sm font-medium">Settings</span>
+              <span className="text-sm font-medium">{t("header.settings")}</span>
             </button>
           </div>
 
@@ -77,12 +77,12 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
           <div className="p-4">
             <Button variant="outline" className="w-full text-destructive hover:text-destructive">
               <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
+              {t("header.signOut")}
             </Button>
           </div>
 
           <div className="mt-auto p-4 border-t">
-            <p className="text-xs text-muted-foreground text-center">Version 2.1.0</p>
+            <p className="text-xs text-muted-foreground text-center">{t("header.version")} 2.1.0</p>
           </div>
         </div>
       </SheetContent>

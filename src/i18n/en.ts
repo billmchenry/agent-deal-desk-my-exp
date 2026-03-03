@@ -191,6 +191,62 @@ export const en = {
   "team.teamLeadSplit": "Team Lead Split",
   "team.commission": "Commission",
   "team.capResetDate": "Cap Reset Date",
+
+  // Organization
+  "org.summary": "Summary",
+  "org.offboardingOverview": "Offboarding Overview",
+  "org.detailReport": "Detail Report",
+  "org.performanceSnapshot": "Performance Snapshot",
+  "org.totalOrgSize": "Total Organization Size",
+  "org.agentsJoined": "Agents who have joined the organization (year-to-date)",
+  "org.agentsWithIcon": "Agents with ICON status",
+  "org.countTeamLeaders": "Count of Team Leaders",
+  "org.totalTransactions": "Total transactions for active agents in the organization (year-to-date)",
+  "org.transactionsPerAgent": "Transactions per agent (year-to-date)",
+  "org.totalRevShare": "Total Revenue Share (USD)",
+  "org.ytdVolume": "YTD Volume",
+  "org.agentAreas": "Agent Areas",
+  "org.influencerGroup": "Influencer Group by Category",
+  "org.salesVolumeByLevel": "Sales Volume by Agent Level",
+
+  // Organization Tree
+  "orgTree.sortByRevShare": "Sort by Rev Share",
+  "orgTree.highToLow": "Contributed Rev Share: High to Low",
+  "orgTree.lowToHigh": "Contributed Rev Share: Low to High",
+  "orgTree.contributedRevShare": "Contributed Rev Share",
+  "orgTree.individualContribution": "Individual Rev Share Contribution",
+  "orgTree.orgSize": "Org Size",
+  "orgTree.viewOrg": "View Org",
+
+  // Trends
+  "trends.dateRange": "Date Range",
+  "trends.monthsView": "Months View",
+  "trends.newestFirst": "Newest First",
+  "trends.totalSummary": "$ Total Summary",
+  "trends.globalTotals": "Global totals across all regions and levels",
+  "trends.field": "Field",
+  "trends.levelData": "Level Data for United States",
+  "trends.changeCountry": "Change country to view level summary and breakdown for specific country",
+  "trends.country": "Country",
+  "trends.selectCountry": "Select country",
+  "trends.allLevelsSummary": "All Levels Summary (United States)",
+  "trends.combinedContribution": "Combined contribution of all levels for United States",
+  "trends.levelSummary": "Level Summary",
+  "trends.levelBreakdown": "Level-wise Breakdown (United States)",
+
+  // Profile tabs
+  "profile.personalDetails": "Personal Details",
+  "profile.myProfile": "My Profile",
+  "profile.addresses": "Addresses",
+  "profile.emergencyContacts": "Emergency Contacts",
+  "profile.officeLocations": "Office Locations",
+  "profile.activeMarkets": "Active Markets",
+  "profile.organizations": "Organizations",
+  "profile.teams": "Teams",
+  "profile.transactionPrefs": "Transaction preferences",
+  "profile.licenses": "Licenses",
+  "profile.mentor": "Mentor",
+  "profile.partnerAgent": "Partner Agent",
 } as const;
 
 export type TranslationKey = keyof typeof en;

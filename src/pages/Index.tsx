@@ -1,18 +1,18 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { CustomizableDashboard } from "@/components/dashboard/CustomizableDashboard";
 import { useDocumentTitle } from "@/hooks/use-document-title";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Index = () => {
   useDocumentTitle("Home");
+  const { t } = useTranslation();
   return (
     <DashboardLayout>
-      {/* Welcome Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Welcome to eXp!</h1>
-        <p className="text-muted-foreground">Hi Clifford!</p>
+        <h1 className="text-2xl font-bold text-foreground">{t("dashboard.welcomeToExp")}</h1>
+        <p className="text-muted-foreground">{t("dashboard.hiUser")}</p>
       </div>
 
-      {/* Fully Customizable Dashboard */}
       <CustomizableDashboard />
     </DashboardLayout>
   );
