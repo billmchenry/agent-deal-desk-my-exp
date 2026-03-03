@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Info } from "lucide-react";
@@ -27,6 +28,7 @@ const salesVolumeData = [
 ];
 
 export default function OrganizationReporting() {
+  useDocumentTitle("Organization Reporting");
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">

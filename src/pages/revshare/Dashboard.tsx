@@ -16,6 +16,7 @@ import {
   Target,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import {
   Select,
   SelectContent,
@@ -71,6 +72,7 @@ const TOTAL_AGENTS = 17816;
 
 export default function RevShareDashboard() {
   const isMobile = useIsMobile();
+  useDocumentTitle("Revenue Share");
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
@@ -116,10 +118,10 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-white">Revenue Share</span>
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <p className="text-2xl font-bold text-white">$264,138.52 <span className="text-sm font-medium text-white/60">USD</span></p>
-                  <span className="text-xs text-white/50">After Adj.</span>
+                  <p className="text-2xl font-bold text-white">$264,138.52 <span className="text-sm font-medium text-white/70">USD</span></p>
+                  <span className="text-xs text-white/70">After Adj.</span>
                 </div>
-                <div className="mt-1 space-y-1 text-xs text-white/50">
+                <div className="mt-1 space-y-1 text-xs text-white/70">
                   <p>Before Adj. $242,857.04 USD</p>
                   <p>Adjustment +$21,281.48 USD</p>
                 </div>
@@ -132,7 +134,7 @@ export default function RevShareDashboard() {
                   </div>
                   <div>
                     <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
-                    <p className="text-xs text-white/40 leading-tight">Before and after concession adjustments</p>
+                    <p className="text-xs text-white/70 leading-tight">Before and after concession adjustments</p>
                   </div>
                 </div>
                 <p className="text-2xl font-bold text-white mb-2">24</p>
@@ -148,17 +150,17 @@ export default function RevShareDashboard() {
                   </div>
                   <div>
                     <span className="text-xs font-semibold text-white">FLQA · Front Line Qualifying Agents</span>
-                    <p className="text-xs text-white/40 leading-tight">Before and after concession adjustments</p>
+                    <p className="text-xs text-white/70 leading-tight">Before and after concession adjustments</p>
                   </div>
                 </div>
                 <div className="flex gap-4 mb-2">
                   <div>
                     <p className="text-2xl font-bold text-white leading-none">18</p>
-                    <p className="text-xs text-white/50">Actual</p>
+                    <p className="text-xs text-white/70">Actual</p>
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-white leading-none">30</p>
-                    <p className="text-xs text-white/50">After Bonus</p>
+                    <p className="text-xs text-white/70">After Bonus</p>
                   </div>
                 </div>
                 <p className="text-xs text-exp-gold-light mt-2">You are in level 3. Add 2 more agents to reach level 4</p>

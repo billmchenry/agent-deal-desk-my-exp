@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -51,6 +52,7 @@ const levelBreakdowns = [
 ];
 
 export default function RevShareTrends() {
+  useDocumentTitle("RevShare Trends");
   const [openLevels, setOpenLevels] = useState<number[]>([1, 2, 3]);
 
   const toggleLevel = (level: number) => {

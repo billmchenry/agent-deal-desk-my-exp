@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { Search, MessageSquare, Filter } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Input } from "@/components/ui/input";
@@ -22,6 +23,7 @@ const dateFilterLabels: Record<DateFilter, string> = {
 };
 
 export default function History() {
+  useDocumentTitle("Chat History");
   const { conversations, loadConversation, deleteConversation } = useMiraChat();
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');

@@ -1,7 +1,9 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { CustomizableDashboard } from "@/components/dashboard/CustomizableDashboard";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 
 const Index = () => {
+  useDocumentTitle("Home");
   return (
     <DashboardLayout>
       {/* Welcome Header */}

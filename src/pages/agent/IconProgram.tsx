@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -75,6 +76,7 @@ const benefitYearOptions: YearOption[] = [
 ];
 
 export default function IconProgram() {
+  useDocumentTitle("ICON Program");
   const [activeTab, setActiveTab] = useState("production");
   const [cappingYear, setCappingYear] = useState("2026");
   const [benefitYear, setBenefitYear] = useState("2025-2026");
