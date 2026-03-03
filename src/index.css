@@ -192,3 +192,43 @@
      padding-bottom: env(safe-area-inset-bottom);
    }
 }
+
+/* ── RTL Support ── */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+[dir="rtl"] .lg\:ml-64 {
+  margin-left: 0;
+  margin-right: 16rem;
+}
+
+[dir="rtl"] .lg\:ml-16 {
+  margin-left: 0;
+  margin-right: 4rem;
+}
+
+[dir="rtl"] .lg\:left-64 {
+  left: auto;
+  right: 16rem;
+}
+
+[dir="rtl"] .lg\:left-16 {
+  left: auto;
+  right: 4rem;
+}
+
+[dir="rtl"] .left-0 {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .right-6 {
+  right: auto;
+  left: 1.5rem;
+}
+
+[dir="rtl"] .ml-9 {
+  margin-left: 0;
+  margin-right: 2.25rem;
+}

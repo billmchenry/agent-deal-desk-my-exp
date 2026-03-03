@@ -3,6 +3,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { useFormatters } from "@/hooks/useFormatters";
 
 const productionGoals = [
   {
@@ -27,6 +28,7 @@ const stockGrants = [
 ];
 
 export function IconStatusSummary() {
+  const { formatCurrency } = useFormatters();
   return (
     <section>
       {/* Sticky header */}
@@ -68,11 +70,11 @@ export function IconStatusSummary() {
                       transform: "translateX(-50%)",
                     }}
                   >
-                    ${goal.current.toLocaleString("en-US")}
+                    ${formatCurrency(goal.current, { decimals: 2 }).slice(1)}
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Goal: ${(goal.target / 1000).toFixed(0)}K
+                  Goal: {formatCurrency(goal.target, { compact: true, decimals: 0 })}
                 </p>
               </div>
             ))}

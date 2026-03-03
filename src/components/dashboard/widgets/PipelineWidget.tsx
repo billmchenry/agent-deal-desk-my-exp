@@ -1,4 +1,5 @@
 import { Home, Clock, CheckCircle } from "lucide-react";
+import { useFormatters } from "@/hooks/useFormatters";
 
 interface PipelineWidgetProps {
   compact?: boolean;
@@ -14,21 +15,16 @@ const pipelineData = {
 };
 
 export function PipelineWidget({ compact = false }: PipelineWidgetProps) {
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
+  const { formatCurrency } = useFormatters();
+
+  const fmtCurrency = (value: number) => formatCurrency(value, { decimals: 0 });
 
   return (
     <div className={`flex flex-col ${compact ? "gap-2 sm:gap-3" : "gap-4"}`}>
       <div>
         <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Total Pipeline Value</p>
         <p className={`font-bold text-foreground ${compact ? "text-lg sm:text-xl" : "text-2xl"}`}>
-          {formatCurrency(pipelineData.totalValue)}
+          {fmtCurrency(pipelineData.totalValue)}
         </p>
       </div>
       

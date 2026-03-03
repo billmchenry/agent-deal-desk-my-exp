@@ -13,6 +13,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useFormatters } from "@/hooks/useFormatters";
 
 interface TransactionDetailsSheetProps {
   open: boolean;
@@ -32,27 +33,13 @@ interface TransactionDetailsSheetProps {
   } | null;
 }
 
-function DetailRow({
-  label,
-  value,
-  highlighted = false,
-}: {
-  label: string;
-  value: string | number;
-  highlighted?: boolean;
-}) {
+function DetailRow({ label, value, highlighted = false }: { label: string; value: string | number; highlighted?: boolean }) {
+  const { formatNumber } = useFormatters();
   return (
-    <div
-      className={cn(
-        "flex justify-between py-2 px-4",
-        highlighted && "bg-green-50"
-      )}
-    >
+    <div className={cn("flex justify-between py-2 px-4", highlighted && "bg-green-50")}>
       <span className="text-sm text-muted-foreground">{label}</span>
       <span className={cn("text-sm font-medium", highlighted && "text-green-700")}>
-        {typeof value === "number"
-          ? value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-          : value}
+        {typeof value === "number" ? formatNumber(value, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : value}
       </span>
     </div>
   );

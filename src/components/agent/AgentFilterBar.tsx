@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CalendarDays } from "lucide-react";
 import { format, startOfYear, startOfMonth, subWeeks, subYears } from "date-fns";
+import { useFormatters } from "@/hooks/useFormatters";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,7 +38,7 @@ export function AgentFilterBar({
   onIncludePipelineChange,
 }: AgentFilterBarProps) {
   const [open, setOpen] = useState(false);
-
+  const { formatDate } = useFormatters();
   const handlePreset = (preset: typeof presets[0]) => {
     onDateRangeChange(preset.getRange());
   };
@@ -52,8 +53,8 @@ export function AgentFilterBar({
             <CalendarDays className="h-4 w-4" />
             {dateRange.from && dateRange.to ? (
               <>
-                {format(dateRange.from, "MM/dd/yyyy")} –{" "}
-                {format(dateRange.to, "MM/dd/yyyy")}
+                {formatDate(dateRange.from)} –{" "}
+                {formatDate(dateRange.to)}
               </>
             ) : (
               "Select date range"
