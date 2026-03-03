@@ -140,7 +140,7 @@ export default function RevShareDashboard() {
               </div>
 
               <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-2">
                   <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
                     <Users className="h-3.5 w-3.5" />
                   </div>
@@ -149,7 +149,7 @@ export default function RevShareDashboard() {
                     <p className="text-[10px] text-white/40 leading-tight">Before and after concession adjustments</p>
                   </div>
                 </div>
-                <div className="flex gap-4 mb-1">
+                <div className="flex gap-4 mb-2">
                   <div>
                     <p className="text-2xl font-bold text-white leading-none">18</p>
                     <p className="text-xs text-white/50">Actual</p>
