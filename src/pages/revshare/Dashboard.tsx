@@ -1,8 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import {
   Info, ChevronRight, Clock, Calendar, CheckCircle2, TrendingUp,
   Users, DollarSign, ExternalLink, Target,
@@ -15,20 +17,21 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  PieChart, Pie, Cell, ResponsiveContainer, ComposedChart,
-  Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, LineChart, Line, ComposedChart, Bar,
+  XAxis, YAxis, CartesianGrid, Tooltip,
 } from "recharts";
+import { DistributionDonut } from "@/components/revshare/DistributionDonut";
 
 /* ── Mock Data ─────────────────────────────────────────── */
 
 const levelDistribution = [
-  { name: "Level 1", value: 0.7, agents: 129, color: "hsl(220, 56%, 20%)" },
-  { name: "Level 2", value: 2.1, agents: 374, color: "hsl(220, 45%, 30%)" },
-  { name: "Level 3", value: 5.4, agents: 962, color: "hsl(217, 91%, 60%)" },
-  { name: "Level 4", value: 12.3, agents: 2190, color: "hsl(217, 91%, 70%)" },
-  { name: "Level 5", value: 20.8, agents: 3704, color: "hsl(210, 40%, 75%)" },
-  { name: "Level 6", value: 28.9, agents: 5146, color: "hsl(210, 40%, 85%)" },
-  { name: "Level 7", value: 29.8, agents: 5311, color: "hsl(214, 32%, 91%)" },
+  { name: "Level 1", value: 0.7, agents: 129, color: "hsl(244, 14%, 22%)" },
+  { name: "Level 2", value: 2.1, agents: 374, color: "hsl(230, 25%, 32%)" },
+  { name: "Level 3", value: 5.4, agents: 962, color: "hsl(218, 35%, 42%)" },
+  { name: "Level 4", value: 12.3, agents: 2190, color: "hsl(210, 40%, 52%)" },
+  { name: "Level 5", value: 20.8, agents: 3704, color: "hsl(200, 35%, 62%)" },
+  { name: "Level 6", value: 28.9, agents: 5146, color: "hsl(215, 30%, 76%)" },
+  { name: "Level 7", value: 29.8, agents: 5311, color: "hsl(220, 25%, 88%)" },
 ];
 
 const countryDistribution = [
@@ -41,21 +44,117 @@ const countryDistribution = [
   { name: "France", agents: 720, color: "hsl(210, 40%, 75%)" },
 ];
 
-const revenueComparisonData = [
-  { name: "2024", revenue: 1.0, growth: 0.8 },
-  { name: "2025", revenue: 3.8, growth: 3.2 },
-  { name: "2026", revenue: 0.285, growth: 0.4 },
+const TOTAL_AGENTS = 17816;
+const TOTAL_REVSHARE = 285400;
+
+const levelRevShare = [
+  { name: "Level 1", value: 1998, color: "hsl(244, 14%, 22%)" },
+  { name: "Level 2", value: 5993, color: "hsl(230, 25%, 32%)" },
+  { name: "Level 3", value: 15412, color: "hsl(218, 35%, 42%)" },
+  { name: "Level 4", value: 35104, color: "hsl(210, 40%, 52%)" },
+  { name: "Level 5", value: 59363, color: "hsl(200, 35%, 62%)" },
+  { name: "Level 6", value: 82481, color: "hsl(215, 30%, 76%)" },
+  { name: "Level 7", value: 85049, color: "hsl(220, 25%, 88%)" },
 ];
 
-const TOTAL_AGENTS = 17816;
+const countryRevShare = [
+  { name: "United States", value: 77710, color: "hsl(262, 83%, 58%)" },
+  { name: "United Kingdom", value: 23117, color: "hsl(217, 91%, 60%)" },
+  { name: "Canada", value: 17980, color: "hsl(142, 71%, 45%)" },
+  { name: "Germany", value: 15697, color: "hsl(45, 93%, 47%)" },
+  { name: "Australia", value: 14270, color: "hsl(0, 84%, 60%)" },
+  { name: "Brazil", value: 13132, color: "hsl(220, 45%, 30%)" },
+  { name: "France", value: 11494, color: "hsl(210, 40%, 75%)" },
+];
+
+const revenueYearlyData = [
+  { name: "2024", revenue: 1.0 },
+  { name: "2025", revenue: 3.8 },
+  { name: "2026", revenue: 0.285 },
+];
+
+const revenueQuarterlyGrouped = [
+  { name: "Q1", y2024: 0.18, y2025: 0.82, y2026: 0.285 },
+  { name: "Q2", y2024: 0.22, y2025: 1.05 },
+  { name: "Q3", y2024: 0.28, y2025: 1.12 },
+  { name: "Q4", y2024: 0.32, y2025: 0.81 },
+];
+
+const revenueMonthlyGrouped = [
+  { name: "Jan", y2024: 0.05, y2025: 0.25, y2026: 0.15 },
+  { name: "Feb", y2024: 0.05, y2025: 0.28, y2026: 0.135 },
+  { name: "Mar", y2024: 0.06, y2025: 0.3 },
+  { name: "Apr", y2024: 0.07, y2025: 0.35 },
+  { name: "May", y2024: 0.08, y2025: 0.36 },
+  { name: "Jun", y2024: 0.08, y2025: 0.38 },
+  { name: "Jul", y2024: 0.1, y2025: 0.4 },
+  { name: "Aug", y2024: 0.09, y2025: 0.37 },
+  { name: "Sep", y2024: 0.1, y2025: 0.35 },
+  { name: "Oct", y2024: 0.11, y2025: 0.28 },
+  { name: "Nov", y2024: 0.1, y2025: 0.25 },
+  { name: "Dec", y2024: 0.11, y2025: 0.28 },
+];
+
+const chartTickStyle = { fill: "hsl(var(--muted-foreground))", fontSize: 11, fontFamily: "var(--font-secondary)" };
+const tooltipStyle = {
+  backgroundColor: "hsl(var(--card))",
+  borderColor: "hsl(var(--border))",
+  borderRadius: 8,
+  fontSize: 12,
+  fontFamily: "var(--font-secondary)",
+};
 
 /* ── Component ─────────────────────────────────────────── */
 
 export default function RevShareDashboard() {
   const isMobile = useIsMobile();
+  const [compPeriod, setCompPeriod] = useState("yearly");
+  const [distMode, setDistMode] = useState<"agents" | "revshare">("agents");
+  const [selectedMonth, setSelectedMonth] = useState<Record<string, unknown> | null>(null);
   useDocumentTitle("Revenue Share");
   const { formatNumber, formatCurrency } = useFormatters();
   const { t } = useTranslation();
+
+  const fmtCompact = (v: number) =>
+    v < 1 ? `$${Math.round(v * 1000)}K` : `$${v.toFixed(1)}M`;
+
+  const tooltipFormatter = (value: number, name: string) => {
+    const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : name === "y2026" ? "2026" : name === "revenue" ? "Revenue" : name;
+    return [fmtCompact(value), label];
+  };
+
+  /* Distribution data based on mode */
+  const levelDonutData = distMode === "agents"
+    ? levelDistribution.map((l) => ({ name: l.name, value: l.agents, color: l.color, label: l.name }))
+    : levelRevShare.map((l) => ({ name: l.name, value: l.value, color: l.color, label: l.name }));
+
+  const countryDonutData = distMode === "agents"
+    ? countryDistribution.map((c) => ({ name: c.name, value: c.agents, color: c.color }))
+    : countryRevShare.map((c) => ({ name: c.name, value: c.value, color: c.color }));
+
+  const donutTotal = distMode === "agents" ? TOTAL_AGENTS : TOTAL_REVSHARE;
+  const donutFormat = (v: number) => distMode === "agents" ? formatNumber(v) : formatCurrency(v, { compact: true, decimals: 0 });
+  const donutCenterLabel = distMode === "agents" ? t("revshare.agents") : t("revshare.revenueShare");
+
+  /* Multi-line chart renderer */
+  const renderMultiLineChart = (
+    data: Record<string, unknown>[],
+    domain: [number, number],
+    dotRadius = 3,
+  ) => (
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={data} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
+        <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={fmtCompact} domain={domain} width={50} />
+        <Tooltip formatter={tooltipFormatter} contentStyle={tooltipStyle} />
+        <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: dotRadius, fill: "hsl(var(--exp-navy))" }} connectNulls />
+        <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: dotRadius, fill: "hsl(var(--exp-blue))" }} connectNulls />
+        <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: dotRadius, fill: "hsl(var(--exp-green))" }} connectNulls />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
@@ -77,6 +176,7 @@ export default function RevShareDashboard() {
 
         {/* ═══ Section 1: Hero Banner ═══ */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue p-4 sm:p-6 text-white">
+          {/* Decorative background */}
           <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
             <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-white" />
             <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-exp-gold" />
@@ -91,6 +191,7 @@ export default function RevShareDashboard() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+              {/* Revenue Share */}
               <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="rounded-md p-1.5 shrink-0 bg-exp-green/20 text-exp-green-light">
@@ -99,15 +200,19 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-white">{t("revshare.revenueShare")}</span>
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <p className="text-2xl font-bold text-white">{formatCurrency(264138.52)} <span className="text-sm font-medium text-white/70">USD</span></p>
+                  <p className="text-2xl font-bold font-secondary text-white">
+                    {formatCurrency(264138.52)}
+                    <span className="text-sm font-medium text-white/70 ml-1">USD</span>
+                  </p>
                   <span className="text-xs text-white/70">After Adj.</span>
                 </div>
                 <div className="mt-1 space-y-1 text-xs text-white/70">
-                  <p>Before Adj. {formatCurrency(242857.04)} USD</p>
-                  <p>Adjustment +{formatCurrency(21281.48)} USD</p>
+                  <p>Before Adj. <span className="font-secondary">{formatCurrency(242857.04)}</span> USD</p>
+                  <p>Adjustment <span className="font-secondary">+{formatCurrency(21281.48)}</span> USD</p>
                 </div>
               </div>
 
+              {/* FLA */}
               <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
@@ -115,15 +220,19 @@ export default function RevShareDashboard() {
                   </div>
                   <div>
                     <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
-                    <p className="text-xs text-white/70 leading-tight">Before and after concession adjustments</p>
+                    <div className="flex items-center gap-1">
+                      <Info className="h-3 w-3 text-white/50" aria-label="FLA info" />
+                      <p className="text-xs text-white/70 leading-tight">FLA list includes both active and inactive agents before and after concession adjustments.</p>
+                    </div>
                   </div>
                 </div>
-                <p className="text-2xl font-bold text-white mb-2">{formatNumber(24)}</p>
-                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors">
+                <p className="text-2xl font-bold font-secondary text-white mb-2">{formatNumber(24)}</p>
+                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLA List">
                   View FLA List <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
 
+              {/* FLQA */}
               <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
@@ -131,21 +240,43 @@ export default function RevShareDashboard() {
                   </div>
                   <div>
                     <span className="text-xs font-semibold text-white">FLQA · Front Line Qualifying Agents</span>
-                    <p className="text-xs text-white/70 leading-tight">Before and after concession adjustments</p>
+                    <div className="flex items-center gap-1">
+                      <Info className="h-3 w-3 text-white/50" aria-label="FLQA info" />
+                      <p className="text-xs text-white/70 leading-tight">Front Line Qualifying Agents count before and after concession adjustments.</p>
+                    </div>
                   </div>
                 </div>
+
                 <div className="flex gap-4 mb-2">
                   <div>
-                    <p className="text-2xl font-bold text-white leading-none">{formatNumber(18)}</p>
+                    <p className="text-2xl font-bold font-secondary text-white leading-none">{formatNumber(18)}</p>
                     <p className="text-xs text-white/70">Actual</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-white leading-none">{formatNumber(30)}</p>
-                    <p className="text-xs text-white/70">After Bonus</p>
+                    <div className="flex items-baseline gap-1">
+                      <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 text-xs px-1.5 py-0">
+                        <span className="font-secondary">+ 12</span>
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-white/70">Bonus</p>
                   </div>
                 </div>
-                <p className="text-xs text-exp-gold-light mt-2">You are in level 3. Add 2 more agents to reach level 4</p>
-                <button className="mt-2 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors">
+
+                <div className="text-xs text-exp-gold-light mb-2">
+                  Level 3. <span className="font-semibold">2 more agents</span> for Level 4.
+                </div>
+
+                {/* FLQA Progress bar */}
+                <div className="mb-2">
+                  <Progress value={(18 / 30) * 100} className="h-2 bg-white/20 [&>div]:bg-exp-gold" />
+                  <div className="flex justify-between mt-1 text-xs text-white/50 font-secondary">
+                    <span>0</span>
+                    <span>18 (Current)</span>
+                    <span>30 (Goal)</span>
+                  </div>
+                </div>
+
+                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLQA List">
                   View FLQA List <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -161,7 +292,7 @@ export default function RevShareDashboard() {
                 <h2 className="text-sm font-semibold text-foreground">{t("revshare.currentPayoutStatus")}</h2>
                 <p className="text-xs text-muted-foreground">Overview of your revenue share payout status and history</p>
               </div>
-              <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0">
+              <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0" aria-label="View Periodic Overview">
                 View Periodic Overview <ExternalLink className="h-3 w-3" />
               </button>
             </div>
@@ -174,25 +305,27 @@ export default function RevShareDashboard() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+              {/* Unpaid */}
               <div className="rounded-lg border border-exp-gold/30 bg-exp-gold/5 p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <Clock className="h-4 w-4 text-exp-gold" />
                   <span className="text-xs font-semibold text-foreground">{t("revshare.unpaid")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Calculated but not paid out</p>
-                <p className="text-lg font-bold text-foreground mb-2">{formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span></p>
+                <p className="text-lg font-bold font-secondary text-foreground mb-2">{formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span></p>
                 <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
                   {t("revshare.viewDetails")} <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
 
+              {/* Expected Next */}
               <div className="rounded-lg border border-exp-blue/30 bg-exp-blue/5 p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <Calendar className="h-4 w-4 text-exp-blue" />
                   <span className="text-xs font-semibold text-foreground">{t("revshare.expectedNext")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Estimated next scheduled payout</p>
-                <p className="text-lg font-bold text-foreground mb-2">{formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span></p>
+                <p className="text-lg font-bold font-secondary text-foreground mb-2">{formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span></p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
                   <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
                     {t("revshare.viewDetails")} <ChevronRight className="h-3 w-3" />
@@ -201,13 +334,14 @@ export default function RevShareDashboard() {
                 </div>
               </div>
 
+              {/* Last Paid */}
               <div className="rounded-lg border border-exp-green/30 bg-exp-green/5 p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <CheckCircle2 className="h-4 w-4 text-exp-green" />
                   <span className="text-xs font-semibold text-foreground">{t("revshare.lastPaid")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Most recent payout amount</p>
-                <p className="text-lg font-bold text-foreground mb-2">{formatCurrency(986.92)} <span className="text-xs font-medium text-muted-foreground">USD</span></p>
+                <p className="text-lg font-bold font-secondary text-foreground mb-2">{formatCurrency(986.92)} <span className="text-xs font-medium text-muted-foreground">USD</span></p>
                 <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
                   {t("revshare.viewDetails")} <ChevronRight className="h-3 w-3" />
                 </button>
@@ -219,174 +353,45 @@ export default function RevShareDashboard() {
         {/* ═══ Section 3: RevShare Group Distribution ═══ */}
         <Card>
           <CardContent className="p-4">
-            <div className="mb-3">
-              <h2 className="text-sm font-semibold text-foreground">{t("revshare.groupDistribution")}</h2>
-              <p className="text-xs text-muted-foreground">Agent distribution across levels (1-7) and regions</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+              <div>
+                <h2 className="text-sm font-semibold text-foreground">{t("revshare.groupDistribution")}</h2>
+                <p className="text-xs text-muted-foreground">
+                  {distMode === "agents"
+                    ? "Agent distribution across levels (1-7) and regions"
+                    : "Revenue share distribution across levels (1-7) and regions"}
+                </p>
+              </div>
+              <Tabs value={distMode} onValueChange={(v) => setDistMode(v as "agents" | "revshare")}>
+                <TabsList className="h-9 sm:h-7">
+                  <TabsTrigger value="agents" className="text-xs px-3 min-h-[44px] sm:min-h-0 sm:h-6">{t("revshare.agents")}</TabsTrigger>
+                  <TabsTrigger value="revshare" className="text-xs px-3 min-h-[44px] sm:min-h-0 sm:h-6">{t("revshare.revenueShare")}</TabsTrigger>
+                </TabsList>
+              </Tabs>
             </div>
 
             {isMobile ? (
               <Tabs defaultValue="level">
-                <div className="flex items-center justify-between mb-3">
-                  <TabsList className="h-9">
-                    <TabsTrigger value="level" className="text-xs px-3 min-h-[44px]">{t("revshare.byLevel")}</TabsTrigger>
-                    <TabsTrigger value="country" className="text-xs px-3 min-h-[44px]">{t("revshare.byCountry")}</TabsTrigger>
-                  </TabsList>
-                  <Tabs defaultValue="agents">
-                    <TabsList className="h-9">
-                      <TabsTrigger value="agents" className="text-xs px-2 min-h-[44px]">{t("revshare.agents")}</TabsTrigger>
-                      <TabsTrigger value="revshare" className="text-xs px-2 min-h-[44px]">{t("revshare.revenueShare")}</TabsTrigger>
-                    </TabsList>
-                  </Tabs>
-                </div>
-
+                <TabsList className="h-9 mb-3">
+                  <TabsTrigger value="level" className="text-xs px-3 min-h-[44px]">{t("revshare.byLevel")}</TabsTrigger>
+                  <TabsTrigger value="country" className="text-xs px-3 min-h-[44px]">{t("revshare.byCountry")}</TabsTrigger>
+                </TabsList>
                 <TabsContent value="level">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-28 h-28 relative shrink-0">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie data={levelDistribution} cx="50%" cy="50%" innerRadius={32} outerRadius={48} dataKey="value" strokeWidth={2} stroke="hsl(var(--card))">
-                            {levelDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-sm font-bold text-foreground">{formatNumber(TOTAL_AGENTS)}</span>
-                        <span className="text-xs text-muted-foreground">{t("revshare.agents")}</span>
-                      </div>
-                    </div>
-                    <div className="w-full space-y-0.5">
-                      {levelDistribution.map((level) => (
-                        <div key={level.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 -mx-1">
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: level.color }} />
-                            <span className="text-foreground">{level.name}</span>
-                            <span className="text-muted-foreground">({level.value}%)</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <span>{formatNumber(level.agents)}</span>
-                            <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <DistributionDonut data={levelDonutData} total={donutTotal} formatValue={donutFormat} centerLabel={donutCenterLabel} />
                 </TabsContent>
-
                 <TabsContent value="country">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-28 h-28 relative shrink-0">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie data={countryDistribution} cx="50%" cy="50%" innerRadius={32} outerRadius={48} dataKey="agents" strokeWidth={2} stroke="hsl(var(--card))">
-                            {countryDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-sm font-bold text-foreground">{formatNumber(TOTAL_AGENTS)}</span>
-                        <span className="text-xs text-muted-foreground">{t("revshare.agents")}</span>
-                      </div>
-                    </div>
-                    <div className="w-full space-y-0.5">
-                      {countryDistribution.map((country) => (
-                        <div key={country.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 -mx-1">
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: country.color }} />
-                            <span className="text-foreground">{country.name}</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <span>{formatNumber(country.agents)}</span>
-                            <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <DistributionDonut data={countryDonutData} total={donutTotal} formatValue={donutFormat} centerLabel={donutCenterLabel} showPercentage={false} />
                 </TabsContent>
               </Tabs>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-muted-foreground">{t("revshare.byLevel")}</span>
-                    <Tabs defaultValue="agents">
-                      <TabsList className="h-7">
-                        <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-6">{t("revshare.agents")}</TabsTrigger>
-                        <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-6">{t("revshare.revenueShare")}</TabsTrigger>
-                      </TabsList>
-                    </Tabs>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-32 h-32 relative shrink-0">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie data={levelDistribution} cx="50%" cy="50%" innerRadius={38} outerRadius={56} dataKey="value" strokeWidth={2} stroke="hsl(var(--card))">
-                            {levelDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-sm font-bold text-foreground">{formatNumber(TOTAL_AGENTS)}</span>
-                        <span className="text-xs text-muted-foreground">{t("revshare.agents")}</span>
-                      </div>
-                    </div>
-                    <div className="flex-1 space-y-0.5">
-                      {levelDistribution.map((level) => (
-                        <div key={level.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-0.5 -mx-1">
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: level.color }} />
-                            <span className="text-foreground">{level.name}</span>
-                            <span className="text-muted-foreground">({level.value}%)</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <span>{formatNumber(level.agents)}</span>
-                            <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byLevel")}</span>
+                  <DistributionDonut data={levelDonutData} total={donutTotal} formatValue={donutFormat} centerLabel={donutCenterLabel} />
                 </div>
-
                 <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-4 border-border">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-muted-foreground">{t("revshare.byCountry")}</span>
-                    <Tabs defaultValue="agents">
-                      <TabsList className="h-7">
-                        <TabsTrigger value="agents" className="text-xs px-2 py-0.5 h-6">{t("revshare.agents")}</TabsTrigger>
-                        <TabsTrigger value="revshare" className="text-xs px-2 py-0.5 h-6">{t("revshare.revenueShare")}</TabsTrigger>
-                      </TabsList>
-                    </Tabs>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-32 h-32 relative shrink-0">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie data={countryDistribution} cx="50%" cy="50%" innerRadius={38} outerRadius={56} dataKey="agents" strokeWidth={2} stroke="hsl(var(--card))">
-                            {countryDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-sm font-bold text-foreground">{formatNumber(TOTAL_AGENTS)}</span>
-                        <span className="text-xs text-muted-foreground">{t("revshare.agents")}</span>
-                      </div>
-                    </div>
-                    <div className="flex-1 space-y-0.5">
-                      {countryDistribution.map((country) => (
-                        <div key={country.name} className="flex items-center justify-between text-xs group cursor-pointer hover:bg-muted/50 rounded px-1 py-2 sm:py-0.5 -mx-1">
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: country.color }} />
-                            <span className="text-foreground">{country.name}</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-muted-foreground">
-                            <span>{formatNumber(country.agents)}</span>
-                            <ChevronRight className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byCountry")}</span>
+                  <DistributionDonut data={countryDonutData} total={donutTotal} formatValue={donutFormat} centerLabel={donutCenterLabel} showPercentage={false} />
                 </div>
               </div>
             )}
@@ -406,10 +411,10 @@ export default function RevShareDashboard() {
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <div className="flex items-center gap-2">
-                  <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0">
+                  <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0" aria-label="View Trends">
                     {t("revshare.viewTrends")} <ExternalLink className="h-3 w-3" />
                   </button>
-                  <Tabs defaultValue="yearly">
+                  <Tabs value={compPeriod} onValueChange={setCompPeriod}>
                     <TabsList className="h-9 sm:h-7">
                       <TabsTrigger value="yearly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">{t("revshare.yearly")}</TabsTrigger>
                       <TabsTrigger value="quarterly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">{t("revshare.quarterly")}</TabsTrigger>
@@ -420,68 +425,104 @@ export default function RevShareDashboard() {
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" />
-                    Revenue
+                    2024
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="w-2.5 h-2.5 rounded-full bg-exp-green inline-block" />
-                    Growth
+                    <span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" />
+                    2025
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded-sm bg-exp-green inline-block" />
+                    2026
                   </span>
                 </div>
               </div>
             </div>
-            <div className="h-[200px] sm:h-[240px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={revenueComparisonData} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
-                  tickFormatter={(v) => formatCurrency(v, { compact: true, decimals: 1 })}
-                  domain={[0, 4]}
-                  width={50}
-                />
-                <Tooltip
-                  formatter={(value: number, name: string) => [
-                    formatCurrency(value, { compact: true }),
-                    name === "revenue" ? "Revenue" : "Growth",
-                  ]}
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    borderColor: "hsl(var(--border))",
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
-                />
-                <Bar
-                  dataKey="revenue"
-                  fill="hsl(var(--exp-navy))"
-                  radius={[4, 4, 0, 0]}
-                  barSize={48}
-                  label={({ x, y, width, value }: any) =>
-                    value < 1 ? (
-                      <text x={x + width / 2} y={y - 6} textAnchor="middle" fill="hsl(var(--muted-foreground))" fontSize={12} fontWeight={600}>
-                        ${Math.round(value * 1000)}K
-                      </text>
-                    ) : null
-                  }
-                />
-                <Line
-                  type="monotone"
-                  dataKey="growth"
-                  stroke="hsl(var(--exp-green))"
-                  strokeWidth={2}
-                  dot={{ r: 3, fill: "hsl(var(--exp-green))" }}
-                />
-              </ComposedChart>
-            </ResponsiveContainer>
-            </div>
+
+            {/* Yearly */}
+            {compPeriod === "yearly" && (
+              <div className="h-[200px] sm:h-[240px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={revenueYearlyData} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
+                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => `$${v.toFixed(1)}M`} domain={[0, "auto"]} width={50} />
+                    <Tooltip formatter={(value: number) => [`$${value < 1 ? Math.round(value * 1000) + "K" : value.toFixed(2) + "M"}`, "Revenue"]} contentStyle={tooltipStyle} />
+                    <Bar dataKey="revenue" fill="hsl(var(--exp-navy))" radius={[4, 4, 0, 0]} barSize={48} />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {/* Quarterly */}
+            {compPeriod === "quarterly" && (
+              <div className="h-[200px] sm:h-[240px]">
+                {renderMultiLineChart(revenueQuarterlyGrouped, [0, 1.5])}
+              </div>
+            )}
+
+            {/* Monthly */}
+            {compPeriod === "monthly" && (
+              <>
+                <div className={isMobile ? "overflow-x-auto -mx-4 px-4" : ""}>
+                  <div className={isMobile ? "min-w-[600px]" : ""} style={{ height: isMobile ? 200 : 240 }}>
+                    {isMobile ? (
+                      <LineChart
+                        data={revenueMonthlyGrouped}
+                        width={600}
+                        height={200}
+                        margin={{ top: 15, right: 10, bottom: 0, left: 0 }}
+                        onClick={(e) => {
+                          if (e?.activePayload?.[0]?.payload) {
+                            setSelectedMonth(e.activePayload[0].payload);
+                          }
+                        }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
+                        <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={fmtCompact} domain={[0, 0.5]} width={50} />
+                        <Tooltip formatter={tooltipFormatter} contentStyle={tooltipStyle} />
+                        <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 5, fill: "hsl(var(--exp-navy))" }} connectNulls />
+                        <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 5, fill: "hsl(var(--exp-blue))" }} connectNulls />
+                        <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 5, fill: "hsl(var(--exp-green))" }} connectNulls />
+                      </LineChart>
+                    ) : (
+                      renderMultiLineChart(revenueMonthlyGrouped, [0, 0.5])
+                    )}
+                  </div>
+                </div>
+
+                {/* Tap info strip – mobile only */}
+                {isMobile && selectedMonth && (
+                  <div className="mt-2 rounded-md bg-muted/50 px-3 py-2 flex items-center gap-3 text-xs">
+                    <span className="font-semibold text-foreground">{selectedMonth.name as string}</span>
+                    <div className="flex gap-3 font-secondary">
+                      {selectedMonth.y2024 != null && (
+                        <span className="flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-exp-navy inline-block" />
+                          ${Math.round((selectedMonth.y2024 as number) * 1000)}K
+                        </span>
+                      )}
+                      {selectedMonth.y2025 != null && (
+                        <span className="flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-exp-blue inline-block" />
+                          ${Math.round((selectedMonth.y2025 as number) * 1000)}K
+                        </span>
+                      )}
+                      {selectedMonth.y2026 != null && (
+                        <span className="flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-exp-green inline-block" />
+                          ${Math.round((selectedMonth.y2026 as number) * 1000)}K
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {isMobile && !selectedMonth && (
+                  <p className="text-xs text-muted-foreground text-center mt-2">Swipe to scroll · Tap points for details</p>
+                )}
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
