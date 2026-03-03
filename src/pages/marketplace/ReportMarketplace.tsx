@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useNavigate } from "react-router-dom";
 import { Store, Download } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function ReportMarketplace() {
+  useDocumentTitle("Report Marketplace");
   const navigate = useNavigate();
   const { templates: userTemplates, applyTemplate } = useDashboard();
   

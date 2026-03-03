@@ -19,7 +19,8 @@ function SettingCard({ label, value, icon = "edit", onClick }: SettingCardProps)
         </div>
         <button
           onClick={onClick}
-          className="text-muted-foreground hover:text-foreground transition-colors"
+          className="text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          aria-label={icon === "edit" ? `Edit ${label}` : `Open ${label}`}
         >
           {icon === "edit" ? (
             <Pencil className="h-4 w-4" />

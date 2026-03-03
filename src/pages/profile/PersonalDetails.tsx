@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { Pencil } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,6 +23,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { EditProfileSheet } from "@/components/profile/EditProfileSheet";
 
 export default function PersonalDetails() {
+  useDocumentTitle("My Profile");
   const [editSheetOpen, setEditSheetOpen] = useState(false);
   const [activeTopTab, setActiveTopTab] = useState("personal-details");
 

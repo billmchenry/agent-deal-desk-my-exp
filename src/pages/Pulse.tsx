@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -83,6 +84,7 @@ const quickActions = [
 ];
 
 export default function Pulse() {
+  useDocumentTitle("Pulse");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [timePeriod, setTimePeriod] = useState("1Y");
   const [insightFilter, setInsightFilter] = useState("daily");

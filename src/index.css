@@ -165,13 +165,10 @@
     -webkit-touch-callout: none !important;
     -webkit-user-select: none;
     user-select: none;
-    outline: none !important;
   }
-  .tap-card:active,
-  .tap-card:focus,
-  .tap-card:focus-visible,
-  .tap-card:focus-within {
-    outline: none !important;
+  .tap-card:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
   }
 
   @media (pointer: coarse) {

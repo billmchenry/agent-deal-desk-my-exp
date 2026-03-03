@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { AgentFilterBar } from "@/components/agent/AgentFilterBar";
 import { AgentHeroBanner } from "@/components/agent/AgentHeroBanner";
@@ -6,6 +7,7 @@ import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
 import { CappingSection } from "@/components/agent/CappingSection";
 
 export default function AgentDashboard() {
+  useDocumentTitle("Agent Dashboard");
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
     to: Date | undefined;

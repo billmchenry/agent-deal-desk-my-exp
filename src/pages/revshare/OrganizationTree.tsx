@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +46,7 @@ const getLevelColor = (level: number) => {
 };
 
 export default function OrganizationTree() {
+  useDocumentTitle("Organization Tree");
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">

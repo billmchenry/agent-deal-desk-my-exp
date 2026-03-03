@@ -131,12 +131,13 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
           {hasSubmenu && (
             <button
               onClick={(e) => handleChevronClick(e, item)}
-              className="p-1.5 rounded-md hover:bg-sidebar-accent transition-colors"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-sidebar-accent transition-colors"
+              aria-label={`${expanded ? "Collapse" : "Expand"} ${item.title}`}
             >
               {expanded ? (
-                <ChevronDown className="h-4 w-4 text-sidebar-foreground/50 shrink-0" />
+                <ChevronDown className="h-4 w-4 text-sidebar-foreground/60 shrink-0" />
               ) : (
-                <ChevronRight className="h-4 w-4 text-sidebar-foreground/50 shrink-0" />
+                <ChevronRight className="h-4 w-4 text-sidebar-foreground/60 shrink-0" />
               )}
             </button>
           )}
@@ -166,7 +167,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent side="left" className="w-full sm:max-w-sm p-0 bg-sidebar flex flex-col overflow-x-hidden">
-        <SheetHeader className="flex h-16 items-center justify-between border-b border-border px-5 bg-white">
+        <SheetHeader className="flex h-16 items-center justify-between border-b border-border px-5 bg-background">
           <SheetTitle className="flex items-center gap-1">
             <span className="text-xl font-bold text-foreground">MY</span>
             <span className="text-xl text-muted-foreground">|</span>
@@ -177,7 +178,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
         <nav className="flex flex-col flex-1 overflow-y-auto py-4">
           {/* MY DESK Section */}
           <div className="mb-4">
-            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
               {sidebarNavigation.myDesk.label}
             </span>
             <div className="space-y-0.5">
@@ -187,7 +188,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
           {/* BUSINESS & GROWTH Section */}
           <div className="mb-4 mt-4">
-            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
               {sidebarNavigation.businessGrowth.label}
             </span>
             <div className="space-y-0.5">
@@ -197,7 +198,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
           {/* RESOURCES Section */}
           <div className="mt-4">
-            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+            <span className="mx-5 mb-2 block text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
               {sidebarNavigation.resources.label}
             </span>
             <div className="space-y-0.5">

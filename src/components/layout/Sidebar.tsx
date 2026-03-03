@@ -115,11 +115,12 @@ export function Sidebar() {
             <CollapsibleTrigger asChild>
               <button
                 onClick={(e) => handleChevronClick(e, item)}
-                className="p-1.5 rounded-md hover:bg-sidebar-accent transition-colors"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-sidebar-accent transition-colors"
+                aria-label={`${expanded ? "Collapse" : "Expand"} ${item.title}`}
               >
                 <ChevronRight
                   className={cn(
-                    "h-4 w-4 text-sidebar-foreground/50 transition-transform duration-200",
+                    "h-4 w-4 text-sidebar-foreground/60 transition-transform duration-200",
                     expanded && "rotate-90"
                   )}
                 />
@@ -165,7 +166,7 @@ export function Sidebar() {
     <div className={cn("mb-4", className)}>
       {!isCollapsed ? (
         <div className="mx-3 mb-2 flex items-center justify-between">
-          <span className="mx-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+          <span className="mx-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
             {section.label}
           </span>
           {showToggle && (
@@ -206,6 +207,7 @@ export function Sidebar() {
   return (
     <TooltipProvider delayDuration={0}>
       <aside
+        aria-label="Main navigation"
         className={cn(
           "hidden lg:flex flex-col fixed left-0 top-0 z-50 h-screen bg-sidebar transition-all duration-300",
           isCollapsed ? "w-16" : "w-64"
@@ -213,7 +215,7 @@ export function Sidebar() {
       >
         {/* Header */}
         <div className={cn(
-          "flex h-16 items-center border-b border-border bg-white transition-all duration-300",
+          "flex h-16 items-center border-b border-border bg-background transition-all duration-300",
           isCollapsed ? "justify-center px-2" : "gap-1 px-5"
         )}>
           <span className="text-xl font-bold leading-none text-foreground">MY</span>
