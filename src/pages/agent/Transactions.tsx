@@ -75,8 +75,8 @@ export default function Transactions() {
         return d === "-" ? "-" : formatDate(d);
       },
     },
-    { key: "salesPrice", header: "txn.salePrice", type: "currency", sortable: true },
-    { key: "gciSum", header: "txn.gci", type: "currency", sortable: true },
+    { key: "salesPrice", header: "txn.salePrice", type: "currency", sortable: true, currencyCodeKey: "currency" },
+    { key: "gciSum", header: "txn.gci", type: "currency", sortable: true, currencyCodeKey: "currency" },
     {
       key: "propertyAddress",
       header: "txn.address",
@@ -88,7 +88,7 @@ export default function Transactions() {
         </span>
       ),
     },
-    { key: "firstCap", header: "txn.amtTowardCap", type: "string", sortable: true },
+    { key: "firstCap", header: "txn.amtTowardCap", type: "number", sortable: true },
     // Hidden by default
     { key: "paymentSettledDate", header: "txn.paymentSettledDate", type: "date", sortable: true, defaultVisible: false },
     { key: "transactionType", header: "txn.transactionType", type: "string", sortable: true, filterable: true, defaultVisible: false },
@@ -96,12 +96,12 @@ export default function Transactions() {
     { key: "isBuyerAgent", header: "txn.buyerAgent", type: "string", sortable: true, defaultVisible: false },
     { key: "coAgentPercentage", header: "txn.coAgentPct", type: "string", sortable: true, defaultVisible: false },
     { key: "agentPayablePercentage", header: "txn.agentPayablePct", type: "string", sortable: true, defaultVisible: false },
-    { key: "agentNetCommission", header: "txn.agentNetCommission", type: "currency", sortable: true, defaultVisible: false },
-    { key: "companyCommission", header: "txn.companyCommission", type: "currency", sortable: true, defaultVisible: false },
-    { key: "netPayment", header: "txn.netPayment", type: "currency", sortable: true, defaultVisible: false },
-    { key: "brokerReviewFee", header: "txn.brokerReviewFee", type: "currency", sortable: true, defaultVisible: false },
-    { key: "transactionCoordinatorFee", header: "txn.tcFee", type: "currency", sortable: true, defaultVisible: false },
-    { key: "mentorFee", header: "txn.mentorFee", type: "currency", sortable: true, defaultVisible: false },
+    { key: "agentNetCommission", header: "txn.agentNetCommission", type: "currency", sortable: true, currencyCodeKey: "currency", defaultVisible: false },
+    { key: "companyCommission", header: "txn.companyCommission", type: "currency", sortable: true, currencyCodeKey: "currency", defaultVisible: false },
+    { key: "netPayment", header: "txn.netPayment", type: "currency", sortable: true, currencyCodeKey: "currency", defaultVisible: false },
+    { key: "brokerReviewFee", header: "txn.brokerReviewFee", type: "currency", sortable: true, currencyCodeKey: "currency", defaultVisible: false },
+    { key: "transactionCoordinatorFee", header: "txn.tcFee", type: "currency", sortable: true, currencyCodeKey: "currency", defaultVisible: false },
+    { key: "mentorFee", header: "txn.mentorFee", type: "currency", sortable: true, currencyCodeKey: "currency", defaultVisible: false },
   ];
 
   const handleRowClick = (txn: Transaction) => {
