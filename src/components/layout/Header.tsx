@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Bell, HelpCircle, ChevronDown, Menu } from "lucide-react";
+import { Bell, HelpCircle, ChevronDown, Menu, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -25,8 +26,15 @@ interface HeaderProps {
 export function Header({ onMenuClick }: HeaderProps) {
   const isMobile = useIsMobile();
   const { isCollapsed } = useSidebarCollapse();
+  const { theme, setTheme } = useTheme();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+
+  const cycleTheme = () => {
+    if (theme === "light") setTheme("dark");
+    else if (theme === "dark") setTheme("system");
+    else setTheme("light");
+  };
 
   const initials = currentUser.name
     .split(" ")
@@ -35,7 +43,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <>
-      <header className={cn("fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-white px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:left-16" : "lg:left-64")}>
+      <header className={cn("fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-background px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:left-16" : "lg:left-64")}>
         {/* Left Section - Hamburger on mobile */}
         <div className="flex items-center lg:hidden">
           <Button variant="ghost" size="icon" onClick={onMenuClick}>
@@ -54,6 +62,11 @@ export function Header({ onMenuClick }: HeaderProps) {
           <div className="lg:hidden">
             <GlobalSearch />
           </div>
+
+          {/* Theme Toggle */}
+          <Button variant="ghost" size="icon" onClick={cycleTheme} title={`Theme: ${theme}`}>
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
 
           {/* Get Help */}
           <Button variant="ghost" size="icon" className="sm:hidden">
