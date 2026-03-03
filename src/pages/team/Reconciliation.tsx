@@ -8,6 +8,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Badge } from "@/components/ui/badge";
 import { SearchFilter } from "@/components/filters/SearchFilter";
+import { DateRangeFilter, type DateRange } from "@/components/filters/DateRangeFilter";
+import { DropdownFilter } from "@/components/filters/DropdownFilter";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -58,10 +60,30 @@ export default function Reconciliation() {
   useDocumentTitle(t("team.reconciliation"));
 
   const [search, setSearch] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
+  const [statusFilter, setStatusFilter] = useState("all");
   const [selectedTransaction, setSelectedTransaction] = useState<TeamTransaction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
+  const statusOptions = [
+    { value: "all", label: t("txn.allStatuses") },
+    { value: "paid", label: t("txn.paid") },
+    { value: "pending", label: t("txn.pending") },
+    { value: "withdrawn", label: t("txn.withdrawn") },
+  ];
+
   const filteredData = teamTransactionsData.filter((r) => {
+    // Status filter
+    if (statusFilter !== "all" && r.status.toLowerCase() !== statusFilter) return false;
+
+    // Date range filter on actualCloseDate
+    if (dateRange.from || dateRange.to) {
+      const d = new Date(r.actualCloseDate);
+      if (dateRange.from && d < dateRange.from) return false;
+      if (dateRange.to && d > dateRange.to) return false;
+    }
+
+    // Search
     if (!search) return true;
     const q = search.toLowerCase();
     return (
@@ -162,6 +184,13 @@ export default function Reconciliation() {
         </Button>
 
         <UniversalFilterBar title={t("team.reconciliation")}>
+          <DateRangeFilter value={dateRange} onChange={setDateRange} />
+          <DropdownFilter
+            label={t("txn.status")}
+            options={statusOptions}
+            value={statusFilter}
+            onChange={setStatusFilter}
+          />
           <SearchFilter
             value={search}
             onChange={setSearch}
