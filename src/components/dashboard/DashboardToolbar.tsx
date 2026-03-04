@@ -53,7 +53,7 @@ export function DashboardToolbar() {
   const { openChat } = useMiraChat();
 
   const [relativeTime, setRelativeTime] = useState(() => formatRelativeTime(lastSynced));
-  const [showTemplateWizard, setShowTemplateWizard] = useState(false);
+  
 
   // Update relative time every 30 seconds
   useEffect(() => {
