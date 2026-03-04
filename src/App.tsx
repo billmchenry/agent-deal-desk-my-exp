@@ -23,6 +23,9 @@ import RevShareTrends from "./pages/revshare/Trends";
 import Pulse from "./pages/Pulse";
 import MiraHistory from "./pages/mira/History";
 import ReportMarketplace from "./pages/marketplace/ReportMarketplace";
+import DocumentsPortal from "./pages/documents/DocumentsPortal";
+import DocumentsYearEnd from "./pages/documents/YearEnd";
+import DocumentsDownloads from "./pages/documents/Downloads";
 
 const queryClient = new QueryClient();
 
