@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
-import { Edit, RotateCcw, Check, Sparkles, RefreshCw, Clock } from "lucide-react";
+import { Edit, RotateCcw, Check, RefreshCw, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Tooltip,
   TooltipContent,
@@ -15,8 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useDashboard } from "@/contexts/DashboardContext";
-import { useMiraChat } from "@/contexts/MiraChatContext";
-import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
