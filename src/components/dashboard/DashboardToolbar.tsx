@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Edit, RotateCcw, Check, Sparkles, RefreshCw, Clock, Plus } from "lucide-react";
+import { Edit, RotateCcw, Check, Sparkles, RefreshCw, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
