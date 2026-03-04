@@ -35,7 +35,7 @@ const NAV_KEYS: Record<string, string> = {
   "Organization Tree": "nav.organizationTree",
   "My RevShare Trends": "nav.myRevshareTrends",
   "Mentor Program": "nav.mentorProgram",
-  "Report Marketplace": "nav.reportMarketplace",
+  
   "Tools": "nav.tools",
   "Knowledge Base": "nav.knowledgeBase",
   "Help Center": "nav.helpCenter",

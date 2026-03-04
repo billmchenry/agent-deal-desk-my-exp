@@ -56,7 +56,7 @@ const App = () => (
                 <Route path="/revshare/trends" element={<RevShareTrends />} />
                 <Route path="/pulse" element={<Pulse />} />
                 <Route path="/mira/history" element={<MiraHistory />} />
-                <Route path="/marketplace" element={<ReportMarketplace />} />
+                
                 <Route path="/documents/portal" element={<DocumentsPortal />} />
                 <Route path="/documents/year-end" element={<DocumentsYearEnd />} />
                 <Route path="/documents/downloads" element={<DocumentsDownloads />} />
