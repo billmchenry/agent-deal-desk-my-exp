@@ -278,4 +278,17 @@ export const zh: Record<string, string> = {
   "team.remainingCommission": "剩余佣金",
   "team.totalDeductions": "总扣除",
   "team.agentNet": "经纪人净额",
+
+  "documents.title": "文档门户",
+  "documents.myDocuments": "我的文档",
+  "documents.teamDocuments": "团队文档",
+  "documents.searchPlaceholder": "搜索文档...",
+  "documents.view": "查看",
+  "documents.download": "下载",
+  "documents.added": "添加于",
+  "documents.document": "文档",
+  "documents.category": "类别",
+  "documents.dateAdded": "添加日期",
+  "documents.teamMemberDocuments": "团队成员文档",
+  "documents.nDocuments": "个文档",
 };

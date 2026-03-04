@@ -278,4 +278,17 @@ export const de: Record<string, string> = {
   "team.remainingCommission": "Verbleibende Provision",
   "team.totalDeductions": "Gesamtabzüge",
   "team.agentNet": "Agent netto",
+
+  "documents.title": "Dokumentenportal",
+  "documents.myDocuments": "Meine Dokumente",
+  "documents.teamDocuments": "Teamdokumente",
+  "documents.searchPlaceholder": "Dokumente suchen...",
+  "documents.view": "Anzeigen",
+  "documents.download": "Herunterladen",
+  "documents.added": "Hinzugefügt",
+  "documents.document": "Dokument",
+  "documents.category": "Kategorie",
+  "documents.dateAdded": "Hinzugefügt am",
+  "documents.teamMemberDocuments": "Dokumente der Teammitglieder",
+  "documents.nDocuments": "Dokumente",
 };

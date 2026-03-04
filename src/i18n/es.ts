@@ -249,4 +249,17 @@ export const es: Record<string, string> = {
   "team.remainingCommission": "Comisión restante",
   "team.totalDeductions": "Total de deducciones",
   "team.agentNet": "Neto del agente",
+
+  "documents.title": "Portal de documentos",
+  "documents.myDocuments": "Mis documentos",
+  "documents.teamDocuments": "Documentos del equipo",
+  "documents.searchPlaceholder": "Buscar documentos...",
+  "documents.view": "Ver",
+  "documents.download": "Descargar",
+  "documents.added": "Agregado",
+  "documents.document": "Documento",
+  "documents.category": "Categoría",
+  "documents.dateAdded": "Fecha de adición",
+  "documents.teamMemberDocuments": "Documentos de miembros del equipo",
+  "documents.nDocuments": "documentos",
 };

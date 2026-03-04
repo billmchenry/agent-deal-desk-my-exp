@@ -299,4 +299,17 @@ export const frCA: Record<string, string> = {
   "team.remainingCommission": "Commission restante",
   "team.totalDeductions": "Total des déductions",
   "team.agentNet": "Net de l'agent",
+
+  "documents.title": "Portail des documents",
+  "documents.myDocuments": "Mes documents",
+  "documents.teamDocuments": "Documents d'équipe",
+  "documents.searchPlaceholder": "Rechercher des documents...",
+  "documents.view": "Voir",
+  "documents.download": "Télécharger",
+  "documents.added": "Ajouté",
+  "documents.document": "Document",
+  "documents.category": "Catégorie",
+  "documents.dateAdded": "Date d'ajout",
+  "documents.teamMemberDocuments": "Documents des membres de l'équipe",
+  "documents.nDocuments": "documents",
 };

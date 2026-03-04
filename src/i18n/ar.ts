@@ -278,4 +278,17 @@ export const ar: Record<string, string> = {
   "team.remainingCommission": "العمولة المتبقية",
   "team.totalDeductions": "إجمالي الاستقطاعات",
   "team.agentNet": "صافي الوكيل",
+
+  "documents.title": "بوابة المستندات",
+  "documents.myDocuments": "مستنداتي",
+  "documents.teamDocuments": "مستندات الفريق",
+  "documents.searchPlaceholder": "البحث في المستندات...",
+  "documents.view": "عرض",
+  "documents.download": "تحميل",
+  "documents.added": "أضيف",
+  "documents.document": "مستند",
+  "documents.category": "الفئة",
+  "documents.dateAdded": "تاريخ الإضافة",
+  "documents.teamMemberDocuments": "مستندات أعضاء الفريق",
+  "documents.nDocuments": "مستندات",
 };

@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { FileText, Users, Eye, Download } from "lucide-react";
-import DashboardLayout from "@/components/layout/DashboardLayout";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
