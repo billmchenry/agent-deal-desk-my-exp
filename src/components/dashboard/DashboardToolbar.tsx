@@ -19,7 +19,6 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { CreateTemplateWizard } from "./CreateTemplateWizard";
 
 
 function formatRelativeTime(date: Date): string {
