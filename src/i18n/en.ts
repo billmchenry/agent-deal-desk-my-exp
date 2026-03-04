@@ -8,6 +8,9 @@ export const en = {
   "nav.documents": "Documents",
   "nav.allDocuments": "All Documents",
   "nav.templates": "Templates",
+  "nav.yearEnd": "Year-End",
+  "nav.downloads": "Downloads",
+  "nav.documentsPortal": "Documents Portal",
   "nav.eventsCalendar": "Events Calendar",
   "nav.team": "Team",
   "nav.revshareEarnings": "RevShare Earnings",
@@ -304,6 +307,20 @@ export const en = {
   "team.remainingCommission": "Remaining Commission",
   "team.totalDeductions": "Total Deductions",
   "team.agentNet": "Agent Net",
+
+  // Documents
+  "documents.title": "Documents Portal",
+  "documents.myDocuments": "My Documents",
+  "documents.teamDocuments": "Team Documents",
+  "documents.searchPlaceholder": "Search documents...",
+  "documents.view": "View",
+  "documents.download": "Download",
+  "documents.added": "Added",
+  "documents.document": "Document",
+  "documents.category": "Category",
+  "documents.dateAdded": "Date Added",
+  "documents.teamMemberDocuments": "Team Member Documents",
+  "documents.nDocuments": "documents",
 } as const;
 
 export type TranslationKey = keyof typeof en;
