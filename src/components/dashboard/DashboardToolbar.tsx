@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Edit, RotateCcw, Check, Sparkles, RefreshCw, Clock, Plus } from "lucide-react";
+import { Edit, RotateCcw, Check, Sparkles, RefreshCw, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,7 +19,6 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { WIDGET_REGISTRY, WidgetType } from "@/types/dashboard";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { CreateTemplateWizard } from "./CreateTemplateWizard";
 
 
 function formatRelativeTime(date: Date): string {
@@ -54,7 +53,7 @@ export function DashboardToolbar() {
   const { openChat } = useMiraChat();
 
   const [relativeTime, setRelativeTime] = useState(() => formatRelativeTime(lastSynced));
-  const [showTemplateWizard, setShowTemplateWizard] = useState(false);
+  
 
   // Update relative time every 30 seconds
   useEffect(() => {
@@ -191,24 +190,7 @@ export function DashboardToolbar() {
           )}
         </div>
 
-        {/* Create Template Button - far right */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowTemplateWizard(true)}
-          className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 ml-auto"
-        >
-          <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-          <span className="hidden sm:inline">Create Template</span>
-          <span className="sm:hidden">Template</span>
-        </Button>
       </div>
-
-      {/* Template Wizard */}
-      <CreateTemplateWizard
-        isOpen={showTemplateWizard}
-        onClose={() => setShowTemplateWizard(false)}
-      />
     </>
   );
 }
