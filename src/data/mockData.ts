@@ -399,10 +399,11 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
       {
         title: "Documents",
         icon: "FileText",
-        url: "/documents/all",
+        url: "/documents/portal",
         submenu: [
-          { title: "All Documents", url: "/documents/all" },
-          { title: "Templates", url: "/documents/templates" },
+          { title: "Year-End", url: "/documents/year-end" },
+          { title: "Downloads", url: "/documents/downloads" },
+          { title: "Documents Portal", url: "/documents/portal" },
         ],
       },
       { title: "Events Calendar", icon: "Calendar", url: "/events" },
