@@ -27,6 +27,7 @@ import DocumentsPortal from "./pages/documents/DocumentsPortal";
 import DocumentsYearEnd from "./pages/documents/YearEnd";
 import DocumentsDownloads from "./pages/documents/Downloads";
 
+
 const queryClient = new QueryClient();
 
 // Providers wrap the entire app for state management
