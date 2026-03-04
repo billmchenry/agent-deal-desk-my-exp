@@ -483,8 +483,9 @@ export const navItems = [
     icon: "FileText",
     hasSubmenu: true,
     submenu: [
-      { title: "All Documents", url: "/documents/all" },
-      { title: "Templates", url: "/documents/templates" },
+      { title: "Year-End", url: "/documents/year-end" },
+      { title: "Downloads", url: "/documents/downloads" },
+      { title: "Documents Portal", url: "/documents/portal" },
     ],
   },
   {
