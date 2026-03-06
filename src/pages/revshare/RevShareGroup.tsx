@@ -132,7 +132,7 @@ export default function RevShareGroup() {
     { key: "agentName", header: "revgroup.agentName", type: "string", sortable: true, filterable: true, defaultVisible: true },
     { key: "groupSize", header: "revgroup.groupSize", type: "number", sortable: true, defaultVisible: true },
     { key: "level", header: "revgroup.level", type: "number", sortable: true, defaultVisible: true },
-    { key: "businessType", header: "revgroup.businessType", type: "string", sortable: true, filterable: true, defaultVisible: true },
+    { key: "businessType", header: "revgroup.businessType", type: "string", sortable: true, filterable: true, defaultVisible: false },
     { key: "capPct", header: "revgroup.capPct", type: "number", sortable: true, defaultVisible: true, render: (val) => <span className="font-secondary">{Number(val)}%</span> },
     { key: "transactionVolume", header: "revgroup.transactionVolume", type: "currency", sortable: true, defaultVisible: true, currencyCodeKey: "currency" },
     { key: "totalTransactions", header: "revgroup.totalTransactions", type: "number", sortable: true, defaultVisible: true },
