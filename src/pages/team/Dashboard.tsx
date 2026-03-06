@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Filter, MessageCircle, ChevronRight, ChevronLeft, Info, Phone, Mail, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { topAgents, teamOverview, teamRequirements, onboardingAgents, agentDetails, type OnboardingAgent, type TopAgent, type AgentDetail } from "@/data/mockData";
