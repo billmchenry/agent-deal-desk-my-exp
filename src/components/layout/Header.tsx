@@ -90,7 +90,7 @@ export function Header({ onMenuClick }: HeaderProps) {
             variant="ghost" 
             size="icon" 
             className="relative"
-            onClick={() => isMobile && setNotificationsOpen(true)}
+            onClick={() => isMobile ? setNotificationsOpen(true) : navigate("/notifications")}
             aria-label={`${t("header.notifications")}, 3 unread`}
           >
             <Bell className="h-5 w-5" />
