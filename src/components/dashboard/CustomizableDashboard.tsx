@@ -85,16 +85,48 @@ export function CustomizableDashboard() {
               items={mainWidgets.map((w) => w.id)}
               strategy={verticalListSortingStrategy}
             >
-              {mainWidgets.map((widget) => (
-                <DraggableWidget
-                  key={widget.id}
-                  widget={widget}
-                  isEditMode={isEditMode}
-                  onRemove={removeWidget}
-                >
-                  <WidgetRenderer widget={widget} />
-                </DraggableWidget>
-              ))}
+              {mainWidgets.map((widget, index) => {
+                // Find if we just rendered the hero-banner (cap widget)
+                const prevWidget = index > 0 ? mainWidgets[index - 1] : null;
+                const insertMentorAfterPrev = prevWidget?.type === "hero-banner" && showMentorWidget;
+
+                return (
+                  <div key={widget.id}>
+                    {/* Insert mentor widget right after hero-banner */}
+                    {insertMentorAfterPrev && (
+                      <div className="mb-6">
+                        <MentorProgramWidget
+                          status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                          onStatusChange={setMentorMode}
+                        />
+                      </div>
+                    )}
+                    <DraggableWidget
+                      widget={widget}
+                      isEditMode={isEditMode}
+                      onRemove={removeWidget}
+                    >
+                      <WidgetRenderer widget={widget} />
+                    </DraggableWidget>
+                  </div>
+                );
+              })}
+              {/* If hero-banner is the last widget or there's only one widget */}
+              {showMentorWidget && mainWidgets.length > 0 && mainWidgets[mainWidgets.length - 1].type === "hero-banner" && (
+                <MentorProgramWidget
+                  status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                  onStatusChange={setMentorMode}
+                />
+              )}
+              {/* If no hero-banner exists, show at top */}
+              {showMentorWidget && !mainWidgets.some(w => w.type === "hero-banner") && mainWidgets.length > 0 && (
+                <div className="-order-1">
+                  <MentorProgramWidget
+                    status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                    onStatusChange={setMentorMode}
+                  />
+                </div>
+              )}
             </SortableContext>
 
             {mainWidgets.length === 0 && (
