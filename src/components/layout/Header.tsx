@@ -19,6 +19,7 @@ import { NotificationsSheet } from "./NotificationsSheet";
 import { AccountSheet } from "./AccountSheet";
 import { GlobalSearch } from "./GlobalSearch";
 import { useTranslation } from "@/hooks/useTranslation";
+import { DemoConfigSheet } from "./DemoConfigSheet";
 
 interface HeaderProps {
   onMenuClick?: () => void;
