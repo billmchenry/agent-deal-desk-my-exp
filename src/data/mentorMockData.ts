@@ -613,7 +613,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "Sarah Blackwood",
     totalActiveMentees: 2,
     primaryEmail: "sarah.blackwood@exprealty.com",
-    phone: "(555) 771-3204",
+    phone: "(615) 555-3204",
     secondaryEmail: "sblackwood@outlook.com",
     city: "Nashville",
     state: "TN",
