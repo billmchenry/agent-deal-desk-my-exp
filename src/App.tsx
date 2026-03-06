@@ -15,6 +15,7 @@ import Settings from "./pages/profile/Settings";
 import AgentDashboard from "./pages/agent/Dashboard";
 import IconProgram from "./pages/agent/IconProgram";
 import BrokerHub from "./pages/agent/BrokerHub";
+import CustomServiceFees from "./pages/agent/CustomServiceFees";
 import AgentTransactions from "./pages/agent/Transactions";
 import TeamDashboard from "./pages/team/Dashboard";
 import TeamReconciliation from "./pages/team/Reconciliation";
@@ -58,6 +59,7 @@ const App = () => (
                 <Route path="/agent/icon-program" element={<IconProgram />} />
                 <Route path="/agent/broker-hub" element={<BrokerHub />} />
                 <Route path="/agent/transactions" element={<AgentTransactions />} />
+                <Route path="/agent/custom-service-fees" element={<CustomServiceFees />} />
                 <Route path="/team/dashboard" element={<TeamDashboard />} />
                 <Route path="/team/reconciliation" element={<TeamReconciliation />} />
                 <Route path="/revshare/dashboard" element={<RevShareDashboard />} />
