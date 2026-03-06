@@ -8,6 +8,7 @@ import { ChevronDown, Download, Filter } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { UniversalFilterBar } from "@/components/filters";
 
 const totalSummaryData = [
   { field: "Transaction Count", jan2026: "12", dec2025: "27", nov2025: "18", oct2025: "23", sep2025: "28", aug2025: "16" },
