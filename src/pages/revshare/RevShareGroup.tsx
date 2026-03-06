@@ -214,7 +214,7 @@ export default function RevShareGroup() {
           variant="ghost"
           size="sm"
           className="gap-1 text-muted-foreground"
-          onClick={() => navigate("/revshare/dashboard")}
+          onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-4 w-4" />
           {t("revgroup.backToRevShare")}
