@@ -111,6 +111,7 @@ const teamMemberDocs: TeamMemberDocs[] = [
 export default function DocumentsPortal() {
   const { t } = useTranslation();
   const { formatDate } = useFormatters();
+  const isMobile = useIsMobile();
   useDocumentTitle(t("documents.title"));
 
   const [search, setSearch] = useState("");
