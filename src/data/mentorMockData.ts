@@ -673,7 +673,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "Roberto Delgado",
     totalActiveMentees: 1,
     primaryEmail: "roberto.delgado@exprealty.com",
-    phone: "(555) 340-8821",
+    phone: "(305) 555-8821",
     secondaryEmail: "",
     city: "Miami",
     state: "FL",
