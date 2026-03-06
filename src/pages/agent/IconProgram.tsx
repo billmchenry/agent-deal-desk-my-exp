@@ -146,7 +146,7 @@ export default function IconProgram() {
                     <span className="text-sm font-medium text-foreground">0%</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Complete $5K to achieve the capped transaction fees goal
+                    {t("icon.completeGoal").replace("{amount}", "$5K").replace("{goal}", t("icon.cappedTransactionFees").toLowerCase())}
                   </p>
                 </CardContent>
               </Card>
