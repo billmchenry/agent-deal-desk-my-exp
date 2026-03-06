@@ -10,6 +10,7 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { ChatMessageData, ChatAttachment } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/hooks/useTranslation";
 import { VoiceModeView } from "./VoiceMode";
 
 interface ChatPanelProps {
