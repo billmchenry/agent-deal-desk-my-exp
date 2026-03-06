@@ -74,7 +74,7 @@ export const mockMentees: Mentee[] = [
     paidMentorFees: 0,
     mentorFee: 25,
     email: "mercy.lefevre@exprealty.com",
-    phone: "(555) 301-4892",
+    phone: "(916) 555-4892",
     city: "Sacramento",
     state: "CA",
     postalCode: "95814",
