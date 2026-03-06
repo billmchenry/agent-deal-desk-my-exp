@@ -1,48 +1,83 @@
 
 
-## Consistent Filter Bar Template
+# Team Reconciliation Page
 
-### Problem
+A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
 
-Page headers and filters are built inconsistently across the app:
+---
 
-- **Agent Dashboard, Transactions, Reconciliation, Mira History, Pulse, RevShare Group, Custom Service Fees** — use `UniversalFilterBar` (good)
-- **Team Dashboard, RevShare Dashboard, Trends, Organization, OrganizationTree** — use hand-rolled `<div className="flex items-center justify-between mb-...">` with inline filters
-- **Home (Index)** — bare `<h1>` with no filter bar wrapper
+## Overview
 
-The `UniversalFilterBar` component already exists and works well, but it's not adopted everywhere. Pages that roll their own end up with inconsistent spacing (`mb-2` vs `mb-4` vs `mb-6`), inconsistent responsive behavior, and no standard slot pattern for right-side controls.
+Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
 
-### Solution
+---
 
-1. **Adopt `UniversalFilterBar` on every remaining page** that currently uses a hand-rolled header+filter layout. The component already supports `title`, `subtitle`, `titleExtra`, and a `children` slot for right-side controls — this covers all current use cases.
+## New Files
 
-2. **Migrate these pages:**
+### 1. `src/pages/team/Reconciliation.tsx`
 
-| Page | Current Pattern | Right-side Controls |
-|------|----------------|-------------------|
-| `team/Dashboard.tsx` (overview) | Inline div | `<Button>Team Report</Button>` |
-| `team/Dashboard.tsx` (agent details) | Inline h1 | None (just back button + title) |
-| `team/Dashboard.tsx` (top agents) | Inline h1 | None |
-| `revshare/Dashboard.tsx` | Inline div | `<Select>` for period |
-| `revshare/Trends.tsx` | Inline div | None |
-| `revshare/Organization.tsx` | Inline div | None |
-| `revshare/OrganizationTree.tsx` | Inline div | Search + toggle |
-| `Index.tsx` | Bare h1 | None (uses `DashboardToolbar` below) |
+The main page, closely mirroring the Agent Production Details pattern:
 
-3. **No changes to `UniversalFilterBar` itself** — it already handles all these patterns. The `titleExtra` prop covers cases like back buttons. The `children` slot covers Select dropdowns, Buttons, and filter sub-components.
+- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
+- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
+- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
+- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
+- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
+- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
+- CSV export enabled
+- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
+- Back button at top linking to `/team/dashboard`
 
-### What This Gives You
+### 2. `src/components/team/TeamBreakdownSheet.tsx`
 
-- Every page header uses the same spacing, responsive wrapping, and layout
-- Adding filters to any page in the future is just dropping sub-components into the `children` slot
-- Consistent `mb-2` bottom margin across all page headers (from UniversalFilterBar's default)
+Side panel matching the reference screenshot's "Transaction Details" breakdown:
 
-### Files to Change (~8 files)
+- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
+- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
+- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
+- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
+  - Agent identifier row (ID + Name) with a colored percentage badge
+  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
+  - Tax, Commission After Co-agents (highlighted)
+  - Agent Split Before Expenses
+  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
+- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
+- **Fees I Paid for Others** -- collapsible
+- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
 
-- `src/pages/team/Dashboard.tsx` — 3 views (overview, agentDetails, topAgents) → wrap headers in `UniversalFilterBar`
-- `src/pages/revshare/Dashboard.tsx` — replace inline header div with `UniversalFilterBar` + Select in children
-- `src/pages/revshare/Trends.tsx` — replace inline header div
-- `src/pages/revshare/Organization.tsx` — replace inline header div
-- `src/pages/revshare/OrganizationTree.tsx` — replace inline header div, move search/toggle to children
-- `src/pages/Index.tsx` — wrap heading in `UniversalFilterBar`
+### 3. `src/components/shared/BreakdownComponents.tsx`
+
+Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
+
+---
+
+## Modified Files
+
+### `src/components/agent/TransactionDetailsSheet.tsx`
+- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
+
+### `src/data/mockData.ts`
+- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
+- Update the `navItems` array similarly
+
+### `src/components/layout/Sidebar.tsx`
+- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
+
+### `src/App.tsx`
+- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
+
+### `src/i18n/*.ts` (all 7 language files)
+- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
+
+---
+
+## Implementation Order
+
+1. Extract shared breakdown components into `BreakdownComponents.tsx`
+2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
+3. Create mock team reconciliation data and the `Reconciliation.tsx` page
+4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
+5. Add route in `App.tsx`
+6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
+7. Add translation keys to all 7 language files
 

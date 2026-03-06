@@ -15,6 +15,7 @@ import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { topAgents, teamOverview, teamRequirements, onboardingAgents, agentDetails, type OnboardingAgent, type TopAgent, type AgentDetail } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
+import { UniversalFilterBar } from "@/components/filters";
 
 type View = "overview" | "agentDetails" | "topAgents";
 
@@ -52,11 +53,15 @@ export default function TeamDashboard() {
     return (
       <DashboardLayout>
         <div className="p-4 lg:p-6 space-y-4 pb-20">
-          <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("overview")}>
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-            {t("team.backToTeam")}
-          </Button>
-          <h1 className="text-page-title font-bold text-foreground">{t("team.agentDetails")}</h1>
+          <UniversalFilterBar
+            title={t("team.agentDetails")}
+            titleExtra={
+              <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("overview")}>
+                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                {t("team.backToTeam")}
+              </Button>
+            }
+          />
           <div className="bg-muted/40 rounded-lg p-3 text-sm text-muted-foreground flex items-start gap-2">
             <Info className="h-4 w-4 mt-0.5 shrink-0" />
             {t("team.agentNote")}
@@ -95,11 +100,15 @@ export default function TeamDashboard() {
     return (
       <DashboardLayout>
         <div className="p-4 lg:p-6 space-y-4 pb-20">
-          <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("overview")}>
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-            {t("team.backToTeam")}
-          </Button>
-          <h1 className="text-page-title font-bold text-foreground">{t("team.topAgents")}</h1>
+          <UniversalFilterBar
+            title={t("team.topAgents")}
+            titleExtra={
+              <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("overview")}>
+                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                {t("team.backToTeam")}
+              </Button>
+            }
+          />
           <DataTable
             data={topAgents}
             columns={topAgentColumns}
@@ -128,10 +137,9 @@ export default function TeamDashboard() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-page-title font-bold text-foreground">{t("team.myTeam")}</h1>
+        <UniversalFilterBar title={t("team.myTeam")}>
           <Button variant="outline">{t("team.teamReport")}</Button>
-        </div>
+        </UniversalFilterBar>
 
         <p className="text-body-lg font-medium text-foreground mb-6">
           {t("team.myTeam")}: {teamOverview.name}
