@@ -343,6 +343,25 @@ export default function YearEnd() {
             data={mockTransactions}
             columns={drillColumns}
             onRowClick={(row) => setSelectedTxn(row)}
+            mobileCardRender={(row) => (
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm font-semibold truncate">{row.companyName}</span>
+                  <span className="text-sm font-bold tabular-nums font-secondary shrink-0">
+                    {formatCurrency(row.grossRevenue)}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground truncate">{row.address}</p>
+                <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                  <span>{row.earningsType}</span>
+                  <span className="tabular-nums font-secondary">Net: {formatCurrency(row.netPayment)}</span>
+                </div>
+                <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                  <span>{row.reportingDate}</span>
+                  <span>ID: {row.transactionId}</span>
+                </div>
+              </div>
+            )}
           />
         </div>
 
