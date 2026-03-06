@@ -96,21 +96,19 @@ export default function CustomServiceFees() {
       <div className="space-y-4 pb-20">
         <h1 className="text-2xl font-bold text-foreground">{t("csf.title")}</h1>
 
-        <UniversalFilterBar title={t("csf.dateRange")}>
-          <UniversalFilterBar.DateRange value={dateRange} onChange={setDateRange} />
-        </UniversalFilterBar>
-
-        <div className="flex items-center justify-end gap-2">
-          <Button variant="outline" className="gap-2" onClick={handleDownload} aria-label={t("common.download")}>
-            <Download className="h-4 w-4" aria-hidden="true" />
-            Download
-          </Button>
-        </div>
-
-        <div className="flex justify-end">
-          <span className="text-sm text-muted-foreground">
-            {mockServiceFeeAgents.length} {t("csf.results")}
-          </span>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <UniversalFilterBar title={t("csf.dateRange")}>
+            <UniversalFilterBar.DateRange value={dateRange} onChange={setDateRange} />
+          </UniversalFilterBar>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              {mockServiceFeeAgents.length} {t("csf.results")}
+            </span>
+            <Button variant="outline" size="sm" className="gap-2" onClick={handleDownload} aria-label={t("common.download")}>
+              <Download className="h-4 w-4" aria-hidden="true" />
+              Download
+            </Button>
+          </div>
         </div>
 
         <DataTable
