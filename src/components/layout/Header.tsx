@@ -173,6 +173,10 @@ export function Header({ onMenuClick }: HeaderProps) {
         isOpen={accountOpen} 
         onClose={() => setAccountOpen(false)} 
       />
+      <DemoConfigSheet
+        open={demoConfigOpen}
+        onOpenChange={setDemoConfigOpen}
+      />
     </>
   );
 }

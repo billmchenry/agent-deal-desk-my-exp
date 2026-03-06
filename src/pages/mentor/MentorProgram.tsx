@@ -259,41 +259,18 @@ function ActiveMentorView() {
 // ── Main page ──
 export default function MentorProgram() {
   useDocumentTitle("Mentor Program");
+  const { config } = useDemoConfig();
 
-  const [scenario, setScenario] = useState<MentorScenario>(() => {
-    return (sessionStorage.getItem("mentorScenario") as MentorScenario) || "not_applied";
-  });
-
-  useEffect(() => {
-    const stored = sessionStorage.getItem("mentorScenario") as MentorScenario | null;
-    if (stored && stored !== scenario) setScenario(stored);
-  }, []);
-
-  const scenarios: MentorScenario[] = ["not_applied", "pending", "approved_certification", "active_mentor"];
+  // Derive scenario from global demo config
+  const mentorModes: MentorScenario[] = ["mentee", "not_applied", "pending", "approved_certification", "active_mentor"];
+  const scenario: MentorScenario = mentorModes.includes(config.mentorMode as MentorScenario)
+    ? (config.mentorMode as MentorScenario)
+    : "not_applied";
 
   return (
     <DashboardLayout>
       <div className="max-w-3xl mx-auto space-y-8 py-4">
-        {/* Demo scenario switcher */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-muted-foreground font-medium">Demo:</span>
-          {scenarios.map((s) => (
-            <Button
-              key={s}
-              variant={scenario === s ? "default" : "outline"}
-              size="sm"
-              className="text-xs h-7"
-              onClick={() => {
-                setScenario(s);
-                sessionStorage.setItem("mentorScenario", s);
-              }}
-            >
-              {s.replace(/_/g, " ")}
-            </Button>
-          ))}
-        </div>
-
-        {/* Mentee view removed - now on homepage */}
+        {scenario === "mentee" && <MenteeView />}
         {scenario === "not_applied" && <NotAppliedView />}
         {scenario === "pending" && <PendingView />}
         {scenario === "approved_certification" && <CertificationView />}

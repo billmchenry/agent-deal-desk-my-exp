@@ -81,6 +81,7 @@ const App = () => (
             </BrowserRouter>
             </TooltipProvider>
           </DashboardProvider>
+          </DemoConfigProvider>
         </MiraChatProvider>
       </LocaleProvider>
     </ThemeProvider>
