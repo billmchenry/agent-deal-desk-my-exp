@@ -14,7 +14,7 @@ export function CappingYearCard() {
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold">{t("dashboard.cappingYear")}</CardTitle>
+          <CardTitle className="text-section-title font-semibold">{t("dashboard.cappingYear")}</CardTitle>
           <Badge 
             variant="secondary" 
             className="bg-exp-green/10 text-exp-green border-exp-green/20 font-medium"
