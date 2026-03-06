@@ -29,14 +29,13 @@ export default function TeamDashboard() {
   // --- Agent Details columns (requalification drill-down) ---
   const agentDetailColumns: ColumnDef<AgentDetail>[] = [
     { key: "agentName", header: t("team.agentName"), type: "string", sortable: true, filterable: true },
-    { key: "uuid", header: t("team.uuid"), type: "string", sortable: true, filterable: true },
-    { key: "agentId", header: t("team.agentId"), type: "string", sortable: true, filterable: true },
     { key: "active", header: t("team.active"), type: "string", sortable: true, filterable: true },
     { key: "teamMemberEffectiveDate", header: t("team.teamMemberEffectiveDate"), type: "string", sortable: true, filterable: true },
     { key: "capResetDate", header: t("team.capResetDateCol"), type: "string", sortable: true, filterable: true },
     { key: "closedTransactions", header: t("team.closedTransactions"), type: "number", sortable: true },
     { key: "salesVolume", header: t("team.salesVolume"), type: "currency", sortable: true },
     { key: "companyDollarPaidThrough", header: t("team.companyDollarPaidThrough"), type: "currency", sortable: true },
+    { key: "capPercent", header: "Cap %", type: "number", sortable: true },
   ];
 
   // --- Top Agents columns ---
