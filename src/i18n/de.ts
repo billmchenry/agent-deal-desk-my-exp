@@ -337,4 +337,6 @@ export const de: Record<string, string> = {
   "revgroup.teamName": "Teamname",
   "revgroup.teamRole": "Teamrolle",
   "revgroup.teamStatus": "Teamstatus",
+  "revgroup.location": "Standort",
+  "revgroup.production": "Produktion",
 };

@@ -337,4 +337,6 @@ export const ar: Record<string, string> = {
   "revgroup.teamName": "اسم الفريق",
   "revgroup.teamRole": "دور الفريق",
   "revgroup.teamStatus": "حالة الفريق",
+  "revgroup.location": "الموقع",
+  "revgroup.production": "الإنتاج",
 };

@@ -358,4 +358,6 @@ export const frCA: Record<string, string> = {
   "revgroup.teamName": "Nom de l'équipe",
   "revgroup.teamRole": "Rôle dans l'équipe",
   "revgroup.teamStatus": "Statut de l'équipe",
+  "revgroup.location": "Emplacement",
+  "revgroup.production": "Production",
 };

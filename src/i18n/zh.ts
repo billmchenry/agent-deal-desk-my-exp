@@ -337,4 +337,6 @@ export const zh: Record<string, string> = {
   "revgroup.teamName": "团队名称",
   "revgroup.teamRole": "团队角色",
   "revgroup.teamStatus": "团队状态",
+  "revgroup.location": "位置",
+  "revgroup.production": "生产数据",
 };

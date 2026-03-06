@@ -2,6 +2,7 @@ import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar } from "@/components/filters";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
+import { AgentContactSheet } from "@/components/revshare/AgentContactSheet";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
@@ -118,6 +119,8 @@ export default function RevShareGroup() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [levelFilter, setLevelFilter] = useState("all");
+  const [selectedAgent, setSelectedAgent] = useState<RevShareGroupAgent | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const statusOptions = [
     { value: "all", label: t("txn.allStatuses") },
@@ -241,10 +244,17 @@ export default function RevShareGroup() {
           data={filteredData}
           columns={columns}
           searchableKeys={["agentName", "email", "agentSponsorName", "agentId"]}
+          onRowClick={(row) => { setSelectedAgent(row); setSheetOpen(true); }}
           defaultPageSize={25}
           defaultSort={{ key: "level", direction: "asc" }}
           csvFilename="revshare-group"
           mobileCardRender={mobileCardRender}
+        />
+
+        <AgentContactSheet
+          open={sheetOpen}
+          onOpenChange={setSheetOpen}
+          agent={selectedAgent}
         />
       </div>
     </DashboardLayout>

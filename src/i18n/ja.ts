@@ -289,4 +289,6 @@ export const ja: Record<string, string> = {
   "revgroup.teamName": "チーム名",
   "revgroup.teamRole": "チーム役割",
   "revgroup.teamStatus": "チームステータス",
+  "revgroup.location": "所在地",
+  "revgroup.production": "生産実績",
 };
