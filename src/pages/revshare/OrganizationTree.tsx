@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -5,13 +6,57 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Download, Search } from "lucide-react";
+import { Download, Search, ChevronDown, ChevronRight, Contact } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "@/hooks/useTranslation";
+import { AgentContactSheet, type AgentContactData } from "@/components/revshare/AgentContactSheet";
 
-// Fake names for the organization tree
-const orgTreeAgents = [
-  { id: 1, name: "Samantha Rose Bennett", location: "Roseville, CA", level: 1, revShare: "$6,487.88", contribution: "0.00 USD", orgSize: 42, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face" },
+interface OrgTreeAgent {
+  id: number;
+  name: string;
+  location: string;
+  level: number;
+  revShare: string;
+  contribution: string;
+  orgSize: number;
+  avatar: string;
+  children?: OrgTreeAgent[];
+  // Contact data for the sheet
+  contactData?: AgentContactData;
+}
+
+const samanthaContact: AgentContactData = {
+  agentName: "Samantha Rose Bennett",
+  agentId: "AGT-192847",
+  email: "samantha.bennett@exp.com",
+  phoneNumber: "(916) 555-8234",
+  city: "Roseville",
+  state: "California",
+  stateOfPrimaryLicense: "CA",
+  agentSponsorName: "Michael Thompson",
+  status: "Active",
+  icon: "Yes",
+  capPct: 88,
+  totalRevenueShare: 6487.88,
+  revenueShareEarned: 12450.30,
+  totalVolume: 8920000,
+  totalUnits: 24,
+  totalGci: 267600,
+  groupSize: 42,
+  avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
+};
+
+// Samantha's FLAs (sub-agents)
+const samanthaFLAs: OrgTreeAgent[] = [
+  { id: 101, name: "Kevin Park", location: "Roseville, CA", level: 2, revShare: "$1,245.00", contribution: "0.00 USD", orgSize: 0, avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face" },
+  { id: 102, name: "Diana Reyes", location: "Sacramento, CA", level: 2, revShare: "$987.50", contribution: "0.00 USD", orgSize: 0, avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face" },
+  { id: 103, name: "Thomas Grant", location: "Lincoln, CA", level: 2, revShare: "$2,100.00", contribution: "0.00 USD", orgSize: 3, avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face" },
+  { id: 104, name: "Priya Sharma", location: "Folsom, CA", level: 2, revShare: "$1,560.00", contribution: "0.00 USD", orgSize: 0, avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face" },
+  { id: 105, name: "Carlos Mendez", location: "Roseville, CA", level: 2, revShare: "$595.38", contribution: "0.00 USD", orgSize: 0, avatar: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop&crop=face" },
+];
+
+const orgTreeAgents: OrgTreeAgent[] = [
+  { id: 1, name: "Samantha Rose Bennett", location: "Roseville, CA", level: 1, revShare: "$6,487.88", contribution: "0.00 USD", orgSize: 42, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face", children: samanthaFLAs, contactData: samanthaContact },
   { id: 2, name: "Derek James Sullivan", location: "Lincoln, CA", level: 1, revShare: "$8,234.56", contribution: "0.00 USD", orgSize: 0, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" },
   { id: 3, name: "Natalie Grace Harper", location: "Roseville, CA", level: 1, revShare: "$4,980.00", contribution: "0.00 USD", orgSize: 0, avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" },
   { id: 4, name: "Marcus Antonio Rivera", location: "Folsom, CA", level: 1, revShare: "$1,890.00", contribution: "0.00 USD", orgSize: 0, avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" },
@@ -41,9 +86,107 @@ const getLevelColor = (level: number) => {
   return colors[level] || "bg-gray-400";
 };
 
+function AgentCard({
+  agent,
+  onToggleExpand,
+  isExpanded,
+  onOpenContact,
+}: {
+  agent: OrgTreeAgent;
+  onToggleExpand?: () => void;
+  isExpanded?: boolean;
+  onOpenContact?: () => void;
+}) {
+  const { t } = useTranslation();
+  const hasChildren = agent.children && agent.children.length > 0;
+
+  return (
+    <Card className="overflow-hidden">
+      <CardContent className="p-4">
+        <div className="flex items-start gap-3 mb-3">
+          <Avatar className="h-12 w-12">
+            <AvatarImage src={agent.avatar} />
+            <AvatarFallback className="bg-muted">
+              {agent.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="font-medium text-foreground text-sm truncate">{agent.name}</p>
+            <p className="text-xs text-muted-foreground">{agent.location}</p>
+          </div>
+          {onOpenContact && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onOpenContact(); }}
+              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent transition-colors text-muted-foreground hover:text-primary shrink-0 min-h-[44px] min-w-[44px]"
+              aria-label={`View contact card for ${agent.name}`}
+            >
+              <Contact className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2 mb-3">
+          <Badge className={`${getLevelColor(agent.level)} text-white text-xs`}>
+            Level {agent.level}
+          </Badge>
+        </div>
+
+        <div className="space-y-1 text-xs">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">{t("orgTree.contributedRevShare")}:</span>
+            <span className="font-medium text-yellow-600">{agent.revShare}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">{t("orgTree.individualContribution")}:</span>
+            <span className="text-foreground">{agent.contribution}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">{t("orgTree.orgSize")}:</span>
+            <span className="text-foreground">{agent.orgSize}</span>
+          </div>
+        </div>
+
+        {hasChildren && (
+          <button
+            onClick={onToggleExpand}
+            className="mt-3 flex items-center gap-1 text-xs text-primary hover:underline font-medium min-h-[44px]"
+          >
+            {isExpanded ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
+            {isExpanded ? t("orgTree.hideFLAs") : `${t("orgTree.viewFLAs")} (${agent.children!.length})`}
+          </button>
+        )}
+        {!hasChildren && agent.orgSize > 0 && (
+          <Badge variant="outline" className="mt-3 text-xs text-primary border-primary">
+            {t("orgTree.viewOrg")}
+          </Badge>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function OrganizationTree() {
   useDocumentTitle("Organization Tree");
   const { t } = useTranslation();
+  const [expandedAgents, setExpandedAgents] = useState<Set<number>>(new Set());
+  const [contactSheetOpen, setContactSheetOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<AgentContactData | null>(null);
+
+  const toggleExpand = (id: number) => {
+    setExpandedAgents((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleOpenContact = (agent: OrgTreeAgent) => {
+    if (agent.contactData) {
+      setSelectedContact(agent.contactData);
+      setContactSheetOpen(true);
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -89,51 +232,30 @@ export default function OrganizationTree() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {orgTreeAgents.map((agent) => (
-            <Card key={agent.id} className="overflow-hidden">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src={agent.avatar} />
-                    <AvatarFallback className="bg-muted">
-                      {agent.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-foreground text-sm truncate">{agent.name}</p>
-                    <p className="text-xs text-muted-foreground">{agent.location}</p>
-                  </div>
+            <div key={agent.id} className="space-y-3">
+              <AgentCard
+                agent={agent}
+                onToggleExpand={agent.children ? () => toggleExpand(agent.id) : undefined}
+                isExpanded={expandedAgents.has(agent.id)}
+                onOpenContact={agent.contactData ? () => handleOpenContact(agent) : undefined}
+              />
+              {/* Expanded FLA sub-cards */}
+              {expandedAgents.has(agent.id) && agent.children && (
+                <div className="ml-4 border-l-2 border-primary/20 pl-3 space-y-3">
+                  {agent.children.map((child) => (
+                    <AgentCard key={child.id} agent={child} />
+                  ))}
                 </div>
-
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge className={`${getLevelColor(agent.level)} text-white text-xs`}>
-                    Level {agent.level}
-                  </Badge>
-                </div>
-
-                <div className="space-y-1 text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("orgTree.contributedRevShare")}:</span>
-                    <span className="font-medium text-yellow-600">{agent.revShare}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("orgTree.individualContribution")}:</span>
-                    <span className="text-foreground">{agent.contribution}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("orgTree.orgSize")}:</span>
-                    <span className="text-foreground">{agent.orgSize}</span>
-                  </div>
-                </div>
-
-                {agent.orgSize > 0 && (
-                  <Badge variant="outline" className="mt-3 text-xs text-primary border-primary">
-                    {t("orgTree.viewOrg")}
-                  </Badge>
-                )}
-              </CardContent>
-            </Card>
+              )}
+            </div>
           ))}
         </div>
+
+        <AgentContactSheet
+          open={contactSheetOpen}
+          onOpenChange={setContactSheetOpen}
+          agent={selectedContact}
+        />
       </div>
     </DashboardLayout>
   );
