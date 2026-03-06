@@ -155,7 +155,7 @@ export default function RevShareTrends() {
           <Card className="mb-6">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-base font-medium">{t("trends.allLevelsSummary")}</CardTitle>
+                <CardTitle className="text-section-title font-medium">{t("trends.allLevelsSummary")}</CardTitle>
                 <p className="text-sm text-muted-foreground">{t("trends.combinedContribution")}</p>
               </div>
               <Button variant="outline" size="sm" className="gap-2">
