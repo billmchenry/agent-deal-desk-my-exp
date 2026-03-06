@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Phone, Mail, ExternalLink, Trophy, GraduationCap, Users, ClipboardList, UserCircle } from "lucide-react";
 import mentorHeader from "@/assets/mentor-program-header.png";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
