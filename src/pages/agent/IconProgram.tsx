@@ -245,8 +245,8 @@ export default function IconProgram() {
           {/* Events Tab */}
           <TabsContent value="events">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-              <h2 className="text-sm font-semibold text-foreground">Event Overview</h2>
-              <YearToggle options={benefitYearOptions} value={benefitYear} onChange={setBenefitYear} label="Benefit Year" />
+              <h2 className="text-sm font-semibold text-foreground">{t("icon.eventOverview")}</h2>
+              <YearToggle options={benefitYearOptions} value={benefitYear} onChange={setBenefitYear} label={t("icon.benefitYear")} />
             </div>
 
             {/* Compact success banner */}
