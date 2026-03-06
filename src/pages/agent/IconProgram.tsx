@@ -85,7 +85,7 @@ export default function IconProgram() {
     <DashboardLayout>
       <div className="space-y-4 pb-20">
         {/* Page Title */}
-        <h1 className="text-lg font-semibold text-foreground">ICON Program</h1>
+        <h1 className="text-page-title font-semibold text-foreground">ICON Program</h1>
 
         {/* Compact Hero Banner */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--exp-navy))] via-[hsl(var(--exp-navy-light))] to-[hsl(var(--exp-blue))] p-4 sm:p-6 text-white">
