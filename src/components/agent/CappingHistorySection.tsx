@@ -26,9 +26,14 @@ function parseDate(s: string): Date {
   return new Date(y, m - 1, d);
 }
 
-function isActiveRow(startDate: string, endDate: string) {
-  const now = new Date();
-  return now >= parseDate(startDate) && now <= parseDate(endDate);
+function isActiveRow(startDate: string, endDate: string, dateRange?: { from: Date | undefined; to: Date | undefined }) {
+  const refDate = dateRange?.from ?? new Date();
+  const start = parseDate(startDate);
+  const end = parseDate(endDate);
+  // Normalize to local midnight for comparison
+  const ref = new Date(refDate.getFullYear(), refDate.getMonth(), refDate.getDate());
+  return ref >= new Date(start.getFullYear(), start.getMonth(), start.getDate()) &&
+         ref <= new Date(end.getFullYear(), end.getMonth(), end.getDate());
 }
 
 function CapBadge({ pct }: { pct: string }) {
@@ -38,7 +43,7 @@ function CapBadge({ pct }: { pct: string }) {
   return <span className="text-exp-blue font-medium text-xs">{pct}</span>;
 }
 
-export function CappingHistoryTable() {
+export function CappingHistoryTable({ dateRange }: { dateRange?: { from: Date | undefined; to: Date | undefined } } = {}) {
   const isMobile = useIsMobile();
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ startDate: "", endDate: "", capReached: "", capPercentage: "" });
@@ -89,7 +94,7 @@ export function CappingHistoryTable() {
         </div>
         <div className="space-y-2">
           {sortedData.map((row, i) => {
-            const active = isActiveRow(row.startDate, row.endDate);
+            const active = isActiveRow(row.startDate, row.endDate, dateRange);
             return (
               <div
                 key={i}
@@ -178,7 +183,7 @@ export function CappingHistoryTable() {
             </TableHeader>
             <TableBody>
               {sortedData.map((row, i) => {
-                const active = isActiveRow(row.startDate, row.endDate);
+                const active = isActiveRow(row.startDate, row.endDate, dateRange);
                 return (
                   <TableRow key={i} className={`${active ? "bg-primary/5 border-l-2 border-l-primary" : ""}`}>
                     <TableCell className="py-2 px-3 text-xs">{row.startDate}</TableCell>
