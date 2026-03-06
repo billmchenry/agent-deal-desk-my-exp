@@ -334,7 +334,7 @@ export default function YearEnd() {
     return (
       <DashboardLayout>
         <div className="space-y-4 pb-20">
-          <h1 className="text-2xl font-bold text-foreground">{t("ye.my1099Income")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("ye.my1099Income")}</h1>
           <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("summary")}>
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             {t("ye.back")}
