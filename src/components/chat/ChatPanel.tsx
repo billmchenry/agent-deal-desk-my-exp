@@ -270,7 +270,7 @@ function ChatContent({
 
       {isExpanded && (
         <div className="px-3 sm:px-4 py-3 border-b shrink-0">
-          <h2 className="font-semibold text-sm sm:text-base">History</h2>
+          <h2 className="font-semibold text-sm sm:text-base">{t("chat.history")}</h2>
         </div>
       )}
 
