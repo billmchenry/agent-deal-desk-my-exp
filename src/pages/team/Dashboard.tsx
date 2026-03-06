@@ -166,8 +166,8 @@ export default function TeamDashboard() {
               </div>
               <div className="bg-muted/30 rounded-lg p-4">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.volume")}</p>
-                <p className="text-3xl font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.volume.total)} <span className="text-sm font-normal text-muted-foreground">USD</span>
+                <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
+                  {formatCurrency(teamOverview.volume.total)} <span className="text-body font-normal text-muted-foreground">USD</span>
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.volume.pending)} USD</p>
               </div>
