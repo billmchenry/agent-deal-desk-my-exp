@@ -100,11 +100,15 @@ export default function TeamDashboard() {
     return (
       <DashboardLayout>
         <div className="p-4 lg:p-6 space-y-4 pb-20">
-          <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("overview")}>
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-            {t("team.backToTeam")}
-          </Button>
-          <h1 className="text-page-title font-bold text-foreground">{t("team.topAgents")}</h1>
+          <UniversalFilterBar
+            title={t("team.topAgents")}
+            titleExtra={
+              <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("overview")}>
+                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                {t("team.backToTeam")}
+              </Button>
+            }
+          />
           <DataTable
             data={topAgents}
             columns={topAgentColumns}
