@@ -134,7 +134,7 @@ export default function RevShareTrends() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-semibold text-foreground">{t("trends.levelData")}</h2>
+              <h2 className="text-section-title font-semibold text-foreground">{t("trends.levelData")}</h2>
               <p className="text-sm text-muted-foreground">{t("trends.changeCountry")}</p>
             </div>
             <div className="flex items-center gap-2">
