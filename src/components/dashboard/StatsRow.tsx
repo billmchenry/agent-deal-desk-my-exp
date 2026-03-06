@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Home, DollarSign, Building2 } from "lucide-react";
 import { cappingData } from "@/data/mockData";
 import { useDashboard } from "@/contexts/DashboardContext";
-import { MiraSuggestionBar } from "./MiraSuggestionBar";
+
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
 
