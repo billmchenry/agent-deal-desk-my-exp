@@ -572,7 +572,7 @@ export const mockStateMentors: StateMentor[] = [
     totalActiveMentees: 3,
     primaryEmail: "camila.reyes@exprealty.com",
     phone: "(281) 555-4810",
-    secondaryEmail: "apino@gmail.com",
+    secondaryEmail: "creyes@gmail.com",
     city: "Katy",
     state: "TX",
     postalCode: "77494",
