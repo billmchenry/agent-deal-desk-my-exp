@@ -215,7 +215,7 @@ export default function RevShareDashboard() {
                     </HoverCardContent>
                   </HoverCard>
                 </div>
-                <p className="text-2xl font-bold font-secondary text-white">{formatNumber(24)}</p>
+                <p className="text-stat-value font-bold font-secondary text-white">{formatNumber(24)}</p>
                 <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLA List">
                   View FLA List <ChevronRight className="h-3 w-3" />
                 </button>
