@@ -54,7 +54,7 @@ export function NotificationsSheet({ isOpen, onClose }: NotificationsSheetProps)
           {mockNotifications.map((notification) => (
             <button
               key={notification.id}
-              className="flex flex-col gap-1 border-b p-4 text-left hover:bg-muted transition-colors"
+              className="flex flex-col gap-1 border-b p-4 text-start hover:bg-muted transition-colors"
             >
               <div className="flex items-start justify-between gap-2">
                 <span className="font-medium text-sm">{notification.title}</span>

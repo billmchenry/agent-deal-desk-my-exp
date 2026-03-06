@@ -161,7 +161,7 @@ export function Sidebar() {
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-            <div className="ml-9 mt-1 space-y-0.5">
+            <div className="ms-9 mt-1 space-y-0.5">
               {item.submenu?.map((subItem) => (
                 <a
                   key={subItem.url}

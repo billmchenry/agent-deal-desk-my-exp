@@ -164,7 +164,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent side="left" className="w-full sm:max-w-sm p-0 bg-sidebar flex flex-col overflow-x-hidden">
+      <SheetContent side={isRTL ? "right" : "left"} className="w-full sm:max-w-sm p-0 bg-sidebar flex flex-col overflow-x-hidden">
         <SheetHeader className="flex h-16 items-center justify-between border-b border-border px-5 bg-background">
           <SheetTitle className="flex items-center gap-1">
             <span className="text-xl font-bold text-foreground">MY</span>

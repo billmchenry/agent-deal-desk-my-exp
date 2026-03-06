@@ -371,7 +371,7 @@ function DropdownResults({
             onClick={onMiraSelect}
             onMouseEnter={() => onHover(miraIndex)}
             className={cn(
-              "flex w-full items-center gap-2 px-3 py-2.5 text-sm text-left transition-colors",
+              "flex w-full items-center gap-2 px-3 py-2.5 text-sm text-start transition-colors",
               isMiraHighlighted ? "bg-primary/10 text-primary" : "hover:bg-primary/5",
               !hasResults && "py-3"
             )}

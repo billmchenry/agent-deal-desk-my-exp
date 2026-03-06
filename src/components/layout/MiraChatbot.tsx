@@ -21,7 +21,7 @@ export function MiraChatbot() {
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 lg:left-[calc(50%+8rem)] z-50 w-[calc(100%-2rem)] max-w-2xl">
+    <div className="fixed bottom-4 start-1/2 transform -translate-x-1/2 rtl:translate-x-1/2 lg:start-[calc(50%+8rem)] z-50 w-[calc(100%-2rem)] max-w-2xl">
       <div className="flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 shadow-lg">
         <Sparkles className="h-5 w-5 text-primary shrink-0" />
         <Input
