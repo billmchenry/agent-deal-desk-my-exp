@@ -11,14 +11,6 @@ import {
 
 const slides = [
   {
-    id: "disc",
-    icon: Target,
-    title: "DISC Assessment",
-    description: "Understand your communication style and improve client relationships.",
-    buttonText: "Take Assessment",
-    theme: "purple" as const,
-  },
-  {
     id: "stock",
     icon: TrendingUp,
     title: "Stock Purchase Program",
