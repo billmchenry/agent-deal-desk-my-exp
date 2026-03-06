@@ -43,6 +43,7 @@ export default function AgentDashboard() {
           capCurrent={481.9}
           capTarget={16000}
           capPercentage={3}
+          dateRange={dateRange}
         />
       </div>
     </DashboardLayout>

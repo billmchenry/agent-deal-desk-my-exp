@@ -183,7 +183,7 @@ export function CappingHistoryTable({ dateRange }: { dateRange?: { from: Date | 
             </TableHeader>
             <TableBody>
               {sortedData.map((row, i) => {
-                const active = isActiveRow(row.startDate, row.endDate);
+                const active = isActiveRow(row.startDate, row.endDate, dateRange);
                 return (
                   <TableRow key={i} className={`${active ? "bg-primary/5 border-l-2 border-l-primary" : ""}`}>
                     <TableCell className="py-2 px-3 text-xs">{row.startDate}</TableCell>
