@@ -99,7 +99,7 @@ export default function TeamDashboard() {
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             {t("team.backToTeam")}
           </Button>
-          <h1 className="text-2xl font-bold text-foreground">{t("team.topAgents")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("team.topAgents")}</h1>
           <DataTable
             data={topAgents}
             columns={topAgentColumns}
