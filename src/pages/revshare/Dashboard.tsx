@@ -524,19 +524,19 @@ export default function RevShareDashboard() {
                       {selectedMonth.y2024 != null && (
                         <span className="flex items-center gap-1">
                           <span className="w-2 h-2 rounded-full bg-exp-navy inline-block" />
-                          ${Math.round((selectedMonth.y2024 as number) * 1000)}K
+                          {formatCurrency((selectedMonth.y2024 as number) * 1000, { compact: true, decimals: 0 })}
                         </span>
                       )}
                       {selectedMonth.y2025 != null && (
                         <span className="flex items-center gap-1">
                           <span className="w-2 h-2 rounded-full bg-exp-blue inline-block" />
-                          ${Math.round((selectedMonth.y2025 as number) * 1000)}K
+                          {formatCurrency((selectedMonth.y2025 as number) * 1000, { compact: true, decimals: 0 })}
                         </span>
                       )}
                       {selectedMonth.y2026 != null && (
                         <span className="flex items-center gap-1">
                           <span className="w-2 h-2 rounded-full bg-exp-green inline-block" />
-                          ${Math.round((selectedMonth.y2026 as number) * 1000)}K
+                          {formatCurrency((selectedMonth.y2026 as number) * 1000, { compact: true, decimals: 0 })}
                         </span>
                       )}
                     </div>
