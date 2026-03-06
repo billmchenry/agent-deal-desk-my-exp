@@ -86,7 +86,8 @@ export function YearOverYearChart() {
   const isMobile = useIsMobile();
   const { formatCurrency: fmtCurr } = useFormatters();
 
-  const chartData = dataByTab[chartTab] || unitsData;
+  const fullData = dataByTab[chartTab] || unitsData;
+  const chartData = isMobile ? fullData.slice(6) : fullData;
 
   const formatValue = (val: number) => {
     if (chartTab === "volume") {
