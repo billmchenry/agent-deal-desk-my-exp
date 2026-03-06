@@ -429,9 +429,9 @@ export default function RevShareDashboard() {
                   <ComposedChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => `$${v.toFixed(1)}M`} domain={[0, "auto"]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
                     <Tooltip
-                      formatter={(value: number) => [`$${value < 1 ? Math.round(value * 1000) + "K" : value.toFixed(2) + "M"}`, "Revenue"]}
+                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), "Revenue"]}
                       contentStyle={tooltipStyle}
                     />
                     <Bar dataKey="revenue" fill="hsl(var(--exp-navy))" radius={[4, 4, 0, 0]} barSize={48} />
