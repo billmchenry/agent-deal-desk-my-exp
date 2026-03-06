@@ -342,7 +342,7 @@ export default function IconProgram() {
                 className="inline-flex items-center gap-2 text-primary hover:underline"
               >
                 <ExternalLink className="h-4 w-4" />
-                Open Morgan Stanley at Work
+                {t("icon.openMorganStanley")}
               </a>
             </div>
 
