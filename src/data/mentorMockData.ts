@@ -163,7 +163,7 @@ export const mockMentees: Mentee[] = [
     paidMentorFees: 3200,
     mentorFee: 25,
     email: "tamika.johnson@exprealty.com",
-    phone: "(555) 887-2103",
+    phone: "(404) 555-2103",
     city: "Atlanta",
     state: "GA",
     postalCode: "30301",
