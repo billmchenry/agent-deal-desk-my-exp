@@ -26,9 +26,14 @@ function parseDate(s: string): Date {
   return new Date(y, m - 1, d);
 }
 
-function isActiveRow(startDate: string, endDate: string) {
-  const now = new Date();
-  return now >= parseDate(startDate) && now <= parseDate(endDate);
+function isActiveRow(startDate: string, endDate: string, dateRange?: { from: Date | undefined; to: Date | undefined }) {
+  const refDate = dateRange?.from ?? new Date();
+  const start = parseDate(startDate);
+  const end = parseDate(endDate);
+  // Normalize to local midnight for comparison
+  const ref = new Date(refDate.getFullYear(), refDate.getMonth(), refDate.getDate());
+  return ref >= new Date(start.getFullYear(), start.getMonth(), start.getDate()) &&
+         ref <= new Date(end.getFullYear(), end.getMonth(), end.getDate());
 }
 
 function CapBadge({ pct }: { pct: string }) {
