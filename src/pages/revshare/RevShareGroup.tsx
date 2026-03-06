@@ -245,10 +245,17 @@ export default function RevShareGroup() {
           data={filteredData}
           columns={columns}
           searchableKeys={["agentName", "email", "agentSponsorName", "agentId"]}
+          onRowClick={(row) => { setSelectedAgent(row); setSheetOpen(true); }}
           defaultPageSize={25}
           defaultSort={{ key: "level", direction: "asc" }}
           csvFilename="revshare-group"
           mobileCardRender={mobileCardRender}
+        />
+
+        <AgentContactSheet
+          open={sheetOpen}
+          onOpenChange={setSheetOpen}
+          agent={selectedAgent}
         />
       </div>
     </DashboardLayout>
