@@ -29,6 +29,7 @@ import DocumentsPortal from "./pages/documents/DocumentsPortal";
 import DocumentsYearEnd from "./pages/documents/YearEnd";
 import DocumentsDownloads from "./pages/documents/Downloads";
 import MentorProgram from "./pages/mentor/MentorProgram";
+import MentorApply from "./pages/mentor/MentorApply";
 
 
 const queryClient = new QueryClient();
