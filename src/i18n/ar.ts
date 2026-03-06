@@ -296,6 +296,7 @@ export const ar: Record<string, string> = {
   "nav.revShareGroup": "مجموعة مشاركة الإيرادات",
   "revgroup.title": "مجموعة مشاركة الإيرادات",
   "revgroup.backToRevShare": "العودة إلى مشاركة الإيرادات",
+  "revgroup.allLevels": "جميع المستويات",
   "revgroup.searchPlaceholder": "البحث بالوكيل، البريد، الراعي...",
   "revgroup.agentName": "اسم الوكيل",
   "revgroup.groupSize": "حجم المجموعة",

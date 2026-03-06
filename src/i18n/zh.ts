@@ -296,6 +296,7 @@ export const zh: Record<string, string> = {
   "nav.revShareGroup": "收入分享群组",
   "revgroup.title": "收入分享群组",
   "revgroup.backToRevShare": "返回收入分享",
+  "revgroup.allLevels": "所有级别",
   "revgroup.searchPlaceholder": "按代理人、邮箱、推荐人搜索...",
   "revgroup.agentName": "代理人姓名",
   "revgroup.groupSize": "群组规模",

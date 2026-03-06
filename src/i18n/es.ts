@@ -267,6 +267,7 @@ export const es: Record<string, string> = {
   "nav.revShareGroup": "Grupo de participación en ingresos",
   "revgroup.title": "Grupo de participación en ingresos",
   "revgroup.backToRevShare": "Volver a ingresos compartidos",
+  "revgroup.allLevels": "Todos los niveles",
   "revgroup.searchPlaceholder": "Buscar por agente, correo, patrocinador...",
   "revgroup.agentName": "Nombre del agente",
   "revgroup.groupSize": "Tamaño del grupo",

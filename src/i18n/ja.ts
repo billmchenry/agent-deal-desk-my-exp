@@ -248,6 +248,7 @@ export const ja: Record<string, string> = {
   "nav.revShareGroup": "収益シェアグループ",
   "revgroup.title": "収益シェアグループ",
   "revgroup.backToRevShare": "収益シェアに戻る",
+  "revgroup.allLevels": "すべてのレベル",
   "revgroup.searchPlaceholder": "エージェント、メール、スポンサーで検索...",
   "revgroup.agentName": "エージェント名",
   "revgroup.groupSize": "グループサイズ",
