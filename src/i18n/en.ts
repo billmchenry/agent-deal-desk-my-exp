@@ -194,6 +194,7 @@ export const en = {
   "common.search": "Search",
   "common.filter": "Filter",
   "common.viewAll": "View All",
+  "common.all": "All",
   "common.comingSoon": "Coming soon.",
   "common.current": "Current",
   "common.previous": "Previous",
