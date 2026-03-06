@@ -53,22 +53,18 @@ export default function OrganizationReporting() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-page-title font-bold text-foreground">{t("revshare.organizationReporting")}</h1>
-        </div>
-
-        <div className="flex items-center justify-end mb-4">
-            <Select defaultValue="2026">
-              <SelectTrigger className="w-[100px]">
-                <SelectValue placeholder="Year" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="2026">2026</SelectItem>
-                <SelectItem value="2025">2025</SelectItem>
-                <SelectItem value="2024">2024</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <UniversalFilterBar title={t("revshare.organizationReporting")}>
+          <Select defaultValue="2026">
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder="Year" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="2026">2026</SelectItem>
+              <SelectItem value="2025">2025</SelectItem>
+              <SelectItem value="2024">2024</SelectItem>
+            </SelectContent>
+          </Select>
+        </UniversalFilterBar>
 
             <h2 className="text-section-title font-semibold text-foreground mb-4">{t("org.performanceSnapshot")}</h2>
 

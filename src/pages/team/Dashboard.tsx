@@ -137,10 +137,9 @@ export default function TeamDashboard() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-page-title font-bold text-foreground">{t("team.myTeam")}</h1>
+        <UniversalFilterBar title={t("team.myTeam")}>
           <Button variant="outline">{t("team.teamReport")}</Button>
-        </div>
+        </UniversalFilterBar>
 
         <p className="text-body-lg font-medium text-foreground mb-6">
           {t("team.myTeam")}: {teamOverview.name}

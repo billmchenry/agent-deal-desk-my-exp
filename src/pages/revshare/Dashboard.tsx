@@ -147,8 +147,7 @@ export default function RevShareDashboard() {
       <div className="space-y-4 pb-20">
 
         {/* ═══ Page Header ═══ */}
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-page-title font-bold text-foreground">{t("revshare.revenueShare")}</h1>
+        <UniversalFilterBar title={t("revshare.revenueShare")}>
           <Select defaultValue="ytd">
             <SelectTrigger className="w-[140px] h-8 min-h-[44px] sm:min-h-0 text-xs">
               <SelectValue />
@@ -160,7 +159,7 @@ export default function RevShareDashboard() {
               <SelectItem value="monthly">{t("revshare.monthly")}</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </UniversalFilterBar>
 
         {/* ═══ Section 1: Hero Banner ═══ */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue p-4 sm:p-6 text-white">
