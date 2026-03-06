@@ -832,7 +832,7 @@ export const mockAvailableMentors: AvailableMentor[] = [
     mls: ["FMLS", "Georgia MLS"],
     specializations: ["Luxury", "New Construction", "Investment"],
     certifications: ["CRS", "GRI", "CLHMS"],
-    phone: "(555) 618-9042",
+    phone: "(404) 555-9042",
     email: "david.okonkwo@exprealty.com",
     facebook: "https://facebook.com/davidokonkworealty",
     linkedin: "https://linkedin.com/in/davidokonkwo",
