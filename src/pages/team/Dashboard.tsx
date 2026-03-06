@@ -66,7 +66,7 @@ export default function TeamDashboard() {
             data={agentDetails}
             columns={agentDetailColumns}
             csvFilename="agent-details"
-            searchableKeys={["agentName", "uuid", "agentId"]}
+            searchableKeys={["agentName"]}
             mobileCardRender={(row) => (
               <div className="space-y-1">
                 <div className="flex justify-between gap-2">
@@ -75,10 +75,9 @@ export default function TeamDashboard() {
                     {row.active}
                   </Badge>
                 </div>
-                <p className="text-xs text-muted-foreground font-mono truncate">{row.uuid}</p>
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>ID: {row.agentId}</span>
                   <span>Cap Reset: {row.capResetDate}</span>
+                  <span className="font-medium text-foreground">Cap: {row.capPercent}%</span>
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>Closed: {row.closedTransactions}</span>
