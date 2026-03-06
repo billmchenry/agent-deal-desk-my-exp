@@ -197,42 +197,38 @@ export default function TeamDashboard() {
               </span>
             </CardHeader>
             <CardContent>
-              <div className="space-y-1 mb-2">
-                <div className="grid grid-cols-2 text-xs text-muted-foreground font-medium px-2">
-                  <span>Agents</span>
-                  <span>{t("team.progress")}</span>
-                </div>
-              </div>
               <div className="space-y-1">
-                {onboardingAgents.map((agent) => (
+                {onboardingAgents.slice(0, 3).map((agent) => (
                   <button
                     key={agent.id}
                     type="button"
-                    className="w-full flex items-center justify-between py-3 px-2 rounded-lg hover:bg-muted/50 transition-colors focus-visible:ring-2 focus-visible:ring-ring min-h-[48px]"
+                    className="w-full flex flex-col gap-2 py-3 px-2 rounded-lg hover:bg-muted/50 transition-colors focus-visible:ring-2 focus-visible:ring-ring min-h-[48px]"
                     onClick={() => setSelectedOnboardingAgent(agent)}
                   >
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10 bg-primary">
-                        <AvatarFallback className="bg-primary text-primary-foreground">{agent.initials}</AvatarFallback>
-                      </Avatar>
-                      <div className="text-left">
-                        <p className="font-medium text-foreground text-sm">{agent.name}</p>
-                        <p className="text-xs text-muted-foreground">{agent.joinDate}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 flex-1 max-w-[200px]">
-                      <div className="flex-1 text-left">
-                        <p className="text-xs text-muted-foreground mb-1">{agent.currentStep}</p>
-                        <Progress value={agent.progress} className="h-2" />
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10 bg-primary">
+                          <AvatarFallback className="bg-primary text-primary-foreground">{agent.initials}</AvatarFallback>
+                        </Avatar>
+                        <div className="text-left">
+                          <p className="font-medium text-foreground text-sm">{agent.name}</p>
+                          <p className="text-xs text-muted-foreground">{agent.joinDate}</p>
+                        </div>
                       </div>
                       <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                    </div>
+                    <div className="w-full pl-[52px] pr-6">
+                      <p className="text-xs text-muted-foreground mb-1 text-left">{agent.currentStep}</p>
+                      <Progress value={agent.progress} className="h-2" />
                     </div>
                   </button>
                 ))}
               </div>
-              <button className="w-full text-center text-primary hover:underline text-sm mt-4">
-                {t("team.viewAll")}
-              </button>
+              {onboardingAgents.length > 3 && (
+                <button className="w-full text-center text-primary hover:underline text-sm mt-4">
+                  {t("team.viewAll")}
+                </button>
+              )}
             </CardContent>
           </Card>
 
@@ -273,7 +269,7 @@ export default function TeamDashboard() {
                           tab === "volume" ? b.volume - a.volume :
                           b.commission - a.commission
                         )
-                        .slice(0, 3)
+                        .slice(0, 2)
                         .map((agent, idx) => (
                           <div
                             key={agent.id}
