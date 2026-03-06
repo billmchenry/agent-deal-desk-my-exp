@@ -34,11 +34,14 @@ export default function MentorProgram() {
       <div className="max-w-3xl mx-auto space-y-8 py-4">
         {/* Header */}
         <div className="text-center space-y-3">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground uppercase">
-            eXp <span className="text-muted-foreground font-light mx-1">|</span> {t("mentor.title")}
-          </h1>
+        <div className="bg-card rounded-xl p-8 flex flex-col items-center">
+          <img
+            src={mentorHeader}
+            alt="eXp Realty Mentor Program"
+            className="h-16 md:h-20 object-contain mb-6"
+          />
           <h2 className="text-xl font-bold text-foreground">{t("mentor.forMentees")}</h2>
-          <p className="text-sm text-muted-foreground max-w-lg mx-auto">
+          <p className="text-sm text-muted-foreground max-w-lg mx-auto text-center mt-2">
             {t("mentor.menteeDescription")}
           </p>
         </div>
