@@ -33,6 +33,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const [accountOpen, setAccountOpen] = useState(false);
   const [demoConfigOpen, setDemoConfigOpen] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const cycleTheme = () => {
     if (theme === "light") setTheme("dark");
