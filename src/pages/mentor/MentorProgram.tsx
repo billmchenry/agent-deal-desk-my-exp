@@ -33,7 +33,6 @@ export default function MentorProgram() {
     <DashboardLayout>
       <div className="max-w-3xl mx-auto space-y-8 py-4">
         {/* Header */}
-        <div className="text-center space-y-3">
         <div className="bg-card rounded-xl p-8 flex flex-col items-center">
           <img
             src={mentorHeader}
