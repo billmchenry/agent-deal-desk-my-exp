@@ -162,7 +162,7 @@ export default function IconProgram() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Company Commission */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-foreground">Company Commission</h4>
+                    <h4 className="text-sm font-medium text-foreground">{t("icon.companyCommission")}</h4>
                     <Progress value={26.16} className="h-2" />
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold text-foreground">$4,186.17</span>
