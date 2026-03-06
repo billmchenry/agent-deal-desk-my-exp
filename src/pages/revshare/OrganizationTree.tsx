@@ -19,8 +19,8 @@ interface OrgTreeAgent {
   name: string;
   location: string;
   level: number;
-  revShare: string;
-  contribution: string;
+  revShare: number;
+  contribution: number;
   orgSize: number;
   avatar: string;
   icon?: boolean;
