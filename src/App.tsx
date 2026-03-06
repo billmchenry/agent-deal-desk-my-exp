@@ -35,6 +35,7 @@ import MentorProgram from "./pages/mentor/MentorProgram";
 import MentorApply from "./pages/mentor/MentorApply";
 import MyMentees from "./pages/mentor/MyMentees";
 import MentorRequests from "./pages/mentor/MentorRequests";
+import HelpCenter from "./pages/help/HelpCenter";
 
 
 const queryClient = new QueryClient();
