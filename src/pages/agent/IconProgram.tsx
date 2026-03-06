@@ -77,7 +77,8 @@ const benefitYearOptions: YearOption[] = [
 ];
 
 export default function IconProgram() {
-  useDocumentTitle("ICON Program");
+  const { t } = useTranslation();
+  useDocumentTitle(t("icon.title"));
   const [activeTab, setActiveTab] = useState("production");
   const [cappingYear, setCappingYear] = useState("2026");
   const [benefitYear, setBenefitYear] = useState("2025-2026");
