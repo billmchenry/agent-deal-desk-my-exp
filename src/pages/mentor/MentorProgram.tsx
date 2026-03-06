@@ -200,6 +200,7 @@ function CertificationView() {
 // ── Active Mentor view ──
 function ActiveMentorView() {
   const navigate = useNavigate();
+  const [profileOpen, setProfileOpen] = useState(false);
   const menteeCount = mockMentees.length;
   const requestCount = mockMentorRequests.length;
 
@@ -242,7 +243,7 @@ function ActiveMentorView() {
 
         <Card
           className="cursor-pointer hover:border-primary/50 transition-colors"
-          onClick={() => navigate("/profile/personal-details")}
+          onClick={() => setProfileOpen(true)}
         >
           <CardContent className="p-6 flex flex-col items-center gap-3 text-center">
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -253,6 +254,8 @@ function ActiveMentorView() {
           </CardContent>
         </Card>
       </div>
+
+      <MyMentorProfileSheet open={profileOpen} onOpenChange={setProfileOpen} />
     </>
   );
 }
