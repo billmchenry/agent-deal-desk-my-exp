@@ -15,6 +15,7 @@ import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { topAgents, teamOverview, teamRequirements, onboardingAgents, agentDetails, type OnboardingAgent, type TopAgent, type AgentDetail } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
+import { UniversalFilterBar } from "@/components/filters";
 
 type View = "overview" | "agentDetails" | "topAgents";
 
