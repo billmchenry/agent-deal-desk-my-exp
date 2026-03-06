@@ -196,7 +196,7 @@ function AgentCard({
 
         <div className="flex items-center gap-2 mb-3">
           <Badge className={`${getLevelColor(agent.level)} text-white text-xs`}>
-            Level {agent.level}
+            {t("orgTree.level")} {agent.level}
           </Badge>
         </div>
 
