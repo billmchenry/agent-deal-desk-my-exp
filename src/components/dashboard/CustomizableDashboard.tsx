@@ -85,48 +85,47 @@ export function CustomizableDashboard() {
               items={mainWidgets.map((w) => w.id)}
               strategy={verticalListSortingStrategy}
             >
-              {mainWidgets.map((widget, index) => {
-                // Find if we just rendered the hero-banner (cap widget)
-                const prevWidget = index > 0 ? mainWidgets[index - 1] : null;
-                const insertMentorAfterPrev = prevWidget?.type === "hero-banner" && showMentorWidget;
+              {(() => {
+                const heroBannerIdx = mainWidgets.findIndex(w => w.type === "hero-banner");
+                const insertAfterIdx = heroBannerIdx >= 0 ? heroBannerIdx : -1; // after hero-banner, or at top if missing
 
-                return (
-                  <div key={widget.id}>
-                    {/* Insert mentor widget right after hero-banner */}
-                    {insertMentorAfterPrev && (
-                      <div className="mb-6">
-                        <MentorProgramWidget
-                          status={config.mentorMode as "needs_mentor" | "pairing_underway"}
-                          onStatusChange={setMentorMode}
-                        />
-                      </div>
-                    )}
+                const elements: React.ReactNode[] = [];
+
+                if (showMentorWidget && insertAfterIdx === -1) {
+                  elements.push(
+                    <MentorProgramWidget
+                      key="mentor-widget"
+                      status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                      onStatusChange={setMentorMode}
+                    />
+                  );
+                }
+
+                mainWidgets.forEach((widget, index) => {
+                  elements.push(
                     <DraggableWidget
+                      key={widget.id}
                       widget={widget}
                       isEditMode={isEditMode}
                       onRemove={removeWidget}
                     >
                       <WidgetRenderer widget={widget} />
                     </DraggableWidget>
-                  </div>
-                );
-              })}
-              {/* If hero-banner is the last widget or there's only one widget */}
-              {showMentorWidget && mainWidgets.length > 0 && mainWidgets[mainWidgets.length - 1].type === "hero-banner" && (
-                <MentorProgramWidget
-                  status={config.mentorMode as "needs_mentor" | "pairing_underway"}
-                  onStatusChange={setMentorMode}
-                />
-              )}
-              {/* If no hero-banner exists, show at top */}
-              {showMentorWidget && !mainWidgets.some(w => w.type === "hero-banner") && mainWidgets.length > 0 && (
-                <div className="-order-1">
-                  <MentorProgramWidget
-                    status={config.mentorMode as "needs_mentor" | "pairing_underway"}
-                    onStatusChange={setMentorMode}
-                  />
-                </div>
-              )}
+                  );
+
+                  if (showMentorWidget && index === insertAfterIdx) {
+                    elements.push(
+                      <MentorProgramWidget
+                        key="mentor-widget"
+                        status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                        onStatusChange={setMentorMode}
+                      />
+                    );
+                  }
+                });
+
+                return elements;
+              })()}
             </SortableContext>
 
             {mainWidgets.length === 0 && (
