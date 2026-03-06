@@ -14,6 +14,7 @@ import PersonalDetails from "./pages/profile/PersonalDetails";
 import Settings from "./pages/profile/Settings";
 import AgentDashboard from "./pages/agent/Dashboard";
 import IconProgram from "./pages/agent/IconProgram";
+import BrokerHub from "./pages/agent/BrokerHub";
 import AgentTransactions from "./pages/agent/Transactions";
 import TeamDashboard from "./pages/team/Dashboard";
 import TeamReconciliation from "./pages/team/Reconciliation";
