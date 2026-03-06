@@ -54,9 +54,10 @@ export default function MentorRequests() {
             </CardContent>
           </Card>
         ) : (
-          <Card>
-            <CardContent className="p-0">
-              <div className="overflow-auto">
+          <>
+            {/* Desktop table */}
+            <Card className="hidden md:block">
+              <CardContent className="p-0">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -86,18 +87,10 @@ export default function MentorRequests() {
                         <TableCell className="text-muted-foreground">{req.requestSentDate}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <Button
-                              size="sm"
-                              variant="default"
-                              onClick={() => handleAccept(req.id)}
-                            >
+                            <Button size="sm" variant="default" onClick={() => handleAccept(req.id)}>
                               Accept
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleDecline(req.id)}
-                            >
+                            <Button size="sm" variant="outline" onClick={() => handleDecline(req.id)}>
                               Decline
                             </Button>
                           </div>
@@ -106,9 +99,44 @@ export default function MentorRequests() {
                     ))}
                   </TableBody>
                 </Table>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            {/* Mobile cards */}
+            <div className="md:hidden space-y-3">
+              {requests.map((req) => (
+                <Card key={req.id}>
+                  <CardContent className="p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">
+                          {req.firstName} {req.lastName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">Sent {req.requestSentDate}</p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-xs text-primary"
+                        onClick={() => setSelectedRequest(req)}
+                      >
+                        Details
+                        <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
+                      </Button>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button size="sm" className="flex-1" onClick={() => handleAccept(req.id)}>
+                        Accept
+                      </Button>
+                      <Button size="sm" variant="outline" className="flex-1" onClick={() => handleDecline(req.id)}>
+                        Decline
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </>
         )}
 
         <MentorRequestDetailSheet
