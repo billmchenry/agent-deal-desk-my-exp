@@ -11,19 +11,27 @@ import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, MapPin, Building2, Award, Users } from "lucide-react";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
-import type { RevShareGroupAgent } from "@/pages/revshare/RevShareGroup";
 
-// Deterministic avatar from agent name
-const avatarUrls: Record<string, string> = {
-  "Rachel Morrison": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
-  "Daniel Crawford": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-  "Amanda Chen-Rodriguez": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
-  "Marcus Anthony Blake": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-  "Jennifer Walsh": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-  "Sarah Johnson": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
-  "Robert Martinez": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face",
-  "Emily Davis": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
-};
+export interface AgentContactData {
+  agentName: string;
+  agentId?: string;
+  email: string;
+  phoneNumber: string;
+  city: string;
+  state: string;
+  stateOfPrimaryLicense: string;
+  agentSponsorName: string;
+  status: string;
+  icon: string;
+  capPct: number;
+  totalRevenueShare: number;
+  revenueShareEarned: number;
+  totalVolume: number;
+  totalUnits: number;
+  totalGci: number;
+  groupSize: number;
+  avatarUrl?: string;
+}
 
 function getInitials(name: string) {
   return name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
@@ -32,7 +40,7 @@ function getInitials(name: string) {
 interface AgentContactSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  agent: RevShareGroupAgent | null;
+  agent: AgentContactData | null;
 }
 
 export function AgentContactSheet({ open, onOpenChange, agent }: AgentContactSheetProps) {
@@ -40,8 +48,6 @@ export function AgentContactSheet({ open, onOpenChange, agent }: AgentContactShe
   const { t } = useTranslation();
 
   if (!agent) return null;
-
-  const avatarUrl = avatarUrls[agent.agentName] || "";
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -52,7 +58,7 @@ export function AgentContactSheet({ open, onOpenChange, agent }: AgentContactShe
             <SheetHeader className="space-y-4">
               <div className="flex items-center gap-4">
                 <Avatar className="h-16 w-16 border-2 border-border">
-                  <AvatarImage src={avatarUrl} alt={agent.agentName} />
+                  <AvatarImage src={agent.avatarUrl} alt={agent.agentName} />
                   <AvatarFallback className="text-lg font-semibold bg-primary/10 text-primary">
                     {getInitials(agent.agentName)}
                   </AvatarFallback>
@@ -80,7 +86,9 @@ export function AgentContactSheet({ open, onOpenChange, agent }: AgentContactShe
                       </Badge>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground font-secondary">{agent.agentId}</p>
+                  {agent.agentId && (
+                    <p className="text-xs text-muted-foreground font-secondary">{agent.agentId}</p>
+                  )}
                 </div>
               </div>
             </SheetHeader>

@@ -195,6 +195,8 @@ export const ar: Record<string, string> = {
   "orgTree.individualContribution": "مساهمة حصة الإيرادات الفردية",
   "orgTree.orgSize": "حجم المنظمة",
   "orgTree.viewOrg": "عرض المنظمة",
+  "orgTree.viewFLAs": "عرض FLA",
+  "orgTree.hideFLAs": "إخفاء FLA",
   "trends.dateRange": "نطاق التاريخ",
   "trends.monthsView": "عرض الأشهر",
   "trends.newestFirst": "الأحدث أولاً",

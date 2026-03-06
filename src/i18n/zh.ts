@@ -195,6 +195,8 @@ export const zh: Record<string, string> = {
   "orgTree.individualContribution": "个人收入分享贡献",
   "orgTree.orgSize": "组织规模",
   "orgTree.viewOrg": "查看组织",
+  "orgTree.viewFLAs": "查看FLA",
+  "orgTree.hideFLAs": "隐藏FLA",
   "trends.dateRange": "日期范围",
   "trends.monthsView": "月份视图",
   "trends.newestFirst": "最新优先",
