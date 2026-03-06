@@ -101,10 +101,6 @@ export default function CustomServiceFees() {
         </UniversalFilterBar>
 
         <div className="flex items-center justify-end gap-2">
-          <Button className="gap-2" aria-label={t("csf.createReport")}>
-            <FileText className="h-4 w-4" aria-hidden="true" />
-            {t("csf.createReport")}
-          </Button>
           <Button variant="outline" className="gap-2" onClick={handleDownload} aria-label={t("common.download")}>
             <Download className="h-4 w-4" aria-hidden="true" />
             Download
