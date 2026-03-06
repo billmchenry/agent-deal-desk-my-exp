@@ -56,6 +56,8 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
     agentId: "278152",
     totalRevShare: 2556.64,
     currency: "USD",
+    email: "ravi.ramachandran@email.com",
+    phone: "(425) 555-0198",
     transactions: [
       { address: "9625 164th Ave NE, Re...", fullAddress: "9625 164th Ave NE, Redmond, WA 98052, US", closedDate: "01/20/2026", revShareAmount: 1876.43, currency: "USD", transactionNumber: "3648503.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 1270000, revShareDollar: 3752.85, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1876.43 },
       { address: "2525C 29th Ave S, Seattl...", fullAddress: "2525C 29th Ave S, Seattle, WA 98144, US", closedDate: "01/07/2026", revShareAmount: 680.21, currency: "USD", transactionNumber: "3647891.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 425000, revShareDollar: 1360.42, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 680.21 },
