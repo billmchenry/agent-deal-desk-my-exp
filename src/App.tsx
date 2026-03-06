@@ -59,6 +59,7 @@ const App = () => (
                 <Route path="/agent/icon-program" element={<IconProgram />} />
                 <Route path="/agent/broker-hub" element={<BrokerHub />} />
                 <Route path="/agent/transactions" element={<AgentTransactions />} />
+                <Route path="/agent/custom-service-fees" element={<CustomServiceFees />} />
                 <Route path="/team/dashboard" element={<TeamDashboard />} />
                 <Route path="/team/reconciliation" element={<TeamReconciliation />} />
                 <Route path="/revshare/dashboard" element={<RevShareDashboard />} />

@@ -395,6 +395,7 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
           { title: "Agent Production Details", url: "/agent/transactions" },
           { title: "ICON Program", url: "/agent/icon-program" },
           { title: "Broker Hub", url: "/agent/broker-hub" },
+          { title: "Custom Service Fees", url: "/agent/custom-service-fees" },
         ],
       },
       {
