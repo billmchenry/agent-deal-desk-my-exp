@@ -414,6 +414,7 @@ export const en = {
   "fin.expansionShare": "Revenue Share Dollar eXpansion Share",
   "fin.exponentialShare": "Revenue Share Dollar eXponential Share",
   "fin.revSharePercentage": "Revenue Share Dollar' Revenue Share Percentage",
+  "fin.contactCard": "Contact Card",
 } as const;
 
 export type TranslationKey = keyof typeof en;

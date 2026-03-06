@@ -44,6 +44,8 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
     agentId: "278153",
     totalRevShare: 2325.00,
     currency: "USD",
+    email: "tatsiana.crawford@email.com",
+    phone: "(207) 555-0142",
     transactions: [
       { address: "4521 Maple Dr, Portland...", fullAddress: "4521 Maple Dr, Portland, OR 97201, US", closedDate: "01/15/2026", revShareAmount: 1425.00, currency: "USD", transactionNumber: "3648712.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 890000, revShareDollar: 2850.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1425.00 },
       { address: "782 Oak Lane, Augusta...", fullAddress: "782 Oak Lane, Augusta, ME 04330, US", closedDate: "01/08/2026", revShareAmount: 900.00, currency: "USD", transactionNumber: "3648199.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 540000, revShareDollar: 1800.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 900.00 },
@@ -54,6 +56,8 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
     agentId: "278152",
     totalRevShare: 2556.64,
     currency: "USD",
+    email: "ravi.ramachandran@email.com",
+    phone: "(425) 555-0198",
     transactions: [
       { address: "9625 164th Ave NE, Re...", fullAddress: "9625 164th Ave NE, Redmond, WA 98052, US", closedDate: "01/20/2026", revShareAmount: 1876.43, currency: "USD", transactionNumber: "3648503.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 1270000, revShareDollar: 3752.85, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1876.43 },
       { address: "2525C 29th Ave S, Seattl...", fullAddress: "2525C 29th Ave S, Seattle, WA 98144, US", closedDate: "01/07/2026", revShareAmount: 680.21, currency: "USD", transactionNumber: "3647891.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 425000, revShareDollar: 1360.42, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 680.21 },
@@ -66,11 +70,15 @@ function getAgentDetail(row: AgentRevShareRow): AgentDetail {
   if (agentTransactionsMap[row.agentName]) return agentTransactionsMap[row.agentName];
   const half = row.totalRevShare * 0.6;
   const rest = row.totalRevShare - half;
+  const firstNameLower = row.agentName.split(" ")[0].toLowerCase();
+  const lastNameLower = row.agentName.split(" ").slice(-1)[0].toLowerCase();
   return {
     agentName: row.agentName,
     agentId: String(Math.floor(100000 + Math.random() * 900000)),
     totalRevShare: row.totalRevShare,
     currency: row.currency,
+    email: `${firstNameLower}.${lastNameLower}@email.com`,
+    phone: `(${Math.floor(200 + Math.random() * 800)}) 555-${String(Math.floor(1000 + Math.random() * 9000))}`,
     transactions: [
       { address: "123 Main St, " + row.state + "...", fullAddress: "123 Main St, " + row.state + ", " + row.country, closedDate: "01/12/2026", revShareAmount: half, currency: row.currency, transactionNumber: "364" + Math.floor(1000 + Math.random() * 9000) + ".1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: half * 500, revShareDollar: half * 2, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: half },
       { address: "456 Elm Ave, " + row.state + "...", fullAddress: "456 Elm Ave, " + row.state + ", " + row.country, closedDate: "01/05/2026", revShareAmount: rest, currency: row.currency, transactionNumber: "364" + Math.floor(1000 + Math.random() * 9000) + ".1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: rest * 500, revShareDollar: rest * 2, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: rest },
