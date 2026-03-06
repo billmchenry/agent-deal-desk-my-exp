@@ -147,7 +147,7 @@ export default function RevShareDashboard() {
 
         {/* ═══ Page Header ═══ */}
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-xl font-bold text-foreground">{t("revshare.revenueShare")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("revshare.revenueShare")}</h1>
           <Select defaultValue="ytd">
             <SelectTrigger className="w-[140px] h-8 min-h-[44px] sm:min-h-0 text-xs">
               <SelectValue />
