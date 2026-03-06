@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
+import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
 
 // ── Types ──
 
@@ -32,6 +34,48 @@ interface PeriodicRow {
   monthly: string;
   batchNumber: number;
   currency: string;
+}
+
+// ── Mock Transaction Data per Agent ──
+
+const agentTransactionsMap: Record<string, AgentDetail> = {
+  "Tatsiana Crawford": {
+    agentName: "Tatsiana Crawford",
+    agentId: "278153",
+    totalRevShare: 2325.00,
+    currency: "USD",
+    transactions: [
+      { address: "4521 Maple Dr, Portland...", fullAddress: "4521 Maple Dr, Portland, OR 97201, US", closedDate: "01/15/2026", revShareAmount: 1425.00, currency: "USD", transactionNumber: "3648712.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 890000, revShareDollar: 2850.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1425.00 },
+      { address: "782 Oak Lane, Augusta...", fullAddress: "782 Oak Lane, Augusta, ME 04330, US", closedDate: "01/08/2026", revShareAmount: 900.00, currency: "USD", transactionNumber: "3648199.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 540000, revShareDollar: 1800.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 900.00 },
+    ],
+  },
+  "Ravi Ramachandran": {
+    agentName: "Ravi Ramachandran",
+    agentId: "278152",
+    totalRevShare: 2556.64,
+    currency: "USD",
+    transactions: [
+      { address: "9625 164th Ave NE, Re...", fullAddress: "9625 164th Ave NE, Redmond, WA 98052, US", closedDate: "01/20/2026", revShareAmount: 1876.43, currency: "USD", transactionNumber: "3648503.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 1270000, revShareDollar: 3752.85, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1876.43 },
+      { address: "2525C 29th Ave S, Seattl...", fullAddress: "2525C 29th Ave S, Seattle, WA 98144, US", closedDate: "01/07/2026", revShareAmount: 680.21, currency: "USD", transactionNumber: "3647891.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 425000, revShareDollar: 1360.42, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 680.21 },
+    ],
+  },
+};
+
+// Fallback for agents without specific mock data
+function getAgentDetail(row: AgentRevShareRow): AgentDetail {
+  if (agentTransactionsMap[row.agentName]) return agentTransactionsMap[row.agentName];
+  const half = row.totalRevShare * 0.6;
+  const rest = row.totalRevShare - half;
+  return {
+    agentName: row.agentName,
+    agentId: String(Math.floor(100000 + Math.random() * 900000)),
+    totalRevShare: row.totalRevShare,
+    currency: row.currency,
+    transactions: [
+      { address: "123 Main St, " + row.state + "...", fullAddress: "123 Main St, " + row.state + ", " + row.country, closedDate: "01/12/2026", revShareAmount: half, currency: row.currency, transactionNumber: "364" + Math.floor(1000 + Math.random() * 9000) + ".1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: half * 500, revShareDollar: half * 2, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: half },
+      { address: "456 Elm Ave, " + row.state + "...", fullAddress: "456 Elm Ave, " + row.state + ", " + row.country, closedDate: "01/05/2026", revShareAmount: rest, currency: row.currency, transactionNumber: "364" + Math.floor(1000 + Math.random() * 9000) + ".1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: rest * 500, revShareDollar: rest * 2, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: rest },
+    ],
+  };
 }
 
 // ── Mock Data ──
@@ -90,8 +134,6 @@ const periodicData: PeriodicRow[] = [
   { date: "03/31/2025", initialRevShare: 44878.87, adjustment: 10562.97, finalRevShare: 55441.84, transactionCount6Mo: 399, memberCount: 246, monthly: "Yes", batchNumber: 1606, currency: "USD" },
 ];
 
-// ── Payment Details (Last Paid) ──
-
 const paymentDetails = {
   initialRevShare: 34829.59,
   adjustmentAmount: 6687.39,
@@ -104,9 +146,27 @@ const paymentDetails = {
 
 export default function Financials() {
   const { t } = useTranslation();
-  const { formatCurrency, formatNumber } = useFormatters();
+  const { formatCurrency } = useFormatters();
   const navigate = useNavigate();
   useDocumentTitle(t("fin.title"));
+
+  // Drill-down state
+  const [selectedAgent, setSelectedAgent] = useState<AgentDetail | null>(null);
+  const [selectedTxn, setSelectedTxn] = useState<AgentTransaction | null>(null);
+  const [txnSheetOpen, setTxnSheetOpen] = useState(false);
+
+  const handleAgentClick = (row: AgentRevShareRow) => {
+    setSelectedAgent(getAgentDetail(row));
+  };
+
+  const handleTxnClick = (txn: AgentTransaction) => {
+    setSelectedTxn(txn);
+    setTxnSheetOpen(true);
+  };
+
+  const handleBackFromAgent = () => {
+    setSelectedAgent(null);
+  };
 
   // Columns for Unpaid tab (with UUID)
   const unpaidColumns: ColumnDef<AgentRevShareRow>[] = [
@@ -118,7 +178,6 @@ export default function Financials() {
     { key: "totalRevShare", header: t("fin.totalRevShare"), type: "currency", sortable: true, filterable: true, defaultVisible: true, currencyCodeKey: "currency" },
   ];
 
-  // Columns for Expected & Last Paid (no UUID)
   const agentColumns: ColumnDef<AgentRevShareRow>[] = [
     { key: "agentName", header: t("fin.agentName"), type: "string", sortable: true, filterable: true, defaultVisible: true },
     { key: "level", header: t("fin.level"), type: "number", sortable: true, filterable: true, defaultVisible: true },
@@ -127,7 +186,6 @@ export default function Financials() {
     { key: "totalRevShare", header: t("fin.totalRevShare"), type: "currency", sortable: true, filterable: true, defaultVisible: true, currencyCodeKey: "currency" },
   ];
 
-  // Columns for Periodic Overview
   const periodicColumns: ColumnDef<PeriodicRow>[] = [
     { key: "date", header: t("fin.date"), type: "date", sortable: true, filterable: true, defaultVisible: true },
     { key: "initialRevShare", header: t("fin.initialRevShare"), type: "currency", sortable: true, filterable: true, defaultVisible: true, currencyCodeKey: "currency" },
@@ -158,6 +216,26 @@ export default function Financials() {
       <span className="font-semibold text-sm">{formatCurrency(row.finalRevShare)} {row.currency}</span>
     </div>
   );
+
+  // If an agent is selected, show drill-down
+  if (selectedAgent) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-4">
+          <AgentTransactionsView
+            agent={selectedAgent}
+            onBack={handleBackFromAgent}
+            onTransactionClick={handleTxnClick}
+          />
+          <TransactionRevShareSheet
+            txn={selectedTxn}
+            open={txnSheetOpen}
+            onOpenChange={setTxnSheetOpen}
+          />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -193,7 +271,6 @@ export default function Financials() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Unpaid */}
           <TabsContent value="unpaid" className="mt-4">
             <DataTable
               data={unpaidData}
@@ -201,10 +278,10 @@ export default function Financials() {
               csvFilename="unpaid-revshare"
               mobileCardRender={mobileCard}
               defaultPageSize={25}
+              onRowClick={handleAgentClick}
             />
           </TabsContent>
 
-          {/* Expected */}
           <TabsContent value="expected" className="mt-4">
             <DataTable
               data={expectedData}
@@ -212,10 +289,10 @@ export default function Financials() {
               csvFilename="expected-revshare"
               mobileCardRender={mobileCard}
               defaultPageSize={25}
+              onRowClick={handleAgentClick}
             />
           </TabsContent>
 
-          {/* Last Paid */}
           <TabsContent value="lastPaid" className="mt-4">
             <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-4">
               <Card className="p-5 h-fit">
@@ -249,11 +326,11 @@ export default function Financials() {
                 csvFilename="last-paid-revshare"
                 mobileCardRender={mobileCard}
                 defaultPageSize={25}
+                onRowClick={handleAgentClick}
               />
             </div>
           </TabsContent>
 
-          {/* Periodic Overview */}
           <TabsContent value="periodic" className="mt-4">
             <DataTable
               data={periodicData}
@@ -265,6 +342,12 @@ export default function Financials() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <TransactionRevShareSheet
+        txn={selectedTxn}
+        open={txnSheetOpen}
+        onOpenChange={setTxnSheetOpen}
+      />
     </DashboardLayout>
   );
 }
