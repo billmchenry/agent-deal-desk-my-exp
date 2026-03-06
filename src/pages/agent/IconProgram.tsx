@@ -300,7 +300,7 @@ export default function IconProgram() {
             <div className="bg-muted/50 border border-border rounded-lg p-3 flex gap-3">
               <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Note:</span> ICON agents have the opportunity to earn a stock award of up to an additional $4,000 worth of EXPI common stock in the month following attendance of eXp approved events; a stock award of $2,000 worth of EXPI common stock will be issued for each event attended, for a maximum of two events per ICON Cultural Benefit Year.
+                <span className="font-medium text-foreground">Note:</span> {t("icon.noteEvents")}
               </p>
             </div>
           </TabsContent>
