@@ -203,11 +203,11 @@ function AgentCard({
         <div className="space-y-1 text-xs">
           <div className="flex justify-between">
             <span className="text-muted-foreground">{t("orgTree.contributedRevShare")}:</span>
-            <Badge className="bg-primary text-primary-foreground text-xs font-medium">{agent.revShare}</Badge>
+            <Badge className="bg-primary text-primary-foreground text-xs font-medium">{formatCurrency(agent.revShare)}</Badge>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">{t("orgTree.individualContribution")}:</span>
-            <span className="text-foreground">{agent.contribution}</span>
+            <span className="text-foreground">{formatCurrency(agent.contribution)}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">{t("orgTree.orgSize")}:</span>
