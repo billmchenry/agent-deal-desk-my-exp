@@ -41,6 +41,13 @@ export default function OrganizationReporting() {
   useDocumentTitle("Organization Reporting");
   const { formatCurrency, formatNumber } = useFormatters();
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
+
+  const totals = {
+    activeAgents: countryProductionData.reduce((s, r) => s + r.activeAgents, 0),
+    totalTransactions: countryProductionData.reduce((s, r) => s + r.totalTransactions, 0),
+    totalRevShare: countryProductionData.reduce((s, r) => s + r.totalRevShare, 0),
+  };
 
   return (
     <DashboardLayout>
