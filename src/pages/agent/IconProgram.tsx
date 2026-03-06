@@ -265,7 +265,7 @@ export default function IconProgram() {
                 </div>
 
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-sm text-muted-foreground">Goal</span>
+                  <span className="text-sm text-muted-foreground">{t("common.goal")}</span>
                   <div className="flex-1">
                     <Progress value={100} className="h-2" />
                   </div>
