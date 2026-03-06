@@ -482,6 +482,30 @@ export const en = {
   "csf.transactionId": "Transaction Id",
   "csf.closeDate": "Close Date",
   "csf.customServiceFee": "Custom Service Fee",
+
+  // Help Center
+  "help.title": "Help Center",
+  "help.getHelp": "Get Help?",
+  "help.expertCareDesk": "Expert Care Desk",
+  "help.expertCareAvailable": "eXpert care is available 24/7",
+  "help.callUs": "Call Us",
+  "help.liveChat": "Live Chat",
+  "help.liveChatDesc": "An eXpert Concierge is online and just one click away.",
+  "help.liveChatHoursMF": "Monday - Friday, 8 am - 11 pm (EST)",
+  "help.liveChatHoursWeekend": "Saturday - Sunday, 8 am - 8 pm (EST)",
+  "help.startChat": "Start Chat",
+  "help.emailUs": "Email Us",
+  "help.emailUsDesc": "Prefer to email? Fill out our form and we'll get back to you shortly.",
+  "help.sendEmail": "Send Email",
+  "help.chooseDepartment": "Choose a Department",
+  "help.provideDetails": "Provider Your Details",
+  "help.fullName": "Full Name",
+  "help.emailLabel": "Email",
+  "help.phoneNumber": "Phone Number",
+  "help.typeMessage": "Type Your Message",
+  "help.liveChatTitle": "eXpert Concierge Chat",
+  "help.liveChatWelcome": "Welcome! An eXpert Concierge will be with you shortly. This is a live support chat, not Mira AI.",
+  "help.liveChatNote": "This chat connects you with a live eXpert Concierge agent — not Mira AI.",
 } as const;
 
 export type TranslationKey = keyof typeof en;
