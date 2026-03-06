@@ -9,6 +9,7 @@ interface CappingSectionProps {
   capCurrent: number;
   capTarget: number;
   capPercentage: number;
+  dateRange?: { from: Date | undefined; to: Date | undefined };
 }
 
 export function CappingSection({ capCurrent, capTarget, capPercentage }: CappingSectionProps) {
