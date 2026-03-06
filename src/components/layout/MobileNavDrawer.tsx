@@ -124,7 +124,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
             )}
           >
             {Icon && <Icon className="h-4 w-4 shrink-0" />}
-            <span className="flex-1 text-left">{tn(item.title)}</span>
+            <span className="flex-1 text-start">{tn(item.title)}</span>
           </button>
           {hasSubmenu && (
             <button
