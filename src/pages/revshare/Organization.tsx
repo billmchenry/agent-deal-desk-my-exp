@@ -230,7 +230,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base font-medium">{t("org.influencerGroup")}</CardTitle>
+                    <CardTitle className="text-section-title font-medium">{t("org.influencerGroup")}</CardTitle>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                 </CardHeader>
