@@ -132,7 +132,7 @@ export default function IconProgram() {
                     <span className="text-sm font-medium text-foreground">26.16%</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Complete $16K to achieve the company commission goal
+                    {t("icon.completeGoal").replace("{amount}", "$16K").replace("{goal}", t("icon.companyCommission").toLowerCase())}
                   </p>
                 </CardContent>
               </Card>
