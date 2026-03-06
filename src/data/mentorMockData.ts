@@ -475,7 +475,7 @@ export const mockMentorRequests: MentorRequestDetail[] = [
     status: "Active",
     primaryEmail: "samantha.reeves@exprealty.com",
     secondaryEmail: "sam.reeves@gmail.com",
-    phone: "(555) 310-4592",
+    phone: "(214) 555-4592",
     city: "Dallas",
     state: "TX",
     sponsorName: "James Anderson",
