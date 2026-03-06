@@ -121,6 +121,20 @@ export default function CustomServiceFees() {
           data={mockServiceFeeAgents}
           columns={columns}
           onRowClick={(agent) => setSelectedAgent(agent)}
+          mobileCardRender={(agent) => (
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="font-medium text-sm text-foreground truncate">{agent.agentName}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {agent.transactions} {t("csf.transactions").toLowerCase()}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="font-semibold text-sm tabular-nums font-secondary">{formatCurrency(agent.totalFees)}</span>
+                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </div>
+          )}
         />
       </div>
 
