@@ -568,10 +568,10 @@ export interface StateMentor {
 export const mockStateMentors: StateMentor[] = [
   {
     id: "sm1",
-    name: "Alejandra Pino Torrealba",
+    name: "Camila Reyes Montoya",
     totalActiveMentees: 3,
-    primaryEmail: "alejandra.pino@exprealty.com",
-    phone: "(555) 293-4810",
+    primaryEmail: "camila.reyes@exprealty.com",
+    phone: "(281) 555-4810",
     secondaryEmail: "apino@gmail.com",
     city: "Katy",
     state: "TX",
