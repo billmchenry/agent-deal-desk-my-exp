@@ -28,7 +28,7 @@ export function HeroBannerCard() {
           </Badge>
           
           <div>
-            <h2 className="text-lg font-medium text-white/80">Track your progress to</h2>
+            <h2 className="text-section-title font-medium text-white/80">Track your progress to</h2>
             <p className="text-3xl font-bold">
               <span className="text-exp-green-light">{formatCurrency(cappingData.target)}</span> Cap
             </p>
