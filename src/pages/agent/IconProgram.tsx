@@ -195,10 +195,10 @@ export default function IconProgram() {
 
                   {/* ICON Qualifying Fee */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-foreground">ICON Qualifying Fee</h4>
-                    <Badge variant="destructive" className="mt-1">Not Paid</Badge>
+                    <h4 className="text-sm font-medium text-foreground">{t("icon.qualifyingFee")}</h4>
+                    <Badge variant="destructive" className="mt-1">{t("icon.notPaid")}</Badge>
                     <p className="text-xs text-muted-foreground">
-                      A one-time qualifying fee must be paid to complete ICON qualification.
+                      {t("icon.qualifyingFeeNote")}
                     </p>
                   </div>
                 </div>
