@@ -407,7 +407,7 @@ export default function YearEnd() {
                     <div key={key} className="flex justify-between gap-4">
                       <span className="text-sm text-muted-foreground">{label}</span>
                       <span className="text-sm font-medium tabular-nums font-secondary">
-                        {(selectedTxn[key] as number).toFixed(2)}
+                        {formatCurrency(selectedTxn[key] as number)}
                       </span>
                     </div>
                   ))}
