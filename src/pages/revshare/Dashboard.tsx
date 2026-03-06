@@ -482,11 +482,11 @@ export default function RevShareDashboard() {
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                         <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-                        <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => `$${Math.round(v * 1000)}K`} domain={[0, 0.5]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 })} domain={[0, 0.5]} width={50} />
                         <Tooltip
                           formatter={(value: number, name: string) => {
                             const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                            return [`$${Math.round(value * 1000)}K`, label];
+                            return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }), label];
                           }}
                           contentStyle={tooltipStyle}
                         />
