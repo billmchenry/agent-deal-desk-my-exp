@@ -20,6 +20,7 @@ import RevShareDashboard from "./pages/revshare/Dashboard";
 import OrganizationReporting from "./pages/revshare/Organization";
 import OrganizationTree from "./pages/revshare/OrganizationTree";
 import RevShareTrends from "./pages/revshare/Trends";
+import RevShareGroup from "./pages/revshare/RevShareGroup";
 import Pulse from "./pages/Pulse";
 import MiraHistory from "./pages/mira/History";
 
@@ -55,6 +56,7 @@ const App = () => (
                 <Route path="/revshare/organization" element={<OrganizationReporting />} />
                 <Route path="/revshare/organization-tree" element={<OrganizationTree />} />
                 <Route path="/revshare/trends" element={<RevShareTrends />} />
+                <Route path="/revshare/group" element={<RevShareGroup />} />
                 <Route path="/pulse" element={<Pulse />} />
                 <Route path="/mira/history" element={<MiraHistory />} />
                 
