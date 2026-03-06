@@ -129,7 +129,7 @@ export default function DocumentsPortal() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+        <h1 className="text-page-title font-bold tracking-tight text-foreground">
           {t("documents.title")}
         </h1>
 
