@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DashboardProvider } from "@/contexts/DashboardContext";
+import { DemoConfigProvider } from "@/contexts/DemoConfigContext";
 import { MiraChatProvider } from "@/contexts/MiraChatContext";
 import { LocaleProvider } from "@/contexts/LocaleContext";
 import { ThemeProvider } from "next-themes";
