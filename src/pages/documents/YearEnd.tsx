@@ -258,12 +258,76 @@ export default function YearEnd() {
     setView("drilldown");
   };
 
-  // Drilldown table columns
+  // Drilldown table columns — all columns from the report, most hidden by default
   const drillColumns = [
     { key: "companyName" as const, header: t("ye.companyName"), type: "string" as const, sortable: true, filterable: true },
     { key: "entity" as const, header: t("ye.entity"), type: "string" as const, sortable: true, filterable: true },
+    { key: "agentName" as const, header: "Agent Name", type: "string" as const, sortable: true, filterable: true },
+    { key: "advanceId" as const, header: "Advance ID", type: "string" as const, sortable: true, defaultVisible: false },
+    { key: "estimatedNum" as const, header: "Estimated #", type: "string" as const, sortable: true, defaultVisible: false },
+    { key: "expUnits" as const, header: "EXP Units", type: "number" as const, sortable: true, defaultVisible: false },
+    { key: "location" as const, header: "Location", type: "string" as const, sortable: true, filterable: true, defaultVisible: false },
+    { key: "grossRevenue" as const, header: "Gross Revenue", type: "currency" as const, sortable: true },
+    { key: "prideFee" as const, header: "Pride Fee", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "grossRevenueNet" as const, header: "Gross Revenue Net", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "transactionAmountPct" as const, header: "Transaction Amount/Pct", type: "number" as const, sortable: true, defaultVisible: false },
+    { key: "netAmount" as const, header: "Net Amount", type: "currency" as const, sortable: true, defaultVisible: false },
     { key: "earningsType" as const, header: t("ye.earningsType"), type: "string" as const, sortable: true, filterable: true },
+    { key: "supplement" as const, header: "Supplement", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "subsidiaryAmount" as const, header: "Subsidiary Amount", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "commissionRate" as const, header: "Commission Rate", type: "number" as const, sortable: true, defaultVisible: false },
+    { key: "agentFeePct" as const, header: "Agent Fee %", type: "number" as const, sortable: true, defaultVisible: false },
+    { key: "agentFeeDollar" as const, header: "Agent Fee $", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "total" as const, header: "Total", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "risk" as const, header: "Risk", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "pipeline" as const, header: "Pipeline", type: "string" as const, sortable: true, defaultVisible: false },
+    { key: "liabilityFee" as const, header: "Liability Fee", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "brokerReviewFee" as const, header: "Broker Review Fee", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "expandMentorFee" as const, header: "eXpand Mentor Fee", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "mentorFee" as const, header: "Mentor Fee", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "stockComp" as const, header: "Stock Comp", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "transactionCoordinatorFee" as const, header: "Transaction Coordinator Fee", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "garnishment" as const, header: "Garnishment", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "thirdPartyAdvance" as const, header: "Third Party Advance", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "outstandingReceivables" as const, header: "Outstanding Receivables", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "overUnderPaymentAdj" as const, header: "Over Under Payment Adj", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "tax" as const, header: "Tax", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "liabilityFeesYouPaid" as const, header: "Liability Fees You Paid", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "liabilityFeesPaidOnBehalf" as const, header: "Liability Fees Paid on Your Behalf", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "txnReviewFeesYouPaid" as const, header: "Txn Review Fees You Paid", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "txnReviewFeesPaidOnBehalf" as const, header: "Txn Review Fees Paid on Your Behalf", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "companyCommPaidOnBehalf" as const, header: "Company Commission Paid on Your Behalf", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "brokerReviewFeePaidOnBehalf" as const, header: "Broker Review Fee Paid on Your Behalf", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "txnFee100PctForOthers" as const, header: "Txn Fee 100% Fees for Others", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "liabilityFeesForOthers" as const, header: "Liability Fees for Others", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "companyCommFeesForOthers" as const, header: "Company Commission Fees for Others", type: "currency" as const, sortable: true, defaultVisible: false },
+    { key: "brokerReviewFeeForOthers" as const, header: "Broker Review Fee for Others", type: "currency" as const, sortable: true, defaultVisible: false },
     { key: "reportingDate" as const, header: t("ye.reportingDate"), type: "date" as const, sortable: true, filterable: true },
+  ];
+
+  // Fee keys for detail sheet
+  const feeFields: { key: keyof TransactionRow; label: string }[] = [
+    { key: "liabilityFee", label: "Liability Fee" },
+    { key: "brokerReviewFee", label: "Broker Review Fee" },
+    { key: "expandMentorFee", label: "eXpand Mentor Fee" },
+    { key: "mentorFee", label: "Mentor Fee" },
+    { key: "stockComp", label: "Stock Comp" },
+    { key: "transactionCoordinatorFee", label: "Transaction Coordinator Fee" },
+    { key: "garnishment", label: "Garnishment" },
+    { key: "thirdPartyAdvance", label: "Third Party Advance" },
+    { key: "outstandingReceivables", label: "Outstanding Receivables" },
+    { key: "overUnderPaymentAdj", label: "Over Under Payment Adjustment" },
+    { key: "tax", label: "Tax" },
+    { key: "liabilityFeesYouPaid", label: "Liability Fees You Paid" },
+    { key: "liabilityFeesPaidOnBehalf", label: "Liability Fees Paid on Your Behalf" },
+    { key: "txnReviewFeesYouPaid", label: "Transaction Review Fees You Paid" },
+    { key: "txnReviewFeesPaidOnBehalf", label: "Transaction Review Fees Paid on Your Behalf" },
+    { key: "companyCommPaidOnBehalf", label: "Company Commission Paid on Your Behalf" },
+    { key: "brokerReviewFeePaidOnBehalf", label: "Broker Review Fee Paid on Your Behalf" },
+    { key: "txnFee100PctForOthers", label: "Transaction Fee 100% Fees paid for others" },
+    { key: "liabilityFeesForOthers", label: "Liability Fees paid for others" },
+    { key: "companyCommFeesForOthers", label: "Company Commission Fees paid for others" },
+    { key: "brokerReviewFeeForOthers", label: "Broker Review Fee Fees paid for others" },
   ];
 
   if (view === "drilldown") {
@@ -294,7 +358,7 @@ export default function YearEnd() {
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div className="text-center flex-1">
                     <p className="text-2xl font-bold tabular-nums font-secondary">
-                      {formatCurrency(selectedTxn.amount)}
+                      {formatCurrency(selectedTxn.grossRevenue)}
                     </p>
                     <p className="text-sm text-muted-foreground">{selectedTxn.earningsType}</p>
                   </div>
@@ -305,7 +369,7 @@ export default function YearEnd() {
                 <div className="space-y-2">
                   {[
                     [t("ye.date"), selectedTxn.reportingDate],
-                    [t("ye.name"), selectedTxn.name],
+                    [t("ye.name"), selectedTxn.agentName],
                     [t("ye.companyName"), selectedTxn.companyName],
                     [t("ye.entity"), selectedTxn.entity],
                     [t("ye.transactionId"), selectedTxn.transactionId],
@@ -320,10 +384,12 @@ export default function YearEnd() {
 
                 {/* Fee breakdown */}
                 <div className="rounded-lg bg-muted/30 p-4 space-y-2">
-                  {selectedTxn.fees.map((fee) => (
-                    <div key={fee.label} className="flex justify-between gap-4">
-                      <span className="text-sm text-muted-foreground">{fee.label}</span>
-                      <span className="text-sm font-medium tabular-nums font-secondary">{fee.amount.toFixed(2)}</span>
+                  {feeFields.map(({ key, label }) => (
+                    <div key={key} className="flex justify-between gap-4">
+                      <span className="text-sm text-muted-foreground">{label}</span>
+                      <span className="text-sm font-medium tabular-nums font-secondary">
+                        {(selectedTxn[key] as number).toFixed(2)}
+                      </span>
                     </div>
                   ))}
                 </div>
