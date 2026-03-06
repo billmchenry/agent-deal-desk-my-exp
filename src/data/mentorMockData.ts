@@ -248,7 +248,7 @@ export const mockMentees: Mentee[] = [
     paidMentorFees: 0,
     mentorFee: 25,
     email: "elena.vasquez@exprealty.com",
-    phone: "(555) 742-0193",
+    phone: "(305) 555-0193",
     city: "Miami",
     state: "FL",
     postalCode: "33101",
