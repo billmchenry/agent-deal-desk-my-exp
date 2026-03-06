@@ -105,7 +105,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">{formatNumber(2)}</span>
+                    <span className="text-stat-value font-bold text-foreground">{formatNumber(2)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">{t("org.countTeamLeaders")}</p>
