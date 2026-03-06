@@ -28,8 +28,8 @@ export function HeroBannerCard() {
           </Badge>
           
           <div>
-            <h2 className="text-lg font-medium text-white/80">Track your progress to</h2>
-            <p className="text-3xl font-bold">
+            <h2 className="text-section-title font-medium text-white/80">Track your progress to</h2>
+            <p className="text-stat-value font-bold">
               <span className="text-exp-green-light">{formatCurrency(cappingData.target)}</span> Cap
             </p>
           </div>
@@ -60,7 +60,7 @@ export function HeroBannerCard() {
               <circle cx="50" cy="50" r="40" fill="none" stroke="hsl(var(--exp-green))" strokeWidth="8" strokeDasharray={`${progressPercentage * 2.51} 251`} strokeLinecap="round" />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-xl sm:text-2xl font-bold">{progressPercentage.toFixed(0)}%</span>
+              <span className="text-stat-value font-bold">{progressPercentage.toFixed(0)}%</span>
               <span className="text-xs text-white/70">{t("agent.complete")}</span>
             </div>
           </div>

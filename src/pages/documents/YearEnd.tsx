@@ -430,12 +430,12 @@ export default function YearEnd() {
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        <h1 className="text-2xl font-bold text-foreground">{t("nav.yearEnd")}</h1>
+        <h1 className="text-page-title font-bold text-foreground">{t("nav.yearEnd")}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Income breakdown */}
           <div className="lg:col-span-2 space-y-4">
-            <h2 className="text-lg font-semibold">{t("ye.my1099Income")}</h2>
+            <h2 className="text-section-title font-semibold">{t("ye.my1099Income")}</h2>
             <div className="flex items-center gap-3">
               <Select value={companyFilter} onValueChange={setCompanyFilter}>
                 <SelectTrigger className="w-40" aria-label={t("ye.companyFilter")}>
@@ -555,7 +555,7 @@ export default function YearEnd() {
           {/* Right: Files panel */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">{t("ye.files")}</h2>
+              <h2 className="text-section-title font-semibold">{t("ye.files")}</h2>
               <Select value={year} onValueChange={setYear}>
                 <SelectTrigger className="w-24" aria-label={t("ye.yearSelect")}>
                   <SelectValue />

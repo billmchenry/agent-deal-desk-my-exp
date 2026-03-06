@@ -14,7 +14,7 @@ export function CappingYearCard() {
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold">{t("dashboard.cappingYear")}</CardTitle>
+          <CardTitle className="text-section-title font-semibold">{t("dashboard.cappingYear")}</CardTitle>
           <Badge 
             variant="secondary" 
             className="bg-exp-green/10 text-exp-green border-exp-green/20 font-medium"
@@ -36,15 +36,15 @@ export function CappingYearCard() {
 
         <div className="grid grid-cols-3 gap-4 pt-2">
           <div className="text-center">
-            <p className="text-2xl font-bold text-exp-blue">{cappingData.units}</p>
+            <p className="text-stat-value font-bold text-exp-blue">{cappingData.units}</p>
             <p className="text-xs text-muted-foreground">{t("agent.units")}</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-exp-blue">{formatCurrency(cappingData.gci, { compact: true })}</p>
+            <p className="text-stat-value font-bold text-exp-blue">{formatCurrency(cappingData.gci, { compact: true })}</p>
             <p className="text-xs text-muted-foreground">{t("txn.gci")}</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-exp-blue">{formatCurrency(cappingData.volume, { compact: true })}</p>
+            <p className="text-stat-value font-bold text-exp-blue">{formatCurrency(cappingData.volume, { compact: true })}</p>
             <p className="text-xs text-muted-foreground">{t("agent.volume")}</p>
           </div>
         </div>

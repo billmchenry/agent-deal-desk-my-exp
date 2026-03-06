@@ -34,7 +34,7 @@ function StatCard({ icon, value, label, color, isLoading }: StatCardProps) {
             {isLoading ? (
               <Skeleton className="h-7 w-20" />
             ) : (
-              <span className="text-2xl font-bold text-foreground">{value}</span>
+              <span className="text-stat-value font-bold text-foreground">{value}</span>
             )}
           </div>
         </div>

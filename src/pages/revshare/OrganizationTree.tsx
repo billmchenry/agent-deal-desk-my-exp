@@ -350,7 +350,7 @@ export default function OrganizationTree() {
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-foreground">{t("nav.organizationTree")}</h1>
+            <h1 className="text-page-title font-bold text-foreground">{t("nav.organizationTree")}</h1>
             <span className="text-primary hover:underline cursor-pointer text-sm">View in Beta</span>
           </div>
         </div>

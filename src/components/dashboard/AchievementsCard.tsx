@@ -10,7 +10,7 @@ export function AchievementsCard() {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">{t("dashboard.myAchievements")}</CardTitle>
+        <CardTitle className="text-section-title font-semibold">{t("dashboard.myAchievements")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="rounded-lg border bg-muted/30 p-4">
@@ -21,7 +21,7 @@ export function AchievementsCard() {
             </Badge>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl font-bold text-exp-blue">
+            <p className="text-stat-value font-bold text-exp-blue">
               {formatCurrency(achievements.flqa.amount)}
             </p>
             <p className="text-sm text-muted-foreground">

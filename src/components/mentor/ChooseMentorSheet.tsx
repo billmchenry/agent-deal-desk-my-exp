@@ -23,7 +23,7 @@ export function ChooseMentorSheet({ open, onOpenChange, onMentorChosen }: Choose
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
           <SheetHeader className="pb-2">
-            <SheetTitle className="text-xl">Choose Mentor</SheetTitle>
+            <SheetTitle className="text-page-title">Choose Mentor</SheetTitle>
             <p className="text-sm text-muted-foreground">Select One from Below</p>
           </SheetHeader>
 

@@ -147,6 +147,7 @@
   .text-stat-value    { font-size: 1.75rem;  line-height: 2.25rem; }
   .text-body          { font-size: 0.875rem; line-height: 1.25rem; }
   .text-body-lg       { font-size: 1rem;     line-height: 1.5rem;  }
+  .text-caption       { font-size: 0.75rem;  line-height: 1rem;    }
 
   .text-exp-navy {
     color: hsl(var(--exp-navy));

@@ -15,7 +15,7 @@ export function NewsAndTrainingCard() {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">News & Training</CardTitle>
+        <CardTitle className="text-section-title font-semibold">News & Training</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="updates">
@@ -58,9 +58,9 @@ export function NewsAndTrainingCard() {
             {/* eXp University Header */}
             <div className="flex items-center gap-3 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-foreground">eXp</span>
+                <span className="text-section-title font-bold text-foreground">eXp</span>
                 <span className="text-muted-foreground">|</span>
-                <span className="text-lg font-semibold text-muted-foreground tracking-wide">UNIVERSITY</span>
+                <span className="text-section-title font-semibold text-muted-foreground tracking-wide">UNIVERSITY</span>
               </div>
             </div>
 
