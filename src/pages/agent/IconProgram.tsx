@@ -237,7 +237,7 @@ export default function IconProgram() {
             <div className="bg-muted/50 border border-border rounded-lg p-3 flex gap-3">
               <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Note:</span> In the month following completion of the Cultural Requirements during the ICON Cultural Benefit Year, a final audit will be completed to verify if the ICON agent has met the Cultural Commitment points requirements to earn the additional stock award.
+                <span className="font-medium text-foreground">Note:</span> {t("icon.noteCultural")}
               </p>
             </div>
           </TabsContent>
