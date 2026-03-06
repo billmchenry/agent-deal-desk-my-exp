@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { FileText, Users, Eye, Download } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
