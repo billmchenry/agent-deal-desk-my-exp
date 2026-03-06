@@ -317,6 +317,7 @@ export const frCA: Record<string, string> = {
   "nav.revShareGroup": "Groupe de partage de revenus",
   "revgroup.title": "Groupe de partage de revenus",
   "revgroup.backToRevShare": "Retour au partage de revenus",
+  "revgroup.allLevels": "Tous les niveaux",
   "revgroup.searchPlaceholder": "Rechercher par agent, courriel, parrain...",
   "revgroup.agentName": "Nom de l'agent",
   "revgroup.groupSize": "Taille du groupe",

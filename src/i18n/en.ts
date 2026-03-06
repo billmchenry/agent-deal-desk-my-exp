@@ -326,6 +326,7 @@ export const en = {
   "nav.revShareGroup": "Revenue Share Group",
   "revgroup.title": "Revenue Share Group",
   "revgroup.backToRevShare": "Back to RevShare",
+  "revgroup.allLevels": "All Levels",
   "revgroup.searchPlaceholder": "Search by agent, email, sponsor...",
   "revgroup.agentName": "Agent Name",
   "revgroup.groupSize": "Group Size",

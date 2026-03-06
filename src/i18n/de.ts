@@ -296,6 +296,7 @@ export const de: Record<string, string> = {
   "nav.revShareGroup": "Umsatzbeteiligungsgruppe",
   "revgroup.title": "Umsatzbeteiligungsgruppe",
   "revgroup.backToRevShare": "Zurück zur Umsatzbeteiligung",
+  "revgroup.allLevels": "Alle Stufen",
   "revgroup.searchPlaceholder": "Nach Agent, E-Mail, Sponsor suchen...",
   "revgroup.agentName": "Agentenname",
   "revgroup.groupSize": "Gruppengröße",
