@@ -786,7 +786,7 @@ export const mockAvailableMentors: AvailableMentor[] = [
     email: "camila.reyes@exprealty.com",
     facebook: "https://facebook.com/camilareyes",
     linkedin: "https://linkedin.com/in/camilareyes",
-    website: "https://alejandrapino.exprealty.com",
+    website: "https://camilareyes.exprealty.com",
   },
   {
     id: "am2",
