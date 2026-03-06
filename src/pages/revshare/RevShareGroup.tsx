@@ -116,8 +116,25 @@ export default function RevShareGroup() {
   useDocumentTitle(t("revgroup.title"));
 
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [levelFilter, setLevelFilter] = useState("all");
+
+  const statusOptions = [
+    { value: "all", label: t("txn.allStatuses") },
+    { value: "active", label: "Active" },
+    { value: "offboarding", label: "Offboarding" },
+    { value: "inactive", label: "Inactive" },
+  ];
+
+  const uniqueLevels = Array.from(new Set(mockData.map((r) => r.level))).sort((a, b) => a - b);
+  const levelOptions = [
+    { value: "all", label: t("revgroup.allLevels") },
+    ...uniqueLevels.map((l) => ({ value: String(l), label: `${t("revgroup.level")} ${l}` })),
+  ];
 
   const filteredData = mockData.filter((r) => {
+    if (statusFilter !== "all" && r.status.toLowerCase() !== statusFilter) return false;
+    if (levelFilter !== "all" && String(r.level) !== levelFilter) return false;
     if (!search) return true;
     const q = search.toLowerCase();
     return (
