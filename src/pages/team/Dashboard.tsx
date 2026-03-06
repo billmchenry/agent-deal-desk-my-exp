@@ -115,7 +115,6 @@ export default function TeamDashboard() {
                   <span className="font-semibold text-sm truncate">{row.name}</span>
                   <span className="text-sm font-bold tabular-nums font-secondary shrink-0">{row.units} units</span>
                 </div>
-                <p className="text-xs text-muted-foreground font-mono truncate">{row.uuid}</p>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span className="tabular-nums font-secondary">Vol: {formatCurrency(row.volume)}</span>
                   <span className="tabular-nums font-secondary">GCI: {formatCurrency(row.commission)}</span>
