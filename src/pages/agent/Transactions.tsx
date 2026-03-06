@@ -117,7 +117,7 @@ export default function Transactions() {
           {getStatusBadge(row.status)}
           <span className="text-xs text-muted-foreground font-mono">{row.transactionId}</span>
         </div>
-        <p className="text-sm truncate text-foreground">{row.propertyAddress}</p>
+        <p className="text-sm text-foreground">{row.propertyAddress}</p>
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <span>{formatDate(closeDate)}</span>
           <span className="font-semibold text-foreground">{formatCurrency(row.salesPrice)}</span>
