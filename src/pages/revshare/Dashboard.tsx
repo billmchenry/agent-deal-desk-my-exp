@@ -16,6 +16,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { UniversalFilterBar } from "@/components/filters";
 import {
   ResponsiveContainer, LineChart, Line, ComposedChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip,
