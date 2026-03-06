@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Phone, Mail, ExternalLink, Trophy, GraduationCap, Users, ClipboardList, UserCircle } from "lucide-react";
 import mentorHeader from "@/assets/mentor-program-header.png";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
