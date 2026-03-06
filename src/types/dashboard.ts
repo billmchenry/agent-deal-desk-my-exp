@@ -6,6 +6,7 @@ export type WidgetType =
   | 'news-training'
   | 'connect-upline'
   | 'disc-assessment'
+  | 'nps-survey'
   | 'forecast'
   | 'velocity'
   | 'pipeline'
