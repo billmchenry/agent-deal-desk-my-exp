@@ -370,7 +370,7 @@ export default function RevShareDashboard() {
                   centerLabel={donutCenterLabel}
                 />
               </div>
-              <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-4 border-border">
+              <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-s lg:ps-4 border-border">
                 <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byCountry")}</span>
                 <DistributionDonut
                   data={countryDonutData}
