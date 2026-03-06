@@ -154,7 +154,7 @@ export default function IconProgram() {
             {/* Qualify - Option 2 */}
             <Card className="mb-4">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-medium">Qualify - Option 2</CardTitle>
+                <CardTitle className="text-section-title font-medium">Qualify - Option 2</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
