@@ -139,7 +139,7 @@ export default function RevShareDashboard() {
 
   const donutTotal = distMode === "agents" ? TOTAL_AGENTS : TOTAL_REVSHARE;
   const donutFormat = (v: number) =>
-    distMode === "agents" ? formatNumber(v) : `$${formatNumber(v)}`;
+    distMode === "agents" ? formatNumber(v) : formatCurrency(v);
   const donutCenterLabel = distMode === "agents" ? t("revshare.agents") : "rev share";
 
   return (

@@ -57,7 +57,7 @@ export function DistributionDonut({
       {/* Legend */}
       <div className="flex-1 w-full space-y-0.5">
         {data.map((item) => {
-          const pct = total > 0 ? ((item.value / total) * 100).toFixed(1) : "0";
+          const pct = total > 0 ? new Intl.NumberFormat(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format((item.value / total) * 100) : "0";
           return (
             <div
               key={item.name}

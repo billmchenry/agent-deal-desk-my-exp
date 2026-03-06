@@ -377,11 +377,11 @@ export default function Notifications() {
                   <div className="grid grid-cols-3 gap-4">
                     <div>
                       <p className="text-xs text-muted-foreground">{t("notif.salesPrice")}</p>
-                      <p className="font-medium tabular-nums font-secondary">{selectedNotification.salesPrice.toLocaleString()}</p>
+                      <p className="font-medium tabular-nums font-secondary">{formatCurrency(selectedNotification.salesPrice)}</p>
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">{t("notif.capReachedDate")}</p>
-                      <p className="font-medium tabular-nums">{selectedNotification.capReachedDate}</p>
+                      <p className="font-medium tabular-nums">{selectedNotification.capReachedDate ? formatDate(selectedNotification.capReachedDate) : "-"}</p>
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">{t("notif.transactionNumber")}</p>

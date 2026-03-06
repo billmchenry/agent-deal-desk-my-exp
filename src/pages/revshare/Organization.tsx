@@ -183,7 +183,7 @@ export default function OrganizationReporting() {
                           <td className="px-4 py-3 font-bold text-foreground">{t("org.total")}</td>
                           <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(totals.activeAgents)}</td>
                           <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(totals.totalTransactions)}</td>
-                          <td className="px-4 py-3 text-right font-bold text-foreground">{(totals.totalTransactions / totals.activeAgents).toFixed(2)}</td>
+                          <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(totals.totalTransactions / totals.activeAgents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                           <td className="px-4 py-3 text-right font-bold text-foreground">{formatCurrency(totals.totalRevShare)}</td>
                         </tr>
                       </tbody>

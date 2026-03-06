@@ -521,7 +521,7 @@ export default function YearEnd() {
                                   aria-hidden="true"
                                 />
                                 <span className="text-sm">
-                                  {line.type} ({line.percentage.toFixed(2)}%)
+                                  {line.type} ({formatNumber(line.percentage, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%)
                                 </span>
                               </div>
                               <div className="flex items-center gap-1">
