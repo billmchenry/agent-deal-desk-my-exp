@@ -430,7 +430,7 @@ export default function YearEnd() {
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        <h1 className="text-2xl font-bold text-foreground">{t("nav.yearEnd")}</h1>
+        <h1 className="text-page-title font-bold text-foreground">{t("nav.yearEnd")}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Income breakdown */}
