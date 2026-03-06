@@ -107,7 +107,7 @@ export default function CustomServiceFees() {
           </Button>
           <Button variant="outline" className="gap-2" onClick={handleDownload} aria-label={t("common.download")}>
             <Download className="h-4 w-4" aria-hidden="true" />
-            {t("common.download")}
+            Download
           </Button>
         </div>
 
