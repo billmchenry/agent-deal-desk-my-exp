@@ -99,12 +99,12 @@ export default function IconProgram() {
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
               <Badge className="bg-[hsl(var(--exp-gold))]/20 text-[hsl(var(--exp-gold-light))] border-[hsl(var(--exp-gold))]/30 hover:bg-[hsl(var(--exp-gold))]/30">
-                <Target className="mr-1 h-3 w-3" />
-                ICON PROGRAM
+                <Target className="me-1 h-3 w-3" />
+                {t("icon.programBadge")}
               </Badge>
             </div>
-            <p className="text-page-title font-bold text-white mb-1">33% of pillars complete</p>
-            <p className="text-sm text-white/70">Keep going — you're almost there!</p>
+            <p className="text-page-title font-bold text-white mb-1">{t("icon.pillarsComplete").replace("{pct}", "33")}</p>
+            <p className="text-sm text-white/70">{t("icon.keepGoing")}</p>
           </div>
         </Card>
 
