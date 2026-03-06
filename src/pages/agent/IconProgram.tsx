@@ -229,7 +229,7 @@ export default function IconProgram() {
             <div className="bg-[hsl(var(--exp-green))]/10 border border-[hsl(var(--exp-green))]/20 rounded-lg p-3 flex items-center gap-3 mb-4">
               <CheckCircle className="h-5 w-5 text-[hsl(var(--exp-green))] flex-shrink-0" />
               <span className="text-sm font-medium text-foreground">
-                You have achieved your ICON Cultural goal for 2025 – 2026
+                {t("icon.culturalAchieved").replace("{year}", "2025 – 2026")}
               </span>
             </div>
 
