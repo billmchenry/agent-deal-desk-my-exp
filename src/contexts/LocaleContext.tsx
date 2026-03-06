@@ -60,6 +60,8 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.style.fontSize = fontSizeMap[fontSize];
   }, [fontSize]);
 
+  const isRTL = language === "ar";
+
   return (
     <LocaleContext.Provider
       value={{
@@ -68,6 +70,7 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
         timeFormat, setTimeFormat,
         numberFormat, setNumberFormat,
         fontSize, setFontSize,
+        isRTL,
       }}
     >
       {children}
