@@ -752,7 +752,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "Diana Osei-Mensah",
     totalActiveMentees: 0,
     primaryEmail: "diana.osm@exprealty.com",
-    phone: "(555) 662-1045",
+    phone: "(214) 555-1045",
     secondaryEmail: "diana.osm@outlook.com",
     city: "Dallas",
     state: "TX",
