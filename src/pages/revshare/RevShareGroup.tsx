@@ -2,6 +2,7 @@ import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar } from "@/components/filters";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
+import { AgentContactSheet } from "@/components/revshare/AgentContactSheet";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
