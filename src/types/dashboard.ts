@@ -112,6 +112,14 @@ export const WIDGET_REGISTRY: Record<WidgetType, {
     refreshFrequency: 'Weekly',
     widgetKind: 'List',
   },
+  'disc-assessment': {
+    title: 'DISC Assessment',
+    defaultSize: 'medium',
+    defaultColumn: 'sidebar',
+    description: 'Understand your communication style',
+    refreshFrequency: 'Weekly',
+    widgetKind: 'Card',
+  },
   'forecast': {
     title: 'Revenue Forecast',
     defaultSize: 'small',
