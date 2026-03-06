@@ -120,14 +120,72 @@ export interface TopAgent {
   units: number;
   volume: number;
   commission: number;
+  uuid: string;
+  currency: string;
 }
 
 export const topAgents: TopAgent[] = [
-  { id: "ta1", name: "Rachel Morrison", initials: "R", rank: "1 of 10", units: 6, volume: 2450000, commission: 73500 },
-  { id: "ta2", name: "Daniel Crawford", initials: "D", rank: "2 of 10", units: 5, volume: 1890000, commission: 56700 },
-  { id: "ta3", name: "Amanda Chen-Rodriguez", initials: "A", rank: "3 of 10", units: 4, volume: 1520000, commission: 45600 },
-  { id: "ta4", name: "Marcus Anthony Blake", initials: "M", rank: "4 of 10", units: 3, volume: 1150000, commission: 34500 },
-  { id: "ta5", name: "Jennifer Walsh", initials: "J", rank: "5 of 10", units: 2, volume: 785000, commission: 23550 },
+  { id: "ta1", name: "Rachel Morrison", initials: "R", rank: "1 of 10", units: 6, volume: 2450000, commission: 73500, uuid: "a1b2c3d4-e5f6-11ec-8d9e-abcdef123456", currency: "USD" },
+  { id: "ta2", name: "Daniel Crawford", initials: "D", rank: "2 of 10", units: 5, volume: 1890000, commission: 56700, uuid: "b2c3d4e5-f6a7-11ec-9e0f-bcdef1234567", currency: "USD" },
+  { id: "ta3", name: "Amanda Chen-Rodriguez", initials: "A", rank: "3 of 10", units: 4, volume: 1520000, commission: 45600, uuid: "c3d4e5f6-a7b8-11ec-0f1a-cdef12345678", currency: "USD" },
+  { id: "ta4", name: "Marcus Anthony Blake", initials: "M", rank: "4 of 10", units: 3, volume: 1150000, commission: 34500, uuid: "d4e5f6a7-b8c9-11ec-1a2b-def123456789", currency: "USD" },
+  { id: "ta5", name: "Jennifer Walsh", initials: "J", rank: "5 of 10", units: 2, volume: 785000, commission: 23550, uuid: "e5f6a7b8-c9d0-11ec-2b3c-ef1234567890", currency: "USD" },
+];
+
+export interface OnboardingAgent {
+  id: string;
+  name: string;
+  initials: string;
+  joinDate: string;
+  currentStep: string;
+  nextStep: string;
+  durationDays: number;
+  progress: number;
+  phone: string;
+  email: string;
+  state: string;
+  country: string;
+  sponsorName: string;
+  teamId: string;
+  teamName: string;
+  joinId: string;
+}
+
+export const onboardingAgents: OnboardingAgent[] = [
+  {
+    id: "ob1", name: "Valerio Nieto", initials: "V", joinDate: "02/09/2026",
+    currentStep: "License Transfer", nextStep: "Convert to Active", durationDays: 24, progress: 65,
+    phone: "(619) 737-6503", email: "vnieto21@gmail.com", state: "CA", country: "US",
+    sponsorName: "", teamId: "318", teamName: "New Vision Realty Group", joinId: "J423652",
+  },
+  {
+    id: "ob2", name: "Tazio Galardi", initials: "T", joinDate: "11/03/2025",
+    currentStep: "License Transfer", nextStep: "Convert to Active", durationDays: 122, progress: 60,
+    phone: "(858) 555-0142", email: "tgalardi@email.com", state: "CA", country: "US",
+    sponsorName: "", teamId: "318", teamName: "New Vision Realty Group", joinId: "J419830",
+  },
+];
+
+export interface AgentDetail {
+  id: string;
+  agentName: string;
+  uuid: string;
+  agentId: string;
+  active: string;
+  teamMemberEffectiveDate: string;
+  capResetDate: string;
+  closedTransactions: number;
+  salesVolume: number;
+  companyDollarPaidThrough: number;
+}
+
+export const agentDetails: AgentDetail[] = [
+  { id: "ad1", agentName: "Daniel Crawford", uuid: "3064bef1-050b-11eb-95a1-f9e4050987ab", agentId: "12575", active: "Yes", teamMemberEffectiveDate: "10/01/2025", capResetDate: "03/01/2027", closedTransactions: 0, salesVolume: 0, companyDollarPaidThrough: 0 },
+  { id: "ad2", agentName: "Michael Thompson", uuid: "31901ffd-050b-11eb-95a1-f7ea65bef00a", agentId: "13094", active: "Yes", teamMemberEffectiveDate: "03/01/2020", capResetDate: "03/01/2027", closedTransactions: 1, salesVolume: 10521, companyDollarPaidThrough: 0 },
+  { id: "ad3", agentName: "Amanda Chen-Rodriguez", uuid: "3190e37b-050b-11eb-95a1-911eca2fb76a", agentId: "13244", active: "Yes", teamMemberEffectiveDate: "10/01/2025", capResetDate: "03/01/2027", closedTransactions: 0, salesVolume: 0, companyDollarPaidThrough: 0 },
+  { id: "ad4", agentName: "Marcus Anthony Blake", uuid: "3198f948-050b-11eb-95a1-3bbcfc412583", agentId: "13762", active: "Yes", teamMemberEffectiveDate: "08/22/2018", capResetDate: "04/01/2026", closedTransactions: 0, salesVolume: 0, companyDollarPaidThrough: 0 },
+  { id: "ad5", agentName: "Rachel Morrison", uuid: "5df4cc4b-053d-11eb-8ef5-c95598c86766", agentId: "13783", active: "Yes", teamMemberEffectiveDate: "08/22/2018", capResetDate: "04/01/2026", closedTransactions: 0, salesVolume: 0, companyDollarPaidThrough: 0 },
+  { id: "ad6", agentName: "Jennifer Walsh", uuid: "a2b3c4d5-e6f7-11ec-1234-abcdef567890", agentId: "14201", active: "Yes", teamMemberEffectiveDate: "01/06/2025", capResetDate: "04/01/2026", closedTransactions: 0, salesVolume: 0, companyDollarPaidThrough: 0 },
 ];
 
 export const teamOverview = {
