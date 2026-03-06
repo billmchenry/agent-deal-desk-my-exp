@@ -497,7 +497,7 @@ export const mockMentorRequests: MentorRequestDetail[] = [
     status: "Active",
     primaryEmail: "marcus.okafor@exprealty.com",
     secondaryEmail: "",
-    phone: "(555) 892-1034",
+    phone: "(704) 555-1034",
     city: "Charlotte",
     state: "NC",
     sponsorName: "Maria Garcia",
