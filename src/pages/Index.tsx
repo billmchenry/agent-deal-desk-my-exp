@@ -1,52 +1,26 @@
-import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { CustomizableDashboard } from "@/components/dashboard/CustomizableDashboard";
 import { MentorProgramWidget } from "@/components/dashboard/MentorProgramWidget";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Button } from "@/components/ui/button";
-
-type MenteeHomeStatus = "none" | "needs_mentor" | "pairing_underway";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 const Index = () => {
   useDocumentTitle("Home");
   const { t } = useTranslation();
+  const { config, setMentorMode } = useDemoConfig();
 
-  const [menteeStatus, setMenteeStatus] = useState<MenteeHomeStatus>(() => {
-    return (sessionStorage.getItem("menteeHomeStatus") as MenteeHomeStatus) || "none";
-  });
-
-  const handleStatusChange = (status: "needs_mentor" | "pairing_underway") => {
-    setMenteeStatus(status);
-    sessionStorage.setItem("menteeHomeStatus", status);
-  };
-
-  const demoStatuses: MenteeHomeStatus[] = ["none", "needs_mentor", "pairing_underway"];
+  const menteeStatus = config.mentorMode;
+  const showWidget = menteeStatus === "needs_mentor" || menteeStatus === "pairing_underway";
 
   return (
     <DashboardLayout>
-      {/* Demo switcher for mentee homepage states */}
-      <div className="flex items-center gap-2 flex-wrap mb-4">
-        <span className="text-xs text-muted-foreground font-medium">Demo (Mentee):</span>
-        {demoStatuses.map((s) => (
-          <Button
-            key={s}
-            variant={menteeStatus === s ? "default" : "outline"}
-            size="sm"
-            className="text-xs h-7"
-            onClick={() => {
-              setMenteeStatus(s);
-              sessionStorage.setItem("menteeHomeStatus", s);
-            }}
-          >
-            {s === "none" ? "No Widget" : s.replace(/_/g, " ")}
-          </Button>
-        ))}
-      </div>
-
-      {(menteeStatus === "needs_mentor" || menteeStatus === "pairing_underway") && (
+      {showWidget && (
         <div className="mb-6">
-          <MentorProgramWidget status={menteeStatus} onStatusChange={handleStatusChange} />
+          <MentorProgramWidget
+            status={menteeStatus as "needs_mentor" | "pairing_underway"}
+            onStatusChange={(s) => setMentorMode(s)}
+          />
         </div>
       )}
 

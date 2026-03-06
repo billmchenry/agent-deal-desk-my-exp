@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, HelpCircle, ChevronDown, Menu, Sun, Moon } from "lucide-react";
+import { Bell, HelpCircle, ChevronDown, Menu, Sun, Moon, FlaskConical } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 import { Link } from "react-router-dom";
@@ -19,6 +19,7 @@ import { NotificationsSheet } from "./NotificationsSheet";
 import { AccountSheet } from "./AccountSheet";
 import { GlobalSearch } from "./GlobalSearch";
 import { useTranslation } from "@/hooks/useTranslation";
+import { DemoConfigSheet } from "./DemoConfigSheet";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -30,6 +31,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [demoConfigOpen, setDemoConfigOpen] = useState(false);
   const { t } = useTranslation();
 
   const cycleTheme = () => {
@@ -59,6 +61,15 @@ export function Header({ onMenuClick }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5 text-xs h-8 border-dashed"
+            onClick={() => setDemoConfigOpen(true)}
+          >
+            <FlaskConical className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Demo Config</span>
+          </Button>
           <div className="lg:hidden">
             <GlobalSearch />
           </div>
@@ -161,6 +172,10 @@ export function Header({ onMenuClick }: HeaderProps) {
       <AccountSheet 
         isOpen={accountOpen} 
         onClose={() => setAccountOpen(false)} 
+      />
+      <DemoConfigSheet
+        open={demoConfigOpen}
+        onOpenChange={setDemoConfigOpen}
       />
     </>
   );
