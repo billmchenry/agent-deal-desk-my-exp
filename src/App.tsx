@@ -28,6 +28,7 @@ import MiraHistory from "./pages/mira/History";
 import DocumentsPortal from "./pages/documents/DocumentsPortal";
 import DocumentsYearEnd from "./pages/documents/YearEnd";
 import DocumentsDownloads from "./pages/documents/Downloads";
+import MentorProgram from "./pages/mentor/MentorProgram";
 
 
 const queryClient = new QueryClient();
@@ -65,6 +66,7 @@ const App = () => (
                 <Route path="/documents/portal" element={<DocumentsPortal />} />
                 <Route path="/documents/year-end" element={<DocumentsYearEnd />} />
                 <Route path="/documents/downloads" element={<DocumentsDownloads />} />
+                <Route path="/mentor" element={<MentorProgram />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

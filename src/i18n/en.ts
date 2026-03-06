@@ -421,6 +421,19 @@ export const en = {
   "fin.exponentialShare": "Revenue Share Dollar eXponential Share",
   "fin.revSharePercentage": "Revenue Share Dollar' Revenue Share Percentage",
   "fin.contactCard": "Contact Card",
+
+  // Mentor Program
+  "mentor.title": "Mentor Program",
+  "mentor.forMentees": "For Mentees",
+  "mentor.menteeDescription": "Your journey is just beginning. As a mentee, you will receive advice, training and guidance throughout the program.",
+  "mentor.myMentor": "My Mentor",
+  "mentor.callMentor": "Call mentor",
+  "mentor.emailMentor": "Email mentor",
+  "mentor.trainingMaterials": "Training Materials",
+  "mentor.trainingDescription": "Please ensure all your training materials have been completed to be eligible for graduation!",
+  "mentor.trainingNotAvailable": "Training materials are not yet available.",
+  "mentor.openTraining": "Open training materials",
+  "mentor.myTransactions": "My Transactions",
 } as const;
 
 export type TranslationKey = keyof typeof en;
