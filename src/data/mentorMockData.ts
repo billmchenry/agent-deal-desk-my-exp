@@ -816,7 +816,7 @@ export const mockAvailableMentors: AvailableMentor[] = [
     mls: ["Realtracs MLS"],
     specializations: ["Residential", "Relocation"],
     certifications: ["ABR", "e-PRO"],
-    phone: "(555) 771-3204",
+    phone: "(615) 555-3204",
     email: "sarah.blackwood@exprealty.com",
     website: "https://sarahblackwood.exprealty.com",
   },
