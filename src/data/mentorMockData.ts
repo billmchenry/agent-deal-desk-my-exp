@@ -583,9 +583,9 @@ export const mockStateMentors: StateMentor[] = [
     mls: ["HAR MLS", "Houston MLS"],
     specializations: ["Residential", "Luxury", "First-Time Buyers"],
     certifications: ["ABR", "CRS", "GRI"],
-    facebook: "https://facebook.com/alejandrapino",
-    linkedin: "https://linkedin.com/in/alejandrapino",
-    website: "https://alejandrapino.exprealty.com",
+    facebook: "https://facebook.com/camilareyes",
+    linkedin: "https://linkedin.com/in/camilareyes",
+    website: "https://camilareyes.exprealty.com",
     menteeIds: ["m1", "m2", "m3"],
   },
   {
