@@ -87,7 +87,13 @@ export function YearOverYearChart() {
   const { formatCurrency: fmtCurr } = useFormatters();
 
   const fullData = dataByTab[chartTab] || unitsData;
-  const chartData = isMobile ? fullData.slice(6) : fullData;
+  const chartData = (() => {
+    if (!isMobile) return fullData;
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const currentMonthIdx = new Date().getMonth(); // 0-based
+    const last6 = Array.from({ length: 6 }, (_, i) => months[(currentMonthIdx - 5 + i + 12) % 12]);
+    return last6.map(m => fullData.find(d => d.month === m)!).filter(Boolean);
+  })();
 
   const formatValue = (val: number) => {
     if (chartTab === "volume") {
