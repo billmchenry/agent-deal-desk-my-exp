@@ -367,6 +367,8 @@ export const en = {
   "revgroup.teamName": "Team Name",
   "revgroup.teamRole": "Team Role",
   "revgroup.teamStatus": "Team Status",
+  "revgroup.location": "Location",
+  "revgroup.production": "Production",
 } as const;
 
 export type TranslationKey = keyof typeof en;

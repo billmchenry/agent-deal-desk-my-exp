@@ -308,4 +308,6 @@ export const es: Record<string, string> = {
   "revgroup.teamName": "Nombre del equipo",
   "revgroup.teamRole": "Rol en el equipo",
   "revgroup.teamStatus": "Estado del equipo",
+  "revgroup.location": "Ubicación",
+  "revgroup.production": "Producción",
 };
