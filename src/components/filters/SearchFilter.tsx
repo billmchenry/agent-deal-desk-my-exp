@@ -34,12 +34,12 @@ export function SearchFilter({
 
   return (
     <div className={cn("relative", className)}>
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
       <Input
         placeholder={placeholder}
         value={local}
         onChange={(e) => setLocal(e.target.value)}
-        className="pl-9"
+        className="ps-9"
       />
     </div>
   );

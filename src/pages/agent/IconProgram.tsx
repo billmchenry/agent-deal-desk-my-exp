@@ -350,7 +350,7 @@ export default function IconProgram() {
             <div className="bg-muted/50 border border-border rounded-lg p-3 flex gap-3">
               <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Note:</span> All stock awards are subject to a one month delay, and will be posted by the last day of the month following the award date.
+                <span className="font-medium text-foreground">Note:</span> {t("icon.noteStockGrants")}
               </p>
             </div>
           </TabsContent>

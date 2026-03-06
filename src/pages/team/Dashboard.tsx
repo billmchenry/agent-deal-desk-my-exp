@@ -103,7 +103,7 @@ export default function TeamDashboard() {
           <UniversalFilterBar
             title={t("team.topAgents")}
             titleExtra={
-              <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("overview")}>
+              <Button variant="ghost" className="gap-1 -ms-2" onClick={() => setView("overview")}>
                 <ChevronLeft className="h-4 w-4" aria-hidden="true" />
                 {t("team.backToTeam")}
               </Button>

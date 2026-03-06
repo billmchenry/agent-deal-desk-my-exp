@@ -117,7 +117,7 @@ export default function MentorRequests() {
                         onClick={() => setSelectedRequest(req)}
                       >
                         {t("mentor.details")}
-                        <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
+                        <ChevronRight className="h-3.5 w-3.5 ms-0.5" />
                       </Button>
                     </div>
                     <div className="flex gap-2">

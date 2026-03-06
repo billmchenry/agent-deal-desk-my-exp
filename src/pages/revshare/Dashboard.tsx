@@ -166,7 +166,7 @@ export default function RevShareDashboard() {
           <div className="relative z-10">
             <div className="mb-4">
               <Badge className="bg-exp-gold/20 text-exp-gold-light border-exp-gold/30 hover:bg-exp-gold/30">
-                <Target className="mr-1 h-3 w-3" />
+                <Target className="me-1 h-3 w-3" />
                 {t("revshare.revenueShare").toUpperCase()}
               </Badge>
             </div>

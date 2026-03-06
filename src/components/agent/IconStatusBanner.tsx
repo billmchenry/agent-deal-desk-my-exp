@@ -45,11 +45,15 @@ const pillars = [
 ];
 
 export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerProps) {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3 mb-6 max-w-full overflow-hidden">
       {pillars.map((pillar) => {
         const Icon = pillar.icon;
         const isActive = activeTab === pillar.key;
+        const label = t(pillar.labelKey);
+        const detail = (pillar as any).detailKey ? t((pillar as any).detailKey) : (pillar as any).detail;
+        const status = (pillar as any).statusKey ? t((pillar as any).statusKey) : (pillar as any).status;
 
         return (
           <Card
@@ -67,21 +71,21 @@ export function IconStatusBanner({ activeTab, onTabChange }: IconStatusBannerPro
               ) : (
                 <Icon className="w-4 h-4 text-primary" />
               )}
-              <span className="text-sm font-medium text-foreground">{pillar.label}</span>
+              <span className="text-sm font-medium text-foreground">{label}</span>
             </div>
 
-            {pillar.progress !== undefined ? (
+            {(pillar as any).progress !== undefined ? (
               <div className="space-y-1.5">
-                <Progress value={Math.max(pillar.progress, 8)} className="h-1.5" />
+                <Progress value={Math.max((pillar as any).progress, 8)} className="h-1.5" />
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">{pillar.detail}</span>
-                  <span className="text-sm font-bold text-foreground">{pillar.status}</span>
+                  <span className="text-xs text-muted-foreground">{detail}</span>
+                  <span className="text-sm font-bold text-foreground">{status}</span>
                 </div>
               </div>
             ) : (
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">{pillar.detail}</span>
-                <span className="text-xs font-semibold text-[hsl(var(--exp-green))]">{pillar.status}</span>
+                <span className="text-xs text-muted-foreground">{detail}</span>
+                <span className="text-xs font-semibold text-[hsl(var(--exp-green))]">{status}</span>
               </div>
             )}
           </Card>

@@ -83,8 +83,8 @@ export function AgentHeroBanner({
         {/* Header Row */}
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-1">
-            <Badge className="bg-exp-gold/20 text-exp-gold-light border-exp-gold/30 hover:bg-exp-gold/30">
-              <Target className="mr-1 h-3 w-3" />
+              <Badge className="bg-exp-gold/20 text-exp-gold-light border-exp-gold/30 hover:bg-exp-gold/30">
+              <Target className="me-1 h-3 w-3" />
               PERFORMANCE
             </Badge>
           </div>

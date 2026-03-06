@@ -103,7 +103,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           {isMobile ? (
             <Button 
               variant="ghost" 
-              className="flex items-center gap-2 pl-2 pr-1"
+              className="flex items-center gap-2 ps-2 pe-1"
               onClick={() => setAccountOpen(true)}
               aria-label={t("header.accountMenu")}
             >

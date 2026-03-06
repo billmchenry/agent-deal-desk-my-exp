@@ -65,7 +65,7 @@ export function StepMentorship({ data, onChange }: StepMentorshipProps) {
               className="min-h-[80px] resize-none"
               placeholder="Type here..."
             />
-            <p className="text-[10px] text-muted-foreground text-right">
+            <p className="text-[10px] text-muted-foreground text-end">
               {(data[ta.key] || "").length}/{ta.max}
             </p>
           </div>
