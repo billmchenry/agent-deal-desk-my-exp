@@ -226,7 +226,7 @@ type View = "summary" | "drilldown";
 
 export default function YearEnd() {
   const { t } = useTranslation();
-  const { formatCurrency } = useFormatters();
+  const { formatCurrency, formatDate, formatNumber } = useFormatters();
   useDocumentTitle(t("nav.yearEnd"));
 
   const [year, setYear] = useState("2025");
