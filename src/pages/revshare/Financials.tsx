@@ -278,6 +278,7 @@ export default function Financials() {
   const [selectedAgent, setSelectedAgent] = useState<AgentDetail | null>(null);
   const [selectedTxn, setSelectedTxn] = useState<AgentTransaction | null>(null);
   const [txnSheetOpen, setTxnSheetOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState<PeriodicRow | null>(null);
 
   const handleAgentClick = (row: AgentRevShareRow) => {
     setSelectedAgent(getAgentDetail(row));
