@@ -346,7 +346,7 @@ function DropdownResults({
                 onClick={() => onSelect(item)}
                 onMouseEnter={() => onHover(flatFiltered.indexOf(item))}
                 className={cn(
-                  "flex w-full items-center gap-2 px-3 py-2 text-sm text-left transition-colors",
+                  "flex w-full items-center gap-2 px-3 py-2 text-sm text-start transition-colors",
                   isHighlighted ? "bg-accent text-accent-foreground" : "hover:bg-accent/50"
                 )}
               >
