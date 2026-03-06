@@ -139,7 +139,7 @@ export default function IconProgram() {
 
               <Card>
                 <CardContent className="p-4 space-y-3">
-                  <h3 className="font-medium text-foreground">Capped Transaction Fees</h3>
+                  <h3 className="font-medium text-foreground">{t("icon.cappedTransactionFees")}</h3>
                   <Progress value={0} className="h-2" />
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-foreground">$0.00</span>
