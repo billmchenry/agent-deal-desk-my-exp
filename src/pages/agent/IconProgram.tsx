@@ -327,7 +327,7 @@ export default function IconProgram() {
                     </div>
                     <Badge className="bg-[hsl(var(--exp-green))] hover:bg-[hsl(var(--exp-green))] text-white gap-1">
                       <Check className="h-3 w-3" />
-                      Awarded
+                      {t("icon.awarded")}
                     </Badge>
                   </CardContent>
                 </Card>
