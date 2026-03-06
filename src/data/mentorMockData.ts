@@ -654,7 +654,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "Patricia Young",
     totalActiveMentees: 1,
     primaryEmail: "patricia.young@exprealty.com",
-    phone: "(555) 293-5510",
+    phone: "(503) 555-5510",
     secondaryEmail: "pyoung.re@gmail.com",
     city: "Portland",
     state: "OR",
