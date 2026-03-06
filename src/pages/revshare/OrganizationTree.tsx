@@ -354,7 +354,7 @@ export default function OrganizationTree() {
       <div className="p-4 lg:p-6">
         <UniversalFilterBar
           title={t("nav.organizationTree")}
-          titleExtra={<span className="text-primary hover:underline cursor-pointer text-sm">View in Beta</span>}
+          titleExtra={<span className="text-primary hover:underline cursor-pointer text-sm">{t("orgTree.viewInBeta")}</span>}
         />
 
         {/* Selected agent header card when drilled in */}
