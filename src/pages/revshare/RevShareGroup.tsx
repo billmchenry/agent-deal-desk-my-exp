@@ -121,7 +121,6 @@ export default function RevShareGroup() {
   const [levelFilter, setLevelFilter] = useState("all");
   const [selectedAgent, setSelectedAgent] = useState<RevShareGroupAgent | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [levelFilter, setLevelFilter] = useState("all");
 
   const statusOptions = [
     { value: "all", label: t("txn.allStatuses") },
