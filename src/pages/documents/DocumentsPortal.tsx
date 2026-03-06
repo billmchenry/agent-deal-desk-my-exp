@@ -229,41 +229,61 @@ export default function DocumentsPortal() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>{t("documents.document")}</TableHead>
-                          <TableHead>{t("documents.category")}</TableHead>
-                          <TableHead>{t("documents.dateAdded")}</TableHead>
-                          <TableHead className="w-12" />
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
+                    {isMobile ? (
+                      <div className="space-y-2">
                         {member.documents.map((doc, idx) => (
-                          <TableRow key={idx}>
-                            <TableCell className="font-medium">
-                              {doc.name}
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant="outline">{doc.category}</Badge>
-                            </TableCell>
-                            <TableCell className="font-secondary">
-                              {formatDate(doc.dateAdded)}
-                            </TableCell>
-                            <TableCell>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="min-h-[44px] min-w-[44px]"
-                                aria-label={`${t("documents.download")} ${doc.name}`}
-                              >
-                                <Download className="h-4 w-4" />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
+                          <div key={idx} className="flex items-start justify-between gap-3 rounded-lg border bg-card p-3">
+                            <div className="min-w-0 space-y-1">
+                              <p className="text-sm font-medium text-foreground break-all">{doc.name}</p>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline" className="text-xs">{doc.category}</Badge>
+                                <span className="text-xs text-muted-foreground font-secondary">{formatDate(doc.dateAdded)}</span>
+                              </div>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="min-h-[44px] min-w-[44px] shrink-0"
+                              aria-label={`${t("documents.download")} ${doc.name}`}
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </div>
                         ))}
-                      </TableBody>
-                    </Table>
+                      </div>
+                    ) : (
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>{t("documents.document")}</TableHead>
+                            <TableHead>{t("documents.category")}</TableHead>
+                            <TableHead>{t("documents.dateAdded")}</TableHead>
+                            <TableHead className="w-12" />
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {member.documents.map((doc, idx) => (
+                            <TableRow key={idx}>
+                              <TableCell className="font-medium">{doc.name}</TableCell>
+                              <TableCell>
+                                <Badge variant="outline">{doc.category}</Badge>
+                              </TableCell>
+                              <TableCell className="font-secondary">{formatDate(doc.dateAdded)}</TableCell>
+                              <TableCell>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="min-h-[44px] min-w-[44px]"
+                                  aria-label={`${t("documents.download")} ${doc.name}`}
+                                >
+                                  <Download className="h-4 w-4" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    )}
                   </AccordionContent>
                 </AccordionItem>
               ))}
