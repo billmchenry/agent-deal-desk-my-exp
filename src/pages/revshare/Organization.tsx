@@ -8,6 +8,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { UniversalFilterBar } from "@/components/filters";
 
 const agentAreasData = [
   { name: "Residential", value: 93.1, color: "#1e3a5f" },
