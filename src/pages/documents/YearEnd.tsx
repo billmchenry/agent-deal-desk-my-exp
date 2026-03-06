@@ -435,7 +435,7 @@ export default function YearEnd() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Income breakdown */}
           <div className="lg:col-span-2 space-y-4">
-            <h2 className="text-lg font-semibold">{t("ye.my1099Income")}</h2>
+            <h2 className="text-section-title font-semibold">{t("ye.my1099Income")}</h2>
             <div className="flex items-center gap-3">
               <Select value={companyFilter} onValueChange={setCompanyFilter}>
                 <SelectTrigger className="w-40" aria-label={t("ye.companyFilter")}>
