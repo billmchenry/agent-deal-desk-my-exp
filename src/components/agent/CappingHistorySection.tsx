@@ -43,7 +43,7 @@ function CapBadge({ pct }: { pct: string }) {
   return <span className="text-exp-blue font-medium text-xs">{pct}</span>;
 }
 
-export function CappingHistoryTable() {
+export function CappingHistoryTable({ dateRange }: { dateRange?: { from: Date | undefined; to: Date | undefined } } = {}) {
   const isMobile = useIsMobile();
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ startDate: "", endDate: "", capReached: "", capPercentage: "" });
