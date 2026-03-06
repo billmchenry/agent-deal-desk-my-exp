@@ -397,9 +397,9 @@ export default function OrganizationTree() {
         {/* Current level header */}
         <div className="mb-6">
           <p className="text-lg font-medium text-foreground mb-1">
-            {headerName} - Level {headerLevel}
+            {headerName} - {t("orgTree.level")} {headerLevel}
           </p>
-          <p className="text-sm text-muted-foreground">{flaCount} FLAs</p>
+          <p className="text-sm text-muted-foreground">{flaCount} {t("orgTree.flas")}</p>
         </div>
 
         {/* Agent grid */}
