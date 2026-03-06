@@ -133,7 +133,7 @@ export default function TeamDashboard() {
           <Button variant="outline">{t("team.teamReport")}</Button>
         </div>
 
-        <p className="text-lg font-medium text-foreground mb-6">
+        <p className="text-body-lg font-medium text-foreground mb-6">
           {t("team.myTeam")}: {teamOverview.name}
         </p>
 
