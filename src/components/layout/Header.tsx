@@ -95,7 +95,7 @@ export function Header({ onMenuClick }: HeaderProps) {
             aria-label={`${t("header.notifications")}, 3 unread`}
           >
             <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-destructive text-[11px] font-bold text-destructive-foreground flex items-center justify-center" aria-hidden="true">
+            <span className="absolute -top-1 -end-1 h-5 w-5 rounded-full bg-destructive text-[11px] font-bold text-destructive-foreground flex items-center justify-center" aria-hidden="true">
               3
             </span>
           </Button>
