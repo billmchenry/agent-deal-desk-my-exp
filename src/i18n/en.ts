@@ -243,7 +243,7 @@ export const en = {
   "org.agentsJoined": "Agents who have joined the organization (year-to-date)",
   "org.agentsWithIcon": "Agents with ICON status",
   "org.countTeamLeaders": "Count of Team Leaders",
-  "org.totalTransactions": "Total transactions for active agents in the organization (year-to-date)",
+  "org.totalTransactions": "Total Transactions",
   "org.transactionsPerAgent": "Transactions per agent (year-to-date)",
   "org.totalRevShare": "Total Revenue Share (USD)",
   "org.ytdVolume": "YTD Volume",
