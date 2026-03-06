@@ -514,3 +514,95 @@ export const mockMentorRequests: MentorRequestDetail[] = [
     ],
   },
 ];
+
+// ── Available Mentors (for mentee "Choose a Mentor" flow) ──
+
+export interface AvailableMentor {
+  id: string;
+  name: string;
+  location: string;
+  avatarUrl?: string;
+  badges: string[];
+  bio: string;
+  locationsServiced: string[];
+  licenses: { state: string; number: string }[];
+  languages: string[];
+  mls: string[];
+  specializations: string[];
+  certifications: string[];
+  phone: string;
+  email: string;
+  facebook?: string;
+  linkedin?: string;
+  website?: string;
+}
+
+export const mockAvailableMentors: AvailableMentor[] = [
+  {
+    id: "am1",
+    name: "Alejandra Pino Torrealba",
+    location: "Katy, TX",
+    badges: ["Team Lead", "ICON"],
+    bio: "With over 15 years of real estate experience across both residential and commercial markets, I am passionate about helping new agents find their footing and build sustainable businesses. My approach combines hands-on transaction support with strategic business planning to ensure mentees not only close their first deals but develop the skills and confidence to thrive long-term in this industry.",
+    locationsServiced: ["Houston", "Katy", "Sugar Land", "Richmond", "Cypress"],
+    licenses: [{ state: "TX", number: "TX-782341" }],
+    languages: ["English", "Spanish"],
+    mls: ["HAR MLS", "Houston MLS"],
+    specializations: ["Residential", "Luxury", "First-Time Buyers"],
+    certifications: ["ABR", "CRS", "GRI"],
+    phone: "(555) 293-4810",
+    email: "alejandra.pino@exprealty.com",
+    facebook: "https://facebook.com/alejandrapino",
+    linkedin: "https://linkedin.com/in/alejandrapino",
+    website: "https://alejandrapino.exprealty.com",
+  },
+  {
+    id: "am2",
+    name: "Michael Chen",
+    location: "Sacramento, CA",
+    badges: ["ICON", "On a Team"],
+    bio: "I specialize in guiding new agents through the Sacramento and Northern California markets. Having closed over 200 transactions in the past decade, I understand the nuances of diverse neighborhoods and property types. My mentorship style focuses on building strong client relationships and mastering negotiation tactics.",
+    locationsServiced: ["Sacramento", "Elk Grove", "Roseville", "Folsom"],
+    licenses: [{ state: "CA", number: "CA-019283" }],
+    languages: ["English", "Mandarin"],
+    mls: ["MetroList MLS"],
+    specializations: ["Residential", "Investment Properties"],
+    certifications: ["CRS", "SRS"],
+    phone: "(555) 482-1930",
+    email: "michael.chen@exprealty.com",
+    linkedin: "https://linkedin.com/in/michaelchenre",
+  },
+  {
+    id: "am3",
+    name: "Sarah Blackwood",
+    location: "Nashville, TN",
+    badges: ["Team Lead"],
+    bio: "As a top-producing agent in the Nashville metro area, I bring a deep understanding of market trends and client service excellence. I believe every new agent deserves a mentor who is accessible, patient, and invested in their success. My door is always open for questions, role-play sessions, and deal reviews.",
+    locationsServiced: ["Nashville", "Franklin", "Brentwood", "Murfreesboro"],
+    licenses: [{ state: "TN", number: "TN-445901" }],
+    languages: ["English"],
+    mls: ["Realtracs MLS"],
+    specializations: ["Residential", "Relocation"],
+    certifications: ["ABR", "e-PRO"],
+    phone: "(555) 771-3204",
+    email: "sarah.blackwood@exprealty.com",
+    website: "https://sarahblackwood.exprealty.com",
+  },
+  {
+    id: "am4",
+    name: "David Okonkwo",
+    location: "Atlanta, GA",
+    badges: ["ICON", "Team Lead", "On a Team"],
+    bio: "I have been in the real estate industry for over 20 years and have mentored dozens of successful agents. My expertise spans luxury homes, new construction, and investment properties across the greater Atlanta area. I take a structured approach to mentorship with weekly check-ins and goal tracking.",
+    locationsServiced: ["Atlanta", "Decatur", "Marietta", "Alpharetta", "Buckhead"],
+    licenses: [{ state: "GA", number: "GA-338102" }],
+    languages: ["English", "French"],
+    mls: ["FMLS", "Georgia MLS"],
+    specializations: ["Luxury", "New Construction", "Investment"],
+    certifications: ["CRS", "GRI", "CLHMS"],
+    phone: "(555) 618-9042",
+    email: "david.okonkwo@exprealty.com",
+    facebook: "https://facebook.com/davidokonkworealty",
+    linkedin: "https://linkedin.com/in/davidokonkwo",
+  },
+];

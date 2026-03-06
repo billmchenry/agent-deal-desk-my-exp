@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { mockMentees, mockMentorRequests } from "@/data/mentorMockData";
 
-type MentorScenario = "mentee" | "not_applied" | "pending" | "approved_certification" | "active_mentor";
+type MentorScenario = "not_applied" | "pending" | "approved_certification" | "active_mentor";
 
 const menteeData = {
   mentor: {
