@@ -260,7 +260,7 @@ export default function IconProgram() {
             <Card className="mb-4">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-foreground">Events Attended</h3>
+                  <h3 className="font-semibold text-foreground">{t("icon.eventsAttended")}</h3>
                   <span className="text-stat-value font-bold text-foreground">02</span>
                 </div>
 
