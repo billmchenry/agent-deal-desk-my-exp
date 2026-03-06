@@ -209,7 +209,7 @@ export default function IconProgram() {
             <div className="bg-muted/50 border border-border rounded-lg p-3 flex gap-3">
               <CircleAlert className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
               <p className="text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Note:</span> A representative of the ICON Program will notify qualified agents of their ICON status by the 25th of the month following achievement of the Production Award Requirement ("Production Requirement"). If an agent believes they have qualified for ICON status and have not received an email notification by the 25th of the following month, that agent should email{" "}
+                <span className="font-medium text-foreground">Note:</span> {t("icon.noteProduction")}{" "}
                 <a href="mailto:iconaward@exprealty.net" className="text-primary hover:underline">
                   iconaward@exprealty.net
                 </a>{" "}
