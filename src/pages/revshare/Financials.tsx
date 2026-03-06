@@ -458,7 +458,7 @@ export default function Financials() {
             variant="ghost"
             size="sm"
             className="mb-2 -ml-2 text-muted-foreground hover:text-foreground"
-            onClick={() => navigate("/revshare/dashboard")}
+            onClick={() => navigate(-1)}
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             {t("fin.back")}
