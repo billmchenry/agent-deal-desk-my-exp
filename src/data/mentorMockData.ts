@@ -370,7 +370,7 @@ export const mockMentees: Mentee[] = [
     paidMentorFees: 1100,
     mentorFee: 20,
     email: "lisa.chang@exprealty.com",
-    phone: "(555) 220-5543",
+    phone: "(415) 555-5543",
     city: "San Francisco",
     state: "CA",
     postalCode: "94102",
