@@ -1,83 +1,60 @@
 
 
-# Team Reconciliation Page
+## Complete RTL & Translation Coverage Sweep
 
-A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
+### Remaining Gaps
 
----
+After auditing the codebase, there are two categories of remaining issues:
 
-## Overview
+**A. Pages/components with NO `useTranslation` — still fully hardcoded English (~4 files, ~80 strings)**
 
-Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
+| File | Hardcoded strings |
+|------|-------------------|
+| `src/pages/agent/IconProgram.tsx` | ~40 strings ("ICON PROGRAM", "33% of pillars complete", "ICON Production Overview", "Capping Year", all pillar names, status labels, etc.) |
+| `src/components/agent/IconStatusBanner.tsx` | ~10 strings (tab labels, status text) |
+| `src/components/agent/CappingSection.tsx` | ~10 strings |
+| `src/components/agent/CappingHistorySection.tsx` | ~10 strings |
+| `src/components/agent/AgentHeroBanner.tsx` | ~10 strings (stat labels) |
 
----
+**B. Remaining physical CSS properties that don't flip in RTL (~40 instances across ~15 files)**
 
-## New Files
+Most are in:
+- **Decorative elements** (`right-0`, `right-8`, `right-20` on hero banner circles) — these are cosmetic and acceptable as-is
+- **UI primitives** (`src/components/ui/*`) — shadcn components, generally shouldn't be modified
+- **Content pages** with `mr-1`, `ml-0.5`, `text-right`, `pl-9` scattered in:
+  - `revshare/Dashboard.tsx` — `mr-1`, `lg:border-l lg:pl-4`
+  - `MentorRequests.tsx` — `text-right`, `ml-0.5`
+  - `team/Dashboard.tsx` — `-ml-2`
+  - `IconProgram.tsx` — `mr-1`
+  - `ChatPanel.tsx` — `pr-8`
+  - `Header.tsx` — `pl-2 pr-1` (mobile avatar button)
+  - `SearchFilter.tsx` — `pl-9` (search icon padding)
+  - `OrganizationTree.tsx` — `pl-9`
+  - `StepMentorship.tsx` — `text-right` (character count)
 
-### 1. `src/pages/team/Reconciliation.tsx`
+### Plan
 
-The main page, closely mirroring the Agent Production Details pattern:
+**Batch 1: Add translation keys for remaining untranslated pages (~5 files)**
+- Add ~60 new keys to `en.ts` under `icon.*`, `agent.*` namespaces
+- Wire up `useTranslation` in `IconProgram.tsx`, `IconStatusBanner.tsx`, `CappingSection.tsx`, `CappingHistorySection.tsx`, `AgentHeroBanner.tsx`
 
-- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
-- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
-- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
-- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
-- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
-- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
-- CSV export enabled
-- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
-- Back button at top linking to `/team/dashboard`
+**Batch 2: Convert remaining physical CSS → logical in content files (~10 files)**
+- `mr-1` → `me-1`, `ml-0.5` → `ms-0.5`, `-ml-2` → `-ms-2`
+- `text-right` → `text-end`
+- `pl-9` → `ps-9`, `pr-8` → `pe-8`
+- `lg:border-l lg:pl-4` → `lg:border-s lg:ps-4`
+- `pl-2 pr-1` → `ps-2 pe-1` (Header mobile button)
+- Skip decorative `right-0/right-8/right-20` on hero banners (purely visual circles, direction-agnostic)
+- Skip `src/components/ui/*` (shadcn primitives)
 
-### 2. `src/components/team/TeamBreakdownSheet.tsx`
+**Batch 3: Add new keys to all 6 non-English language files**
+- ~60 new keys × 6 languages
 
-Side panel matching the reference screenshot's "Transaction Details" breakdown:
+### Files to Change (~18 files)
 
-- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
-- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
-- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
-- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
-  - Agent identifier row (ID + Name) with a colored percentage badge
-  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
-  - Tax, Commission After Co-agents (highlighted)
-  - Agent Split Before Expenses
-  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
-- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
-- **Fees I Paid for Others** -- collapsible
-- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
+Batch 1 (translation): `en.ts`, `IconProgram.tsx`, `IconStatusBanner.tsx`, `CappingSection.tsx`, `CappingHistorySection.tsx`, `AgentHeroBanner.tsx`
 
-### 3. `src/components/shared/BreakdownComponents.tsx`
+Batch 2 (RTL CSS): `revshare/Dashboard.tsx`, `MentorRequests.tsx`, `team/Dashboard.tsx`, `ChatPanel.tsx`, `Header.tsx`, `SearchFilter.tsx`, `OrganizationTree.tsx`, `StepMentorship.tsx`
 
-Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
-
----
-
-## Modified Files
-
-### `src/components/agent/TransactionDetailsSheet.tsx`
-- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
-
-### `src/data/mockData.ts`
-- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
-- Update the `navItems` array similarly
-
-### `src/components/layout/Sidebar.tsx`
-- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
-
-### `src/App.tsx`
-- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
-
-### `src/i18n/*.ts` (all 7 language files)
-- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
-
----
-
-## Implementation Order
-
-1. Extract shared breakdown components into `BreakdownComponents.tsx`
-2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
-3. Create mock team reconciliation data and the `Reconciliation.tsx` page
-4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
-5. Add route in `App.tsx`
-6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
-7. Add translation keys to all 7 language files
+Batch 3 (language sync): `fr-CA.ts`, `es.ts`, `de.ts`, `zh.ts`, `ja.ts`, `ar.ts`
 
