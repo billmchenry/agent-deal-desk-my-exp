@@ -43,6 +43,7 @@ const App = () => (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <LocaleProvider>
         <MiraChatProvider>
+          <DemoConfigProvider>
           <DashboardProvider>
             <TooltipProvider>
             <Toaster />
