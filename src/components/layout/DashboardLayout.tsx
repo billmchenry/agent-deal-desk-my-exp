@@ -39,7 +39,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       
       <main
         id="main-content"
-        className={cn("min-h-screen px-4 lg:px-6 pt-20 pb-6 max-w-full overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:ml-16" : "lg:ml-64")}
+        className={cn("min-h-screen px-4 lg:px-6 pt-20 pb-6 max-w-full overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:ms-16" : "lg:ms-64")}
       >
         {children}
       </main>
