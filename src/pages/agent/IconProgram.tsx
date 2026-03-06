@@ -280,7 +280,7 @@ export default function IconProgram() {
                     </span>
                     <Badge className="bg-[hsl(var(--exp-green))] hover:bg-[hsl(var(--exp-green))] text-white gap-1">
                       <Check className="h-3 w-3" />
-                      Attended
+                      {t("icon.attended")}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between py-2 border-t border-border">
@@ -289,7 +289,7 @@ export default function IconProgram() {
                     </span>
                     <Badge className="bg-[hsl(var(--exp-green))] hover:bg-[hsl(var(--exp-green))] text-white gap-1">
                       <Check className="h-3 w-3" />
-                      Attended
+                      {t("icon.attended")}
                     </Badge>
                   </div>
                 </div>
