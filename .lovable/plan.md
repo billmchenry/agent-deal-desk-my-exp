@@ -1,70 +1,83 @@
 
 
-## Active Mentor Dashboard -- Implementation Plan
+# Team Reconciliation Page
 
-Build the 5th mentor scenario: **active_mentor** -- a certified mentor who can view mentees, manage requests, and review their profile.
+A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
 
-### New Scenario: `active_mentor`
+---
 
-Add to the existing `MentorScenario` type and demo switcher. The view shows:
-- Branded header with "For Mentors" / "Congratulations! You have completed your Mentor Certification course, and are now a Certified Mentor!"
-- Three clickable cards: **My Mentees** (count: 39), **My Mentor Requests** (count: 0, red when > 0), **My Mentor Profile**
+## Overview
 
-### New Pages & Components
+Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
 
-**1. My Mentees page** (`/mentor/mentees`)
-- Uses `DashboardLayout` with back nav "< My Mentees"
-- Download button + result count
-- DataTable with columns: Agent, Status (badge), ID, Join Date, Transactions Remaining, Paid Mentor Fees, Mentor Fee, Email, Phone, City, State, Postal, Country, Secondary Email, Sponsor Name, Sponsor Email, Sponsor Phone
-- Default visible: Agent, Status, Join Date, Transactions Remaining, Paid Mentor Fees, Mentor Fee
-- Clicking a row opens a **MenteeContactSheet** (side panel)
+---
 
-**2. MenteeContactSheet** (`src/components/mentor/MenteeContactSheet.tsx`)
-- Side panel similar to AgentContactSheet but tailored to mentee data per the Mercy Le Fevre screenshot:
-  - Avatar, name, ID, join date, green status dot
-  - Contact section: phone and email as full-width blue buttons
-  - About section: City, State, Country, Postal Code grid
-  - Metrics section: Transactions Remaining, Mentor Fee %, Paid Mentor Fees
-  - Sponsor section: avatar + name with phone/email icons
-  - Transaction Information: list of transactions (address, date entered, source) -- clicking opens TransactionDetailSheet
+## New Files
 
-**3. MenteeTransactionSheet** (`src/components/mentor/MenteeTransactionSheet.tsx`)
-- Small sheet/dialog showing transaction details per the screenshot:
-  - Address header, Transaction Number, Status, Type of Property, Type of Sale, Actual Close Date
-  - Highlighted section: Mentor Fee, Sale Price, GCI, Company Commission
+### 1. `src/pages/team/Reconciliation.tsx`
 
-**4. Mentor Requests page** (`/mentor/requests`)
-- DashboardLayout with "< Pending Mentor Requests" back nav
-- Simple table: expand chevron, First Name, Last Name, Request Sent date, Respond to Request (Accept/Decline buttons)
-- Clicking expand/chevron opens a side panel with the request details (per RegAutoDD screenshot): avatar, status badge, name fields, emails, phone, city/state, sponsor, region/team, MLS table, Active Markets table
+The main page, closely mirroring the Agent Production Details pattern:
 
-**5. MentorRequestDetailSheet** (`src/components/mentor/MentorRequestDetailSheet.tsx`)
-- Side panel with applicant details: name, Active badge, first/last name, emails, phone, city/state, sponsor, region/team, MLS list, Active Markets table
+- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
+- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
+- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
+- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
+- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
+- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
+- CSV export enabled
+- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
+- Back button at top linking to `/team/dashboard`
 
-**6. My Mentor Profile** card click
-- Opens the existing profile side panel (reuse EditProfileSheet or show a read-only mentor profile sheet). For now, trigger a toast "Profile view coming soon" or navigate to the personal details page.
+### 2. `src/components/team/TeamBreakdownSheet.tsx`
 
-### Mock Data
+Side panel matching the reference screenshot's "Transaction Details" breakdown:
 
-Add to `mockData.ts`:
-- `mockMentees[]` -- ~12 entries with agent info, status, join date, transactions remaining, paid mentor fees, mentor fee %, contact info, sponsor info, and nested transactions array
-- `mockMentorRequests[]` -- 2 entries with first/last name, request date, and detail fields
+- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
+- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
+- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
+- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
+  - Agent identifier row (ID + Name) with a colored percentage badge
+  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
+  - Tax, Commission After Co-agents (highlighted)
+  - Agent Split Before Expenses
+  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
+- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
+- **Fees I Paid for Others** -- collapsible
+- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
 
-### Routes
+### 3. `src/components/shared/BreakdownComponents.tsx`
 
-- `/mentor/mentees` -> MyMentees page
-- `/mentor/requests` -> MentorRequests page
+Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
 
-### File Summary
+---
 
-| File | Action |
-|------|--------|
-| `src/pages/mentor/MentorProgram.tsx` | Add `active_mentor` scenario + ActiveMentorView component |
-| `src/pages/mentor/MyMentees.tsx` | New -- DataTable page |
-| `src/pages/mentor/MentorRequests.tsx` | New -- requests table page |
-| `src/components/mentor/MenteeContactSheet.tsx` | New -- mentee detail side panel |
-| `src/components/mentor/MenteeTransactionSheet.tsx` | New -- transaction detail sheet |
-| `src/components/mentor/MentorRequestDetailSheet.tsx` | New -- request detail side panel |
-| `src/data/mockData.ts` | Add mock mentee and request data |
-| `src/App.tsx` | Add 2 new routes |
+## Modified Files
+
+### `src/components/agent/TransactionDetailsSheet.tsx`
+- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
+
+### `src/data/mockData.ts`
+- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
+- Update the `navItems` array similarly
+
+### `src/components/layout/Sidebar.tsx`
+- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
+
+### `src/App.tsx`
+- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
+
+### `src/i18n/*.ts` (all 7 language files)
+- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
+
+---
+
+## Implementation Order
+
+1. Extract shared breakdown components into `BreakdownComponents.tsx`
+2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
+3. Create mock team reconciliation data and the `Reconciliation.tsx` page
+4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
+5. Add route in `App.tsx`
+6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
+7. Add translation keys to all 7 language files
 
