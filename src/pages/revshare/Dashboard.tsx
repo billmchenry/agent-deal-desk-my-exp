@@ -99,8 +99,6 @@ const countryRevShare = [
   { name: "France", value: 11494, color: "hsl(210, 40%, 75%)" },
 ];
 
-/* ── Shared chart styles (font-secondary for numerics, CSS vars for dark mode) ── */
-
 const chartTickStyle = {
   fill: "hsl(var(--muted-foreground))",
   fontSize: 11,
@@ -115,8 +113,6 @@ const tooltipStyle = {
   fontFamily: "var(--font-secondary)",
 };
 
-/* ── Component ─────────────────────────────────────────── */
-
 export default function RevShareDashboard() {
   const isMobile = useIsMobile();
   const [compPeriod, setCompPeriod] = useState("yearly");
@@ -124,9 +120,8 @@ export default function RevShareDashboard() {
   const [distMode, setDistMode] = useState<"agents" | "revshare">("agents");
   const { formatNumber, formatCurrency } = useFormatters();
   const { t } = useTranslation();
-  useDocumentTitle("Revenue Share");
+  useDocumentTitle(t("revshare.revenueShare"));
 
-  /* Distribution helpers */
   const levelDonutData =
     distMode === "agents"
       ? levelDistribution.map((l) => ({ name: l.name, value: l.agents, color: l.color, label: l.name }))
@@ -140,7 +135,7 @@ export default function RevShareDashboard() {
   const donutTotal = distMode === "agents" ? TOTAL_AGENTS : TOTAL_REVSHARE;
   const donutFormat = (v: number) =>
     distMode === "agents" ? formatNumber(v) : formatCurrency(v);
-  const donutCenterLabel = distMode === "agents" ? t("revshare.agents") : "rev share";
+  const donutCenterLabel = distMode === "agents" ? t("revshare.agents") : t("revshare.revShareLabel");
 
   return (
     <DashboardLayout>
@@ -163,7 +158,6 @@ export default function RevShareDashboard() {
 
         {/* ═══ Section 1: Hero Banner ═══ */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue p-4 sm:p-6 text-white">
-          {/* Decorative background */}
           <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
             <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-white" />
             <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-exp-gold" />
@@ -173,7 +167,7 @@ export default function RevShareDashboard() {
             <div className="mb-4">
               <Badge className="bg-exp-gold/20 text-exp-gold-light border-exp-gold/30 hover:bg-exp-gold/30">
                 <Target className="mr-1 h-3 w-3" />
-                REVENUE SHARE
+                {t("revshare.revenueShare").toUpperCase()}
               </Badge>
             </div>
 
@@ -191,11 +185,11 @@ export default function RevShareDashboard() {
                 <p className="text-stat-value font-bold font-secondary text-white">
                     {formatCurrency(264138.52)} <span className="text-sm font-medium text-white/70">USD</span>
                   </p>
-                  <span className="text-xs text-white/70">After Adj.</span>
+                  <span className="text-xs text-white/70">{t("revshare.afterAdj")}</span>
                 </div>
                 <div className="mt-1 space-y-1 text-xs text-white/70">
-                  <p>Before Adj. <span className="font-secondary">{formatCurrency(242857.04)}</span> USD</p>
-                  <p>Adjustment <span className="font-secondary">+{formatCurrency(21281.48)}</span> USD</p>
+                  <p>{t("revshare.beforeAdj")} <span className="font-secondary">{formatCurrency(242857.04)}</span> USD</p>
+                  <p>{t("revshare.adjustment")} <span className="font-secondary">+{formatCurrency(21281.48)}</span> USD</p>
                 </div>
               </div>
 
@@ -205,19 +199,19 @@ export default function RevShareDashboard() {
                   <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
                     <Users className="h-3.5 w-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-white">FLA · Front Line Agents</span>
+                  <span className="text-xs font-semibold text-white">{t("revshare.flaTitle")}</span>
                   <HoverCard>
                     <HoverCardTrigger asChild>
                       <Info className="h-3 w-3 text-white/50 cursor-help" aria-label="FLA information" />
                     </HoverCardTrigger>
                     <HoverCardContent className="text-xs w-64">
-                      FLA list includes both active and inactive agents before and after concession adjustments.
+                      {t("revshare.flaInfo")}
                     </HoverCardContent>
                   </HoverCard>
                 </div>
                 <p className="text-stat-value font-bold font-secondary text-white">{formatNumber(24)}</p>
-                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLA List">
-                  View FLA List <ChevronRight className="h-3 w-3" />
+                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label={t("revshare.viewFLAList")}>
+                  {t("revshare.viewFLAList")} <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
 
@@ -227,13 +221,13 @@ export default function RevShareDashboard() {
                   <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
                     <Users className="h-3.5 w-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-white">FLQA · Front Line Qualifying Agents</span>
+                  <span className="text-xs font-semibold text-white">{t("revshare.flqaTitle")}</span>
                   <HoverCard>
                     <HoverCardTrigger asChild>
                       <Info className="h-3 w-3 text-white/50 cursor-help" aria-label="FLQA information" />
                     </HoverCardTrigger>
                     <HoverCardContent className="text-xs w-64">
-                      Front Line Qualifying Agents count before and after concession adjustments.
+                      {t("revshare.flqaInfo")}
                     </HoverCardContent>
                   </HoverCard>
                 </div>
@@ -241,13 +235,13 @@ export default function RevShareDashboard() {
                 <div className="flex items-end gap-4 mb-2">
                   <div>
                     <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(18)}</p>
-                    <p className="text-xs text-white/70">Actual</p>
+                    <p className="text-xs text-white/70">{t("revshare.actual")}</p>
                   </div>
                   <div>
                     <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 text-sm px-2 py-0">
                       <span className="font-secondary font-bold">+ 12</span>
                     </Badge>
-                    <p className="text-xs text-white/70">Bonus</p>
+                    <p className="text-xs text-white/70">{t("revshare.bonus")}</p>
                   </div>
                 </div>
 
@@ -260,8 +254,8 @@ export default function RevShareDashboard() {
                   <Progress value={(18 / 30) * 100} className="h-2 bg-white/20 [&>div]:bg-exp-gold" />
                   <div className="flex justify-between mt-1 text-xs text-white/50 font-secondary">
                     <span>0</span>
-                    <span>18 (Current)</span>
-                    <span>30 (Goal)</span>
+                    <span>18 ({t("revshare.current")})</span>
+                    <span>30 ({t("revshare.goalLabel")})</span>
                   </div>
                 </div>
 
@@ -280,17 +274,17 @@ export default function RevShareDashboard() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-3">
               <div>
                 <h2 className="text-sm font-semibold text-foreground">{t("revshare.currentPayoutStatus")}</h2>
-                <p className="text-xs text-muted-foreground">Overview of your revenue share payout status and history</p>
+                <p className="text-xs text-muted-foreground">{t("revshare.payoutOverview")}</p>
               </div>
-              <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0" aria-label="View Periodic Overview">
-                View Periodic Overview <ExternalLink className="h-3 w-3" />
+              <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0" aria-label={t("revshare.viewPeriodicOverview")}>
+                {t("revshare.viewPeriodicOverview")} <ExternalLink className="h-3 w-3" />
               </button>
             </div>
 
             <div className="bg-muted/50 rounded-md p-2.5 mb-3 flex items-start gap-2">
               <Info className="h-3.5 w-3.5 text-muted-foreground mt-0.5 shrink-0" />
               <p className="text-xs text-muted-foreground">
-                Pay Now requests may take up to 2 business days to process. Payouts are subject to minimum thresholds.
+                {t("revshare.payNowInfo")}
               </p>
             </div>
 
@@ -301,7 +295,7 @@ export default function RevShareDashboard() {
                   <Clock className="h-4 w-4 text-exp-gold" />
                   <span className="text-xs font-semibold text-foreground">{t("revshare.unpaid")}</span>
                 </div>
-                <p className="text-xs text-muted-foreground mb-2">Calculated but not paid out</p>
+                <p className="text-xs text-muted-foreground mb-2">{t("revshare.calculatedNotPaid")}</p>
                 <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
@@ -316,7 +310,7 @@ export default function RevShareDashboard() {
                   <Calendar className="h-4 w-4 text-exp-blue" />
                   <span className="text-xs font-semibold text-foreground">{t("revshare.expectedNext")}</span>
                 </div>
-                <p className="text-xs text-muted-foreground mb-2">Estimated next scheduled payout</p>
+                <p className="text-xs text-muted-foreground mb-2">{t("revshare.estimatedNextPayout")}</p>
                 <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
@@ -334,7 +328,7 @@ export default function RevShareDashboard() {
                   <CheckCircle2 className="h-4 w-4 text-exp-green" />
                   <span className="text-xs font-semibold text-foreground">{t("revshare.lastPaid")}</span>
                 </div>
-                <p className="text-xs text-muted-foreground mb-2">Most recent payout amount</p>
+                <p className="text-xs text-muted-foreground mb-2">{t("revshare.mostRecentPayout")}</p>
                 <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(986.92)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
@@ -354,14 +348,14 @@ export default function RevShareDashboard() {
                 <h2 className="text-sm font-semibold text-foreground">{t("revshare.groupDistribution")}</h2>
                 <p className="text-xs text-muted-foreground">
                   {distMode === "agents"
-                    ? "Agent distribution across levels (1-7) and regions"
-                    : "Revenue share distribution across levels (1-7) and regions"}
+                    ? t("revshare.agentDistDesc")
+                    : t("revshare.revShareDistDesc")}
                 </p>
               </div>
               <Tabs value={distMode} onValueChange={(v) => setDistMode(v as "agents" | "revshare")}>
                 <TabsList className="h-9 sm:h-7">
                   <TabsTrigger value="agents" className="text-xs px-3 min-h-[44px] sm:min-h-0 sm:h-6">{t("revshare.agents")}</TabsTrigger>
-                  <TabsTrigger value="revshare" className="text-xs px-3 min-h-[44px] sm:min-h-0 sm:h-6">Rev Share</TabsTrigger>
+                  <TabsTrigger value="revshare" className="text-xs px-3 min-h-[44px] sm:min-h-0 sm:h-6">{t("revshare.revShareLabel")}</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -398,12 +392,12 @@ export default function RevShareDashboard() {
                 <TrendingUp className="h-4 w-4 text-exp-blue" />
                 <div>
                   <h2 className="text-sm font-semibold text-foreground">{t("revshare.revenueShareComparison")}</h2>
-                  <p className="text-xs text-muted-foreground">Compare revenue share earnings across different time periods</p>
+                  <p className="text-xs text-muted-foreground">{t("revshare.compareDesc")}</p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <div className="flex items-center gap-2">
-                  <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0" aria-label="View Trends">
+                  <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0" aria-label={t("revshare.viewTrends")}>
                     {t("revshare.viewTrends")} <ExternalLink className="h-3 w-3" />
                   </button>
                   <Tabs value={compPeriod} onValueChange={(v) => { setCompPeriod(v); setSelectedMonth(null); }}>
@@ -431,7 +425,7 @@ export default function RevShareDashboard() {
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
     <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
                     <Tooltip
-                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), "Revenue"]}
+                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), t("revshare.revenue")]}
                       contentStyle={tooltipStyle}
                     />
                     <Bar dataKey="revenue" fill="hsl(var(--exp-navy))" radius={[4, 4, 0, 0]} barSize={48} />
@@ -440,7 +434,7 @@ export default function RevShareDashboard() {
               </div>
             )}
 
-            {/* Quarterly & Monthly: multi-line (non-mobile) */}
+            {/* Quarterly: multi-line */}
             {compPeriod !== "yearly" && compPeriod !== "monthly" && (
               <div className="h-[200px] sm:h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -516,7 +510,6 @@ export default function RevShareDashboard() {
                   </div>
                 </div>
 
-                {/* Tap info strip – mobile only */}
                 {isMobile && selectedMonth && (
                   <div className="mt-2 rounded-md bg-muted/50 px-3 py-2 flex items-center gap-3 text-xs">
                     <span className="font-semibold text-foreground">{selectedMonth.name as string}</span>
@@ -543,7 +536,7 @@ export default function RevShareDashboard() {
                   </div>
                 )}
                 {isMobile && !selectedMonth && (
-                  <p className="text-xs text-muted-foreground text-center mt-2">Swipe to scroll · Tap points for details</p>
+                  <p className="text-xs text-muted-foreground text-center mt-2">{t("revshare.swipeForDetails")}</p>
                 )}
               </>
             )}

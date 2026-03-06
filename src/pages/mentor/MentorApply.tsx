@@ -10,23 +10,25 @@ import { StepGoals } from "@/components/mentor/steps/StepGoals";
 import { StepSkills } from "@/components/mentor/steps/StepSkills";
 import { StepAbout } from "@/components/mentor/steps/StepAbout";
 import { useDocumentTitle } from "@/hooks/use-document-title";
+import { useTranslation } from "@/hooks/useTranslation";
 import { toast } from "sonner";
 import mentorHeader from "@/assets/mentor-program-header.png";
 
-const stepLabels = [
-  "Your Info",
-  "Experience",
-  "Mentorship",
-  "Goals",
-  "Skills",
-  "About You",
-];
-
 export default function MentorApply() {
-  useDocumentTitle("Mentor Application");
+  const { t } = useTranslation();
+  useDocumentTitle(t("mentor.mentorApplication"));
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<Record<string, any>>({});
+
+  const stepLabels = [
+    t("mentor.yourInformation"),
+    t("mentor.realEstateExperience"),
+    t("mentor.mentorshipCoachingExp"),
+    t("mentor.goalsAndIntentions"),
+    t("mentor.skillsAssessment"),
+    t("mentor.aboutTheMentor"),
+  ];
 
   const updateData = (newData: Record<string, any>) => setFormData(newData);
 
@@ -40,12 +42,11 @@ export default function MentorApply() {
 
   const handleSubmit = () => {
     if (!formData.acknowledgment) {
-      toast.error("Please accept the acknowledgment before submitting.");
+      toast.error(t("mentor.acceptAcknowledgment"));
       return;
     }
-    // Store pending state and navigate back
     sessionStorage.setItem("mentorScenario", "pending");
-    toast.success("Your mentor application has been submitted successfully!");
+    toast.success(t("mentor.applicationSubmittedSuccess"));
     navigate("/mentor");
   };
 
@@ -69,7 +70,7 @@ export default function MentorApply() {
           <div className="bg-white rounded-xl px-8 py-4 inline-block">
             <img src={mentorHeader} alt="eXp Realty Mentor Program" className="h-12 md:h-14 object-contain" />
           </div>
-          <h2 className="text-lg font-bold text-foreground mt-4">Mentor Application</h2>
+          <h2 className="text-lg font-bold text-foreground mt-4">{t("mentor.mentorApplication")}</h2>
         </div>
 
         {/* Step indicator */}
@@ -84,27 +85,27 @@ export default function MentorApply() {
             variant="outline"
             onClick={() => navigate("/mentor")}
           >
-            Cancel
+            {t("mentor.cancel")}
           </Button>
           <div className="flex items-center gap-2">
             {step > 1 && (
               <Button variant="outline" onClick={handlePrev}>
-                Previous
+                {t("mentor.previous")}
               </Button>
             )}
             <Button
               variant="outline"
-              onClick={() => toast.info("Progress saved!")}
+              onClick={() => toast.info(t("mentor.progressSaved"))}
             >
-              Save My Progress
+              {t("mentor.saveProgress")}
             </Button>
             {step < 6 ? (
               <Button onClick={handleNext}>
-                Next
+                {t("mentor.next")}
               </Button>
             ) : (
               <Button onClick={handleSubmit}>
-                Submit Application
+                {t("mentor.submitApplication")}
               </Button>
             )}
           </div>

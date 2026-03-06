@@ -287,7 +287,7 @@ function SelectedAgentCard({
                 </button>
               </div>
               <Badge className={`${getLevelColor(agent.level)} text-white text-xs mt-2`}>
-                Level {agent.level}
+                {t("orgTree.level")} {agent.level}
               </Badge>
               <div className="mt-2 space-y-1 text-xs">
                 <div>

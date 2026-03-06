@@ -1,9 +1,6 @@
 import { useState } from "react";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
+  Sheet, SheetContent, SheetHeader, SheetTitle,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, MapPin, Calendar, ChevronRight } from "lucide-react";
 import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 import type { Mentee, MenteeTransaction } from "@/data/mentorMockData";
 import { MenteeTransactionSheet } from "./MenteeTransactionSheet";
 
@@ -27,6 +25,7 @@ interface MenteeContactSheetProps {
 
 export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContactSheetProps) {
   const { formatCurrency } = useFormatters();
+  const { t } = useTranslation();
   const [selectedTx, setSelectedTx] = useState<MenteeTransaction | null>(null);
 
   if (!mentee) return null;
@@ -37,7 +36,6 @@ export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContact
         <SheetContent className="w-full sm:max-w-md p-0">
           <ScrollArea className="h-full">
             <div className="p-6 space-y-6">
-              {/* Header */}
               <SheetHeader className="space-y-4">
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16 border-2 border-border">
@@ -64,13 +62,12 @@ export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContact
                     <p className="text-xs text-muted-foreground">{mentee.agentId}</p>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
-                      <span>Joined {mentee.joinDate}</span>
+                      <span>{t("mentor.joined")} {mentee.joinDate}</span>
                     </div>
                   </div>
                 </div>
               </SheetHeader>
 
-              {/* Contact buttons */}
               <div className="space-y-2">
                 <Button variant="outline" className="w-full justify-start gap-3 h-11" asChild>
                   <a href={`tel:${mentee.phone.replace(/[^\d+]/g, "")}`}>
@@ -88,44 +85,42 @@ export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContact
 
               <Separator />
 
-              {/* About */}
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">About</h3>
+                <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("mentor.about")}</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex items-start gap-2">
                     <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
                     <div>
                       <p className="text-sm text-foreground">{mentee.city}, {mentee.state}</p>
-                      <p className="text-xs text-muted-foreground">City / State</p>
+                      <p className="text-xs text-muted-foreground">{t("mentor.cityState")}</p>
                     </div>
                   </div>
                   <div>
                     <p className="text-sm text-foreground">{mentee.country}</p>
-                    <p className="text-xs text-muted-foreground">Country</p>
+                    <p className="text-xs text-muted-foreground">{t("mentor.country")}</p>
                   </div>
                   <div>
                     <p className="text-sm text-foreground">{mentee.postalCode}</p>
-                    <p className="text-xs text-muted-foreground">Postal Code</p>
+                    <p className="text-xs text-muted-foreground">{t("mentor.postalCode")}</p>
                   </div>
                 </div>
               </div>
 
               <Separator />
 
-              {/* Metrics */}
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">Mentorship Metrics</h3>
+                <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("mentor.mentorshipMetrics")}</h3>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="rounded-lg border bg-card p-3 space-y-1">
-                    <p className="text-xs text-muted-foreground">Txns Remaining</p>
+                    <p className="text-xs text-muted-foreground">{t("mentor.txnsRemaining")}</p>
                     <p className="text-xl font-bold text-foreground">{mentee.transactionsRemaining}</p>
                   </div>
                   <div className="rounded-lg border bg-card p-3 space-y-1">
-                    <p className="text-xs text-muted-foreground">Mentor Fee</p>
+                    <p className="text-xs text-muted-foreground">{t("mentor.mentorFeeLabel")}</p>
                     <p className="text-xl font-bold text-foreground">{mentee.mentorFee}%</p>
                   </div>
                   <div className="rounded-lg border bg-card p-3 space-y-1">
-                    <p className="text-xs text-muted-foreground">Paid Fees</p>
+                    <p className="text-xs text-muted-foreground">{t("mentor.paidFees")}</p>
                     <p className="text-xl font-bold text-foreground">{formatCurrency(mentee.paidMentorFees)}</p>
                   </div>
                 </div>
@@ -133,9 +128,8 @@ export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContact
 
               <Separator />
 
-              {/* Sponsor */}
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">Sponsor</h3>
+                <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("mentor.sponsor")}</h3>
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
                     <AvatarFallback className="bg-muted text-muted-foreground text-xs">
@@ -147,12 +141,12 @@ export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContact
                   </div>
                   <div className="flex gap-1">
                     <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                      <a href={`tel:${mentee.sponsor.phone.replace(/[^\d+]/g, "")}`} aria-label="Call sponsor">
+                      <a href={`tel:${mentee.sponsor.phone.replace(/[^\d+]/g, "")}`} aria-label={t("mentor.callSponsor")}>
                         <Phone className="h-3.5 w-3.5" />
                       </a>
                     </Button>
                     <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                      <a href={`mailto:${mentee.sponsor.email}`} aria-label="Email sponsor">
+                      <a href={`mailto:${mentee.sponsor.email}`} aria-label={t("mentor.emailSponsor")}>
                         <Mail className="h-3.5 w-3.5" />
                       </a>
                     </Button>
@@ -162,13 +156,12 @@ export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContact
 
               <Separator />
 
-              {/* Transactions */}
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                  Transaction Information ({mentee.transactions.length})
+                  {t("mentor.transactionInformation")} ({mentee.transactions.length})
                 </h3>
                 {mentee.transactions.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No transactions yet.</p>
+                  <p className="text-sm text-muted-foreground">{t("mentor.noTransactions")}</p>
                 ) : (
                   <div className="space-y-2">
                     {mentee.transactions.map((tx) => (

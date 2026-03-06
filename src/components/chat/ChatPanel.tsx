@@ -261,7 +261,7 @@ function ChatContent({
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h2 className="font-semibold text-sm sm:text-base">Chat History</h2>
+            <h2 className="font-semibold text-sm sm:text-base">{t("chat.chatHistory")}</h2>
           </div>
         </div>
       )}

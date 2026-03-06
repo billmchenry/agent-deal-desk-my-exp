@@ -134,7 +134,7 @@ export function ChatMessage({ message, onFollowUp, onStreamingDone }: ChatMessag
           {isAI && message.isStreaming && !done && (
             <div className="flex items-center gap-1.5 mt-1.5 text-primary">
               <Volume2 className="h-3 w-3 animate-pulse" />
-              <span className="text-[10px]">Speaking...</span>
+              <span className="text-[10px]">{/* Speaking indicator - no translation needed for UI animation */}Speaking...</span>
             </div>
           )}
           

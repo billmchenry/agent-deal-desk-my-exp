@@ -1,5 +1,6 @@
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const forecastData = [
   { month: "Jan", value: 1200 },
@@ -16,6 +17,7 @@ interface ForecastWidgetProps {
 
 export function ForecastWidget({ compact = false }: ForecastWidgetProps) {
   const { formatCurrency } = useFormatters();
+  const { t } = useTranslation();
 
   return (
     <div className={compact ? "h-28 sm:h-32" : "h-48"}>
@@ -46,7 +48,7 @@ export function ForecastWidget({ compact = false }: ForecastWidgetProps) {
               borderRadius: '8px',
               fontSize: '12px'
             }}
-            formatter={(value: number) => [formatCurrency(value), 'Projected']}
+            formatter={(value: number) => [formatCurrency(value), t("widget.projected")]}
           />
           <Area
             type="monotone"

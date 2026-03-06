@@ -1,14 +1,12 @@
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
+  Sheet, SheetContent, SheetHeader, SheetTitle,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import type { MenteeTransaction } from "@/data/mentorMockData";
 import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MenteeTransactionSheetProps {
   open: boolean;
@@ -18,6 +16,7 @@ interface MenteeTransactionSheetProps {
 
 export function MenteeTransactionSheet({ open, onOpenChange, transaction }: MenteeTransactionSheetProps) {
   const { formatCurrency } = useFormatters();
+  const { t } = useTranslation();
 
   if (!transaction) return null;
 
@@ -34,11 +33,11 @@ export function MenteeTransactionSheet({ open, onOpenChange, transaction }: Ment
 
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Transaction Number</span>
+                <span className="text-muted-foreground">{t("mentor.transactionNumber")}</span>
                 <span className="text-foreground font-medium">{transaction.transactionNumber}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Status</span>
+                <span className="text-muted-foreground">{t("mentor.status")}</span>
                 <Badge
                   className={
                     transaction.status === "Closed"
@@ -50,15 +49,15 @@ export function MenteeTransactionSheet({ open, onOpenChange, transaction }: Ment
                 </Badge>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Type of Property</span>
+                <span className="text-muted-foreground">{t("mentor.typeOfProperty")}</span>
                 <span className="text-foreground">{transaction.propertyType}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Type of Sale</span>
+                <span className="text-muted-foreground">{t("mentor.typeOfSale")}</span>
                 <span className="text-foreground">{transaction.saleType}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Actual Close Date</span>
+                <span className="text-muted-foreground">{t("mentor.actualCloseDate")}</span>
                 <span className="text-foreground">{transaction.actualCloseDate}</span>
               </div>
             </div>
@@ -66,22 +65,22 @@ export function MenteeTransactionSheet({ open, onOpenChange, transaction }: Ment
             <Separator />
 
             <div className="rounded-lg border border-primary/30 bg-primary/5 p-4 space-y-3">
-              <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">Financial Details</h3>
+              <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("mentor.financialDetails")}</h3>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground">Mentor Fee</p>
+                  <p className="text-xs text-muted-foreground">{t("mentor.mentorFeeLabel")}</p>
                   <p className="text-lg font-bold text-primary">{formatCurrency(transaction.mentorFee)}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground">Sale Price</p>
+                  <p className="text-xs text-muted-foreground">{t("mentor.salePrice")}</p>
                   <p className="text-lg font-bold text-foreground">{formatCurrency(transaction.salePrice)}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground">GCI</p>
+                  <p className="text-xs text-muted-foreground">{t("mentor.gci")}</p>
                   <p className="text-lg font-bold text-foreground">{formatCurrency(transaction.gci)}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground">Company Commission</p>
+                  <p className="text-xs text-muted-foreground">{t("mentor.companyCommission")}</p>
                   <p className="text-lg font-bold text-foreground">{formatCurrency(transaction.companyCommission)}</p>
                 </div>
               </div>

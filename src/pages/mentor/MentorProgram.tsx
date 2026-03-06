@@ -113,26 +113,25 @@ function MenteeView() {
 // ── For Mentors - Not Applied ──
 function NotAppliedView() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <>
       <div className="bg-card rounded-xl p-8 flex flex-col items-center">
         <MentorHeader />
-        <h2 className="text-xl font-bold text-foreground mt-4">For Mentors</h2>
+        <h2 className="text-xl font-bold text-foreground mt-4">{t("mentor.forMentors")}</h2>
         <p className="text-sm text-muted-foreground max-w-lg mx-auto text-center mt-2">
-          Ready to share your expertise? As a mentor, you'll guide new agents through their first transactions,
-          help them build confidence, and earn mentor fees along the way.
+          {t("mentor.forMentorsDesc")}
         </p>
       </div>
 
       <Card>
         <CardContent className="p-8 flex flex-col items-center gap-4">
           <Button size="lg" className="text-base px-8" onClick={() => navigate("/mentor/apply")}>
-            I Want to Be a Mentor
+            {t("mentor.iWantToBeMentor")}
           </Button>
           <p className="text-xs text-muted-foreground text-center max-w-md">
-            If you have already submitted an application, you will be notified once your broker has reviewed it.
-            Please allow up to 5 business days for processing.
+            {t("mentor.alreadySubmitted")}
           </p>
         </CardContent>
       </Card>
@@ -142,11 +141,13 @@ function NotAppliedView() {
 
 // ── Pending view ──
 function PendingView() {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="bg-card rounded-xl p-8 flex flex-col items-center">
         <MentorHeader />
-        <h2 className="text-xl font-bold text-foreground mt-4">For Mentors</h2>
+        <h2 className="text-xl font-bold text-foreground mt-4">{t("mentor.forMentors")}</h2>
       </div>
 
       <Card>
@@ -154,10 +155,9 @@ function PendingView() {
           <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
             <Trophy className="h-6 w-6 text-primary" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground">Application Submitted</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t("mentor.applicationSubmitted")}</h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            Your mentor application has been submitted and is pending broker approval.
-            You will be notified once your application has been reviewed. Please allow up to 5 business days for processing.
+            {t("mentor.pendingApproval")}
           </p>
         </CardContent>
       </Card>
@@ -167,13 +167,15 @@ function PendingView() {
 
 // ── Approved / Certification view ──
 function CertificationView() {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="bg-card rounded-xl p-8 flex flex-col items-center">
         <MentorHeader />
-        <h2 className="text-xl font-bold text-foreground mt-4">For Mentors</h2>
+        <h2 className="text-xl font-bold text-foreground mt-4">{t("mentor.forMentors")}</h2>
         <p className="text-sm text-muted-foreground max-w-lg mx-auto text-center mt-2">
-          Congratulations on being approved as a mentor! Complete your certification training to begin accepting mentees.
+          {t("mentor.approvedCongrats")}
         </p>
       </div>
 
@@ -183,13 +185,13 @@ function CertificationView() {
             <GraduationCap className="h-7 w-7 text-primary" />
           </div>
           <div className="flex-1 text-center sm:text-left">
-            <h3 className="text-base font-bold text-foreground">Complete your Certification NOW!</h3>
+            <h3 className="text-base font-bold text-foreground">{t("mentor.completeCertification")}</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              You must complete the mentor certification training before you can be assigned mentees.
+              {t("mentor.certTrainingRequired")}
             </p>
           </div>
-          <Button size="lg" onClick={() => toast.info("Training materials are not yet available.")}>
-            Start Training
+          <Button size="lg" onClick={() => toast.info(t("mentor.trainingNotAvailableToast"))}>
+            {t("mentor.startTraining")}
           </Button>
         </CardContent>
       </Card>
@@ -200,6 +202,7 @@ function CertificationView() {
 // ── Active Mentor view ──
 function ActiveMentorView() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [profileOpen, setProfileOpen] = useState(false);
   const menteeCount = mockMentees.length;
   const requestCount = mockMentorRequests.length;
@@ -208,9 +211,9 @@ function ActiveMentorView() {
     <>
       <div className="bg-card rounded-xl p-8 flex flex-col items-center">
         <MentorHeader />
-        <h2 className="text-xl font-bold text-foreground mt-4">For Mentors</h2>
+        <h2 className="text-xl font-bold text-foreground mt-4">{t("mentor.forMentors")}</h2>
         <p className="text-sm text-muted-foreground max-w-lg mx-auto text-center mt-2">
-          Congratulations! You have completed your Mentor Certification course, and are now a Certified Mentor!
+          {t("mentor.activeCongrats")}
         </p>
       </div>
 
@@ -223,7 +226,7 @@ function ActiveMentorView() {
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
               <Users className="h-6 w-6 text-primary" />
             </div>
-            <h3 className="text-base font-semibold text-foreground">My Mentees</h3>
+            <h3 className="text-base font-semibold text-foreground">{t("mentor.myMentees")}</h3>
             <span className="text-2xl font-bold text-foreground">{menteeCount}</span>
           </CardContent>
         </Card>
@@ -236,7 +239,7 @@ function ActiveMentorView() {
             <div className={`h-12 w-12 rounded-full flex items-center justify-center ${requestCount > 0 ? "bg-destructive/10" : "bg-primary/10"}`}>
               <ClipboardList className={`h-6 w-6 ${requestCount > 0 ? "text-destructive" : "text-primary"}`} />
             </div>
-            <h3 className="text-base font-semibold text-foreground">My Mentor Requests</h3>
+            <h3 className="text-base font-semibold text-foreground">{t("mentor.myMentorRequests")}</h3>
             <span className={`text-2xl font-bold ${requestCount > 0 ? "text-destructive" : "text-foreground"}`}>{requestCount}</span>
           </CardContent>
         </Card>
@@ -249,8 +252,8 @@ function ActiveMentorView() {
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
               <UserCircle className="h-6 w-6 text-primary" />
             </div>
-            <h3 className="text-base font-semibold text-foreground">My Mentor Profile</h3>
-            <span className="text-sm text-muted-foreground">View & edit</span>
+            <h3 className="text-base font-semibold text-foreground">{t("mentor.myMentorProfile")}</h3>
+            <span className="text-sm text-muted-foreground">{t("mentor.viewAndEdit")}</span>
           </CardContent>
         </Card>
       </div>
@@ -262,10 +265,10 @@ function ActiveMentorView() {
 
 // ── Main page ──
 export default function MentorProgram() {
-  useDocumentTitle("Mentor Program");
+  const { t } = useTranslation();
+  useDocumentTitle(t("mentor.title"));
   const { config } = useDemoConfig();
 
-  // Derive scenario from global demo config
   const mentorModes: MentorScenario[] = ["mentee", "not_applied", "pending", "approved_certification", "active_mentor"];
   const scenario: MentorScenario = mentorModes.includes(config.mentorMode as MentorScenario)
     ? (config.mentorMode as MentorScenario)
