@@ -308,8 +308,8 @@ export default function IconProgram() {
           {/* Stock Grants Tab */}
           <TabsContent value="stockgrants">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-              <h2 className="text-sm font-semibold text-foreground">Grants Overview</h2>
-              <YearToggle options={benefitYearOptions} value={benefitYear} onChange={setBenefitYear} label="Benefit Year" />
+              <h2 className="text-sm font-semibold text-foreground">{t("icon.grantsOverview")}</h2>
+              <YearToggle options={benefitYearOptions} value={benefitYear} onChange={setBenefitYear} label={t("icon.benefitYear")} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
