@@ -53,7 +53,7 @@ export default function OrganizationReporting() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-foreground">{t("revshare.organizationReporting")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("revshare.organizationReporting")}</h1>
         </div>
 
         <div className="flex items-center justify-end mb-4">
