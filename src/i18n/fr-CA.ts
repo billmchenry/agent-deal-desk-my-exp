@@ -216,6 +216,8 @@ export const frCA: Record<string, string> = {
   "orgTree.individualContribution": "Contribution individuelle au partage de revenus",
   "orgTree.orgSize": "Taille de l'org.",
   "orgTree.viewOrg": "Voir l'org.",
+  "orgTree.viewFLAs": "Voir les FLAs",
+  "orgTree.hideFLAs": "Masquer les FLAs",
   "trends.dateRange": "Plage de dates",
   "trends.monthsView": "Affichage des mois",
   "trends.newestFirst": "Plus récent en premier",

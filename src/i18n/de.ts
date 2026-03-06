@@ -195,6 +195,8 @@ export const de: Record<string, string> = {
   "orgTree.individualContribution": "Individuelle Umsatzbeteiligung",
   "orgTree.orgSize": "Org.-Größe",
   "orgTree.viewOrg": "Org. anzeigen",
+  "orgTree.viewFLAs": "FLAs anzeigen",
+  "orgTree.hideFLAs": "FLAs ausblenden",
   "trends.dateRange": "Datumsbereich",
   "trends.monthsView": "Monatsansicht",
   "trends.newestFirst": "Neueste zuerst",

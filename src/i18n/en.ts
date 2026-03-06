@@ -259,6 +259,8 @@ export const en = {
   "orgTree.individualContribution": "Individual Rev Share Contribution",
   "orgTree.orgSize": "Org Size",
   "orgTree.viewOrg": "View Org",
+  "orgTree.viewFLAs": "View FLAs",
+  "orgTree.hideFLAs": "Hide FLAs",
 
   // Trends
   "trends.dateRange": "Date Range",
