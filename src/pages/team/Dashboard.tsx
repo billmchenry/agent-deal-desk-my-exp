@@ -221,8 +221,8 @@ export default function TeamDashboard() {
                       </div>
                       <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
                     </div>
-                    <div className="w-full pl-[52px] pr-6">
-                      <p className="text-xs text-muted-foreground mb-1 text-left">{agent.currentStep}</p>
+                    <div className="w-full ps-[52px] pe-6">
+                      <p className="text-xs text-muted-foreground mb-1 text-start">{agent.currentStep}</p>
                       <Progress value={agent.progress} className="h-2" />
                     </div>
                   </button>
