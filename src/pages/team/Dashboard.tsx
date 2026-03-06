@@ -24,6 +24,7 @@ export default function TeamDashboard() {
   useDocumentTitle("My Team");
   const { t } = useTranslation();
   const { formatCurrency, formatNumber } = useFormatters();
+  const navigate = useNavigate();
 
   const [view, setView] = useState<View>("overview");
   const [selectedOnboardingAgent, setSelectedOnboardingAgent] = useState<OnboardingAgent | null>(null);
