@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { Info } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
@@ -41,19 +41,7 @@ export default function OrganizationReporting() {
           <h1 className="text-2xl font-bold text-foreground">{t("revshare.organizationReporting")}</h1>
         </div>
 
-        <Tabs defaultValue="summary" className="w-full mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <TabsList className="bg-transparent border-b border-border rounded-none h-auto p-0">
-              <TabsTrigger value="summary" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3">
-                {t("org.summary")}
-              </TabsTrigger>
-              <TabsTrigger value="offboarding" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3">
-                {t("org.offboardingOverview")}
-              </TabsTrigger>
-              <TabsTrigger value="detail" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-3">
-                {t("org.detailReport")}
-              </TabsTrigger>
-            </TabsList>
+        <div className="flex items-center justify-end mb-4">
             <Select defaultValue="2026">
               <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="Year" />
@@ -66,7 +54,6 @@ export default function OrganizationReporting() {
             </Select>
           </div>
 
-          <TabsContent value="summary">
             <h2 className="text-lg font-semibold text-foreground mb-4">{t("org.performanceSnapshot")}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -245,24 +232,6 @@ export default function OrganizationReporting() {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
-
-          <TabsContent value="offboarding">
-            <Card>
-              <CardContent className="p-6">
-                <p className="text-center text-muted-foreground py-8">{t("common.comingSoon")}</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="detail">
-            <Card>
-              <CardContent className="p-6">
-                <p className="text-center text-muted-foreground py-8">{t("common.comingSoon")}</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
       </div>
     </DashboardLayout>
   );
