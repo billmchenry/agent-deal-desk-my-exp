@@ -190,7 +190,7 @@ export default function IconProgram() {
                       <span className="text-sm font-semibold text-foreground">5 of 10</span>
                       <span className="text-sm font-medium text-foreground">50%</span>
                     </div>
-                    <p className="text-xs text-muted-foreground">Close 10 transactions</p>
+                    <p className="text-xs text-muted-foreground">{t("icon.closeTxns").replace("{count}", "10")}</p>
                   </div>
 
                   {/* ICON Qualifying Fee */}
