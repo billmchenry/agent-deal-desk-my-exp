@@ -159,8 +159,8 @@ export default function TeamDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-muted/30 rounded-lg p-4">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.units")}</p>
-                <p className="text-3xl font-bold text-foreground font-secondary tabular-nums">
-                  {formatNumber(teamOverview.units.total)} <span className="text-sm font-normal text-muted-foreground">{t("team.units")}</span>
+                <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
+                  {formatNumber(teamOverview.units.total)} <span className="text-body font-normal text-muted-foreground">{t("team.units")}</span>
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatNumber(teamOverview.units.pending)} {t("team.units")}</p>
               </div>
