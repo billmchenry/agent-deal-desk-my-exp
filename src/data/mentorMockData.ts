@@ -254,7 +254,7 @@ export const mockMentees: Mentee[] = [
     postalCode: "33101",
     country: "United States",
     secondaryEmail: "",
-    sponsor: { name: "David Williams", email: "david.williams@exprealty.com", phone: "(555) 345-6789" },
+    sponsor: { name: "David Williams", email: "david.williams@exprealty.com", phone: "(214) 555-6789" },
     transactions: [],
   },
   {
