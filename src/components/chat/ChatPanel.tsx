@@ -182,6 +182,7 @@ function ChatContent({
   onStopVoiceListening,
   onVoiceTranscript,
 }: ChatContentProps) {
+  const { t } = useTranslation();
   const [pendingAttachments, setPendingAttachments] = React.useState<ChatAttachment[]>([]);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
