@@ -81,7 +81,7 @@ export default function PersonalDetails() {
 
                     {/* Upper Tabs Only */}
                     <Tabs defaultValue="general" className="w-full">
-                      <TabsList className="mb-6 flex-wrap h-auto gap-1 bg-transparent p-0">
+                      <TabsList className="mb-6 h-auto gap-1 bg-transparent p-0">
                         <TabsTrigger
                           value="general"
                           className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
@@ -146,7 +146,7 @@ export default function PersonalDetails() {
           <Card className="mt-6">
             <CardContent className="p-6">
               <Tabs defaultValue="office-locations" className="w-full">
-                <TabsList className="mb-6 flex-wrap h-auto gap-1 bg-transparent p-0">
+                <TabsList className="mb-6 h-auto gap-1 bg-transparent p-0">
                   <TabsTrigger
                     value="office-locations"
                     className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm"
