@@ -118,7 +118,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2 pl-2 pr-1" aria-label={t("header.accountMenu")}>
+                <Button variant="ghost" className="flex items-center gap-2 ps-2 pe-1" aria-label={t("header.accountMenu")}>
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
                     <AvatarFallback className="bg-exp-blue text-white text-xs">
