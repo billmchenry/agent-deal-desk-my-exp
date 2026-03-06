@@ -259,7 +259,7 @@ export default function IconProgram() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-foreground">Events Attended</h3>
-                  <span className="text-2xl font-bold text-foreground">02</span>
+                  <span className="text-stat-value font-bold text-foreground">02</span>
                 </div>
 
                 <div className="flex items-center gap-3 mb-2">
