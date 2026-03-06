@@ -302,7 +302,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-foreground">{t("revshare.unpaid")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Calculated but not paid out</p>
-                <p className="text-lg font-bold font-secondary text-foreground mb-2">
+                <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
                 <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
