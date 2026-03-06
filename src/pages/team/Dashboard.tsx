@@ -187,7 +187,7 @@ export default function TeamDashboard() {
           {/* Onboarding Agents */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base font-medium">{t("team.onboardingAgents")}</CardTitle>
+              <CardTitle className="text-section-title font-medium">{t("team.onboardingAgents")}</CardTitle>
               <span className="text-sm text-muted-foreground">
                 {t("team.showingOf").replace("{count}", String(onboardingAgents.length)).replace("{total}", String(onboardingAgents.length))}
               </span>
