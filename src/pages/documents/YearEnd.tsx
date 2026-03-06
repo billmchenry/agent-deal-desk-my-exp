@@ -510,7 +510,7 @@ export default function YearEnd() {
                           {eg.lines.map((line) => (
                             <button
                               key={line.id}
-                              className="flex items-center justify-between w-full py-1 px-1 rounded hover:bg-muted/40 transition-colors group text-left"
+                              className="flex items-center justify-between w-full py-1 px-1 rounded hover:bg-muted/40 transition-colors group text-start"
                               onClick={() => handleDrilldown(line)}
                               aria-label={`${line.type} ${formatCurrency(line.amount)}`}
                             >

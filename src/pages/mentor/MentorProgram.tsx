@@ -184,7 +184,7 @@ function CertificationView() {
           <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
             <GraduationCap className="h-7 w-7 text-primary" />
           </div>
-          <div className="flex-1 text-center sm:text-left">
+          <div className="flex-1 text-center sm:text-start">
             <h3 className="text-base font-bold text-foreground">{t("mentor.completeCertification")}</h3>
             <p className="text-sm text-muted-foreground mt-1">
               {t("mentor.certTrainingRequired")}

@@ -214,7 +214,7 @@ export default function TeamDashboard() {
                         <Avatar className="h-10 w-10 bg-primary">
                           <AvatarFallback className="bg-primary text-primary-foreground">{agent.initials}</AvatarFallback>
                         </Avatar>
-                        <div className="text-left">
+                        <div className="text-start">
                           <p className="font-medium text-foreground text-body">{agent.name}</p>
                           <p className="text-xs text-muted-foreground">{agent.joinDate}</p>
                         </div>

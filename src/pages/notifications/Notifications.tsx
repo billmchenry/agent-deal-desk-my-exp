@@ -520,7 +520,7 @@ function NotificationList({
       {items.map((n) => (
         <button
           key={n.id}
-          className="flex items-start justify-between gap-4 py-4 w-full text-left hover:bg-muted/30 transition-colors rounded-lg px-2 -mx-2 min-h-[56px]"
+          className="flex items-start justify-between gap-4 py-4 w-full text-start hover:bg-muted/30 transition-colors rounded-lg px-2 -mx-2 min-h-[56px]"
           onClick={() => onSelect(n)}
           aria-label={`${n.message} — ${n.timestamp}`}
         >

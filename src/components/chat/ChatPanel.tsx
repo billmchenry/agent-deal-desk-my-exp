@@ -283,7 +283,7 @@ function ChatContent({
             placeholder={t("chat.searchConversations")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 h-9 text-sm"
+            className="ps-8 h-9 text-sm"
           />
         </div>
       </div>
