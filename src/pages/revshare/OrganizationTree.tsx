@@ -292,11 +292,11 @@ function SelectedAgentCard({
               <div className="mt-2 space-y-1 text-xs">
                 <div>
                   <Badge className="bg-primary text-primary-foreground text-xs font-medium">
-                    {t("orgTree.contributedRevShare")}: {agent.revShare}
+                    {t("orgTree.contributedRevShare")}: {formatCurrency(agent.revShare)}
                   </Badge>
                 </div>
                 <p className="text-muted-foreground">
-                  {t("orgTree.individualContribution")}: {agent.contribution}
+                  {t("orgTree.individualContribution")}: {formatCurrency(agent.contribution)}
                 </p>
                 <div className="flex items-center gap-2">
                   <span className="text-muted-foreground">{t("orgTree.orgSize")}: {agent.orgSize}</span>
