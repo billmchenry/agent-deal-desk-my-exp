@@ -772,7 +772,7 @@ export const mockStateMentors: StateMentor[] = [
 export const mockAvailableMentors: AvailableMentor[] = [
   {
     id: "am1",
-    name: "Alejandra Pino Torrealba",
+    name: "Camila Reyes Montoya",
     location: "Katy, TX",
     badges: ["Team Lead", "ICON"],
     bio: "With over 15 years of real estate experience across both residential and commercial markets, I am passionate about helping new agents find their footing and build sustainable businesses. My approach combines hands-on transaction support with strategic business planning to ensure mentees not only close their first deals but develop the skills and confidence to thrive long-term in this industry.",
@@ -782,10 +782,10 @@ export const mockAvailableMentors: AvailableMentor[] = [
     mls: ["HAR MLS", "Houston MLS"],
     specializations: ["Residential", "Luxury", "First-Time Buyers"],
     certifications: ["ABR", "CRS", "GRI"],
-    phone: "(555) 293-4810",
-    email: "alejandra.pino@exprealty.com",
-    facebook: "https://facebook.com/alejandrapino",
-    linkedin: "https://linkedin.com/in/alejandrapino",
+    phone: "(281) 555-4810",
+    email: "camila.reyes@exprealty.com",
+    facebook: "https://facebook.com/camilareyes",
+    linkedin: "https://linkedin.com/in/camilareyes",
     website: "https://alejandrapino.exprealty.com",
   },
   {
