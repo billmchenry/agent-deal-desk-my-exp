@@ -91,7 +91,7 @@ export function AgentHeroBanner({
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
           <MiniStatCard
             icon={<Home className="h-4 w-4" />}
             value={units.toString()}
