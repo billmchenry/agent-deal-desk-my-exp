@@ -81,7 +81,7 @@ export default function MentorRequests() {
                         <TableCell className="font-medium text-foreground">{req.firstName}</TableCell>
                         <TableCell className="text-foreground">{req.lastName}</TableCell>
                         <TableCell className="text-muted-foreground">{req.requestSentDate}</TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-end">
                           <div className="flex items-center justify-end gap-2">
                             <Button size="sm" variant="default" onClick={() => handleAccept(req.id)}>
                               {t("mentor.accept")}
