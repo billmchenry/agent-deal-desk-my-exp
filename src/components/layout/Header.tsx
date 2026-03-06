@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, HelpCircle, ChevronDown, Menu, Sun, Moon } from "lucide-react";
+import { Bell, HelpCircle, ChevronDown, Menu, Sun, Moon, FlaskConical } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 import { Link } from "react-router-dom";
