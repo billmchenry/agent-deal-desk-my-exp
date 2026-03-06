@@ -10,7 +10,7 @@ export function AchievementsCard() {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">{t("dashboard.myAchievements")}</CardTitle>
+        <CardTitle className="text-section-title font-semibold">{t("dashboard.myAchievements")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="rounded-lg border bg-muted/30 p-4">
