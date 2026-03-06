@@ -121,44 +121,78 @@ export default function OrganizationReporting() {
                   <span className="text-xs text-muted-foreground">{t("org.last12Months")}</span>
                 </div>
               </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-border bg-muted/50">
-                        <th className="text-left px-4 py-3 font-semibold text-muted-foreground">{t("org.country")}</th>
-                        <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.activeAgents")}</th>
-                        <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.totalTransactions")}</th>
-                        <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.productivityPerPerson")}</th>
-                        <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.totalRevShare")}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {countryProductionData.map((row, i) => (
-                        <tr key={row.country} className={`border-b border-border last:border-0 ${i % 2 === 0 ? "" : "bg-muted/30"}`}>
-                          <td className="px-4 py-3 font-medium text-foreground flex items-center gap-2">
-                            <span className="text-lg">{row.flag}</span>
-                            {row.country}
-                          </td>
-                          <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.activeAgents)}</td>
-                          <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.totalTransactions)}</td>
-                          <td className="px-4 py-3 text-right text-foreground font-semibold">{(row.totalTransactions / row.activeAgents).toFixed(2)}</td>
-                          <td className="px-4 py-3 text-right text-foreground font-semibold">{formatCurrency(row.totalRevShare)}</td>
+              <CardContent className={isMobile ? "p-3" : "p-0"}>
+                {isMobile ? (
+                  <div className="space-y-3">
+                    {countryProductionData.map((row) => (
+                      <div key={row.country} className="rounded-lg border bg-card p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-lg">{row.flag}</span>
+                          <span className="font-semibold text-foreground">{row.country}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
+                          <span className="text-muted-foreground">{t("org.activeAgents")}</span>
+                          <span className="text-right font-semibold text-foreground">{formatNumber(row.activeAgents)}</span>
+                          <span className="text-muted-foreground">{t("org.totalTransactions")}</span>
+                          <span className="text-right font-semibold text-foreground">{formatNumber(row.totalTransactions)}</span>
+                          <span className="text-muted-foreground">{t("org.productivityPerPerson")}</span>
+                          <span className="text-right font-semibold text-foreground">{(row.totalTransactions / row.activeAgents).toFixed(2)}</span>
+                          <span className="text-muted-foreground">{t("org.totalRevShare")}</span>
+                          <span className="text-right font-semibold text-foreground">{formatCurrency(row.totalRevShare)}</span>
+                        </div>
+                      </div>
+                    ))}
+                    {/* Totals card */}
+                    <div className="rounded-lg border-2 border-primary/20 bg-primary/5 p-3">
+                      <span className="font-bold text-foreground text-sm">{t("org.total")}</span>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm mt-2">
+                        <span className="text-muted-foreground">{t("org.activeAgents")}</span>
+                        <span className="text-right font-bold text-foreground">{formatNumber(totals.activeAgents)}</span>
+                        <span className="text-muted-foreground">{t("org.totalTransactions")}</span>
+                        <span className="text-right font-bold text-foreground">{formatNumber(totals.totalTransactions)}</span>
+                        <span className="text-muted-foreground">{t("org.productivityPerPerson")}</span>
+                        <span className="text-right font-bold text-foreground">{(totals.totalTransactions / totals.activeAgents).toFixed(2)}</span>
+                        <span className="text-muted-foreground">{t("org.totalRevShare")}</span>
+                        <span className="text-right font-bold text-foreground">{formatCurrency(totals.totalRevShare)}</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border bg-muted/50">
+                          <th className="text-left px-4 py-3 font-semibold text-muted-foreground">{t("org.country")}</th>
+                          <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.activeAgents")}</th>
+                          <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.totalTransactions")}</th>
+                          <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.productivityPerPerson")}</th>
+                          <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.totalRevShare")}</th>
                         </tr>
-                      ))}
-                      {/* Totals row */}
-                      <tr className="bg-primary/5 border-t-2 border-primary/20">
-                        <td className="px-4 py-3 font-bold text-foreground">{t("org.total")}</td>
-                        <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(countryProductionData.reduce((s, r) => s + r.activeAgents, 0))}</td>
-                        <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(countryProductionData.reduce((s, r) => s + r.totalTransactions, 0))}</td>
-                        <td className="px-4 py-3 text-right font-bold text-foreground">
-                          {(countryProductionData.reduce((s, r) => s + r.totalTransactions, 0) / countryProductionData.reduce((s, r) => s + r.activeAgents, 0)).toFixed(2)}
-                        </td>
-                        <td className="px-4 py-3 text-right font-bold text-foreground">{formatCurrency(countryProductionData.reduce((s, r) => s + r.totalRevShare, 0))}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {countryProductionData.map((row, i) => (
+                          <tr key={row.country} className={`border-b border-border last:border-0 ${i % 2 === 0 ? "" : "bg-muted/30"}`}>
+                            <td className="px-4 py-3 font-medium text-foreground flex items-center gap-2">
+                              <span className="text-lg">{row.flag}</span>
+                              {row.country}
+                            </td>
+                            <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.activeAgents)}</td>
+                            <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.totalTransactions)}</td>
+                            <td className="px-4 py-3 text-right text-foreground font-semibold">{(row.totalTransactions / row.activeAgents).toFixed(2)}</td>
+                            <td className="px-4 py-3 text-right text-foreground font-semibold">{formatCurrency(row.totalRevShare)}</td>
+                          </tr>
+                        ))}
+                        <tr className="bg-primary/5 border-t-2 border-primary/20">
+                          <td className="px-4 py-3 font-bold text-foreground">{t("org.total")}</td>
+                          <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(totals.activeAgents)}</td>
+                          <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(totals.totalTransactions)}</td>
+                          <td className="px-4 py-3 text-right font-bold text-foreground">{(totals.totalTransactions / totals.activeAgents).toFixed(2)}</td>
+                          <td className="px-4 py-3 text-right font-bold text-foreground">{formatCurrency(totals.totalRevShare)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
