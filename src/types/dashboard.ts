@@ -111,6 +111,14 @@ export const WIDGET_REGISTRY: Record<WidgetType, {
     refreshFrequency: 'Weekly',
     widgetKind: 'Card',
   },
+  'nps-survey': {
+    title: 'NPS Survey',
+    defaultSize: 'medium',
+    defaultColumn: 'sidebar',
+    description: 'Agent feedback and NPS survey',
+    refreshFrequency: 'Weekly',
+    widgetKind: 'Card',
+  },
   'forecast': {
     title: 'Revenue Forecast',
     defaultSize: 'small',
