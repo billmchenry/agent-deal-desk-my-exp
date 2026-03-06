@@ -4,14 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const cappingHistoryData = [
   { startDate: "01/01/2026", endDate: "12/31/2026", capReached: "-", capPercentage: "3.01%" },
@@ -35,14 +31,15 @@ function isActiveRow(startDate: string, endDate: string) {
   return now >= parseDate(startDate) && now <= parseDate(endDate);
 }
 
-function getCapColor(pct: string) {
+function CapBadge({ pct }: { pct: string }) {
   const val = parseFloat(pct);
-  if (val >= 100) return "text-exp-green font-semibold";
-  if (val === 0) return "text-muted-foreground";
-  return "text-exp-blue font-medium";
+  if (val >= 100) return <Badge className="text-[10px] px-1.5 py-0 font-semibold bg-exp-green/10 text-exp-green border-exp-green/20">100%</Badge>;
+  if (val === 0) return <span className="text-muted-foreground text-xs">{pct}</span>;
+  return <span className="text-exp-blue font-medium text-xs">{pct}</span>;
 }
 
 export function CappingHistoryTable() {
+  const isMobile = useIsMobile();
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ startDate: "", endDate: "", capReached: "", capPercentage: "" });
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
@@ -82,6 +79,45 @@ export function CappingHistoryTable() {
     });
   }, [filters, sortKey, sortDir]);
 
+  // Mobile: stacked cards
+  if (isMobile) {
+    return (
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">History</h3>
+          <span className="text-[10px] text-muted-foreground">{sortedData.length} Results</span>
+        </div>
+        <div className="space-y-2">
+          {sortedData.map((row, i) => {
+            const active = isActiveRow(row.startDate, row.endDate);
+            return (
+              <div
+                key={i}
+                className={`rounded-lg border p-3 space-y-1.5 ${active ? "border-primary bg-primary/5" : "bg-card"}`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-foreground">
+                    {row.startDate} – {row.endDate}
+                  </span>
+                  <CapBadge pct={row.capPercentage} />
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span>Cap Reached:</span>
+                  {row.capReached === "-" ? (
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-normal">In Progress</Badge>
+                  ) : (
+                    <span>{row.capReached}</span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop: table view
   return (
     <div className="flex-1 min-w-0">
       <div className="flex items-center justify-between mb-2 flex-wrap gap-1">
@@ -90,7 +126,7 @@ export function CappingHistoryTable() {
           <Button
             variant={showFilters ? "secondary" : "ghost"}
             size="sm"
-            className="gap-1.5 text-xs h-7 px-2 min-h-[44px] sm:min-h-0"
+            className="gap-1.5 text-xs h-7 px-2"
             onClick={() => setShowFilters((v) => !v)}
           >
             <SlidersHorizontal className="h-3 w-3" />
@@ -144,7 +180,7 @@ export function CappingHistoryTable() {
               {sortedData.map((row, i) => {
                 const active = isActiveRow(row.startDate, row.endDate);
                 return (
-                  <TableRow key={i} className={`min-h-[44px] ${active ? "bg-primary/5 border-l-2 border-l-primary" : ""}`}>
+                  <TableRow key={i} className={`${active ? "bg-primary/5 border-l-2 border-l-primary" : ""}`}>
                     <TableCell className="py-2 px-3 text-xs">{row.startDate}</TableCell>
                     <TableCell className="py-2 px-3 text-xs">{row.endDate}</TableCell>
                     <TableCell className="py-2 px-3 text-xs">
@@ -153,13 +189,7 @@ export function CappingHistoryTable() {
                       ) : row.capReached}
                     </TableCell>
                     <TableCell className="py-2 px-3 text-xs">
-                      {parseFloat(row.capPercentage) >= 100 ? (
-                        <Badge className="text-[10px] px-1.5 py-0 font-semibold bg-exp-green/10 text-exp-green border-exp-green/20">100%</Badge>
-                      ) : parseFloat(row.capPercentage) === 0 ? (
-                        <span className="text-muted-foreground">{row.capPercentage}</span>
-                      ) : (
-                        <span className="text-exp-blue font-medium">{row.capPercentage}</span>
-                      )}
+                      <CapBadge pct={row.capPercentage} />
                     </TableCell>
                   </TableRow>
                 );
