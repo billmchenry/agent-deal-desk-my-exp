@@ -161,6 +161,7 @@ export const DEFAULT_LAYOUT: DashboardWidget[] = [
   { id: 'promo-carousel-1', type: 'promo-carousel', title: 'Promotions', size: 'large', column: 'main' },
   { id: 'news-training-1', type: 'news-training', title: 'News & Training', size: 'medium', column: 'sidebar' },
   { id: 'connect-upline-1', type: 'connect-upline', title: 'Connect Upline', size: 'medium', column: 'sidebar' },
+  { id: 'disc-assessment-1', type: 'disc-assessment', title: 'DISC Assessment', size: 'medium', column: 'sidebar' },
 ];
 
 export const CATEGORY_STYLES: Record<TemplateCategory, { bg: string; text: string; label: string }> = {

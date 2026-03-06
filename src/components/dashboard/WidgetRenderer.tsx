@@ -30,6 +30,8 @@ export function WidgetRenderer({ widget }: WidgetRendererProps) {
       return <NewsAndTrainingCard />;
     case 'connect-upline':
       return <ConnectUplineCard />;
+    case 'disc-assessment':
+      return <DiscAssessmentCard />;
     case 'forecast':
       return (
         <Card>
