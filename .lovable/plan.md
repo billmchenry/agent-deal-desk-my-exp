@@ -1,51 +1,83 @@
 
 
-## Mentor Program -- "Active Agent Wants to Be a Mentor" Flow
+# Team Reconciliation Page
 
-Based on the screenshots, there are three distinct states for this scenario, plus a 6-step application wizard:
+A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
 
-### States
+---
 
-1. **Landing page** (not yet applied) -- Branded header, "For Mentors" title, description text, "I Want to Be a Mentor" CTA button, and a note about already-submitted applications.
+## Overview
 
-2. **Pending state** (application submitted) -- Same branded header, success message indicating application is pending broker approval.
+Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
 
-3. **Approved/Certification state** (application approved) -- Branded header, "For Mentors" title, congratulations text, and a "Complete your Certification NOW!" card with "Start Training" button.
+---
 
-### 6-Step Mentor Application Wizard
+## New Files
 
-A full-page wizard at `/mentor/apply` with a numbered step indicator (reusing the circle-step pattern from the screenshots):
+### 1. `src/pages/team/Reconciliation.tsx`
 
-| Step | Title | Fields |
-|------|-------|--------|
-| 1 | Your Information | Read-only: Full Name, Primary Email, Phone, eXp Join Date, Team, MLS Name, Primary Licensed State. Tables: All Licenses, Active Markets. |
-| 2 | Real Estate Experience | Dropdowns (good standing, documents/fees, disciplinary actions, ICON, team leader, part/full time, specialization, languages). Inputs (years selling). Checkboxes (proficiency areas). Inputs (transactions closed). |
-| 3 | Mentorship/Coaching Experience | Dropdowns (mentoring exp, coaching exp, communication method, frequency). Textareas with char counters (interest, why mentor, teaching style, program/plan). Checkboxes (tools/strategies, availability). |
-| 4 | Goals/Intentions | Checkboxes (goals, shadowing opportunities). Textarea (mentee goals). |
-| 5 | Skills Assessment | 11 dropdown selects (1-10 scale) for various competencies. |
-| 6 | About the Mentor | 3 textareas with char counters (500 max). Acknowledgment checkbox. Submit button replaces Next. |
+The main page, closely mirroring the Agent Production Details pattern:
 
-### Implementation Plan
+- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
+- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
+- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
+- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
+- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
+- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
+- CSV export enabled
+- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
+- Back button at top linking to `/team/dashboard`
 
-1. **Create mentor scenario state management** -- Add a `mentorScenario` type and mock state in the MentorProgram page to switch between: `not_applied`, `pending`, `approved_certification`, and the existing `mentee` view. Use a simple state variable for now.
+### 2. `src/components/team/TeamBreakdownSheet.tsx`
 
-2. **Build the "For Mentors" landing page view** -- New component rendering the branded header, description, "I Want to Be a Mentor" button (navigates to `/mentor/apply`), and the disclaimer text.
+Side panel matching the reference screenshot's "Transaction Details" breakdown:
 
-3. **Build the 6-step application wizard page** -- New page at `/mentor/apply` with:
-   - Numbered circle step indicator (similar to WizardProgress but with numbered circles and labels)
-   - 6 step components, each rendering the form fields from the screenshots
-   - Cancel, Previous, Save My Progress, Next/Submit buttons in the footer
-   - On final submit, show success toast and navigate back to `/mentor` in `pending` state
+- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
+- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
+- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
+- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
+  - Agent identifier row (ID + Name) with a colored percentage badge
+  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
+  - Tax, Commission After Co-agents (highlighted)
+  - Agent Split Before Expenses
+  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
+- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
+- **Fees I Paid for Others** -- collapsible
+- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
 
-4. **Build the pending and certification views** -- Pending: simple message card. Certification: "Complete your Certification NOW!" card with "Start Training" button (toast placeholder).
+### 3. `src/components/shared/BreakdownComponents.tsx`
 
-5. **Add route** -- Register `/mentor/apply` in App.tsx.
+Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
 
-6. **Add i18n keys** -- All new strings added to en.ts.
+---
 
-### Technical Notes
-- The wizard will be a standalone page (not a sheet) matching the screenshots' full-page layout
-- Form state managed with React useState (no backend persistence)
-- Step indicator component will be a new shared component with numbered circles connected by lines
-- Character counters on textareas will show current/max (e.g., "4/500")
+## Modified Files
+
+### `src/components/agent/TransactionDetailsSheet.tsx`
+- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
+
+### `src/data/mockData.ts`
+- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
+- Update the `navItems` array similarly
+
+### `src/components/layout/Sidebar.tsx`
+- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
+
+### `src/App.tsx`
+- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
+
+### `src/i18n/*.ts` (all 7 language files)
+- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
+
+---
+
+## Implementation Order
+
+1. Extract shared breakdown components into `BreakdownComponents.tsx`
+2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
+3. Create mock team reconciliation data and the `Reconciliation.tsx` page
+4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
+5. Add route in `App.tsx`
+6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
+7. Add translation keys to all 7 language files
 
