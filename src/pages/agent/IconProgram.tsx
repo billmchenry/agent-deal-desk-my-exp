@@ -116,8 +116,8 @@ export default function IconProgram() {
           {/* ICON Production Tab */}
           <TabsContent value="production">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-              <h2 className="text-sm font-semibold text-foreground">ICON Production Overview</h2>
-              <YearToggle options={cappingYearOptions} value={cappingYear} onChange={setCappingYear} label="Capping Year" />
+              <h2 className="text-sm font-semibold text-foreground">{t("icon.productionOverview")}</h2>
+              <YearToggle options={cappingYearOptions} value={cappingYear} onChange={setCappingYear} label={t("icon.cappingYear")} />
             </div>
 
 
