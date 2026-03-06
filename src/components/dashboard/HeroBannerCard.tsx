@@ -30,12 +30,12 @@ export function HeroBannerCard() {
           <div>
             <h2 className="text-lg font-medium text-white/80">Track your progress to</h2>
             <p className="text-3xl font-bold">
-              <span className="text-exp-green-light">{formatCurrency(cappingData.target, { compact: true })}</span> Cap
+              <span className="text-exp-green-light">{formatCurrency(cappingData.target)}</span> Cap
             </p>
           </div>
           
           <p className="text-sm text-white/70">
-            You're <span className="font-semibold text-white">{formatCurrency(remaining, { compact: true })}</span> away from capping this year
+            You're <span className="font-semibold text-white">{formatCurrency(remaining)}</span> away from capping this year
           </p>
 
           <div className="flex flex-col xs:flex-row xs:items-center gap-3 xs:gap-4 pt-2">
