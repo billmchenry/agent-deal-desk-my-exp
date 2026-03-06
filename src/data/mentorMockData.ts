@@ -712,7 +712,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "Tomoko Hayashi",
     totalActiveMentees: 0,
     primaryEmail: "tomoko.hayashi@exprealty.com",
-    phone: "(555) 801-2293",
+    phone: "(206) 555-2293",
     secondaryEmail: "thayashi@gmail.com",
     city: "Seattle",
     state: "WA",
