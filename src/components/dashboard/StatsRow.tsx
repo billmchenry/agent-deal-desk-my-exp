@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Home, DollarSign, Building2 } from "lucide-react";
 import { cappingData } from "@/data/mockData";
 import { useDashboard } from "@/contexts/DashboardContext";
-import { MiraSuggestionBar } from "./MiraSuggestionBar";
+
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -50,31 +50,28 @@ export function StatsRow() {
   const { t } = useTranslation();
 
   return (
-    <>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard
-          icon={<Home className="h-5 w-5" />}
-          value={cappingData.units.toString()}
-          label={t("dashboard.unitsClosed")}
-          color="blue"
-          isLoading={isRefreshing}
-        />
-        <StatCard
-          icon={<DollarSign className="h-5 w-5" />}
-          value={formatCurrency(cappingData.gci, { compact: true })}
-          label={t("dashboard.grossCommission")}
-          color="green"
-          isLoading={isRefreshing}
-        />
-        <StatCard
-          icon={<Building2 className="h-5 w-5" />}
-          value={formatCurrency(cappingData.volume, { compact: true })}
-          label={t("dashboard.totalVolume")}
-          color="purple"
-          isLoading={isRefreshing}
-        />
-      </div>
-      <MiraSuggestionBar />
-    </>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <StatCard
+        icon={<Home className="h-5 w-5" />}
+        value={cappingData.units.toString()}
+        label={t("dashboard.unitsClosed")}
+        color="blue"
+        isLoading={isRefreshing}
+      />
+      <StatCard
+        icon={<DollarSign className="h-5 w-5" />}
+        value={formatCurrency(cappingData.gci, { compact: true })}
+        label={t("dashboard.grossCommission")}
+        color="green"
+        isLoading={isRefreshing}
+      />
+      <StatCard
+        icon={<Building2 className="h-5 w-5" />}
+        value={formatCurrency(cappingData.volume, { compact: true })}
+        label={t("dashboard.totalVolume")}
+        color="purple"
+        isLoading={isRefreshing}
+      />
+    </div>
   );
 }
