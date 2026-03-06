@@ -348,8 +348,8 @@ function ChatContent({
         ) : (
           <div className="text-center py-12 text-muted-foreground">
             <MessageSquare className="h-10 w-10 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">No conversations yet</p>
-            <p className="text-xs mt-1">Start chatting with Mira!</p>
+            <p className="text-sm">{t("chat.noConversationsYet")}</p>
+            <p className="text-xs mt-1">{t("chat.startChatting")}</p>
           </div>
         )}
       </ScrollArea>
