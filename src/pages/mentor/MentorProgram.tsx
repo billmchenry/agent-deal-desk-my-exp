@@ -292,7 +292,7 @@ export default function MentorProgram() {
           ))}
         </div>
 
-        {scenario === "mentee" && <MenteeView />}
+        {/* Mentee view removed - now on homepage */}
         {scenario === "not_applied" && <NotAppliedView />}
         {scenario === "pending" && <PendingView />}
         {scenario === "approved_certification" && <CertificationView />}
