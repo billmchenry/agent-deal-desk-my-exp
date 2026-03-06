@@ -175,7 +175,7 @@ export default function OrganizationReporting() {
                             </td>
                             <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.activeAgents)}</td>
                             <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.totalTransactions)}</td>
-                            <td className="px-4 py-3 text-right text-foreground font-semibold">{(row.totalTransactions / row.activeAgents).toFixed(2)}</td>
+                            <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.totalTransactions / row.activeAgents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                             <td className="px-4 py-3 text-right text-foreground font-semibold">{formatCurrency(row.totalRevShare)}</td>
                           </tr>
                         ))}
