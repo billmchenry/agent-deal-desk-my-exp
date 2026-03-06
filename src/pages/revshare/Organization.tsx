@@ -148,7 +148,7 @@ export default function OrganizationReporting() {
                         <span className="text-muted-foreground">{t("org.totalTransactions")}</span>
                         <span className="text-right font-bold text-foreground">{formatNumber(totals.totalTransactions)}</span>
                         <span className="text-muted-foreground">{t("org.productivityPerPerson")}</span>
-                        <span className="text-right font-bold text-foreground">{(totals.totalTransactions / totals.activeAgents).toFixed(2)}</span>
+                        <span className="text-right font-bold text-foreground">{formatNumber(totals.totalTransactions / totals.activeAgents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         <span className="text-muted-foreground">{t("org.totalRevShare")}</span>
                         <span className="text-right font-bold text-foreground">{formatCurrency(totals.totalRevShare)}</span>
                       </div>
