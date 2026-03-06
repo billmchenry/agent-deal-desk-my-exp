@@ -88,7 +88,7 @@ export function MentorProgramWidget({ status, onStatusChange }: MentorProgramWid
                 </Badge>
               </div>
               <div>
-                <h3 className="text-xl md:text-2xl font-bold">Find Your Mentor</h3>
+                <h3 className="text-page-title font-bold">Find Your Mentor</h3>
                 <p className="text-sm text-white/80 mt-1 max-w-md">
                   You have a limited time to choose a mentor. If you don't select one, a mentor will be assigned to you automatically.
                 </p>
