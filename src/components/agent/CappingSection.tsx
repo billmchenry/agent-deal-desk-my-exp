@@ -12,7 +12,7 @@ interface CappingSectionProps {
   dateRange?: { from: Date | undefined; to: Date | undefined };
 }
 
-export function CappingSection({ capCurrent, capTarget, capPercentage }: CappingSectionProps) {
+export function CappingSection({ capCurrent, capTarget, capPercentage, dateRange }: CappingSectionProps) {
   const remaining = capTarget - capCurrent;
   const { formatCurrency } = useFormatters();
   const { t } = useTranslation();
