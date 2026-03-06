@@ -183,10 +183,10 @@ function AgentCard({
           {onOpenContact && (
             <button
               onClick={(e) => { e.stopPropagation(); onOpenContact(); }}
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-accent transition-colors text-muted-foreground hover:text-primary shrink-0 min-h-[44px] min-w-[44px]"
+              className="flex h-11 w-11 md:h-9 md:w-9 items-center justify-center rounded-full hover:bg-accent transition-colors text-muted-foreground hover:text-primary shrink-0 min-h-[48px] min-w-[48px] md:min-h-[44px] md:min-w-[44px]"
               aria-label={`View contact card for ${agent.name}`}
             >
-              <Contact className="h-4 w-4" />
+              <Contact className="h-5 w-5 md:h-4 md:w-4" />
             </button>
           )}
         </div>
