@@ -93,7 +93,7 @@ export default function RevShareTrends() {
         {/* Total Summary */}
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-base font-medium">{t("trends.totalSummary")}</CardTitle>
+            <CardTitle className="text-section-title font-medium">{t("trends.totalSummary")}</CardTitle>
             <Button variant="outline" size="sm" className="gap-2">
               <Download className="h-4 w-4" />
               {t("agent.download")} {t("trends.totalSummary")}
