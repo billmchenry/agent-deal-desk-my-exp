@@ -409,6 +409,8 @@ export const en = {
    "fin.transactionId": "Transaction ID",
    "fin.transactionStatus": "Transaction Status",
    "fin.paidStatus": "Paid Status",
+   "fin.transactions": "Transactions",
+   "fin.members": "Members",
    "fin.address": "Address",
    "fin.generatedDate": "Generated Date",
    "fin.revShareLabel": "Revenue Share",
