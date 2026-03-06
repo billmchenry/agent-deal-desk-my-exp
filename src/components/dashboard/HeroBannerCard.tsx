@@ -29,7 +29,7 @@ export function HeroBannerCard() {
           
           <div>
             <h2 className="text-section-title font-medium text-white/80">Track your progress to</h2>
-            <p className="text-3xl font-bold">
+            <p className="text-stat-value font-bold">
               <span className="text-exp-green-light">{formatCurrency(cappingData.target)}</span> Cap
             </p>
           </div>
