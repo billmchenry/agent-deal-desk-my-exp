@@ -206,6 +206,18 @@ export function AgentContactSheet({ open, onOpenChange, agent }: AgentContactShe
                     {formatNumber(agent.groupSize)}
                   </p>
                 </div>
+                <div className="rounded-lg border bg-card p-3 space-y-1">
+                  <p className="text-xs text-muted-foreground">{t("revgroup.capPct")}</p>
+                  <p className="text-lg font-bold text-foreground font-secondary">
+                    {agent.capPct}%
+                  </p>
+                </div>
+                <div className="rounded-lg border bg-card p-3 space-y-1">
+                  <p className="text-xs text-muted-foreground">{t("revgroup.icon")}</p>
+                  <p className="text-lg font-bold text-foreground font-secondary">
+                    {agent.icon}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
