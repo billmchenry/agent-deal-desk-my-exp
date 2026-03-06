@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ArrowRight, Target, TrendingUp, Play } from "lucide-react";
+import { ArrowRight, TrendingUp, Play } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,14 +10,6 @@ import {
 } from "@/components/ui/carousel";
 
 const slides = [
-  {
-    id: "disc",
-    icon: Target,
-    title: "DISC Assessment",
-    description: "Understand your communication style and improve client relationships.",
-    buttonText: "Take Assessment",
-    theme: "purple" as const,
-  },
   {
     id: "stock",
     icon: TrendingUp,

@@ -5,6 +5,7 @@ import { ActionCenterCard } from "./ActionCenterCard";
 import { PromotionalCarousel } from "./PromotionalCarousel";
 import { NewsAndTrainingCard } from "./NewsAndTrainingCard";
 import { ConnectUplineCard } from "./ConnectUplineCard";
+import { DiscAssessmentCard } from "./DiscAssessmentCard";
 import { ForecastWidget } from "./widgets/ForecastWidget";
 import { VelocityWidget } from "./widgets/VelocityWidget";
 import { PipelineWidget } from "./widgets/PipelineWidget";
@@ -29,6 +30,8 @@ export function WidgetRenderer({ widget }: WidgetRendererProps) {
       return <NewsAndTrainingCard />;
     case 'connect-upline':
       return <ConnectUplineCard />;
+    case 'disc-assessment':
+      return <DiscAssessmentCard />;
     case 'forecast':
       return (
         <Card>
