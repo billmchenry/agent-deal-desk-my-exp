@@ -36,7 +36,7 @@ export default function MentorRequests() {
         <Button
           variant="ghost"
           size="sm"
-          className="gap-1 text-muted-foreground hover:text-foreground -ml-2"
+          className="gap-1 text-muted-foreground hover:text-foreground -ms-2"
           onClick={() => navigate("/mentor")}
         >
           <ChevronLeft className="h-4 w-4" />
@@ -61,7 +61,7 @@ export default function MentorRequests() {
                       <TableHead>{t("mentor.firstName")}</TableHead>
                       <TableHead>{t("mentor.lastName")}</TableHead>
                       <TableHead>{t("mentor.requestSent")}</TableHead>
-                      <TableHead className="text-right">{t("mentor.respondToRequest")}</TableHead>
+                      <TableHead className="text-end">{t("mentor.respondToRequest")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -81,7 +81,7 @@ export default function MentorRequests() {
                         <TableCell className="font-medium text-foreground">{req.firstName}</TableCell>
                         <TableCell className="text-foreground">{req.lastName}</TableCell>
                         <TableCell className="text-muted-foreground">{req.requestSentDate}</TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-end">
                           <div className="flex items-center justify-end gap-2">
                             <Button size="sm" variant="default" onClick={() => handleAccept(req.id)}>
                               {t("mentor.accept")}
@@ -117,7 +117,7 @@ export default function MentorRequests() {
                         onClick={() => setSelectedRequest(req)}
                       >
                         {t("mentor.details")}
-                        <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
+                        <ChevronRight className="h-3.5 w-3.5 ms-0.5" />
                       </Button>
                     </div>
                     <div className="flex gap-2">

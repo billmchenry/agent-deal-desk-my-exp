@@ -166,7 +166,7 @@ export default function RevShareDashboard() {
           <div className="relative z-10">
             <div className="mb-4">
               <Badge className="bg-exp-gold/20 text-exp-gold-light border-exp-gold/30 hover:bg-exp-gold/30">
-                <Target className="mr-1 h-3 w-3" />
+                <Target className="me-1 h-3 w-3" />
                 {t("revshare.revenueShare").toUpperCase()}
               </Badge>
             </div>
@@ -370,7 +370,7 @@ export default function RevShareDashboard() {
                   centerLabel={donutCenterLabel}
                 />
               </div>
-              <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-4 border-border">
+              <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-s lg:ps-4 border-border">
                 <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byCountry")}</span>
                 <DistributionDonut
                   data={countryDonutData}
