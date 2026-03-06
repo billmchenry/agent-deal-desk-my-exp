@@ -15,8 +15,10 @@ import {
 import { Sparkles } from "lucide-react";
 import { useDashboard } from "@/contexts/DashboardContext";
 import { useMiraChat } from "@/contexts/MiraChatContext";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import { DraggableWidget } from "./DraggableWidget";
 import { WidgetRenderer } from "./WidgetRenderer";
+import { MentorProgramWidget } from "./MentorProgramWidget";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -38,6 +40,9 @@ const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
 export function CustomizableDashboard() {
   const { widgets, isEditMode, removeWidget, reorderWidgets } = useDashboard();
   const { openChat } = useMiraChat();
+  const { config, setMentorMode } = useDemoConfig();
+
+  const showMentorWidget = config.mentorMode === "needs_mentor" || config.mentorMode === "pairing_underway";
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -80,16 +85,47 @@ export function CustomizableDashboard() {
               items={mainWidgets.map((w) => w.id)}
               strategy={verticalListSortingStrategy}
             >
-              {mainWidgets.map((widget) => (
-                <DraggableWidget
-                  key={widget.id}
-                  widget={widget}
-                  isEditMode={isEditMode}
-                  onRemove={removeWidget}
-                >
-                  <WidgetRenderer widget={widget} />
-                </DraggableWidget>
-              ))}
+              {(() => {
+                const heroBannerIdx = mainWidgets.findIndex(w => w.type === "hero-banner");
+                const insertAfterIdx = heroBannerIdx >= 0 ? heroBannerIdx : -1; // after hero-banner, or at top if missing
+
+                const elements: React.ReactNode[] = [];
+
+                if (showMentorWidget && insertAfterIdx === -1) {
+                  elements.push(
+                    <MentorProgramWidget
+                      key="mentor-widget"
+                      status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                      onStatusChange={setMentorMode}
+                    />
+                  );
+                }
+
+                mainWidgets.forEach((widget, index) => {
+                  elements.push(
+                    <DraggableWidget
+                      key={widget.id}
+                      widget={widget}
+                      isEditMode={isEditMode}
+                      onRemove={removeWidget}
+                    >
+                      <WidgetRenderer widget={widget} />
+                    </DraggableWidget>
+                  );
+
+                  if (showMentorWidget && index === insertAfterIdx) {
+                    elements.push(
+                      <MentorProgramWidget
+                        key="mentor-widget"
+                        status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                        onStatusChange={setMentorMode}
+                      />
+                    );
+                  }
+                });
+
+                return elements;
+              })()}
             </SortableContext>
 
             {mainWidgets.length === 0 && (
