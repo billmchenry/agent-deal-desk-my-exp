@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Download, Search, X, Contact, Award } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useFormatters } from "@/hooks/useFormatters";
 import { AgentContactSheet, type AgentContactData } from "@/components/revshare/AgentContactSheet";
 import { UniversalFilterBar } from "@/components/filters";
 
