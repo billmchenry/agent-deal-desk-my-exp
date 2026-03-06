@@ -140,7 +140,7 @@ export default function TeamDashboard() {
         {/* Overview Section */}
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-base font-medium">{t("team.overview")}</CardTitle>
+            <CardTitle className="text-section-title font-medium">{t("team.overview")}</CardTitle>
             <Select defaultValue="jan2026">
               <SelectTrigger className="w-[220px]">
                 <div className="flex items-center gap-2">
