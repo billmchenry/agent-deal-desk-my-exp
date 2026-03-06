@@ -173,7 +173,7 @@ export default function IconProgram() {
 
                   {/* GCI */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-foreground">GCI</h4>
+                    <h4 className="text-sm font-medium text-foreground">{t("icon.gci")}</h4>
                     <Progress value={4.19} className="h-2" />
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold text-foreground">$20,930.87</span>
