@@ -61,6 +61,15 @@ export function Header({ onMenuClick }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-1 sm:gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5 text-xs h-8 border-dashed"
+            onClick={() => setDemoConfigOpen(true)}
+          >
+            <FlaskConical className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Demo Config</span>
+          </Button>
           <div className="lg:hidden">
             <GlobalSearch />
           </div>
