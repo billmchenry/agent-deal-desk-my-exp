@@ -36,7 +36,7 @@ export function CappingYearCard() {
 
         <div className="grid grid-cols-3 gap-4 pt-2">
           <div className="text-center">
-            <p className="text-2xl font-bold text-exp-blue">{cappingData.units}</p>
+            <p className="text-stat-value font-bold text-exp-blue">{cappingData.units}</p>
             <p className="text-xs text-muted-foreground">{t("agent.units")}</p>
           </div>
           <div className="text-center">
