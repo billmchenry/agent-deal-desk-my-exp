@@ -117,7 +117,7 @@ export default function OrganizationReporting() {
             <Card className="mb-6">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base font-medium">{t("org.countryProduction")}</CardTitle>
+                  <CardTitle className="text-section-title font-medium">{t("org.countryProduction")}</CardTitle>
                   <span className="text-xs text-muted-foreground">{t("org.last12Months")}</span>
                 </div>
               </CardHeader>
