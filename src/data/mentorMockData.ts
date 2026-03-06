@@ -693,7 +693,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "Jennifer Walsh",
     totalActiveMentees: 1,
     primaryEmail: "jennifer.walsh@exprealty.com",
-    phone: "(555) 567-8901",
+    phone: "(702) 555-8901",
     secondaryEmail: "jwalsh@yahoo.com",
     city: "Las Vegas",
     state: "NV",
