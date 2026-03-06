@@ -66,11 +66,15 @@ function getAgentDetail(row: AgentRevShareRow): AgentDetail {
   if (agentTransactionsMap[row.agentName]) return agentTransactionsMap[row.agentName];
   const half = row.totalRevShare * 0.6;
   const rest = row.totalRevShare - half;
+  const firstNameLower = row.agentName.split(" ")[0].toLowerCase();
+  const lastNameLower = row.agentName.split(" ").slice(-1)[0].toLowerCase();
   return {
     agentName: row.agentName,
     agentId: String(Math.floor(100000 + Math.random() * 900000)),
     totalRevShare: row.totalRevShare,
     currency: row.currency,
+    email: `${firstNameLower}.${lastNameLower}@email.com`,
+    phone: `(${Math.floor(200 + Math.random() * 800)}) 555-${String(Math.floor(1000 + Math.random() * 9000))}`,
     transactions: [
       { address: "123 Main St, " + row.state + "...", fullAddress: "123 Main St, " + row.state + ", " + row.country, closedDate: "01/12/2026", revShareAmount: half, currency: row.currency, transactionNumber: "364" + Math.floor(1000 + Math.random() * 9000) + ".1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: half * 500, revShareDollar: half * 2, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: half },
       { address: "456 Elm Ave, " + row.state + "...", fullAddress: "456 Elm Ave, " + row.state + ", " + row.country, closedDate: "01/05/2026", revShareAmount: rest, currency: row.currency, transactionNumber: "364" + Math.floor(1000 + Math.random() * 9000) + ".1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: rest * 500, revShareDollar: rest * 2, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: rest },
