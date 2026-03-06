@@ -289,7 +289,7 @@ export function GlobalSearch() {
       </div>
 
       {showDropdown && (
-        <div className="absolute left-0 right-0 top-full mt-1 max-h-80 overflow-y-auto rounded-lg border border-border bg-popover shadow-lg z-50">
+        <div className="absolute inset-x-0 top-full mt-1 max-h-80 overflow-y-auto rounded-lg border border-border bg-popover shadow-lg z-50">
           <DropdownResults
             grouped={grouped}
             flatFiltered={flatFiltered}
@@ -346,7 +346,7 @@ function DropdownResults({
                 onClick={() => onSelect(item)}
                 onMouseEnter={() => onHover(flatFiltered.indexOf(item))}
                 className={cn(
-                  "flex w-full items-center gap-2 px-3 py-2 text-sm text-left transition-colors",
+                  "flex w-full items-center gap-2 px-3 py-2 text-sm text-start transition-colors",
                   isHighlighted ? "bg-accent text-accent-foreground" : "hover:bg-accent/50"
                 )}
               >
@@ -371,7 +371,7 @@ function DropdownResults({
             onClick={onMiraSelect}
             onMouseEnter={() => onHover(miraIndex)}
             className={cn(
-              "flex w-full items-center gap-2 px-3 py-2.5 text-sm text-left transition-colors",
+              "flex w-full items-center gap-2 px-3 py-2.5 text-sm text-start transition-colors",
               isMiraHighlighted ? "bg-primary/10 text-primary" : "hover:bg-primary/5",
               !hasResults && "py-3"
             )}

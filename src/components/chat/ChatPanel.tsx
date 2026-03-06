@@ -277,13 +277,13 @@ function ChatContent({
       {/* Search Bar */}
       <div className="px-3 sm:px-4 py-2 border-b shrink-0">
         <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder={t("chat.searchConversations")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 h-9 text-sm"
+            className="ps-8 h-9 text-sm"
           />
         </div>
       </div>
@@ -300,7 +300,7 @@ function ChatContent({
               >
                 <button
                   onClick={() => handleLoadConversation(conv.id)}
-                  className={`w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
+                  className={`w-full text-start p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
                     swipedId === conv.id ? 'translate-x-[-60px]' : ''
                   }`}
                 >
@@ -452,7 +452,7 @@ function ChatContent({
                 )}
                 <button
                   onClick={() => removeAttachment(att.id)}
-                  className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute -top-1.5 -end-1.5 h-5 w-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   ×
                 </button>
@@ -790,7 +790,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   // Desktop: Floating chat popup (bottom-right, no overlay)
   if (!isOpen) return null;
   return (
-    <div className="fixed bottom-6 right-6 w-[420px] h-[600px] z-50 border bg-background shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ease-out">
+    <div className="fixed bottom-6 end-6 w-[420px] h-[600px] z-50 border bg-background shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ease-out">
       <ChatContent {...contentProps} />
     </div>
   );

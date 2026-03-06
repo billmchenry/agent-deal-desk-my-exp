@@ -159,7 +159,7 @@ export default function OrganizationReporting() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-border bg-muted/50">
-                          <th className="text-left px-4 py-3 font-semibold text-muted-foreground">{t("org.country")}</th>
+                          <th className="text-start px-4 py-3 font-semibold text-muted-foreground">{t("org.country")}</th>
                           <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.activeAgents")}</th>
                           <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.totalTransactions")}</th>
                           <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.productivityPerPerson")}</th>

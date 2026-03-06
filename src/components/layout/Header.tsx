@@ -50,7 +50,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <>
-      <header className={cn("fixed top-0 left-0 right-0 z-40 flex h-16 items-center justify-between border-b bg-background px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:left-16" : "lg:left-64")}>
+      <header className={cn("fixed top-0 inset-x-0 z-40 flex h-16 items-center justify-between border-b bg-background px-3 sm:px-4 lg:px-6 max-w-[100vw] overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:start-16" : "lg:start-64")}>
         <div className="flex items-center lg:hidden">
           <Button variant="ghost" size="icon" onClick={onMenuClick} aria-label="Open menu">
             <Menu className="h-5 w-5" />
@@ -95,7 +95,7 @@ export function Header({ onMenuClick }: HeaderProps) {
             aria-label={`${t("header.notifications")}, 3 unread`}
           >
             <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-destructive text-[11px] font-bold text-destructive-foreground flex items-center justify-center" aria-hidden="true">
+            <span className="absolute -top-1 -end-1 h-5 w-5 rounded-full bg-destructive text-[11px] font-bold text-destructive-foreground flex items-center justify-center" aria-hidden="true">
               3
             </span>
           </Button>
@@ -118,7 +118,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2 pl-2 pr-1" aria-label={t("header.accountMenu")}>
+                <Button variant="ghost" className="flex items-center gap-2 ps-2 pe-1" aria-label={t("header.accountMenu")}>
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
                     <AvatarFallback className="bg-exp-blue text-white text-xs">

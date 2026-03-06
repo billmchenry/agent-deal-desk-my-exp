@@ -24,7 +24,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="min-h-screen bg-background w-full overflow-x-hidden">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-lg"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:start-2 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-lg"
       >
         {t("common.skipToMain")}
       </a>
@@ -39,7 +39,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       
       <main
         id="main-content"
-        className={cn("min-h-screen px-4 lg:px-6 pt-20 pb-6 max-w-full overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:ml-16" : "lg:ml-64")}
+        className={cn("min-h-screen px-4 lg:px-6 pt-20 pb-6 max-w-full overflow-x-hidden transition-all duration-300", isCollapsed ? "lg:ms-16" : "lg:ms-64")}
       >
         {children}
       </main>
@@ -47,7 +47,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {!isChatOpen && (
         <Button
           onClick={openChat}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 z-40"
+          className="fixed bottom-6 end-6 h-14 w-14 rounded-full shadow-lg bg-primary hover:bg-primary/90 z-40"
           size="icon"
           aria-label={t("common.openMiraChat")}
         >

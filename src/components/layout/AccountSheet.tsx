@@ -76,7 +76,7 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
 
           <div className="p-4">
             <Button variant="outline" className="w-full text-destructive hover:text-destructive">
-              <LogOut className="h-4 w-4 mr-2" />
+              <LogOut className="h-4 w-4 me-2" />
               {t("header.signOut")}
             </Button>
           </div>

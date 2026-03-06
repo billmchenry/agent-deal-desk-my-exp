@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useLocale } from "@/contexts/LocaleContext";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Home, LayoutDashboard, User, Users, DollarSign, FileText,
@@ -57,6 +58,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const navigate = useNavigate();
   const [manuallyToggled, setManuallyToggled] = useState<Set<string>>(new Set());
   const { t } = useTranslation();
+  const { isRTL } = useLocale();
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
@@ -122,7 +124,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
             )}
           >
             {Icon && <Icon className="h-4 w-4 shrink-0" />}
-            <span className="flex-1 text-left">{tn(item.title)}</span>
+            <span className="flex-1 text-start">{tn(item.title)}</span>
           </button>
           {hasSubmenu && (
             <button
@@ -140,7 +142,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
         </div>
 
         {hasSubmenu && expanded && (
-          <div className="ml-9 mt-1 space-y-0.5">
+          <div className="ms-9 mt-1 space-y-0.5">
             {item.submenu?.map((subItem) => (
               <button
                 key={subItem.url}
@@ -162,7 +164,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent side="left" className="w-full sm:max-w-sm p-0 bg-sidebar flex flex-col overflow-x-hidden">
+      <SheetContent side={isRTL ? "right" : "left"} className="w-full sm:max-w-sm p-0 bg-sidebar flex flex-col overflow-x-hidden">
         <SheetHeader className="flex h-16 items-center justify-between border-b border-border px-5 bg-background">
           <SheetTitle className="flex items-center gap-1">
             <span className="text-xl font-bold text-foreground">MY</span>
