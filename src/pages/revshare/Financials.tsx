@@ -547,6 +547,7 @@ export default function Financials() {
               csvFilename="periodic-revshare"
               mobileCardRender={periodicMobileCard}
               defaultPageSize={25}
+              onRowClick={handlePeriodClick}
             />
           </TabsContent>
         </Tabs>
