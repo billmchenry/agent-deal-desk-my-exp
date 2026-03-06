@@ -85,7 +85,7 @@ export default function IconProgram() {
     <DashboardLayout>
       <div className="space-y-4 pb-20">
         {/* Page Title */}
-        <h1 className="text-lg font-semibold text-foreground">ICON Program</h1>
+        <h1 className="text-page-title font-semibold text-foreground">ICON Program</h1>
 
         {/* Compact Hero Banner */}
         <Card className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--exp-navy))] via-[hsl(var(--exp-navy-light))] to-[hsl(var(--exp-blue))] p-4 sm:p-6 text-white">
@@ -101,7 +101,7 @@ export default function IconProgram() {
                 ICON PROGRAM
               </Badge>
             </div>
-            <p className="text-xl sm:text-2xl font-bold text-white mb-1">33% of pillars complete</p>
+            <p className="text-page-title font-bold text-white mb-1">33% of pillars complete</p>
             <p className="text-sm text-white/70">Keep going — you're almost there!</p>
           </div>
         </Card>
@@ -154,7 +154,7 @@ export default function IconProgram() {
             {/* Qualify - Option 2 */}
             <Card className="mb-4">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-medium">Qualify - Option 2</CardTitle>
+                <CardTitle className="text-section-title font-medium">Qualify - Option 2</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -259,7 +259,7 @@ export default function IconProgram() {
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-foreground">Events Attended</h3>
-                  <span className="text-2xl font-bold text-foreground">02</span>
+                  <span className="text-stat-value font-bold text-foreground">02</span>
                 </div>
 
                 <div className="flex items-center gap-3 mb-2">
@@ -321,7 +321,7 @@ export default function IconProgram() {
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-foreground">{grant.title}</h3>
-                      <p className="text-lg font-bold text-foreground mt-1">{grant.amount}</p>
+                      <p className="text-section-title font-bold text-foreground mt-1">{grant.amount}</p>
                     </div>
                     <Badge className="bg-[hsl(var(--exp-green))] hover:bg-[hsl(var(--exp-green))] text-white gap-1">
                       <Check className="h-3 w-3" />

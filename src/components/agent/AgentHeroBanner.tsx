@@ -47,7 +47,7 @@ function MiniStatCard({
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-lg font-bold text-white truncate">{value}</p>
+        <p className="text-section-title font-bold text-white truncate">{value}</p>
         <p className="text-xs sm:text-[11px] text-white/70">{label}</p>
       </div>
     </button>
@@ -127,7 +127,7 @@ export function AgentHeroBanner({
                 className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                 onClick={() => goToTransactions("paid")}
               >
-                <p className="text-lg font-bold text-white">{transactionsClosed}</p>
+                <p className="text-section-title font-bold text-white">{transactionsClosed}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.paid")}</p>
               </button>
               <button
@@ -135,7 +135,7 @@ export function AgentHeroBanner({
                 className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                 onClick={() => goToTransactions("pending")}
               >
-                <p className="text-lg font-bold text-white">{transactionsPending}</p>
+                <p className="text-section-title font-bold text-white">{transactionsPending}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.pending")}</p>
               </button>
               <button
@@ -143,7 +143,7 @@ export function AgentHeroBanner({
                 className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                 onClick={() => goToTransactions("withdrawn")}
               >
-                <p className="text-lg font-bold text-white">{transactionsWithdrawn}</p>
+                <p className="text-section-title font-bold text-white">{transactionsWithdrawn}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.withdrawn")}</p>
               </button>
             </div>

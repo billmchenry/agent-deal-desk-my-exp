@@ -129,7 +129,7 @@ export default function DocumentsPortal() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+        <h1 className="text-page-title font-bold tracking-tight text-foreground">
           {t("documents.title")}
         </h1>
 
@@ -205,7 +205,7 @@ export default function DocumentsPortal() {
 
           {/* ── Team Documents ── */}
           <TabsContent value="team" className="space-y-4 mt-4">
-            <div className="flex items-center gap-2 text-lg font-semibold text-foreground">
+            <div className="flex items-center gap-2 text-section-title font-semibold text-foreground">
               <Users className="h-5 w-5" />
               {t("documents.teamMemberDocuments")}
             </div>

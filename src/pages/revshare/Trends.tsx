@@ -67,7 +67,7 @@ export default function RevShareTrends() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-foreground">{t("revshare.revShareTrends")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("revshare.revShareTrends")}</h1>
         </div>
 
         {/* Filters */}
@@ -93,7 +93,7 @@ export default function RevShareTrends() {
         {/* Total Summary */}
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-base font-medium">{t("trends.totalSummary")}</CardTitle>
+            <CardTitle className="text-section-title font-medium">{t("trends.totalSummary")}</CardTitle>
             <Button variant="outline" size="sm" className="gap-2">
               <Download className="h-4 w-4" />
               {t("agent.download")} {t("trends.totalSummary")}
@@ -134,7 +134,7 @@ export default function RevShareTrends() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-semibold text-foreground">{t("trends.levelData")}</h2>
+              <h2 className="text-section-title font-semibold text-foreground">{t("trends.levelData")}</h2>
               <p className="text-sm text-muted-foreground">{t("trends.changeCountry")}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -155,7 +155,7 @@ export default function RevShareTrends() {
           <Card className="mb-6">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-base font-medium">{t("trends.allLevelsSummary")}</CardTitle>
+                <CardTitle className="text-section-title font-medium">{t("trends.allLevelsSummary")}</CardTitle>
                 <p className="text-sm text-muted-foreground">{t("trends.combinedContribution")}</p>
               </div>
               <Button variant="outline" size="sm" className="gap-2">
@@ -218,7 +218,7 @@ export default function RevShareTrends() {
                           openLevels.includes(levelData.level) ? "" : "-rotate-90"
                         }`}
                       />
-                      <CardTitle className="text-base font-medium">Level {levelData.level}</CardTitle>
+                      <CardTitle className="text-section-title font-medium">Level {levelData.level}</CardTitle>
                     </div>
                   </CardHeader>
                 </CollapsibleTrigger>

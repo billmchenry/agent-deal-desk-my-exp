@@ -35,7 +35,7 @@ export default function BrokerHub() {
       <div className="space-y-6">
         {view === "tiles" && (
           <>
-            <h1 className="text-2xl font-bold text-foreground">{t("broker.title")}</h1>
+            <h1 className="text-page-title font-bold text-foreground">{t("broker.title")}</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <Card
                 className="cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
@@ -51,7 +51,7 @@ export default function BrokerHub() {
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-medium opacity-90">{t("broker.stateMentors")}</p>
-                    <p className="text-3xl font-bold font-secondary">{totalMentors}</p>
+                    <p className="text-stat-value font-bold font-secondary">{totalMentors}</p>
                     <p className="text-xs opacity-75 mt-0.5">{t("broker.stateMentorsDesc")}</p>
                   </div>
                   <ChevronRight className="h-5 w-5 opacity-60" aria-hidden="true" />
@@ -73,7 +73,7 @@ export default function BrokerHub() {
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <h1 className="text-2xl font-bold text-foreground">{t("broker.stateMentors")}</h1>
+              <h1 className="text-page-title font-bold text-foreground">{t("broker.stateMentors")}</h1>
             </div>
 
             <DataTable

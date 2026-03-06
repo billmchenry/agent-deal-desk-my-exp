@@ -218,7 +218,7 @@ export default function Notifications() {
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        <h1 className="text-2xl font-bold text-foreground">{t("notif.title")}</h1>
+        <h1 className="text-page-title font-bold text-foreground">{t("notif.title")}</h1>
 
         <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v as "activity" | "recognition"); setPage(1); }}>
           <TabsList className="bg-transparent border-b rounded-none w-full justify-start gap-4 px-0">

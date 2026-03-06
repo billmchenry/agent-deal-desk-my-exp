@@ -44,9 +44,9 @@ export default function HelpCenter() {
   return (
     <DashboardLayout>
       <div className="space-y-6 pb-20">
-        <h1 className="text-2xl font-bold text-foreground">{t("help.title")}</h1>
+        <h1 className="text-page-title font-bold text-foreground">{t("help.title")}</h1>
 
-        <h2 className="text-xl font-semibold text-foreground">{t("help.getHelp")}</h2>
+        <h2 className="text-section-title font-semibold text-foreground">{t("help.getHelp")}</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Expert Care Desk */}
@@ -55,7 +55,7 @@ export default function HelpCenter() {
               <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
                 <Phone className="h-5 w-5 text-primary-foreground" aria-hidden="true" />
               </div>
-              <h3 className="text-lg font-semibold">{t("help.expertCareDesk")}</h3>
+              <h3 className="text-section-title font-semibold">{t("help.expertCareDesk")}</h3>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Globe className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
@@ -91,7 +91,7 @@ export default function HelpCenter() {
               <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
                 <MessageSquare className="h-5 w-5 text-primary-foreground" aria-hidden="true" />
               </div>
-              <h3 className="text-lg font-semibold">{t("help.liveChat")}</h3>
+              <h3 className="text-section-title font-semibold">{t("help.liveChat")}</h3>
               <p className="text-sm text-muted-foreground">{t("help.liveChatDesc")}</p>
               <p className="text-sm text-muted-foreground">{t("help.liveChatHoursMF")}</p>
               <p className="text-sm text-muted-foreground">{t("help.liveChatHoursWeekend")}</p>
@@ -107,7 +107,7 @@ export default function HelpCenter() {
               <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
                 <Mail className="h-5 w-5 text-primary-foreground" aria-hidden="true" />
               </div>
-              <h3 className="text-lg font-semibold">{t("help.emailUs")}</h3>
+              <h3 className="text-section-title font-semibold">{t("help.emailUs")}</h3>
               <p className="text-sm text-muted-foreground">{t("help.emailUsDesc")}</p>
               <Button onClick={() => setEmailOpen(true)} aria-label={t("help.sendEmail")}>
                 {t("help.sendEmail")}

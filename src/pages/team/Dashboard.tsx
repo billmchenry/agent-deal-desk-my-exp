@@ -56,7 +56,7 @@ export default function TeamDashboard() {
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             {t("team.backToTeam")}
           </Button>
-          <h1 className="text-2xl font-bold text-foreground">{t("team.agentDetails")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("team.agentDetails")}</h1>
           <div className="bg-muted/40 rounded-lg p-3 text-sm text-muted-foreground flex items-start gap-2">
             <Info className="h-4 w-4 mt-0.5 shrink-0" />
             {t("team.agentNote")}
@@ -99,7 +99,7 @@ export default function TeamDashboard() {
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             {t("team.backToTeam")}
           </Button>
-          <h1 className="text-2xl font-bold text-foreground">{t("team.topAgents")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("team.topAgents")}</h1>
           <DataTable
             data={topAgents}
             columns={topAgentColumns}
@@ -129,18 +129,18 @@ export default function TeamDashboard() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-foreground">{t("team.myTeam")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("team.myTeam")}</h1>
           <Button variant="outline">{t("team.teamReport")}</Button>
         </div>
 
-        <p className="text-lg font-medium text-foreground mb-6">
+        <p className="text-body-lg font-medium text-foreground mb-6">
           {t("team.myTeam")}: {teamOverview.name}
         </p>
 
         {/* Overview Section */}
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-base font-medium">{t("team.overview")}</CardTitle>
+            <CardTitle className="text-section-title font-medium">{t("team.overview")}</CardTitle>
             <Select defaultValue="jan2026">
               <SelectTrigger className="w-[220px]">
                 <div className="flex items-center gap-2">
@@ -159,22 +159,22 @@ export default function TeamDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-muted/30 rounded-lg p-4">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.units")}</p>
-                <p className="text-3xl font-bold text-foreground font-secondary tabular-nums">
-                  {formatNumber(teamOverview.units.total)} <span className="text-sm font-normal text-muted-foreground">{t("team.units")}</span>
+                <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
+                  {formatNumber(teamOverview.units.total)} <span className="text-body font-normal text-muted-foreground">{t("team.units")}</span>
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatNumber(teamOverview.units.pending)} {t("team.units")}</p>
               </div>
               <div className="bg-muted/30 rounded-lg p-4">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.volume")}</p>
-                <p className="text-3xl font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.volume.total)} <span className="text-sm font-normal text-muted-foreground">USD</span>
+                <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
+                  {formatCurrency(teamOverview.volume.total)} <span className="text-body font-normal text-muted-foreground">USD</span>
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.volume.pending)} USD</p>
               </div>
               <div className="bg-muted/30 rounded-lg p-4">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.teamLeadSplit")}</p>
-                <p className="text-3xl font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.teamLeadSplit.total)} <span className="text-sm font-normal text-muted-foreground">USD</span>
+                <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
+                  {formatCurrency(teamOverview.teamLeadSplit.total)} <span className="text-body font-normal text-muted-foreground">USD</span>
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.teamLeadSplit.pending)} USD</p>
               </div>
@@ -187,7 +187,7 @@ export default function TeamDashboard() {
           {/* Onboarding Agents */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base font-medium">{t("team.onboardingAgents")}</CardTitle>
+              <CardTitle className="text-section-title font-medium">{t("team.onboardingAgents")}</CardTitle>
               <span className="text-sm text-muted-foreground">
                 {t("team.showingOf").replace("{count}", String(onboardingAgents.length)).replace("{total}", String(onboardingAgents.length))}
               </span>
@@ -231,7 +231,7 @@ export default function TeamDashboard() {
           {/* Top Agents */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base font-medium">{t("team.topAgents")}</CardTitle>
+              <CardTitle className="text-section-title font-medium">{t("team.topAgents")}</CardTitle>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="units" className="w-full">

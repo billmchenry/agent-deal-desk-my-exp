@@ -147,7 +147,7 @@ export default function RevShareDashboard() {
 
         {/* ═══ Page Header ═══ */}
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-xl font-bold text-foreground">{t("revshare.revenueShare")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("revshare.revenueShare")}</h1>
           <Select defaultValue="ytd">
             <SelectTrigger className="w-[140px] h-8 min-h-[44px] sm:min-h-0 text-xs">
               <SelectValue />
@@ -188,7 +188,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-white">{t("revshare.revenueShare")}</span>
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <p className="text-2xl font-bold font-secondary text-white">
+                <p className="text-stat-value font-bold font-secondary text-white">
                     {formatCurrency(264138.52)} <span className="text-sm font-medium text-white/70">USD</span>
                   </p>
                   <span className="text-xs text-white/70">After Adj.</span>
@@ -215,7 +215,7 @@ export default function RevShareDashboard() {
                     </HoverCardContent>
                   </HoverCard>
                 </div>
-                <p className="text-2xl font-bold font-secondary text-white">{formatNumber(24)}</p>
+                <p className="text-stat-value font-bold font-secondary text-white">{formatNumber(24)}</p>
                 <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLA List">
                   View FLA List <ChevronRight className="h-3 w-3" />
                 </button>
@@ -240,7 +240,7 @@ export default function RevShareDashboard() {
 
                 <div className="flex items-end gap-4 mb-2">
                   <div>
-                    <p className="text-2xl font-bold font-secondary text-white leading-none">{formatNumber(18)}</p>
+                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(18)}</p>
                     <p className="text-xs text-white/70">Actual</p>
                   </div>
                   <div>
@@ -302,7 +302,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-foreground">{t("revshare.unpaid")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Calculated but not paid out</p>
-                <p className="text-lg font-bold font-secondary text-foreground mb-2">
+                <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
                 <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
@@ -317,7 +317,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-foreground">{t("revshare.expectedNext")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Estimated next scheduled payout</p>
-                <p className="text-lg font-bold font-secondary text-foreground mb-2">
+                <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
@@ -335,7 +335,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-foreground">{t("revshare.lastPaid")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Most recent payout amount</p>
-                <p className="text-lg font-bold font-secondary text-foreground mb-2">
+                <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(986.92)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
                 <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">

@@ -53,7 +53,7 @@ export default function OrganizationReporting() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-foreground">{t("revshare.organizationReporting")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("revshare.organizationReporting")}</h1>
         </div>
 
         <div className="flex items-center justify-end mb-4">
@@ -69,13 +69,13 @@ export default function OrganizationReporting() {
             </Select>
           </div>
 
-            <h2 className="text-lg font-semibold text-foreground mb-4">{t("org.performanceSnapshot")}</h2>
+            <h2 className="text-section-title font-semibold text-foreground mb-4">{t("org.performanceSnapshot")}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">{formatNumber(233)}</span>
+                    <span className="text-stat-value font-bold text-foreground">{formatNumber(233)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">{t("org.totalOrgSize")}</p>
@@ -85,7 +85,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">{formatNumber(5)}</span>
+                    <span className="text-stat-value font-bold text-foreground">{formatNumber(5)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">{t("org.agentsJoined")}</p>
@@ -95,7 +95,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">{formatNumber(1)}</span>
+                    <span className="text-stat-value font-bold text-foreground">{formatNumber(1)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">{t("org.agentsWithIcon")}</p>
@@ -105,7 +105,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-3xl font-bold text-foreground">{formatNumber(2)}</span>
+                    <span className="text-stat-value font-bold text-foreground">{formatNumber(2)}</span>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">{t("org.countTeamLeaders")}</p>
@@ -117,7 +117,7 @@ export default function OrganizationReporting() {
             <Card className="mb-6">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base font-medium">{t("org.countryProduction")}</CardTitle>
+                  <CardTitle className="text-section-title font-medium">{t("org.countryProduction")}</CardTitle>
                   <span className="text-xs text-muted-foreground">{t("org.last12Months")}</span>
                 </div>
               </CardHeader>
@@ -200,7 +200,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base font-medium">{t("org.agentAreas")}</CardTitle>
+                    <CardTitle className="text-section-title font-medium">{t("org.agentAreas")}</CardTitle>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                 </CardHeader>
@@ -230,7 +230,7 @@ export default function OrganizationReporting() {
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base font-medium">{t("org.influencerGroup")}</CardTitle>
+                    <CardTitle className="text-section-title font-medium">{t("org.influencerGroup")}</CardTitle>
                     <Info className="h-4 w-4 text-muted-foreground" />
                   </div>
                 </CardHeader>
@@ -261,7 +261,7 @@ export default function OrganizationReporting() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <CardTitle className="text-base font-medium">{t("org.salesVolumeByLevel")}</CardTitle>
+                      <CardTitle className="text-section-title font-medium">{t("org.salesVolumeByLevel")}</CardTitle>
                       <Info className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <Select defaultValue="usd">

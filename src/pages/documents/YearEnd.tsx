@@ -334,7 +334,7 @@ export default function YearEnd() {
     return (
       <DashboardLayout>
         <div className="space-y-4 pb-20">
-          <h1 className="text-2xl font-bold text-foreground">{t("ye.my1099Income")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("ye.my1099Income")}</h1>
           <Button variant="ghost" className="gap-1 -ml-2" onClick={() => setView("summary")}>
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             {t("ye.back")}
@@ -376,7 +376,7 @@ export default function YearEnd() {
                 {/* Amount hero */}
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div className="text-center flex-1">
-                    <p className="text-2xl font-bold tabular-nums font-secondary">
+                    <p className="text-stat-value font-bold tabular-nums font-secondary">
                       {formatCurrency(selectedTxn.grossRevenue)}
                     </p>
                     <p className="text-sm text-muted-foreground">{selectedTxn.earningsType}</p>
@@ -490,7 +490,7 @@ export default function YearEnd() {
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer>
-                <p className="text-center text-2xl font-bold tabular-nums font-secondary -mt-4">
+                <p className="text-center text-stat-value font-bold tabular-nums font-secondary -mt-4">
                   {formatCurrency(grandTotal)}
                 </p>
               </div>
