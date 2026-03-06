@@ -593,7 +593,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "Michael Chen",
     totalActiveMentees: 2,
     primaryEmail: "michael.chen@exprealty.com",
-    phone: "(555) 482-1930",
+    phone: "(916) 555-1930",
     secondaryEmail: "",
     city: "Sacramento",
     state: "CA",
