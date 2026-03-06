@@ -235,6 +235,7 @@ function SelectedAgentCard({
   onClose: () => void;
 }) {
   const { t } = useTranslation();
+  const { formatCurrency } = useFormatters();
 
   return (
     <div className="flex items-center gap-3 mb-6">
