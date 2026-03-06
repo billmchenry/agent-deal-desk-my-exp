@@ -129,7 +129,7 @@ export default function TeamDashboard() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-foreground">{t("team.myTeam")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("team.myTeam")}</h1>
           <Button variant="outline">{t("team.teamReport")}</Button>
         </div>
 
