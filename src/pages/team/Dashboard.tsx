@@ -269,7 +269,7 @@ export default function TeamDashboard() {
                           tab === "volume" ? b.volume - a.volume :
                           b.commission - a.commission
                         )
-                        .slice(0, 3)
+                        .slice(0, 2)
                         .map((agent, idx) => (
                           <div
                             key={agent.id}
