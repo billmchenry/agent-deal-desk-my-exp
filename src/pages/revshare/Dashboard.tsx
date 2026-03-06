@@ -317,7 +317,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-foreground">{t("revshare.expectedNext")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">Estimated next scheduled payout</p>
-                <p className="text-lg font-bold font-secondary text-foreground mb-2">
+                <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
