@@ -135,7 +135,7 @@ export function AgentHeroBanner({
                 className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                 onClick={() => goToTransactions("pending")}
               >
-                <p className="text-lg font-bold text-white">{transactionsPending}</p>
+                <p className="text-section-title font-bold text-white">{transactionsPending}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.pending")}</p>
               </button>
               <button
