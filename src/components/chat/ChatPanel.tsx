@@ -790,7 +790,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   // Desktop: Floating chat popup (bottom-right, no overlay)
   if (!isOpen) return null;
   return (
-    <div className="fixed bottom-6 right-6 w-[420px] h-[600px] z-50 border bg-background shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ease-out">
+    <div className="fixed bottom-6 end-6 w-[420px] h-[600px] z-50 border bg-background shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ease-out">
       <ChatContent {...contentProps} />
     </div>
   );
