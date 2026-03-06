@@ -55,7 +55,7 @@ export default function HelpCenter() {
               <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
                 <Phone className="h-5 w-5 text-primary-foreground" aria-hidden="true" />
               </div>
-              <h3 className="text-lg font-semibold">{t("help.expertCareDesk")}</h3>
+              <h3 className="text-section-title font-semibold">{t("help.expertCareDesk")}</h3>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Globe className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
