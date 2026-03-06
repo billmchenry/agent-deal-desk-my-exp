@@ -11,7 +11,7 @@ interface IconStatusBannerProps {
 const pillars = [
   {
     key: "production",
-    label: "Production",
+    labelKey: "icon.production",
     icon: TrendingUp,
     status: "3%",
     detail: "$481.90 / $16K",
@@ -20,26 +20,26 @@ const pillars = [
   },
   {
     key: "cultural",
-    label: "Cultural",
+    labelKey: "icon.cultural",
     icon: Heart,
-    status: "Complete",
-    detail: "Goal achieved",
+    statusKey: "agent.complete",
+    detailKey: "icon.goalAchieved",
     complete: true,
   },
   {
     key: "events",
-    label: "Events",
+    labelKey: "icon.events",
     icon: Calendar,
     status: "2 / 2",
-    detail: "All attended",
+    detailKey: "icon.allAttended",
     complete: true,
   },
   {
     key: "stockgrants",
-    label: "Stock Grants",
+    labelKey: "icon.stockGrants",
     icon: Award,
     status: "4 / 4",
-    detail: "All awarded",
+    detailKey: "icon.allAwarded",
     complete: true,
   },
 ];
