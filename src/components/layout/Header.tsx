@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Bell, HelpCircle, ChevronDown, Menu, Sun, Moon, FlaskConical } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,6 +33,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const [accountOpen, setAccountOpen] = useState(false);
   const [demoConfigOpen, setDemoConfigOpen] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const cycleTheme = () => {
     if (theme === "light") setTheme("dark");
@@ -90,7 +91,7 @@ export function Header({ onMenuClick }: HeaderProps) {
             variant="ghost" 
             size="icon" 
             className="relative"
-            onClick={() => isMobile && setNotificationsOpen(true)}
+            onClick={() => isMobile ? setNotificationsOpen(true) : navigate("/notifications")}
             aria-label={`${t("header.notifications")}, 3 unread`}
           >
             <Bell className="h-5 w-5" />
