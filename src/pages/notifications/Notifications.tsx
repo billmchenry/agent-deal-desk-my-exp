@@ -156,7 +156,7 @@ export default function Notifications() {
   const { t } = useTranslation();
   const { formatCurrency } = useFormatters();
 
-  const [activeTab, setActiveTab] = useState<"activity" | "recognition">("recognition");
+  const [activeTab, setActiveTab] = useState<"activity" | "recognition">("activity");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState<NotificationItem | null>(null);
