@@ -156,6 +156,7 @@ function AgentCard({
   onOpenContact?: () => void;
 }) {
   const { t } = useTranslation();
+  const { formatCurrency } = useFormatters();
   const hasChildren = agent.children && agent.children.length > 0;
 
   return (
