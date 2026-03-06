@@ -31,6 +31,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [demoConfigOpen, setDemoConfigOpen] = useState(false);
   const { t } = useTranslation();
 
   const cycleTheme = () => {
