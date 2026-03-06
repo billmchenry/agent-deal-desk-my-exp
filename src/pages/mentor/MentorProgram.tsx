@@ -268,7 +268,7 @@ export default function MentorProgram() {
     if (stored && stored !== scenario) setScenario(stored);
   }, []);
 
-  const scenarios: MentorScenario[] = ["not_applied", "pending", "approved_certification", "active_mentor", "mentee"];
+  const scenarios: MentorScenario[] = ["not_applied", "pending", "approved_certification", "active_mentor"];
 
   return (
     <DashboardLayout>
