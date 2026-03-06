@@ -539,6 +539,27 @@ export const en = {
   "notif.capReachedDate": "Cap Reached Date",
   "notif.transactionNumber": "Transaction Number",
   "notif.address": "Address",
+
+  // Year-End
+  "ye.my1099Income": "My 1099 Income",
+  "ye.back": "Back",
+  "ye.byEarningsType": "By Earnings Type",
+  "ye.earningsDesc": "The sum of Income from each of the earning programs you are part of.",
+  "ye.companyFilter": "Filter by company",
+  "ye.yearSelect": "Select year",
+  "ye.total": "Total",
+  "ye.files": "Files",
+  "ye.copyFilename": "Copy filename",
+  "ye.details": "Details",
+  "ye.date": "Date",
+  "ye.name": "Name",
+  "ye.companyName": "Company Name",
+  "ye.entity": "Entity",
+  "ye.earningsType": "Earnings Type",
+  "ye.reportingDate": "Reporting Date",
+  "ye.transactionId": "Transaction ID",
+  "ye.address": "Address",
+  "ye.netPayment": "Net Payment",
 } as const;
 
 export type TranslationKey = keyof typeof en;
