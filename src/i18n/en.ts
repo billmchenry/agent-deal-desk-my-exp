@@ -250,6 +250,12 @@ export const en = {
   "org.agentAreas": "Agent Areas",
   "org.influencerGroup": "Influencer Group by Category",
   "org.salesVolumeByLevel": "Sales Volume by Agent Level",
+  "org.countryProduction": "Production by Country",
+  "org.last12Months": "Last 12 Months",
+  "org.country": "Country",
+  "org.activeAgents": "Active Agents",
+  "org.productivityPerPerson": "Productivity / Person",
+  "org.total": "Total",
 
   // Organization Tree
   "orgTree.sortByRevShare": "Sort by Rev Share",

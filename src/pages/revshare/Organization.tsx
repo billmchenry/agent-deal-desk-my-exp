@@ -29,6 +29,13 @@ const salesVolumeData = [
   { level: "6", volume: 800000 },
 ];
 
+const countryProductionData = [
+  { country: "United States", flag: "🇺🇸", activeAgents: 198, totalTransactions: 21, totalRevShare: 724.30 },
+  { country: "Canada", flag: "🇨🇦", activeAgents: 27, totalTransactions: 2, totalRevShare: 98.41 },
+  { country: "United Kingdom", flag: "🇬🇧", activeAgents: 5, totalTransactions: 1, totalRevShare: 18.50 },
+  { country: "Australia", flag: "🇦🇺", activeAgents: 3, totalTransactions: 0, totalRevShare: 6.50 },
+];
+
 export default function OrganizationReporting() {
   useDocumentTitle("Organization Reporting");
   const { formatCurrency, formatNumber } = useFormatters();
@@ -98,44 +105,51 @@ export default function OrganizationReporting() {
               </Card>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-              <Card className="bg-primary text-primary-foreground lg:col-span-2">
-                <CardContent className="p-6 grid grid-cols-2 gap-6">
-                  <div>
-                    <p className="text-4xl font-bold mb-2">{formatNumber(24)}</p>
-                    <p className="text-sm text-primary-foreground/80">
-                      {t("org.totalTransactions")}
-                    </p>
-                  </div>
-                  <div className="border-l border-primary-foreground/20 pl-6">
-                    <p className="text-4xl font-bold mb-2">0.10</p>
-                    <p className="text-sm text-primary-foreground/80">
-                      {t("org.transactionsPerAgent")}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-primary text-primary-foreground">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <p className="text-sm text-primary-foreground/80">{t("org.totalRevShare")}</p>
-                    <Info className="h-4 w-4 text-primary-foreground/60" />
-                  </div>
-                  <p className="text-4xl font-bold">{formatCurrency(847.71)}</p>
-                </CardContent>
-              </Card>
-            </div>
-
+            {/* Country Production Grid — Last 12 Months */}
             <Card className="mb-6">
-              <CardContent className="p-4 flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-foreground">{t("org.ytdVolume")}</p>
-                  <p className="text-sm text-muted-foreground">USD</p>
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-base font-medium">{t("org.countryProduction")}</CardTitle>
+                  <span className="text-xs text-muted-foreground">{t("org.last12Months")}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xl font-bold text-foreground">{formatCurrency(10774400)}</span>
-                  <Info className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/50">
+                        <th className="text-left px-4 py-3 font-semibold text-muted-foreground">{t("org.country")}</th>
+                        <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.activeAgents")}</th>
+                        <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.totalTransactions")}</th>
+                        <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.productivityPerPerson")}</th>
+                        <th className="text-right px-4 py-3 font-semibold text-muted-foreground">{t("org.totalRevShare")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {countryProductionData.map((row, i) => (
+                        <tr key={row.country} className={`border-b border-border last:border-0 ${i % 2 === 0 ? "" : "bg-muted/30"}`}>
+                          <td className="px-4 py-3 font-medium text-foreground flex items-center gap-2">
+                            <span className="text-lg">{row.flag}</span>
+                            {row.country}
+                          </td>
+                          <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.activeAgents)}</td>
+                          <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.totalTransactions)}</td>
+                          <td className="px-4 py-3 text-right text-foreground font-semibold">{(row.totalTransactions / row.activeAgents).toFixed(2)}</td>
+                          <td className="px-4 py-3 text-right text-foreground font-semibold">{formatCurrency(row.totalRevShare)}</td>
+                        </tr>
+                      ))}
+                      {/* Totals row */}
+                      <tr className="bg-primary/5 border-t-2 border-primary/20">
+                        <td className="px-4 py-3 font-bold text-foreground">{t("org.total")}</td>
+                        <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(countryProductionData.reduce((s, r) => s + r.activeAgents, 0))}</td>
+                        <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(countryProductionData.reduce((s, r) => s + r.totalTransactions, 0))}</td>
+                        <td className="px-4 py-3 text-right font-bold text-foreground">
+                          {(countryProductionData.reduce((s, r) => s + r.totalTransactions, 0) / countryProductionData.reduce((s, r) => s + r.activeAgents, 0)).toFixed(2)}
+                        </td>
+                        <td className="px-4 py-3 text-right font-bold text-foreground">{formatCurrency(countryProductionData.reduce((s, r) => s + r.totalRevShare, 0))}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </CardContent>
             </Card>
