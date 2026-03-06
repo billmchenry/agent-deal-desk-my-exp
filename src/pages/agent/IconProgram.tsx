@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { CircleAlert, CheckCircle, ExternalLink, Check, Target } from "lucide-react";
 import { IconStatusBanner } from "@/components/agent/IconStatusBanner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type YearOption = { value: string; label: string };
 
