@@ -469,7 +469,7 @@ function ChatContent({
                 <Mic className="h-4 w-4 text-destructive-foreground" />
               </div>
             </div>
-            <span className="text-sm text-foreground flex-1">Listening{mainListeningDots}</span>
+            <span className="text-sm text-foreground flex-1">{t("chat.listening")}{mainListeningDots}</span>
             <Button
               variant="ghost"
               size="icon"
