@@ -464,6 +464,24 @@ export const en = {
   "broker.name": "Name",
   "broker.activeMenteeCount": "active mentee",
   "broker.activeMenteesCount": "active mentees",
+
+  // Navigation - Custom Service Fees
+  "nav.customServiceFees": "Custom Service Fees",
+
+  // Custom Service Fees
+  "csf.title": "Custom Service Fees Report",
+  "csf.dateRange": "Date Range",
+  "csf.agentNameFee": "Agent Name Fee",
+  "csf.transactions": "Transactions",
+  "csf.totalFees": "Total Fees",
+  "csf.results": "Results",
+  "csf.createReport": "Create Report",
+  "csf.detailsTitle": "Custom Service Fees Details",
+  "csf.startDate": "Start Date",
+  "csf.endDate": "End Date",
+  "csf.transactionId": "Transaction Id",
+  "csf.closeDate": "Close Date",
+  "csf.customServiceFee": "Custom Service Fee",
 } as const;
 
 export type TranslationKey = keyof typeof en;

@@ -57,6 +57,7 @@ export default function CustomServiceFees() {
     {
       key: "agentName" as const,
       header: t("csf.agentNameFee"),
+      type: "string" as const,
       sortable: true,
       filterable: true,
       render: (_: string, row: ServiceFeeAgent) => (
@@ -69,6 +70,7 @@ export default function CustomServiceFees() {
     {
       key: "transactions" as const,
       header: t("csf.transactions"),
+      type: "number" as const,
       sortable: true,
       filterable: true,
       className: "text-right tabular-nums",
@@ -77,6 +79,7 @@ export default function CustomServiceFees() {
     {
       key: "totalFees" as const,
       header: t("csf.totalFees"),
+      type: "currency" as const,
       sortable: true,
       className: "text-right tabular-nums font-secondary",
       headerClassName: "text-right",
