@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Phone, Mail, ExternalLink, Trophy, GraduationCap } from "lucide-react";
+import { Phone, Mail, ExternalLink, Trophy, GraduationCap, Users, ClipboardList, UserCircle } from "lucide-react";
 import mentorHeader from "@/assets/mentor-program-header.png";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,8 +10,9 @@ import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { mockMentees, mockMentorRequests } from "@/data/mentorMockData";
 
-type MentorScenario = "mentee" | "not_applied" | "pending" | "approved_certification";
+type MentorScenario = "mentee" | "not_applied" | "pending" | "approved_certification" | "active_mentor";
 
 const menteeData = {
   mentor: {
@@ -117,7 +118,7 @@ function NotAppliedView() {
         <MentorHeader />
         <h2 className="text-xl font-bold text-foreground mt-4">For Mentors</h2>
         <p className="text-sm text-muted-foreground max-w-lg mx-auto text-center mt-2">
-          Ready to share your expertise? As a mentor, you'll guide new agents through their first transactions, 
+          Ready to share your expertise? As a mentor, you'll guide new agents through their first transactions,
           help them build confidence, and earn mentor fees along the way.
         </p>
       </div>
@@ -128,7 +129,7 @@ function NotAppliedView() {
             I Want to Be a Mentor
           </Button>
           <p className="text-xs text-muted-foreground text-center max-w-md">
-            If you have already submitted an application, you will be notified once your broker has reviewed it. 
+            If you have already submitted an application, you will be notified once your broker has reviewed it.
             Please allow up to 5 business days for processing.
           </p>
         </CardContent>
@@ -153,7 +154,7 @@ function PendingView() {
           </div>
           <h3 className="text-lg font-semibold text-foreground">Application Submitted</h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            Your mentor application has been submitted and is pending broker approval. 
+            Your mentor application has been submitted and is pending broker approval.
             You will be notified once your application has been reviewed. Please allow up to 5 business days for processing.
           </p>
         </CardContent>
@@ -194,11 +195,70 @@ function CertificationView() {
   );
 }
 
+// ── Active Mentor view ──
+function ActiveMentorView() {
+  const navigate = useNavigate();
+  const menteeCount = mockMentees.length;
+  const requestCount = mockMentorRequests.length;
+
+  return (
+    <>
+      <div className="bg-card rounded-xl p-8 flex flex-col items-center">
+        <MentorHeader />
+        <h2 className="text-xl font-bold text-foreground mt-4">For Mentors</h2>
+        <p className="text-sm text-muted-foreground max-w-lg mx-auto text-center mt-2">
+          Congratulations! You have completed your Mentor Certification course, and are now a Certified Mentor!
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card
+          className="cursor-pointer hover:border-primary/50 transition-colors"
+          onClick={() => navigate("/mentor/mentees")}
+        >
+          <CardContent className="p-6 flex flex-col items-center gap-3 text-center">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <Users className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-base font-semibold text-foreground">My Mentees</h3>
+            <span className="text-2xl font-bold text-foreground">{menteeCount}</span>
+          </CardContent>
+        </Card>
+
+        <Card
+          className="cursor-pointer hover:border-primary/50 transition-colors"
+          onClick={() => navigate("/mentor/requests")}
+        >
+          <CardContent className="p-6 flex flex-col items-center gap-3 text-center">
+            <div className={`h-12 w-12 rounded-full flex items-center justify-center ${requestCount > 0 ? "bg-destructive/10" : "bg-primary/10"}`}>
+              <ClipboardList className={`h-6 w-6 ${requestCount > 0 ? "text-destructive" : "text-primary"}`} />
+            </div>
+            <h3 className="text-base font-semibold text-foreground">My Mentor Requests</h3>
+            <span className={`text-2xl font-bold ${requestCount > 0 ? "text-destructive" : "text-foreground"}`}>{requestCount}</span>
+          </CardContent>
+        </Card>
+
+        <Card
+          className="cursor-pointer hover:border-primary/50 transition-colors"
+          onClick={() => navigate("/profile/personal-details")}
+        >
+          <CardContent className="p-6 flex flex-col items-center gap-3 text-center">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <UserCircle className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-base font-semibold text-foreground">My Mentor Profile</h3>
+            <span className="text-sm text-muted-foreground">View & edit</span>
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  );
+}
+
 // ── Main page ──
 export default function MentorProgram() {
   useDocumentTitle("Mentor Program");
 
-  // For demo: use sessionStorage to persist scenario across navigation
   const [scenario, setScenario] = useState<MentorScenario>(() => {
     return (sessionStorage.getItem("mentorScenario") as MentorScenario) || "not_applied";
   });
@@ -208,8 +268,7 @@ export default function MentorProgram() {
     if (stored && stored !== scenario) setScenario(stored);
   }, []);
 
-  // Demo switcher
-  const scenarios: MentorScenario[] = ["not_applied", "pending", "approved_certification", "mentee"];
+  const scenarios: MentorScenario[] = ["not_applied", "pending", "approved_certification", "active_mentor", "mentee"];
 
   return (
     <DashboardLayout>
@@ -237,6 +296,7 @@ export default function MentorProgram() {
         {scenario === "not_applied" && <NotAppliedView />}
         {scenario === "pending" && <PendingView />}
         {scenario === "approved_certification" && <CertificationView />}
+        {scenario === "active_mentor" && <ActiveMentorView />}
       </div>
     </DashboardLayout>
   );
