@@ -289,7 +289,7 @@ export function GlobalSearch() {
       </div>
 
       {showDropdown && (
-        <div className="absolute left-0 right-0 top-full mt-1 max-h-80 overflow-y-auto rounded-lg border border-border bg-popover shadow-lg z-50">
+        <div className="absolute inset-x-0 top-full mt-1 max-h-80 overflow-y-auto rounded-lg border border-border bg-popover shadow-lg z-50">
           <DropdownResults
             grouped={grouped}
             flatFiltered={flatFiltered}
