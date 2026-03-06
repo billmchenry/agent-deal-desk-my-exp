@@ -168,7 +168,7 @@ export default function IconProgram() {
                       <span className="text-sm font-semibold text-foreground">$4,186.17</span>
                       <span className="text-sm font-medium text-foreground">26.16%</span>
                     </div>
-                    <p className="text-xs text-muted-foreground">Goal: $16K</p>
+                    <p className="text-xs text-muted-foreground">{t("common.goal")}: $16K</p>
                   </div>
 
                   {/* GCI */}
