@@ -732,7 +732,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "Anthony Russo",
     totalActiveMentees: 0,
     primaryEmail: "anthony.russo@exprealty.com",
-    phone: "(555) 419-6783",
+    phone: "(602) 555-6783",
     secondaryEmail: "",
     city: "Phoenix",
     state: "AZ",
