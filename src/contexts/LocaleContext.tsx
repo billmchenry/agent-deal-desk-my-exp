@@ -16,6 +16,7 @@ interface LocaleState {
 }
 
 interface LocaleContextType extends LocaleState {
+  isRTL: boolean;
   setLanguage: (lang: Language) => void;
   setDateFormat: (fmt: DateFormatOption) => void;
   setTimeFormat: (fmt: TimeFormatOption) => void;
