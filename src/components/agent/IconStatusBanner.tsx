@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { CheckCircle, TrendingUp, Heart, Calendar, Award } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface IconStatusBannerProps {
   activeTab: string;
