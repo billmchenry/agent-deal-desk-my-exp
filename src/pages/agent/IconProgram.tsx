@@ -321,7 +321,7 @@ export default function IconProgram() {
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-foreground">{grant.title}</h3>
-                      <p className="text-lg font-bold text-foreground mt-1">{grant.amount}</p>
+                      <p className="text-section-title font-bold text-foreground mt-1">{grant.amount}</p>
                     </div>
                     <Badge className="bg-[hsl(var(--exp-green))] hover:bg-[hsl(var(--exp-green))] text-white gap-1">
                       <Check className="h-3 w-3" />

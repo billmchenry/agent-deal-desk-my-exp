@@ -9,7 +9,7 @@ export default function Settings() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <h1 className="text-2xl font-bold text-foreground mb-6">{t("settings.title")}</h1>
+        <h1 className="text-page-title font-bold text-foreground mb-6">{t("settings.title")}</h1>
         <SettingsTab />
       </div>
     </DashboardLayout>

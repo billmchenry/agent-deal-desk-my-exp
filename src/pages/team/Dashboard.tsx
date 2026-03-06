@@ -231,7 +231,7 @@ export default function TeamDashboard() {
           {/* Top Agents */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base font-medium">{t("team.topAgents")}</CardTitle>
+              <CardTitle className="text-section-title font-medium">{t("team.topAgents")}</CardTitle>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="units" className="w-full">

@@ -132,6 +132,22 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
+  /* ── Semantic Typography Scale ──
+     All rem-based → scales with accessibility root font-size.
+     Token               rem       px@16   Use Case
+     text-page-title     1.5rem    24px    Page headings (h1)
+     text-section-title  1.125rem  18px    Card/section headings (h2/h3)
+     text-stat-value     1.75rem   28px    Large stat numbers
+     text-body           0.875rem  14px    Default body text
+     text-body-lg        1rem      16px    Emphasized body text
+     text-caption        0.75rem   12px    Labels, meta, secondary info
+  */
+  .text-page-title    { font-size: 1.5rem;   line-height: 2rem;    }
+  .text-section-title { font-size: 1.125rem; line-height: 1.75rem; }
+  .text-stat-value    { font-size: 1.75rem;  line-height: 2.25rem; }
+  .text-body          { font-size: 0.875rem; line-height: 1.25rem; }
+  .text-body-lg       { font-size: 1rem;     line-height: 1.5rem;  }
+
   .text-exp-navy {
     color: hsl(var(--exp-navy));
   }

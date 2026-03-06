@@ -463,7 +463,7 @@ export default function Financials() {
             <ArrowLeft className="h-4 w-4 mr-1" />
             {t("fin.back")}
           </Button>
-          <h1 className="text-2xl font-bold text-foreground">{t("fin.title")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("fin.title")}</h1>
         </div>
 
         {/* Tabs */}

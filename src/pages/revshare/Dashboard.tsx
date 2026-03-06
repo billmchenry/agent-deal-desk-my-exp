@@ -240,7 +240,7 @@ export default function RevShareDashboard() {
 
                 <div className="flex items-end gap-4 mb-2">
                   <div>
-                    <p className="text-2xl font-bold font-secondary text-white leading-none">{formatNumber(18)}</p>
+                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(18)}</p>
                     <p className="text-xs text-white/70">Actual</p>
                   </div>
                   <div>

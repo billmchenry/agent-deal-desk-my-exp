@@ -94,7 +94,7 @@ export default function CustomServiceFees() {
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        <h1 className="text-2xl font-bold text-foreground">{t("csf.title")}</h1>
+        <h1 className="text-page-title font-bold text-foreground">{t("csf.title")}</h1>
 
         <div className="flex items-center justify-between gap-2 flex-wrap">
           <UniversalFilterBar title={t("csf.dateRange")}>

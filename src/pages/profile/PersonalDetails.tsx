@@ -37,7 +37,7 @@ export default function PersonalDetails() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <h1 className="text-2xl font-bold text-foreground mb-6">My Profile</h1>
+        <h1 className="text-page-title font-bold text-foreground mb-6">My Profile</h1>
 
         <div className={`flex flex-col ${isPersonalDetails ? "lg:flex-row" : ""} gap-6`}>
           {isPersonalDetails && <ProfileSidebarCard />}

@@ -261,7 +261,7 @@ export default function OrganizationReporting() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <CardTitle className="text-base font-medium">{t("org.salesVolumeByLevel")}</CardTitle>
+                      <CardTitle className="text-section-title font-medium">{t("org.salesVolumeByLevel")}</CardTitle>
                       <Info className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <Select defaultValue="usd">

@@ -19,7 +19,7 @@ function StatCard({ title, value, prefix = "" }: { title: string; value: string 
     <Card>
       <CardContent className="p-3 sm:p-4">
         <p className="text-xs text-muted-foreground mb-1">{title}</p>
-        <p className="text-lg sm:text-xl font-semibold text-foreground truncate">
+        <p className="text-section-title font-semibold text-foreground truncate">
           {prefix}{typeof value === "number" ? formatNumber(value) : value}
         </p>
       </CardContent>

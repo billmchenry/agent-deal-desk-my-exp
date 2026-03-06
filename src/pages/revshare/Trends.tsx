@@ -218,7 +218,7 @@ export default function RevShareTrends() {
                           openLevels.includes(levelData.level) ? "" : "-rotate-90"
                         }`}
                       />
-                      <CardTitle className="text-base font-medium">Level {levelData.level}</CardTitle>
+                      <CardTitle className="text-section-title font-medium">Level {levelData.level}</CardTitle>
                     </div>
                   </CardHeader>
                 </CollapsibleTrigger>

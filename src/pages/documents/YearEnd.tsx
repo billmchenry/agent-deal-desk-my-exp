@@ -376,7 +376,7 @@ export default function YearEnd() {
                 {/* Amount hero */}
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div className="text-center flex-1">
-                    <p className="text-2xl font-bold tabular-nums font-secondary">
+                    <p className="text-stat-value font-bold tabular-nums font-secondary">
                       {formatCurrency(selectedTxn.grossRevenue)}
                     </p>
                     <p className="text-sm text-muted-foreground">{selectedTxn.earningsType}</p>

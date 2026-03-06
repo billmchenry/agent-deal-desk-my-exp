@@ -107,7 +107,7 @@ export default function HelpCenter() {
               <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
                 <Mail className="h-5 w-5 text-primary-foreground" aria-hidden="true" />
               </div>
-              <h3 className="text-lg font-semibold">{t("help.emailUs")}</h3>
+              <h3 className="text-section-title font-semibold">{t("help.emailUs")}</h3>
               <p className="text-sm text-muted-foreground">{t("help.emailUsDesc")}</p>
               <Button onClick={() => setEmailOpen(true)} aria-label={t("help.sendEmail")}>
                 {t("help.sendEmail")}
