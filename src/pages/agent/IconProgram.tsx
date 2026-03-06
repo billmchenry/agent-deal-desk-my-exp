@@ -125,7 +125,7 @@ export default function IconProgram() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
               <Card>
                 <CardContent className="p-4 space-y-3">
-                  <h3 className="font-medium text-foreground">Company Commission</h3>
+                  <h3 className="font-medium text-foreground">{t("icon.companyCommission")}</h3>
                   <Progress value={26.16} className="h-2" />
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-foreground">$4,186.17</span>
