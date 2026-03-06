@@ -351,7 +351,82 @@ export default function Financials() {
     </div>
   );
 
-  // If an agent is selected, show drill-down
+  // If viewing a periodic period detail with an agent selected
+  if (selectedPeriod && selectedAgent) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-4">
+          <AgentTransactionsView
+            agent={selectedAgent}
+            onBack={() => setSelectedAgent(null)}
+            onTransactionClick={handleTxnClick}
+          />
+          <TransactionRevShareSheet
+            txn={selectedTxn}
+            open={txnSheetOpen}
+            onOpenChange={setTxnSheetOpen}
+          />
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // If viewing a periodic period detail (Payment Details + agent table)
+  if (selectedPeriod) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="-ml-2 text-muted-foreground hover:text-foreground"
+            onClick={handleBackFromPeriod}
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            {t("fin.back")}
+          </Button>
+          <h1 className="text-2xl font-bold text-foreground">{t("fin.title")}</h1>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-4">
+            <Card className="p-5 h-fit">
+              <h3 className="text-base font-semibold text-foreground mb-4">{t("fin.paymentDetails")}</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-baseline">
+                  <span className="text-sm text-muted-foreground">{t("fin.initialRevShare")}</span>
+                  <div className="text-right">
+                    <span className="text-sm font-medium text-foreground">{formatCurrency(selectedPeriod.initialRevShare)} {selectedPeriod.currency}</span>
+                    <p className="text-xs text-muted-foreground">Initiated {selectedPeriod.date}</p>
+                  </div>
+                </div>
+                <div className="flex justify-between items-baseline">
+                  <span className="text-sm text-muted-foreground">{t("fin.adjustmentAmount")}</span>
+                  <span className="text-sm font-medium text-exp-green">{formatCurrency(selectedPeriod.adjustment)} {selectedPeriod.currency}</span>
+                </div>
+                <div className="flex justify-between items-baseline">
+                  <span className="text-sm font-semibold text-foreground">{t("fin.finalRevShare")}</span>
+                  <div className="text-right">
+                    <span className="text-sm font-semibold text-foreground">{formatCurrency(selectedPeriod.finalRevShare)} {selectedPeriod.currency}</span>
+                    <p className="text-xs text-muted-foreground">Batch ID {selectedPeriod.batchNumber}</p>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <DataTable
+              data={lastPaidData}
+              columns={agentColumns}
+              csvFilename={`revshare-${selectedPeriod.date}`}
+              mobileCardRender={mobileCard}
+              defaultPageSize={25}
+              onRowClick={handleAgentClick}
+            />
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // If an agent is selected (from unpaid/expected/lastPaid tabs), show drill-down
   if (selectedAgent) {
     return (
       <DashboardLayout>
