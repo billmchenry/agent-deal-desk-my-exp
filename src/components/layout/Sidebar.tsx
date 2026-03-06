@@ -26,6 +26,7 @@ const NAV_KEYS: Record<string, string> = {
   "Dashboard": "nav.dashboard",
   "Agent Production Details": "nav.agentProductionDetails",
   "ICON Program": "nav.iconProgram",
+  "Broker Hub": "nav.brokerHub",
   "Documents": "nav.documents",
   "Year-End": "nav.yearEnd",
   "Downloads": "nav.downloads",

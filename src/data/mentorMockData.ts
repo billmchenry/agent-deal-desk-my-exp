@@ -537,6 +537,238 @@ export interface AvailableMentor {
   website?: string;
 }
 
+// ── State Mentors (for Broker Hub) ──
+
+export interface StateMentor {
+  id: string;
+  name: string;
+  totalActiveMentees: number;
+  primaryEmail: string;
+  phone: string;
+  secondaryEmail: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  // Profile fields (reuse AvailableMentor shape)
+  avatarUrl?: string;
+  bio: string;
+  locationsServiced: string[];
+  licenses: { state: string; number: string }[];
+  languages: string[];
+  mls: string[];
+  specializations: string[];
+  certifications: string[];
+  facebook?: string;
+  linkedin?: string;
+  website?: string;
+  // References to mockMentees by id
+  menteeIds: string[];
+}
+
+export const mockStateMentors: StateMentor[] = [
+  {
+    id: "sm1",
+    name: "Alejandra Pino Torrealba",
+    totalActiveMentees: 3,
+    primaryEmail: "alejandra.pino@exprealty.com",
+    phone: "(555) 293-4810",
+    secondaryEmail: "apino@gmail.com",
+    city: "Katy",
+    state: "TX",
+    postalCode: "77494",
+    bio: "With over 15 years of real estate experience across both residential and commercial markets, I am passionate about helping new agents find their footing.",
+    locationsServiced: ["Houston", "Katy", "Sugar Land", "Richmond"],
+    licenses: [{ state: "TX", number: "TX-782341" }],
+    languages: ["English", "Spanish"],
+    mls: ["HAR MLS", "Houston MLS"],
+    specializations: ["Residential", "Luxury", "First-Time Buyers"],
+    certifications: ["ABR", "CRS", "GRI"],
+    facebook: "https://facebook.com/alejandrapino",
+    linkedin: "https://linkedin.com/in/alejandrapino",
+    website: "https://alejandrapino.exprealty.com",
+    menteeIds: ["m1", "m2", "m3"],
+  },
+  {
+    id: "sm2",
+    name: "Michael Chen",
+    totalActiveMentees: 2,
+    primaryEmail: "michael.chen@exprealty.com",
+    phone: "(555) 482-1930",
+    secondaryEmail: "",
+    city: "Sacramento",
+    state: "CA",
+    postalCode: "95814",
+    bio: "I specialize in guiding new agents through the Sacramento and Northern California markets. Having closed over 200 transactions in the past decade.",
+    locationsServiced: ["Sacramento", "Elk Grove", "Roseville", "Folsom"],
+    licenses: [{ state: "CA", number: "CA-019283" }],
+    languages: ["English", "Mandarin"],
+    mls: ["MetroList MLS"],
+    specializations: ["Residential", "Investment Properties"],
+    certifications: ["CRS", "SRS"],
+    linkedin: "https://linkedin.com/in/michaelchenre",
+    menteeIds: ["m5", "m10"],
+  },
+  {
+    id: "sm3",
+    name: "Sarah Blackwood",
+    totalActiveMentees: 2,
+    primaryEmail: "sarah.blackwood@exprealty.com",
+    phone: "(555) 771-3204",
+    secondaryEmail: "sblackwood@outlook.com",
+    city: "Nashville",
+    state: "TN",
+    postalCode: "37201",
+    bio: "As a top-producing agent in the Nashville metro area, I bring a deep understanding of market trends and client service excellence.",
+    locationsServiced: ["Nashville", "Franklin", "Brentwood", "Murfreesboro"],
+    licenses: [{ state: "TN", number: "TN-445901" }],
+    languages: ["English"],
+    mls: ["Realtracs MLS"],
+    specializations: ["Residential", "Relocation"],
+    certifications: ["ABR", "e-PRO"],
+    website: "https://sarahblackwood.exprealty.com",
+    menteeIds: ["m7", "m11"],
+  },
+  {
+    id: "sm4",
+    name: "David Okonkwo",
+    totalActiveMentees: 2,
+    primaryEmail: "david.okonkwo@exprealty.com",
+    phone: "(555) 618-9042",
+    secondaryEmail: "",
+    city: "Atlanta",
+    state: "GA",
+    postalCode: "30301",
+    bio: "I have been in the real estate industry for over 20 years and have mentored dozens of successful agents.",
+    locationsServiced: ["Atlanta", "Decatur", "Marietta", "Alpharetta"],
+    licenses: [{ state: "GA", number: "GA-338102" }],
+    languages: ["English", "French"],
+    mls: ["FMLS", "Georgia MLS"],
+    specializations: ["Luxury", "New Construction", "Investment"],
+    certifications: ["CRS", "GRI", "CLHMS"],
+    facebook: "https://facebook.com/davidokonkworealty",
+    linkedin: "https://linkedin.com/in/davidokonkwo",
+    menteeIds: ["m4", "m8"],
+  },
+  {
+    id: "sm5",
+    name: "Patricia Young",
+    totalActiveMentees: 1,
+    primaryEmail: "patricia.young@exprealty.com",
+    phone: "(555) 293-5510",
+    secondaryEmail: "pyoung.re@gmail.com",
+    city: "Portland",
+    state: "OR",
+    postalCode: "97201",
+    bio: "Focused on sustainable real estate practices and community-driven development in the Pacific Northwest.",
+    locationsServiced: ["Portland", "Beaverton", "Lake Oswego"],
+    licenses: [{ state: "OR", number: "OR-220194" }],
+    languages: ["English"],
+    mls: ["RMLS"],
+    specializations: ["Residential", "Green Homes"],
+    certifications: ["GREEN", "ABR"],
+    menteeIds: ["m9"],
+  },
+  {
+    id: "sm6",
+    name: "Roberto Delgado",
+    totalActiveMentees: 1,
+    primaryEmail: "roberto.delgado@exprealty.com",
+    phone: "(555) 340-8821",
+    secondaryEmail: "",
+    city: "Miami",
+    state: "FL",
+    postalCode: "33101",
+    bio: "Bilingual mentor specializing in South Florida luxury and international markets.",
+    locationsServiced: ["Miami", "Fort Lauderdale", "Coral Gables"],
+    licenses: [{ state: "FL", number: "FL-990832" }],
+    languages: ["English", "Spanish", "Portuguese"],
+    mls: ["Miami MLS", "BeachesMLS"],
+    specializations: ["Luxury", "International"],
+    certifications: ["CIPS", "CRS"],
+    linkedin: "https://linkedin.com/in/robertodelgado",
+    menteeIds: ["m6"],
+  },
+  {
+    id: "sm7",
+    name: "Jennifer Walsh",
+    totalActiveMentees: 1,
+    primaryEmail: "jennifer.walsh@exprealty.com",
+    phone: "(555) 567-8901",
+    secondaryEmail: "jwalsh@yahoo.com",
+    city: "Las Vegas",
+    state: "NV",
+    postalCode: "89101",
+    bio: "Helping new agents build their dream careers in the Las Vegas and Henderson real estate markets.",
+    locationsServiced: ["Las Vegas", "Henderson", "Summerlin"],
+    licenses: [{ state: "NV", number: "NV-112039" }],
+    languages: ["English"],
+    mls: ["Las Vegas MLS"],
+    specializations: ["Residential", "Investment Properties"],
+    certifications: ["SRS", "ABR"],
+    menteeIds: ["m12"],
+  },
+  {
+    id: "sm8",
+    name: "Tomoko Hayashi",
+    totalActiveMentees: 0,
+    primaryEmail: "tomoko.hayashi@exprealty.com",
+    phone: "(555) 801-2293",
+    secondaryEmail: "thayashi@gmail.com",
+    city: "Seattle",
+    state: "WA",
+    postalCode: "98101",
+    bio: "Multilingual agent serving the diverse Seattle metro communities with cultural sensitivity and expertise.",
+    locationsServiced: ["Seattle", "Bellevue", "Redmond", "Kirkland"],
+    licenses: [{ state: "WA", number: "WA-554012" }],
+    languages: ["English", "Japanese"],
+    mls: ["NWMLS"],
+    specializations: ["Residential", "Relocation"],
+    certifications: ["CRS", "e-PRO"],
+    linkedin: "https://linkedin.com/in/tomokohayashi",
+    menteeIds: [],
+  },
+  {
+    id: "sm9",
+    name: "Anthony Russo",
+    totalActiveMentees: 0,
+    primaryEmail: "anthony.russo@exprealty.com",
+    phone: "(555) 419-6783",
+    secondaryEmail: "",
+    city: "Phoenix",
+    state: "AZ",
+    postalCode: "85001",
+    bio: "20+ year veteran of the Arizona real estate market. Ready to mentor the next generation of top producers.",
+    locationsServiced: ["Phoenix", "Scottsdale", "Tempe", "Mesa"],
+    licenses: [{ state: "AZ", number: "AZ-882014" }],
+    languages: ["English", "Italian"],
+    mls: ["Arizona MLS"],
+    specializations: ["Residential", "Luxury", "New Construction"],
+    certifications: ["GRI", "CLHMS"],
+    facebook: "https://facebook.com/anthonyrusso",
+    menteeIds: [],
+  },
+  {
+    id: "sm10",
+    name: "Diana Osei-Mensah",
+    totalActiveMentees: 0,
+    primaryEmail: "diana.osm@exprealty.com",
+    phone: "(555) 662-1045",
+    secondaryEmail: "diana.osm@outlook.com",
+    city: "Dallas",
+    state: "TX",
+    postalCode: "75201",
+    bio: "Passionate about diversity in real estate and committed to mentoring agents from all backgrounds.",
+    locationsServiced: ["Dallas", "Fort Worth", "Plano", "Frisco"],
+    licenses: [{ state: "TX", number: "TX-443092" }],
+    languages: ["English", "French", "Twi"],
+    mls: ["North Texas MLS"],
+    specializations: ["Residential", "First-Time Buyers"],
+    certifications: ["ABR", "SRS"],
+    linkedin: "https://linkedin.com/in/dianaosei",
+    menteeIds: [],
+  },
+];
+
 export const mockAvailableMentors: AvailableMentor[] = [
   {
     id: "am1",
