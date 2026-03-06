@@ -314,8 +314,8 @@ export default function IconProgram() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
               {[
-                { title: "Production", amount: "$8,000" },
-                { title: "Cultural", amount: "$4,000" },
+                { title: t("icon.production"), amount: "$8,000" },
+                { title: t("icon.cultural"), amount: "$4,000" },
                 { title: "Event 1", amount: "$2,000" },
                 { title: "Event 2", amount: "$2,000" },
               ].map((grant) => (
