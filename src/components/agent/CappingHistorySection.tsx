@@ -94,7 +94,7 @@ export function CappingHistoryTable({ dateRange }: { dateRange?: { from: Date | 
         </div>
         <div className="space-y-2">
           {sortedData.map((row, i) => {
-            const active = isActiveRow(row.startDate, row.endDate);
+            const active = isActiveRow(row.startDate, row.endDate, dateRange);
             return (
               <div
                 key={i}
