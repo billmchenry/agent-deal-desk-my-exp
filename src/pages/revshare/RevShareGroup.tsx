@@ -137,7 +137,7 @@ export default function RevShareGroup() {
     { key: "transactionVolume", header: "revgroup.transactionVolume", type: "currency", sortable: true, defaultVisible: false, currencyCodeKey: "currency" },
     { key: "totalTransactions", header: "revgroup.totalTransactions", type: "number", sortable: true, defaultVisible: true },
     { key: "totalRevenueShare", header: "revgroup.totalRevenueShare", type: "currency", sortable: true, defaultVisible: true, currencyCodeKey: "currency" },
-    { key: "stateOfPrimaryLicense", header: "revgroup.stateOfPrimaryLicense", type: "string", sortable: true, filterable: true, defaultVisible: true },
+    { key: "stateOfPrimaryLicense", header: "revgroup.stateOfPrimaryLicense", type: "string", sortable: true, filterable: true, defaultVisible: false },
     { key: "isOffboarding", header: "revgroup.isOffboarding", type: "badge", sortable: true, filterable: true, defaultVisible: true, render: (val) => getYesNoBadge(String(val)) },
     { key: "status", header: "revgroup.status", type: "badge", sortable: true, filterable: true, defaultVisible: true },
     { key: "agentSponsorName", header: "revgroup.agentSponsorName", type: "string", sortable: true, filterable: true, defaultVisible: true },
