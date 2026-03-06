@@ -142,7 +142,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
         </div>
 
         {hasSubmenu && expanded && (
-          <div className="ml-9 mt-1 space-y-0.5">
+          <div className="ms-9 mt-1 space-y-0.5">
             {item.submenu?.map((subItem) => (
               <button
                 key={subItem.url}
