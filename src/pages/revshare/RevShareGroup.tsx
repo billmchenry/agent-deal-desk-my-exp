@@ -218,6 +218,18 @@ export default function RevShareGroup() {
         </Button>
 
         <UniversalFilterBar title={t("revgroup.title")}>
+          <DropdownFilter
+            label={t("revgroup.status")}
+            options={statusOptions}
+            value={statusFilter}
+            onChange={setStatusFilter}
+          />
+          <DropdownFilter
+            label={t("revgroup.level")}
+            options={levelOptions}
+            value={levelFilter}
+            onChange={setLevelFilter}
+          />
           <SearchFilter
             value={search}
             onChange={setSearch}
