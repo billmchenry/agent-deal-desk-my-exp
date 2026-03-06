@@ -6,6 +6,7 @@ import { PromotionalCarousel } from "./PromotionalCarousel";
 import { NewsAndTrainingCard } from "./NewsAndTrainingCard";
 import { ConnectUplineCard } from "./ConnectUplineCard";
 import { DiscAssessmentCard } from "./DiscAssessmentCard";
+import { NpsSurveyCard } from "./NpsSurveyCard";
 import { ForecastWidget } from "./widgets/ForecastWidget";
 import { VelocityWidget } from "./widgets/VelocityWidget";
 import { PipelineWidget } from "./widgets/PipelineWidget";
