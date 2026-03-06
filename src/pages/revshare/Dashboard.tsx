@@ -188,7 +188,7 @@ export default function RevShareDashboard() {
                   <span className="text-xs font-semibold text-white">{t("revshare.revenueShare")}</span>
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-1">
-                  <p className="text-2xl font-bold font-secondary text-white">
+                <p className="text-stat-value font-bold font-secondary text-white">
                     {formatCurrency(264138.52)} <span className="text-sm font-medium text-white/70">USD</span>
                   </p>
                   <span className="text-xs text-white/70">After Adj.</span>
