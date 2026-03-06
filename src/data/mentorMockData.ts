@@ -633,7 +633,7 @@ export const mockStateMentors: StateMentor[] = [
     name: "David Okonkwo",
     totalActiveMentees: 2,
     primaryEmail: "david.okonkwo@exprealty.com",
-    phone: "(555) 618-9042",
+    phone: "(404) 555-9042",
     secondaryEmail: "",
     city: "Atlanta",
     state: "GA",
