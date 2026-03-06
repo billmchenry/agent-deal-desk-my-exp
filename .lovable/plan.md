@@ -1,83 +1,51 @@
 
 
-# Team Reconciliation Page
+## Problem
 
-A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
+Font sizes across the app are applied ad-hoc using random Tailwind text size classes (`text-3xl`, `text-2xl`, `text-lg`, `text-sm`, `text-xs`) with no consistent system. The same semantic element (e.g., a page heading) might use `text-2xl` on one page and `text-lg` on another. Stat values use `text-3xl` which is oversized on mobile.
 
----
+The accessibility font-size feature (root `fontSize` change in `LocaleContext`) already works because Tailwind uses `rem`, but the underlying scale itself is inconsistent.
 
-## Overview
+## Solution: Semantic Typography Utility Classes
 
-Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
+Define a set of semantic CSS utility classes in `index.css` that map to specific Tailwind-equivalent sizes using `rem` (so they automatically scale with the accessibility root font-size setting). Then replace raw Tailwind text classes with these semantic classes across all pages.
 
----
+### Typography Scale
 
-## New Files
+```text
+Token               rem     px@16  Use Case
+─────────────────── ─────── ────── ──────────────────────────
+.text-page-title    1.5rem  24px   Page headings (h1)
+.text-section-title 1.125rem 18px  Card/section headings (h2/h3)
+.text-stat-value    1.75rem 28px   Large stat numbers
+.text-body          0.875rem 14px  Default body text
+.text-body-lg       1rem    16px   Emphasized body text
+.text-caption       0.75rem 12px   Labels, meta, secondary info
+```
 
-### 1. `src/pages/team/Reconciliation.tsx`
+All values in `rem` — when the accessibility font-size bumps root from 16px to 18px or 20px, every semantic class scales proportionally.
 
-The main page, closely mirroring the Agent Production Details pattern:
+### Files to Change
 
-- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
-- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
-- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
-- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
-- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
-- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
-- CSV export enabled
-- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
-- Back button at top linking to `/team/dashboard`
+1. **`src/index.css`** — Add the semantic typography utility classes under `@layer utilities`
 
-### 2. `src/components/team/TeamBreakdownSheet.tsx`
+2. **`src/pages/team/Dashboard.tsx`** — Replace raw text sizes:
+   - `text-2xl` on h1 → `text-page-title`
+   - `text-3xl` on stat values → `text-stat-value`
+   - `text-base` on card titles → `text-section-title`
+   - `text-lg` on subtitle → `text-body-lg`
 
-Side panel matching the reference screenshot's "Transaction Details" breakdown:
+3. **All other pages** (agent/Dashboard, IconProgram, CustomServiceFees, Transactions, revshare/*, profile/*, documents/*, mentor/*, etc.) — Same pattern: replace raw Tailwind text classes with the semantic equivalents.
 
-- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
-- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
-- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
-- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
-  - Agent identifier row (ID + Name) with a colored percentage badge
-  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
-  - Tax, Commission After Co-agents (highlighted)
-  - Agent Split Before Expenses
-  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
-- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
-- **Fees I Paid for Others** -- collapsible
-- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
+4. **Shared components** (`AgentHeroBanner`, `CappingSection`, `StatsRow`, `DataTable`, etc.) — Align to the same scale.
 
-### 3. `src/components/shared/BreakdownComponents.tsx`
+### Why This Works with Accessibility
 
-Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
+- All sizes use `rem` → they inherit from `html { font-size }` set by `LocaleContext`
+- When user selects "Large" (18px root), `text-stat-value` becomes `1.75 × 18 = 31.5px` instead of `1.75 × 16 = 28px`
+- Minimum size (`text-caption` = 0.75rem) at normal = 12px, which meets the 12px minimum; at "Large" = 13.5px, at "X-Large" = 15px
 
----
+### Scope
 
-## Modified Files
-
-### `src/components/agent/TransactionDetailsSheet.tsx`
-- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
-
-### `src/data/mockData.ts`
-- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
-- Update the `navItems` array similarly
-
-### `src/components/layout/Sidebar.tsx`
-- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
-
-### `src/App.tsx`
-- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
-
-### `src/i18n/*.ts` (all 7 language files)
-- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
-
----
-
-## Implementation Order
-
-1. Extract shared breakdown components into `BreakdownComponents.tsx`
-2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
-3. Create mock team reconciliation data and the `Reconciliation.tsx` page
-4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
-5. Add route in `App.tsx`
-6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
-7. Add translation keys to all 7 language files
+This touches ~25-30 files but is a mechanical find-and-replace per the mapping above. No logic changes, no new dependencies.
 
