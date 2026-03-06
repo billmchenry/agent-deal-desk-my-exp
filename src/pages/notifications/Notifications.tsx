@@ -56,10 +56,10 @@ const mockNotifications: NotificationItem[] = [
   // Recognition items
   {
     id: "r1", tab: "recognition", type: "Recognition", milestone: "Capping",
-    message: "Gertrudis Jimenez in your Revenue Share group has achieved their 100% capping.",
+    message: "Danielle Harmon in your Revenue Share group has achieved their 100% capping.",
     giftLink: true, timestamp: "03/07/2025 12:00 AM",
-    agentName: "Gertrudis Jimenez", agentId: "1080871", agentLevel: 5,
-    agentPhone: "(347) 285-0638", agentEmail: "gertrudis.jimenez@exprealty.com",
+    agentName: "Danielle Harmon", agentId: "1080871", agentLevel: 5,
+    agentPhone: "(347) 555-0638", agentEmail: "danielle.harmon@exprealty.com",
     salesPrice: 1300000, capReachedDate: "03/07/2025", transactionNumber: "3142526.1",
     address: "105-20 37th Avenue, Corona, NY 11368, US",
   },
@@ -69,6 +69,7 @@ const mockNotifications: NotificationItem[] = [
     giftLink: true, timestamp: "01/31/2025 12:00 AM",
     agentName: "Brittany Pride", agentId: "1092145", agentLevel: 3,
     agentPhone: "(212) 555-0147", agentEmail: "brittany.pride@exprealty.com",
+
     salesPrice: 950000, capReachedDate: "01/31/2025", transactionNumber: "3138921.2",
     address: "42 Elm Street, Brooklyn, NY 11201, US",
   },

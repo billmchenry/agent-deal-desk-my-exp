@@ -1,49 +1,83 @@
 
 
-## Sanitize Dummy Data: Names, Phones & Emails
+# Team Reconciliation Page
 
-### Problem
+A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
 
-Two issues identified:
+---
 
-**1. Potentially real personal information** in these locations:
-- `MyMentorProfileSheet.tsx` — "Alejandra J Pino Torrealba", phone `(754) 209-3117`, email `alejandra.pino-torrealba@exprealty.com` — looks like it could be a real person
-- `StepYourInfo.tsx` — "Clifford Malone", `clifford.malone@exprealty.com` — possibly real
-- `mockData.ts` onboarding — "Valerio Nieto" with `(619) 737-6503` and `vnieto21@gmail.com` — looks real (non-555 phone, personal Gmail)
-- `MentorProgram.tsx` — "Robert Conat" with `(555) 482-9173` and `robert.conat@exprealty.com` — name may be real
-- `Notifications.tsx` — "Gertrudis Jimenez" with `(347) 285-0638` — non-555 phone, possibly real name
+## Overview
 
-**2. Phone numbers not following `(xxx) 555-xxxx` pattern** — found in:
-- `mockData.ts` line 158: `(619) 737-6503` (onboarding agent)
-- `Notifications.tsx` line 62: `(347) 285-0638`
-- `MyMentorProfileSheet.tsx` line 24: `(754) 209-3117`
+Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
 
-Most other phones already use `(555)` as the area code, but the requested format is `(xxx) 555-xxxx` — meaning 555 should be in the **middle** (exchange), not the area code. Currently all mentor/mock data uses `(555) xxx-xxxx`. These all need to be reformatted.
+---
 
-### Plan
+## New Files
 
-**1. Replace all potentially real names with clearly fictional ones** (~4 files)
-- `MyMentorProfileSheet.tsx` — rename "Alejandra J Pino Torrealba" → fictional name, update bio, locations, email
-- `StepYourInfo.tsx` — rename "Clifford Malone" → use `currentUser` name or a different fictional name
-- `mockData.ts` — rename "Valerio Nieto" and "Tazio Galardi" → fictional names, fix emails
-- `Notifications.tsx` — rename "Gertrudis Jimenez" → fictional name
-- `MentorProgram.tsx` — "Robert Conat" → fictional name (also used in mentorMockData sponsors)
+### 1. `src/pages/team/Reconciliation.tsx`
 
-**2. Reformat ALL phone numbers to `(xxx) 555-xxxx`** (~4 files)
-- `mockData.ts` — all phones (currentUser, uplinePartners, onboardingAgents, userProfile contact/emergency)
-- `mentorMockData.ts` — all mentee phones, sponsor phones, mentor request phones, state mentor phones, available mentor phones
-- `Notifications.tsx` — all agentPhone values
-- `MyMentorProfileSheet.tsx` — mentor phone
-- `MentorProgram.tsx` — menteeData mentor phone
+The main page, closely mirroring the Agent Production Details pattern:
 
-This means changing from `(555) 301-4892` → `(916) 555-4892` style (keep area code contextual to city, put 555 in middle).
+- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
+- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
+- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
+- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
+- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
+- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
+- CSV export enabled
+- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
+- Back button at top linking to `/team/dashboard`
 
-### Files to Change (~5 files)
+### 2. `src/components/team/TeamBreakdownSheet.tsx`
 
-1. `src/data/mockData.ts` — rename onboarding names, reformat all phones to `(xxx) 555-xxxx`
-2. `src/data/mentorMockData.ts` — reformat all ~40+ phones to `(xxx) 555-xxxx`
-3. `src/pages/notifications/Notifications.tsx` — rename Gertrudis Jimenez, reformat phones
-4. `src/components/mentor/MyMentorProfileSheet.tsx` — replace profile with fictional data, reformat phone
-5. `src/components/mentor/steps/StepYourInfo.tsx` — replace name/email with fictional
-6. `src/pages/mentor/MentorProgram.tsx` — rename Robert Conat, reformat phone
+Side panel matching the reference screenshot's "Transaction Details" breakdown:
+
+- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
+- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
+- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
+- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
+  - Agent identifier row (ID + Name) with a colored percentage badge
+  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
+  - Tax, Commission After Co-agents (highlighted)
+  - Agent Split Before Expenses
+  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
+- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
+- **Fees I Paid for Others** -- collapsible
+- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
+
+### 3. `src/components/shared/BreakdownComponents.tsx`
+
+Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
+
+---
+
+## Modified Files
+
+### `src/components/agent/TransactionDetailsSheet.tsx`
+- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
+
+### `src/data/mockData.ts`
+- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
+- Update the `navItems` array similarly
+
+### `src/components/layout/Sidebar.tsx`
+- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
+
+### `src/App.tsx`
+- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
+
+### `src/i18n/*.ts` (all 7 language files)
+- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
+
+---
+
+## Implementation Order
+
+1. Extract shared breakdown components into `BreakdownComponents.tsx`
+2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
+3. Create mock team reconciliation data and the `Reconciliation.tsx` page
+4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
+5. Add route in `App.tsx`
+6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
+7. Add translation keys to all 7 language files
 

@@ -5,9 +5,9 @@ import { userProfile } from "@/data/mockData";
 
 export function StepYourInfo() {
   const info = [
-    { label: "Full Name", value: "Clifford Malone" },
-    { label: "Primary Email", value: "clifford.malone@exprealty.com" },
-    { label: "Phone", value: "(555) 482-9173" },
+    { label: "Full Name", value: "Michael Thompson" },
+    { label: "Primary Email", value: "michael.thompson@exprealty.com" },
+    { label: "Phone", value: "(916) 555-4827" },
     { label: "eXp Join Date", value: "01/15/2022" },
     { label: "Team", value: "N/A" },
     { label: "MLS Name", value: "ARMLS" },

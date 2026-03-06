@@ -11,18 +11,18 @@ interface MyMentorProfileSheetProps {
 }
 
 const myMentorProfile = {
-  name: "Alejandra J Pino Torrealba",
+  name: "Camila Reyes Montoya",
   location: "Pembroke Pines, FL",
   avatarUrl: "",
-  bio: "Real Estate Agent for Exp Realty.\nWorking with First time Buyers in South Florida.\nPromoting New Constructions.",
+  bio: "Real Estate Agent for eXp Realty.\nWorking with First time Buyers in South Florida.\nPromoting New Constructions.",
   locationsServiced: ["Pembroke Pines, Florida", "Miami Lakes, Florida", "Miramar, Florida"],
   licenses: ["FL"],
   languages: ["English", "Spanish"],
   mls: ["SEF Shared MLS Database"],
   specializations: [],
   certifications: [],
-  phone: "(754) 209-3117",
-  email: "alejandra.pino-torrealba@exprealty.com",
+  phone: "(754) 555-3117",
+  email: "camila.reyes@exprealty.com",
   facebook: "https://facebook.com",
   linkedin: "https://linkedin.com",
   website: "",
