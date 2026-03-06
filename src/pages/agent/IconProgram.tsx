@@ -271,7 +271,7 @@ export default function IconProgram() {
                   </div>
                   <span className="text-sm font-medium text-foreground">100%</span>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">Attend 2 events to achieve the goal</p>
+                <p className="text-sm text-muted-foreground mb-4">{t("icon.attendGoal").replace("{count}", "2")}</p>
 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between py-2 border-t border-border">
