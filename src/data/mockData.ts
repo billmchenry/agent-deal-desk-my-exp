@@ -153,15 +153,15 @@ export interface OnboardingAgent {
 
 export const onboardingAgents: OnboardingAgent[] = [
   {
-    id: "ob1", name: "Valerio Nieto", initials: "V", joinDate: "02/09/2026",
+    id: "ob1", name: "Jordan Waverly", initials: "J", joinDate: "02/09/2026",
     currentStep: "License Transfer", nextStep: "Convert to Active", durationDays: 24, progress: 65,
-    phone: "(619) 737-6503", email: "vnieto21@gmail.com", state: "CA", country: "US",
+    phone: "(619) 555-6503", email: "jordan.waverly@email.com", state: "CA", country: "US",
     sponsorName: "", teamId: "318", teamName: "New Vision Realty Group", joinId: "J423652",
   },
   {
-    id: "ob2", name: "Tazio Galardi", initials: "T", joinDate: "11/03/2025",
+    id: "ob2", name: "Quinn Ashford", initials: "Q", joinDate: "11/03/2025",
     currentStep: "License Transfer", nextStep: "Convert to Active", durationDays: 122, progress: 60,
-    phone: "(858) 555-0142", email: "tgalardi@email.com", state: "CA", country: "US",
+    phone: "(858) 555-0142", email: "quinn.ashford@email.com", state: "CA", country: "US",
     sponsorName: "", teamId: "318", teamName: "New Vision Realty Group", joinId: "J419830",
   },
 ];

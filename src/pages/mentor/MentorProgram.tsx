@@ -18,10 +18,10 @@ type MentorScenario = "mentee" | "not_applied" | "pending" | "approved_certifica
 
 const menteeData = {
   mentor: {
-    name: "Robert Conat",
+    name: "Marcus Welling",
     avatarUrl: "",
-    phone: "(555) 482-9173",
-    email: "robert.conat@exprealty.com",
+    phone: "(480) 555-9173",
+    email: "marcus.welling@exprealty.com",
   },
   transactionsCompleted: 0,
   transactionsRequired: 3,

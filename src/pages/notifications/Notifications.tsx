@@ -69,6 +69,7 @@ const mockNotifications: NotificationItem[] = [
     giftLink: true, timestamp: "01/31/2025 12:00 AM",
     agentName: "Brittany Pride", agentId: "1092145", agentLevel: 3,
     agentPhone: "(212) 555-0147", agentEmail: "brittany.pride@exprealty.com",
+
     salesPrice: 950000, capReachedDate: "01/31/2025", transactionNumber: "3138921.2",
     address: "42 Elm Street, Brooklyn, NY 11201, US",
   },
