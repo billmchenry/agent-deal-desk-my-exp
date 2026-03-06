@@ -179,7 +179,7 @@ export default function IconProgram() {
                       <span className="text-sm font-semibold text-foreground">$20,930.87</span>
                       <span className="text-sm font-medium text-foreground">4.19%</span>
                     </div>
-                    <p className="text-xs text-muted-foreground">Goal: $500K</p>
+                    <p className="text-xs text-muted-foreground">{t("common.goal")}: $500K</p>
                   </div>
 
                   {/* Closed Transactions */}
