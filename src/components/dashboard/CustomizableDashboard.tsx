@@ -40,6 +40,9 @@ const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
 export function CustomizableDashboard() {
   const { widgets, isEditMode, removeWidget, reorderWidgets } = useDashboard();
   const { openChat } = useMiraChat();
+  const { config, setMentorMode } = useDemoConfig();
+
+  const showMentorWidget = config.mentorMode === "needs_mentor" || config.mentorMode === "pairing_underway";
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
