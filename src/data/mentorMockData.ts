@@ -800,7 +800,7 @@ export const mockAvailableMentors: AvailableMentor[] = [
     mls: ["MetroList MLS"],
     specializations: ["Residential", "Investment Properties"],
     certifications: ["CRS", "SRS"],
-    phone: "(555) 482-1930",
+    phone: "(916) 555-1930",
     email: "michael.chen@exprealty.com",
     linkedin: "https://linkedin.com/in/michaelchenre",
   },
