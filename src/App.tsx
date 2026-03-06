@@ -30,6 +30,8 @@ import DocumentsYearEnd from "./pages/documents/YearEnd";
 import DocumentsDownloads from "./pages/documents/Downloads";
 import MentorProgram from "./pages/mentor/MentorProgram";
 import MentorApply from "./pages/mentor/MentorApply";
+import MyMentees from "./pages/mentor/MyMentees";
+import MentorRequests from "./pages/mentor/MentorRequests";
 
 
 const queryClient = new QueryClient();
