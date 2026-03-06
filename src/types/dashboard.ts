@@ -10,16 +10,6 @@ export type WidgetType =
   | 'velocity'
   | 'pipeline'
   | 'ai-insight';
-  | 'hero-banner'
-  | 'stats-row'
-  | 'action-center'
-  | 'promo-carousel'
-  | 'news-training'
-  | 'connect-upline'
-  | 'forecast'
-  | 'velocity'
-  | 'pipeline'
-  | 'ai-insight';
 
 export interface DashboardWidget {
   id: string;
