@@ -196,7 +196,7 @@ function AgentCard({
 
         <div className="flex items-center gap-2 mb-3">
           <Badge className={`${getLevelColor(agent.level)} text-white text-xs`}>
-            Level {agent.level}
+            {t("orgTree.level")} {agent.level}
           </Badge>
         </div>
 
@@ -287,7 +287,7 @@ function SelectedAgentCard({
                 </button>
               </div>
               <Badge className={`${getLevelColor(agent.level)} text-white text-xs mt-2`}>
-                Level {agent.level}
+                {t("orgTree.level")} {agent.level}
               </Badge>
               <div className="mt-2 space-y-1 text-xs">
                 <div>
@@ -354,7 +354,7 @@ export default function OrganizationTree() {
       <div className="p-4 lg:p-6">
         <UniversalFilterBar
           title={t("nav.organizationTree")}
-          titleExtra={<span className="text-primary hover:underline cursor-pointer text-sm">View in Beta</span>}
+          titleExtra={<span className="text-primary hover:underline cursor-pointer text-sm">{t("orgTree.viewInBeta")}</span>}
         />
 
         {/* Selected agent header card when drilled in */}
@@ -397,9 +397,9 @@ export default function OrganizationTree() {
         {/* Current level header */}
         <div className="mb-6">
           <p className="text-lg font-medium text-foreground mb-1">
-            {headerName} - Level {headerLevel}
+            {headerName} - {t("orgTree.level")} {headerLevel}
           </p>
-          <p className="text-sm text-muted-foreground">{flaCount} FLAs</p>
+          <p className="text-sm text-muted-foreground">{flaCount} {t("orgTree.flas")}</p>
         </div>
 
         {/* Agent grid */}

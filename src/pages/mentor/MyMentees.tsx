@@ -6,31 +6,33 @@ import { Button } from "@/components/ui/button";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { MenteeContactSheet } from "@/components/mentor/MenteeContactSheet";
 import { useDocumentTitle } from "@/hooks/use-document-title";
+import { useTranslation } from "@/hooks/useTranslation";
 import { mockMentees, type Mentee } from "@/data/mentorMockData";
 import { useFormatters } from "@/hooks/useFormatters";
 
-const columns: ColumnDef<Mentee>[] = [
-  { key: "agentName", header: "Agent", type: "string", sortable: true, filterable: true, defaultVisible: true },
-  { key: "status", header: "Status", type: "badge", sortable: true, filterable: true, defaultVisible: true },
-  { key: "agentId", header: "ID", type: "string", sortable: true, defaultVisible: false },
-  { key: "joinDate", header: "Join Date", type: "date", sortable: true, defaultVisible: true },
-  { key: "transactionsRemaining", header: "Transactions Remaining", type: "number", sortable: true, defaultVisible: true },
-  { key: "paidMentorFees", header: "Paid Mentor Fees", type: "currency", sortable: true, defaultVisible: true },
-  { key: "mentorFee", header: "Mentor Fee", type: "number", sortable: true, defaultVisible: true, render: (v) => <span>{String(v)}%</span> },
-  { key: "email", header: "Email", type: "string", defaultVisible: false },
-  { key: "phone", header: "Phone", type: "string", defaultVisible: false },
-  { key: "city", header: "City", type: "string", defaultVisible: false },
-  { key: "state", header: "State", type: "string", filterable: true, defaultVisible: false },
-  { key: "postalCode", header: "Postal", type: "string", defaultVisible: false },
-  { key: "country", header: "Country", type: "string", defaultVisible: false },
-  { key: "secondaryEmail", header: "Secondary Email", type: "string", defaultVisible: false },
-];
-
 export default function MyMentees() {
-  useDocumentTitle("My Mentees");
+  const { t } = useTranslation();
+  useDocumentTitle(t("mentor.myMentees"));
   const navigate = useNavigate();
   const [selectedMentee, setSelectedMentee] = useState<Mentee | null>(null);
   const { formatCurrency } = useFormatters();
+
+  const columns: ColumnDef<Mentee>[] = [
+    { key: "agentName", header: t("mentor.agent"), type: "string", sortable: true, filterable: true, defaultVisible: true },
+    { key: "status", header: t("mentor.status"), type: "badge", sortable: true, filterable: true, defaultVisible: true },
+    { key: "agentId", header: t("mentor.id"), type: "string", sortable: true, defaultVisible: false },
+    { key: "joinDate", header: t("mentor.joinDate"), type: "date", sortable: true, defaultVisible: true },
+    { key: "transactionsRemaining", header: t("mentor.transactionsRemaining"), type: "number", sortable: true, defaultVisible: true },
+    { key: "paidMentorFees", header: t("mentor.paidMentorFees"), type: "currency", sortable: true, defaultVisible: true },
+    { key: "mentorFee", header: t("mentor.mentorFeeLabel"), type: "number", sortable: true, defaultVisible: true, render: (v) => <span>{String(v)}%</span> },
+    { key: "email", header: t("mentor.emailLabel"), type: "string", defaultVisible: false },
+    { key: "phone", header: t("mentor.phone"), type: "string", defaultVisible: false },
+    { key: "city", header: t("mentor.city"), type: "string", defaultVisible: false },
+    { key: "state", header: t("mentor.state"), type: "string", filterable: true, defaultVisible: false },
+    { key: "postalCode", header: t("mentor.postalCode"), type: "string", defaultVisible: false },
+    { key: "country", header: t("mentor.country"), type: "string", defaultVisible: false },
+    { key: "secondaryEmail", header: t("mentor.secondaryEmail"), type: "string", defaultVisible: false },
+  ];
 
   return (
     <DashboardLayout>
@@ -42,7 +44,7 @@ export default function MyMentees() {
           onClick={() => navigate("/mentor")}
         >
           <ChevronLeft className="h-4 w-4" />
-          My Mentees
+          {t("mentor.myMentees")}
         </Button>
 
         <DataTable
@@ -55,11 +57,11 @@ export default function MyMentees() {
           mobileCardRender={(row) => (
             <div className="space-y-1">
               <p className="font-semibold text-foreground">{row.agentName}</p>
-              <p className="text-xs text-muted-foreground">{row.status} · Joined {row.joinDate}</p>
+              <p className="text-xs text-muted-foreground">{row.status} · {t("mentor.joined")} {row.joinDate}</p>
               <div className="flex gap-4 text-xs text-muted-foreground">
-                <span>Remaining: {row.transactionsRemaining}</span>
-                <span>Fee: {row.mentorFee}%</span>
-                <span>Paid: {formatCurrency(row.paidMentorFees)}</span>
+                <span>{t("mentor.remaining")}: {row.transactionsRemaining}</span>
+                <span>{t("mentor.fee")}: {row.mentorFee}%</span>
+                <span>{t("mentor.paid")}: {formatCurrency(row.paidMentorFees)}</span>
               </div>
             </div>
           )}

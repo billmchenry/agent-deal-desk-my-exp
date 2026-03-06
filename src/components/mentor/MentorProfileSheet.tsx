@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Phone, Mail, MapPin, Globe, Facebook, Linkedin, ChevronLeft } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 import type { AvailableMentor } from "@/data/mentorMockData";
 
 interface MentorProfileSheetProps {
@@ -16,15 +17,11 @@ interface MentorProfileSheetProps {
 
 export function MentorProfileSheet({ mentor, open, onOpenChange, onChoose }: MentorProfileSheetProps) {
   const [bioExpanded, setBioExpanded] = useState(true);
+  const { t } = useTranslation();
 
   if (!mentor) return null;
 
-  const initials = mentor.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
-
+  const initials = mentor.name.split(" ").map((n) => n[0]).join("").slice(0, 2);
   const bioPreview = mentor.bio.length > 180 ? mentor.bio.slice(0, 180) + "…" : mentor.bio;
 
   return (
@@ -36,7 +33,7 @@ export function MentorProfileSheet({ mentor, open, onOpenChange, onChoose }: Men
             onClick={() => onOpenChange(false)}
           >
             <ChevronLeft className="h-4 w-4" />
-            Back
+            {t("mentor.back")}
           </button>
           <div className="flex flex-col items-center gap-3 pb-4">
             <Avatar className="h-20 w-20">
@@ -63,9 +60,8 @@ export function MentorProfileSheet({ mentor, open, onOpenChange, onChoose }: Men
 
         <Separator />
 
-        {/* Bio */}
         <div className="py-4">
-          <h4 className="text-sm font-semibold text-foreground mb-2">About</h4>
+          <h4 className="text-sm font-semibold text-foreground mb-2">{t("mentor.about")}</h4>
           <p className="text-sm text-muted-foreground leading-relaxed">
             {bioExpanded ? mentor.bio : bioPreview}
           </p>
@@ -74,39 +70,37 @@ export function MentorProfileSheet({ mentor, open, onOpenChange, onChoose }: Men
               className="text-xs text-primary font-medium hover:underline mt-1"
               onClick={() => setBioExpanded(!bioExpanded)}
             >
-              {bioExpanded ? "View Less" : "View More"}
+              {bioExpanded ? t("mentor.viewLess") : t("mentor.viewMore")}
             </button>
           )}
         </div>
 
         <Separator />
 
-        {/* Details Grid */}
         <div className="py-4 grid grid-cols-2 gap-4">
-          <DetailSection title="Locations Serviced" items={mentor.locationsServiced} />
-          <DetailSection title="Licenses" items={mentor.licenses.map((l) => `${l.state} — ${l.number}`)} />
-          <DetailSection title="Languages" items={mentor.languages} />
-          <DetailSection title="MLS" items={mentor.mls} />
-          <DetailSection title="Specializations" items={mentor.specializations} />
-          <DetailSection title="Certifications" items={mentor.certifications} />
+          <DetailSection title={t("mentor.locationsServiced")} items={mentor.locationsServiced} />
+          <DetailSection title={t("mentor.licenses")} items={mentor.licenses.map((l) => `${l.state} — ${l.number}`)} />
+          <DetailSection title={t("mentor.languages")} items={mentor.languages} />
+          <DetailSection title={t("mentor.mls")} items={mentor.mls} />
+          <DetailSection title={t("mentor.specializations")} items={mentor.specializations} />
+          <DetailSection title={t("mentor.certifications")} items={mentor.certifications} />
         </div>
 
         <Separator />
 
-        {/* Contact */}
         <div className="py-4 space-y-3">
-          <h4 className="text-sm font-semibold text-foreground">Contact</h4>
+          <h4 className="text-sm font-semibold text-foreground">{t("mentor.contact")}</h4>
           <div className="flex gap-2">
             <Button variant="outline" className="flex-1" asChild>
               <a href={`tel:${mentor.phone}`}>
                 <Phone className="h-4 w-4 mr-1.5" />
-                Call
+                {t("mentor.call")}
               </a>
             </Button>
             <Button variant="outline" className="flex-1" asChild>
               <a href={`mailto:${mentor.email}`}>
                 <Mail className="h-4 w-4 mr-1.5" />
-                Email
+                {t("mentor.emailLabel")}
               </a>
             </Button>
           </div>
@@ -139,13 +133,12 @@ export function MentorProfileSheet({ mentor, open, onOpenChange, onChoose }: Men
 
         <Separator />
 
-        {/* Footer Actions */}
         <div className="flex gap-3 py-4">
           <Button variant="outline" className="flex-1" onClick={() => onOpenChange(false)}>
-            Back
+            {t("mentor.back")}
           </Button>
           <Button className="flex-1" onClick={onChoose}>
-            Choose Mentor
+            {t("mentor.chooseMentor")}
           </Button>
         </div>
       </SheetContent>

@@ -10,6 +10,7 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { ChatMessageData, ChatAttachment } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/hooks/useTranslation";
 import { VoiceModeView } from "./VoiceMode";
 
 interface ChatPanelProps {
@@ -181,6 +182,7 @@ function ChatContent({
   onStopVoiceListening,
   onVoiceTranscript,
 }: ChatContentProps) {
+  const { t } = useTranslation();
   const [pendingAttachments, setPendingAttachments] = React.useState<ChatAttachment[]>([]);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -261,14 +263,14 @@ function ChatContent({
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h2 className="font-semibold text-sm sm:text-base">Chat History</h2>
+            <h2 className="font-semibold text-sm sm:text-base">{t("chat.chatHistory")}</h2>
           </div>
         </div>
       )}
 
       {isExpanded && (
         <div className="px-3 sm:px-4 py-3 border-b shrink-0">
-          <h2 className="font-semibold text-sm sm:text-base">History</h2>
+          <h2 className="font-semibold text-sm sm:text-base">{t("chat.history")}</h2>
         </div>
       )}
 
@@ -278,7 +280,7 @@ function ChatContent({
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search conversations..."
+            placeholder={t("chat.searchConversations")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-8 h-9 text-sm"
@@ -340,14 +342,14 @@ function ChatContent({
         ) : searchQuery ? (
           <div className="text-center py-12 text-muted-foreground">
             <Search className="h-10 w-10 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">No results for "{searchQuery}"</p>
-            <p className="text-xs mt-1">Try a different search term</p>
+            <p className="text-sm">{t("chat.noResultsFor")} "{searchQuery}"</p>
+            <p className="text-xs mt-1">{t("chat.tryDifferentSearch")}</p>
           </div>
         ) : (
           <div className="text-center py-12 text-muted-foreground">
             <MessageSquare className="h-10 w-10 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">No conversations yet</p>
-            <p className="text-xs mt-1">Start chatting with Mira!</p>
+            <p className="text-sm">{t("chat.noConversationsYet")}</p>
+            <p className="text-xs mt-1">{t("chat.startChatting")}</p>
           </div>
         )}
       </ScrollArea>
@@ -467,7 +469,7 @@ function ChatContent({
                 <Mic className="h-4 w-4 text-destructive-foreground" />
               </div>
             </div>
-            <span className="text-sm text-foreground flex-1">Listening{mainListeningDots}</span>
+            <span className="text-sm text-foreground flex-1">{t("chat.listening")}{mainListeningDots}</span>
             <Button
               variant="ghost"
               size="icon"
@@ -497,7 +499,7 @@ function ChatContent({
               <Plus className="h-4 w-4" />
             </Button>
             <Input
-              placeholder="Ask about your insights..."
+              placeholder={t("chat.askAboutInsights")}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendWithAttachments(); } }}

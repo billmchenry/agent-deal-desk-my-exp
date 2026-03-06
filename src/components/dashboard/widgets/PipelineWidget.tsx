@@ -1,28 +1,30 @@
 import { Home, Clock, CheckCircle } from "lucide-react";
 import { useFormatters } from "@/hooks/useFormatters";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PipelineWidgetProps {
   compact?: boolean;
 }
 
-const pipelineData = {
-  totalValue: 2450000,
-  escrows: [
-    { status: "Pending", count: 3, icon: Clock },
-    { status: "In Escrow", count: 5, icon: Home },
-    { status: "Closing Soon", count: 2, icon: CheckCircle },
-  ],
-};
-
 export function PipelineWidget({ compact = false }: PipelineWidgetProps) {
   const { formatCurrency } = useFormatters();
+  const { t } = useTranslation();
 
   const fmtCurrency = (value: number) => formatCurrency(value, { decimals: 0 });
+
+  const pipelineData = {
+    totalValue: 2450000,
+    escrows: [
+      { status: t("widget.pending"), count: 3, icon: Clock },
+      { status: t("widget.inEscrow"), count: 5, icon: Home },
+      { status: t("widget.closingSoon"), count: 2, icon: CheckCircle },
+    ],
+  };
 
   return (
     <div className={`flex flex-col ${compact ? "gap-2 sm:gap-3" : "gap-4"}`}>
       <div>
-        <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Total Pipeline Value</p>
+        <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">{t("widget.totalPipelineValue")}</p>
         <p className="font-bold text-foreground text-stat-value">
           {fmtCurrency(pipelineData.totalValue)}
         </p>

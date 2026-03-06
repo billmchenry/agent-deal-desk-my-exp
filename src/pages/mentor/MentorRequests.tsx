@@ -4,34 +4,30 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { MentorRequestDetailSheet } from "@/components/mentor/MentorRequestDetailSheet";
 import { useDocumentTitle } from "@/hooks/use-document-title";
+import { useTranslation } from "@/hooks/useTranslation";
 import { mockMentorRequests, type MentorRequestDetail } from "@/data/mentorMockData";
 import { toast } from "sonner";
 
 export default function MentorRequests() {
-  useDocumentTitle("Mentor Requests");
+  const { t } = useTranslation();
+  useDocumentTitle(t("mentor.myMentorRequests"));
   const navigate = useNavigate();
   const [requests, setRequests] = useState(mockMentorRequests);
   const [selectedRequest, setSelectedRequest] = useState<MentorRequestDetail | null>(null);
 
   const handleAccept = (id: string) => {
     setRequests((prev) => prev.filter((r) => r.id !== id));
-    toast.success("Mentor request accepted.");
+    toast.success(t("mentor.requestAccepted"));
   };
 
   const handleDecline = (id: string) => {
     setRequests((prev) => prev.filter((r) => r.id !== id));
-    toast.info("Mentor request declined.");
+    toast.info(t("mentor.requestDeclined"));
   };
 
   return (
@@ -44,13 +40,13 @@ export default function MentorRequests() {
           onClick={() => navigate("/mentor")}
         >
           <ChevronLeft className="h-4 w-4" />
-          Pending Mentor Requests
+          {t("mentor.pendingMentorRequests")}
         </Button>
 
         {requests.length === 0 ? (
           <Card>
             <CardContent className="p-8 text-center">
-              <p className="text-muted-foreground">No pending mentor requests at this time.</p>
+              <p className="text-muted-foreground">{t("mentor.noPendingRequests")}</p>
             </CardContent>
           </Card>
         ) : (
@@ -62,10 +58,10 @@ export default function MentorRequests() {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-10"></TableHead>
-                      <TableHead>First Name</TableHead>
-                      <TableHead>Last Name</TableHead>
-                      <TableHead>Request Sent</TableHead>
-                      <TableHead className="text-right">Respond to Request</TableHead>
+                      <TableHead>{t("mentor.firstName")}</TableHead>
+                      <TableHead>{t("mentor.lastName")}</TableHead>
+                      <TableHead>{t("mentor.requestSent")}</TableHead>
+                      <TableHead className="text-right">{t("mentor.respondToRequest")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -88,10 +84,10 @@ export default function MentorRequests() {
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-2">
                             <Button size="sm" variant="default" onClick={() => handleAccept(req.id)}>
-                              Accept
+                              {t("mentor.accept")}
                             </Button>
                             <Button size="sm" variant="outline" onClick={() => handleDecline(req.id)}>
-                              Decline
+                              {t("mentor.decline")}
                             </Button>
                           </div>
                         </TableCell>
@@ -112,7 +108,7 @@ export default function MentorRequests() {
                         <p className="text-sm font-semibold text-foreground">
                           {req.firstName} {req.lastName}
                         </p>
-                        <p className="text-xs text-muted-foreground">Sent {req.requestSentDate}</p>
+                        <p className="text-xs text-muted-foreground">{t("mentor.sent")} {req.requestSentDate}</p>
                       </div>
                       <Button
                         variant="ghost"
@@ -120,16 +116,16 @@ export default function MentorRequests() {
                         className="text-xs text-primary"
                         onClick={() => setSelectedRequest(req)}
                       >
-                        Details
+                        {t("mentor.details")}
                         <ChevronRight className="h-3.5 w-3.5 ml-0.5" />
                       </Button>
                     </div>
                     <div className="flex gap-2">
                       <Button size="sm" className="flex-1" onClick={() => handleAccept(req.id)}>
-                        Accept
+                        {t("mentor.accept")}
                       </Button>
                       <Button size="sm" variant="outline" className="flex-1" onClick={() => handleDecline(req.id)}>
-                        Decline
+                        {t("mentor.decline")}
                       </Button>
                     </div>
                   </CardContent>

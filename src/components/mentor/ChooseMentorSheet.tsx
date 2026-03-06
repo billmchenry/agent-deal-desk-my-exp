@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { HelpCircle, MapPin, Eye } from "lucide-react";
 import { mockAvailableMentors, type AvailableMentor } from "@/data/mentorMockData";
 import { MentorProfileSheet } from "./MentorProfileSheet";
+import { useTranslation } from "@/hooks/useTranslation";
 import { toast } from "sonner";
 
 interface ChooseMentorSheetProps {
@@ -17,14 +18,15 @@ interface ChooseMentorSheetProps {
 
 export function ChooseMentorSheet({ open, onOpenChange, onMentorChosen }: ChooseMentorSheetProps) {
   const [profileMentor, setProfileMentor] = useState<AvailableMentor | null>(null);
+  const { t } = useTranslation();
 
   return (
     <>
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
           <SheetHeader className="pb-2">
-            <SheetTitle className="text-page-title">Choose Mentor</SheetTitle>
-            <p className="text-sm text-muted-foreground">Select One from Below</p>
+            <SheetTitle className="text-page-title">{t("mentor.chooseMentor")}</SheetTitle>
+            <p className="text-sm text-muted-foreground">{t("mentor.selectOneBelow")}</p>
           </SheetHeader>
 
           <div className="space-y-3 mt-4">
@@ -42,35 +44,33 @@ export function ChooseMentorSheet({ open, onOpenChange, onMentorChosen }: Choose
             className="text-sm text-primary font-medium hover:underline mt-4 block mx-auto"
             onClick={() => toast.info("More mentors will be available soon.")}
           >
-            View More
+            {t("mentor.viewMore")}
           </button>
 
           <Separator className="my-6" />
 
-          {/* Choose for Me */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-foreground">Choose for Me</h4>
+            <h4 className="text-sm font-semibold text-foreground">{t("mentor.chooseForMe")}</h4>
             <p className="text-sm text-muted-foreground">
-              Can't decide? Let us pair you with a mentor based on your location, market, and experience level.
+              {t("mentor.chooseForMeDesc")}
             </p>
             <Button className="w-full" onClick={onMentorChosen}>
-              Choose for Me
+              {t("mentor.chooseForMe")}
             </Button>
           </div>
 
           <Separator className="my-6" />
 
-          {/* Need Help */}
           <div className="space-y-3 pb-4">
             <h4 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
               <HelpCircle className="h-4 w-4" />
-              Need Help?
+              {t("mentor.needHelp")}
             </h4>
             <p className="text-sm text-muted-foreground">
-              Having trouble choosing a mentor or have questions about the program? Our support team is here to help.
+              {t("mentor.needHelpDesc")}
             </p>
             <Button variant="outline" className="w-full" onClick={() => toast.info("Our support team will assist you shortly.")}>
-              Contact Support
+              {t("mentor.contactSupport")}
             </Button>
           </div>
         </SheetContent>
@@ -95,11 +95,8 @@ function MentorCard({
   onViewProfile: () => void;
   onChoose: () => void;
 }) {
-  const initials = mentor.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
+  const { t } = useTranslation();
+  const initials = mentor.name.split(" ").map((n) => n[0]).join("").slice(0, 2);
 
   return (
     <div className="border rounded-lg p-4 space-y-3">
@@ -127,10 +124,10 @@ function MentorCard({
       <div className="flex items-center gap-2">
         <Button variant="outline" size="sm" className="flex-1" onClick={onViewProfile}>
           <Eye className="h-3.5 w-3.5 mr-1" />
-          View Profile
+          {t("mentor.viewProfile")}
         </Button>
         <Button size="sm" className="flex-1" onClick={onChoose}>
-          Choose Mentor
+          {t("mentor.chooseMentor")}
         </Button>
       </div>
     </div>

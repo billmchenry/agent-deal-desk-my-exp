@@ -1,16 +1,15 @@
-import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Phone, Mail, Facebook, Linkedin, ExternalLink } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MyMentorProfileSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-// Mock data for the logged-in mentor's own profile
 const myMentorProfile = {
   name: "Alejandra J Pino Torrealba",
   location: "Pembroke Pines, FL",
@@ -30,6 +29,7 @@ const myMentorProfile = {
 };
 
 export function MyMentorProfileSheet({ open, onOpenChange }: MyMentorProfileSheetProps) {
+  const { t } = useTranslation();
   const p = myMentorProfile;
   const initials = p.name.split(" ").map(n => n[0]).join("").slice(0, 2);
 
@@ -54,7 +54,6 @@ export function MyMentorProfileSheet({ open, onOpenChange }: MyMentorProfileShee
           </div>
         </SheetHeader>
 
-        {/* Bio */}
         <div className="py-4">
           {p.bio.split("\n").map((line, i) => (
             <p key={i} className="text-sm text-muted-foreground leading-relaxed">{line}</p>
@@ -63,21 +62,19 @@ export function MyMentorProfileSheet({ open, onOpenChange }: MyMentorProfileShee
 
         <Separator />
 
-        {/* Details Grid */}
         <div className="py-4 grid grid-cols-2 gap-x-6 gap-y-5">
-          <DetailSection title="Locations Serviced" items={p.locationsServiced} />
-          <DetailSection title="Licenses" items={p.licenses} />
-          <DetailSection title="Languages" items={p.languages} />
-          <DetailSection title="MLS" items={p.mls} />
-          <DetailSection title="Specializations" items={p.specializations} />
-          <DetailSection title="Certifications/Designations" items={p.certifications} />
+          <DetailSection title={t("mentor.locationsServiced")} items={p.locationsServiced} />
+          <DetailSection title={t("mentor.licenses")} items={p.licenses} />
+          <DetailSection title={t("mentor.languages")} items={p.languages} />
+          <DetailSection title={t("mentor.mls")} items={p.mls} />
+          <DetailSection title={t("mentor.specializations")} items={p.specializations} />
+          <DetailSection title={t("mentor.certificationsDesignations")} items={p.certifications} />
         </div>
 
         <Separator />
 
-        {/* Contact */}
         <div className="py-4 space-y-3">
-          <p className="text-sm font-semibold text-foreground">Contact</p>
+          <p className="text-sm font-semibold text-foreground">{t("mentor.contact")}</p>
           <Button variant="default" className="w-full justify-start gap-2" asChild>
             <a href={`tel:${p.phone}`}>
               <Phone className="h-4 w-4" />
@@ -115,7 +112,7 @@ export function MyMentorProfileSheet({ open, onOpenChange }: MyMentorProfileShee
         <div className="py-4">
           <Button variant="destructive" className="w-full gap-2">
             <ExternalLink className="h-4 w-4" />
-            Update profile details in Agent Directory
+            {t("mentor.updateProfileInDirectory")}
           </Button>
         </div>
       </SheetContent>
