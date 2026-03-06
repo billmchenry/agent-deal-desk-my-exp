@@ -472,6 +472,7 @@ export const navItems = [
       { title: "Organization", url: "/revshare/organization" },
       { title: "Organization Tree", url: "/revshare/organization-tree" },
       { title: "My RevShare Trends", url: "/revshare/trends" },
+      { title: "Revenue Share Group", url: "/revshare/group" },
     ],
   },
   {

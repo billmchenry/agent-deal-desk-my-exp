@@ -39,6 +39,7 @@ const NAV_KEYS: Record<string, string> = {
   "Tools": "nav.tools",
   "Knowledge Base": "nav.knowledgeBase",
   "Help Center": "nav.helpCenter",
+  "Revenue Share Group": "nav.revShareGroup",
 };
 
 function isInSection(pathname: string, item: SidebarNavItem): boolean {
