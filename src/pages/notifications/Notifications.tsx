@@ -154,7 +154,7 @@ const PAGE_SIZE = 1000;
 export default function Notifications() {
   useDocumentTitle("Notifications");
   const { t } = useTranslation();
-  const { formatCurrency } = useFormatters();
+  const { formatCurrency, formatDate } = useFormatters();
 
   const [activeTab, setActiveTab] = useState<"activity" | "recognition">("activity");
   const [searchQuery, setSearchQuery] = useState("");
