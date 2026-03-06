@@ -184,7 +184,7 @@ export default function IconProgram() {
 
                   {/* Closed Transactions */}
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium text-foreground">Closed Transactions</h4>
+                    <h4 className="text-sm font-medium text-foreground">{t("icon.closedTransactions")}</h4>
                     <Progress value={50} className="h-2" />
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold text-foreground">5 of 10</span>
