@@ -29,6 +29,13 @@ const salesVolumeData = [
   { level: "6", volume: 800000 },
 ];
 
+const countryProductionData = [
+  { country: "United States", flag: "🇺🇸", activeAgents: 198, totalTransactions: 21, totalRevShare: 724.30 },
+  { country: "Canada", flag: "🇨🇦", activeAgents: 27, totalTransactions: 2, totalRevShare: 98.41 },
+  { country: "United Kingdom", flag: "🇬🇧", activeAgents: 5, totalTransactions: 1, totalRevShare: 18.50 },
+  { country: "Australia", flag: "🇦🇺", activeAgents: 3, totalTransactions: 0, totalRevShare: 6.50 },
+];
+
 export default function OrganizationReporting() {
   useDocumentTitle("Organization Reporting");
   const { formatCurrency, formatNumber } = useFormatters();
