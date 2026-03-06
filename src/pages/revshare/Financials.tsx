@@ -293,6 +293,15 @@ export default function Financials() {
     setSelectedAgent(null);
   };
 
+  const handlePeriodClick = (row: PeriodicRow) => {
+    setSelectedPeriod(row);
+  };
+
+  const handleBackFromPeriod = () => {
+    setSelectedPeriod(null);
+    setSelectedAgent(null);
+  };
+
   // Columns for Unpaid tab (with UUID)
   const unpaidColumns: ColumnDef<AgentRevShareRow>[] = [
     { key: "agentName", header: t("fin.agentName"), type: "string", sortable: true, filterable: true, defaultVisible: true },
