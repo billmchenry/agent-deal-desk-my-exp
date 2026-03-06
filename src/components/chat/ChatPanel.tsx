@@ -277,7 +277,7 @@ function ChatContent({
       {/* Search Bar */}
       <div className="px-3 sm:px-4 py-2 border-b shrink-0">
         <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder={t("chat.searchConversations")}
