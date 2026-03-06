@@ -300,7 +300,7 @@ function ChatContent({
               >
                 <button
                   onClick={() => handleLoadConversation(conv.id)}
-                  className={`w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
+                  className={`w-full text-start p-3 rounded-lg hover:bg-muted/50 transition-all min-h-[44px] flex items-start gap-3 ${
                     swipedId === conv.id ? 'translate-x-[-60px]' : ''
                   }`}
                 >
