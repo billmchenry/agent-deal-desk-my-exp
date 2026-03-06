@@ -226,7 +226,7 @@ type View = "summary" | "drilldown";
 
 export default function YearEnd() {
   const { t } = useTranslation();
-  const { formatCurrency } = useFormatters();
+  const { formatCurrency, formatDate, formatNumber } = useFormatters();
   useDocumentTitle(t("nav.yearEnd"));
 
   const [year, setYear] = useState("2025");
@@ -357,7 +357,7 @@ export default function YearEnd() {
                   <span className="tabular-nums font-secondary">Net: {formatCurrency(row.netPayment)}</span>
                 </div>
                 <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                  <span>{row.reportingDate}</span>
+                  <span>{formatDate(row.reportingDate)}</span>
                   <span>ID: {row.transactionId}</span>
                 </div>
               </div>
@@ -387,7 +387,7 @@ export default function YearEnd() {
                 {/* Summary rows */}
                 <div className="space-y-2">
                   {[
-                    [t("ye.date"), selectedTxn.reportingDate],
+                    [t("ye.date"), formatDate(selectedTxn.reportingDate)],
                     [t("ye.name"), selectedTxn.agentName],
                     [t("ye.companyName"), selectedTxn.companyName],
                     [t("ye.entity"), selectedTxn.entity],
@@ -407,7 +407,7 @@ export default function YearEnd() {
                     <div key={key} className="flex justify-between gap-4">
                       <span className="text-sm text-muted-foreground">{label}</span>
                       <span className="text-sm font-medium tabular-nums font-secondary">
-                        {(selectedTxn[key] as number).toFixed(2)}
+                        {formatCurrency(selectedTxn[key] as number)}
                       </span>
                     </div>
                   ))}
@@ -521,7 +521,7 @@ export default function YearEnd() {
                                   aria-hidden="true"
                                 />
                                 <span className="text-sm">
-                                  {line.type} ({line.percentage.toFixed(2)}%)
+                                  {line.type} ({formatNumber(line.percentage, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%)
                                 </span>
                               </div>
                               <div className="flex items-center gap-1">

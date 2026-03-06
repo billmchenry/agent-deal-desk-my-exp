@@ -1,76 +1,83 @@
 
 
-## Settings Consistency Audit: Dates, Currencies & Numbers
+# Team Reconciliation Page
 
-### Problem
+A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
 
-Several pages and components bypass the `useFormatters` hook and render dates, currencies, or numbers with hardcoded `$` signs, raw `.toLocaleString()`, or `.toFixed()` instead of respecting the user's Settings preferences.
+---
 
-### Violations Found
+## Overview
 
-**Category 1: Hardcoded `$` in chart formatters (not using `formatCurrency`)**
+Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
 
-| File | Location | Current |
-|------|----------|---------|
-| `ForecastWidget.tsx` | Y-axis + tooltip | `` `$${value}` `` |
-| `revshare/Dashboard.tsx` | 4 chart Y-axes + tooltips | `` `$${v.toFixed(1)}M` ``, `` `$${Math.round(v*1000)}K` `` |
+---
 
-**Category 2: Raw `.toLocaleString()` / `.toFixed()` instead of `formatNumber`**
+## New Files
 
-| File | Location | Current |
-|------|----------|---------|
-| `Notifications.tsx:380` | salesPrice display | `salesPrice.toLocaleString()` — should use `formatCurrency` |
-| `Organization.tsx` (x4) | Productivity per person | `.toFixed(2)` — should use `formatNumber` |
-| `DistributionDonut.tsx:60` | Percentage | `.toFixed(1)` — acceptable for %, but should use `formatNumber` for locale-aware decimal |
-| `VelocityWidget.tsx:27` | Improvement % | `.toFixed(0)` — acceptable for simple integer |
+### 1. `src/pages/team/Reconciliation.tsx`
 
-**Category 3: Hardcoded date strings not run through `formatDate`**
+The main page, closely mirroring the Agent Production Details pattern:
 
-| File | Location | Current |
-|------|----------|---------|
-| `Notifications.tsx` | `timestamp` field (x12 items) | Hardcoded `"03/07/2025 12:00 AM"` displayed raw |
-| `Notifications.tsx:384` | `capReachedDate` display | Rendered raw without `formatDate` |
-| `YearEnd.tsx:208` | `reportingDate` | Hardcoded `"01/01/2026"` displayed raw |
-| `OrganizationTree.tsx` | `revShare` / `contribution` fields | Hardcoded `"$6,487.88"` strings — these are pre-formatted in mock data, bypassing formatters |
+- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
+- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
+- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
+- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
+- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
+- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
+- CSV export enabled
+- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
+- Back button at top linking to `/team/dashboard`
 
-**Category 4: Hardcoded currency in mock data strings**
+### 2. `src/components/team/TeamBreakdownSheet.tsx`
 
-| File | Location | Issue |
-|------|----------|-------|
-| `OrganizationTree.tsx:55-72` | `revShare: "$6,487.88"`, `contribution: "53.51 USD"` | Pre-formatted strings instead of numeric values |
-| `Trends.tsx:15-50` | `"892.71 USD"`, `"3,987.73 USD"` etc. | Pre-formatted strings in table data |
-| `NotificationsSheet.tsx:27` | `"$4,250 has been deposited"` | Hardcoded in description text — leave as-is (natural language) |
+Side panel matching the reference screenshot's "Transaction Details" breakdown:
 
-### Plan
+- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
+- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
+- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
+- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
+  - Agent identifier row (ID + Name) with a colored percentage badge
+  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
+  - Tax, Commission After Co-agents (highlighted)
+  - Agent Split Before Expenses
+  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
+- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
+- **Fees I Paid for Others** -- collapsible
+- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
 
-**1. Fix chart formatters** (2 files)
-- `ForecastWidget.tsx` — import `useFormatters`, use `formatCurrency` in `tickFormatter` and `Tooltip formatter`
-- `revshare/Dashboard.tsx` — replace all 4 chart Y-axis `tickFormatter` and `Tooltip formatter` callbacks to use `formatCurrency` with compact options instead of hardcoded `$`
+### 3. `src/components/shared/BreakdownComponents.tsx`
 
-**2. Fix display-time formatting** (3 files)
-- `Notifications.tsx` — use `formatCurrency` for `salesPrice`, `formatDate` for `capReachedDate` and `timestamp` display
-- `Organization.tsx` — replace `.toFixed(2)` with `formatNumber(value, { minimumFractionDigits: 2, maximumFractionDigits: 2 })` in all 4 occurrences
-- `DistributionDonut.tsx` — use `formatNumber` for the percentage calculation
+Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
 
-**3. Fix hardcoded date in mock data** (1 file)
-- `YearEnd.tsx` — format `reportingDate` through `formatDate` at render time
+---
 
-**4. Convert pre-formatted currency strings to numeric values** (2 files)
-- `OrganizationTree.tsx` — change `revShare` and `contribution` from pre-formatted strings to numbers, format at render time with `formatCurrency`
-- `Trends.tsx` — this has deeply embedded pre-formatted strings in table data; the cleanest approach is to format them at render time by parsing the numeric portion, but given the complexity, a pragmatic first pass is to leave the tabular mock data as-is and flag it for future refactor when real data replaces mocks
+## Modified Files
 
-**5. Leave as-is**
-- `VelocityWidget.tsx` `.toFixed(0)` on a percentage — simple integer, no locale sensitivity needed
-- `NotificationsSheet.tsx` description text with `$4,250` — natural language string
-- `MiraChatContext.tsx` chat messages with `$279K` — natural language AI responses
-- `csv-export.ts` `.toFixed(2)` — CSV export format, intentionally consistent
+### `src/components/agent/TransactionDetailsSheet.tsx`
+- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
 
-### Files to Change (~6 files)
+### `src/data/mockData.ts`
+- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
+- Update the `navItems` array similarly
 
-1. `src/components/dashboard/widgets/ForecastWidget.tsx`
-2. `src/pages/revshare/Dashboard.tsx`
-3. `src/pages/notifications/Notifications.tsx`
-4. `src/pages/revshare/Organization.tsx`
-5. `src/components/revshare/DistributionDonut.tsx`
-6. `src/pages/revshare/OrganizationTree.tsx`
+### `src/components/layout/Sidebar.tsx`
+- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
+
+### `src/App.tsx`
+- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
+
+### `src/i18n/*.ts` (all 7 language files)
+- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
+
+---
+
+## Implementation Order
+
+1. Extract shared breakdown components into `BreakdownComponents.tsx`
+2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
+3. Create mock team reconciliation data and the `Reconciliation.tsx` page
+4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
+5. Add route in `App.tsx`
+6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
+7. Add translation keys to all 7 language files
 

@@ -139,7 +139,7 @@ export default function RevShareDashboard() {
 
   const donutTotal = distMode === "agents" ? TOTAL_AGENTS : TOTAL_REVSHARE;
   const donutFormat = (v: number) =>
-    distMode === "agents" ? formatNumber(v) : `$${formatNumber(v)}`;
+    distMode === "agents" ? formatNumber(v) : formatCurrency(v);
   const donutCenterLabel = distMode === "agents" ? t("revshare.agents") : "rev share";
 
   return (
@@ -429,9 +429,9 @@ export default function RevShareDashboard() {
                   <ComposedChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => `$${v.toFixed(1)}M`} domain={[0, "auto"]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
                     <Tooltip
-                      formatter={(value: number) => [`$${value < 1 ? Math.round(value * 1000) + "K" : value.toFixed(2) + "M"}`, "Revenue"]}
+                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), "Revenue"]}
                       contentStyle={tooltipStyle}
                     />
                     <Bar dataKey="revenue" fill="hsl(var(--exp-navy))" radius={[4, 4, 0, 0]} barSize={48} />
@@ -447,11 +447,11 @@ export default function RevShareDashboard() {
                   <LineChart data={revenueQuarterlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => `$${Math.round(v * 1000)}K`} domain={[0, 1.5]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 })} domain={[0, 1.5]} width={50} />
                     <Tooltip
                       formatter={(value: number, name: string) => {
                         const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                        return [`$${Math.round(value * 1000)}K`, label];
+                        return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }), label];
                       }}
                       contentStyle={tooltipStyle}
                     />
@@ -482,11 +482,11 @@ export default function RevShareDashboard() {
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                         <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-                        <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => `$${Math.round(v * 1000)}K`} domain={[0, 0.5]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 })} domain={[0, 0.5]} width={50} />
                         <Tooltip
                           formatter={(value: number, name: string) => {
                             const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                            return [`$${Math.round(value * 1000)}K`, label];
+                            return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }), label];
                           }}
                           contentStyle={tooltipStyle}
                         />
@@ -499,11 +499,11 @@ export default function RevShareDashboard() {
                         <LineChart data={revenueMonthlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                           <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-                          <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => `$${Math.round(v * 1000)}K`} domain={[0, 0.5]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 })} domain={[0, 0.5]} width={50} />
                           <Tooltip
                             formatter={(value: number, name: string) => {
                               const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                              return [`$${Math.round(value * 1000)}K`, label];
+                              return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }), label];
                             }}
                             contentStyle={tooltipStyle}
                           />
@@ -524,19 +524,19 @@ export default function RevShareDashboard() {
                       {selectedMonth.y2024 != null && (
                         <span className="flex items-center gap-1">
                           <span className="w-2 h-2 rounded-full bg-exp-navy inline-block" />
-                          ${Math.round((selectedMonth.y2024 as number) * 1000)}K
+                          {formatCurrency((selectedMonth.y2024 as number) * 1000, { compact: true, decimals: 0 })}
                         </span>
                       )}
                       {selectedMonth.y2025 != null && (
                         <span className="flex items-center gap-1">
                           <span className="w-2 h-2 rounded-full bg-exp-blue inline-block" />
-                          ${Math.round((selectedMonth.y2025 as number) * 1000)}K
+                          {formatCurrency((selectedMonth.y2025 as number) * 1000, { compact: true, decimals: 0 })}
                         </span>
                       )}
                       {selectedMonth.y2026 != null && (
                         <span className="flex items-center gap-1">
                           <span className="w-2 h-2 rounded-full bg-exp-green inline-block" />
-                          ${Math.round((selectedMonth.y2026 as number) * 1000)}K
+                          {formatCurrency((selectedMonth.y2026 as number) * 1000, { compact: true, decimals: 0 })}
                         </span>
                       )}
                     </div>

@@ -133,7 +133,7 @@ export default function OrganizationReporting() {
                           <span className="text-muted-foreground">{t("org.totalTransactions")}</span>
                           <span className="text-right font-semibold text-foreground">{formatNumber(row.totalTransactions)}</span>
                           <span className="text-muted-foreground">{t("org.productivityPerPerson")}</span>
-                          <span className="text-right font-semibold text-foreground">{(row.totalTransactions / row.activeAgents).toFixed(2)}</span>
+                          <span className="text-right font-semibold text-foreground">{formatNumber(row.totalTransactions / row.activeAgents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                           <span className="text-muted-foreground">{t("org.totalRevShare")}</span>
                           <span className="text-right font-semibold text-foreground">{formatCurrency(row.totalRevShare)}</span>
                         </div>
@@ -148,7 +148,7 @@ export default function OrganizationReporting() {
                         <span className="text-muted-foreground">{t("org.totalTransactions")}</span>
                         <span className="text-right font-bold text-foreground">{formatNumber(totals.totalTransactions)}</span>
                         <span className="text-muted-foreground">{t("org.productivityPerPerson")}</span>
-                        <span className="text-right font-bold text-foreground">{(totals.totalTransactions / totals.activeAgents).toFixed(2)}</span>
+                        <span className="text-right font-bold text-foreground">{formatNumber(totals.totalTransactions / totals.activeAgents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         <span className="text-muted-foreground">{t("org.totalRevShare")}</span>
                         <span className="text-right font-bold text-foreground">{formatCurrency(totals.totalRevShare)}</span>
                       </div>
@@ -175,7 +175,7 @@ export default function OrganizationReporting() {
                             </td>
                             <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.activeAgents)}</td>
                             <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.totalTransactions)}</td>
-                            <td className="px-4 py-3 text-right text-foreground font-semibold">{(row.totalTransactions / row.activeAgents).toFixed(2)}</td>
+                            <td className="px-4 py-3 text-right text-foreground font-semibold">{formatNumber(row.totalTransactions / row.activeAgents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                             <td className="px-4 py-3 text-right text-foreground font-semibold">{formatCurrency(row.totalRevShare)}</td>
                           </tr>
                         ))}
@@ -183,7 +183,7 @@ export default function OrganizationReporting() {
                           <td className="px-4 py-3 font-bold text-foreground">{t("org.total")}</td>
                           <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(totals.activeAgents)}</td>
                           <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(totals.totalTransactions)}</td>
-                          <td className="px-4 py-3 text-right font-bold text-foreground">{(totals.totalTransactions / totals.activeAgents).toFixed(2)}</td>
+                          <td className="px-4 py-3 text-right font-bold text-foreground">{formatNumber(totals.totalTransactions / totals.activeAgents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                           <td className="px-4 py-3 text-right font-bold text-foreground">{formatCurrency(totals.totalRevShare)}</td>
                         </tr>
                       </tbody>
