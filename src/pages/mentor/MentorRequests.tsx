@@ -61,7 +61,7 @@ export default function MentorRequests() {
                       <TableHead>{t("mentor.firstName")}</TableHead>
                       <TableHead>{t("mentor.lastName")}</TableHead>
                       <TableHead>{t("mentor.requestSent")}</TableHead>
-                      <TableHead className="text-right">{t("mentor.respondToRequest")}</TableHead>
+                      <TableHead className="text-end">{t("mentor.respondToRequest")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
