@@ -357,7 +357,7 @@ export default function YearEnd() {
                   <span className="tabular-nums font-secondary">Net: {formatCurrency(row.netPayment)}</span>
                 </div>
                 <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                  <span>{row.reportingDate}</span>
+                  <span>{formatDate(row.reportingDate)}</span>
                   <span>ID: {row.transactionId}</span>
                 </div>
               </div>
