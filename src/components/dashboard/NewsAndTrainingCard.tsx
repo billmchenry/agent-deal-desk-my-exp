@@ -15,7 +15,7 @@ export function NewsAndTrainingCard() {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">News & Training</CardTitle>
+        <CardTitle className="text-section-title font-semibold">News & Training</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="updates">
