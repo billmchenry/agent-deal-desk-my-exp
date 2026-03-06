@@ -40,7 +40,7 @@ export function CappingYearCard() {
             <p className="text-xs text-muted-foreground">{t("agent.units")}</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-exp-blue">{formatCurrency(cappingData.gci, { compact: true })}</p>
+            <p className="text-stat-value font-bold text-exp-blue">{formatCurrency(cappingData.gci, { compact: true })}</p>
             <p className="text-xs text-muted-foreground">{t("txn.gci")}</p>
           </div>
           <div className="text-center">
