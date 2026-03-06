@@ -386,7 +386,7 @@ export default function Financials() {
             {t("fin.back")}
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">{selectedPeriod.date}</h1>
+            <h1 className="text-page-title font-bold text-foreground">{selectedPeriod.date}</h1>
             <p className="text-sm text-muted-foreground">Batch #{selectedPeriod.batchNumber} · {selectedPeriod.transactionCount6Mo} {t("fin.transactions")} · {selectedPeriod.memberCount} {t("fin.members")}</p>
           </div>
 
