@@ -490,7 +490,7 @@ export default function YearEnd() {
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer>
-                <p className="text-center text-2xl font-bold tabular-nums font-secondary -mt-4">
+                <p className="text-center text-stat-value font-bold tabular-nums font-secondary -mt-4">
                   {formatCurrency(grandTotal)}
                 </p>
               </div>
