@@ -421,7 +421,7 @@ export default function Notifications() {
                 <div key={val} className="flex items-center gap-2">
                   <RadioGroupItem value={val} id={`date-${val}`} />
                   <Label htmlFor={`date-${val}`} className="cursor-pointer">
-                    {val === "custom" ? t("notif.chooseFromCalendar") : t("notif.lastDays", { count: val })}
+                    {val === "custom" ? t("notif.chooseFromCalendar") : `${t("notif.last")} ${val} ${t("notif.days")}`}
                   </Label>
                 </div>
               ))}
