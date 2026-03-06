@@ -41,7 +41,6 @@ export default function TeamDashboard() {
   // --- Top Agents columns ---
   const topAgentColumns: ColumnDef<TopAgent>[] = [
     { key: "name", header: t("team.agentName"), type: "string", sortable: true, filterable: true },
-    { key: "uuid", header: t("team.uuid"), type: "string", sortable: true, filterable: true },
     { key: "units", header: t("team.unitsClosed"), type: "number", sortable: true },
     { key: "volume", header: t("team.salesVolume"), type: "currency", sortable: true },
     { key: "commission", header: t("team.gciSum"), type: "currency", sortable: true },
