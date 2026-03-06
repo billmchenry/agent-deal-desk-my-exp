@@ -342,8 +342,8 @@ function ChatContent({
         ) : searchQuery ? (
           <div className="text-center py-12 text-muted-foreground">
             <Search className="h-10 w-10 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">No results for "{searchQuery}"</p>
-            <p className="text-xs mt-1">Try a different search term</p>
+            <p className="text-sm">{t("chat.noResultsFor")} "{searchQuery}"</p>
+            <p className="text-xs mt-1">{t("chat.tryDifferentSearch")}</p>
           </div>
         ) : (
           <div className="text-center py-12 text-muted-foreground">
