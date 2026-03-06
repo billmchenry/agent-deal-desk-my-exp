@@ -213,7 +213,7 @@ export default function IconProgram() {
                 <a href="mailto:iconaward@exprealty.net" className="text-primary hover:underline">
                   iconaward@exprealty.net
                 </a>{" "}
-                to inquire.
+                {t("icon.toInquire")}
               </p>
             </div>
           </TabsContent>
