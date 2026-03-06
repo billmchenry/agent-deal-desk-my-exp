@@ -6,6 +6,7 @@ export type WidgetType =
   | 'news-training'
   | 'connect-upline'
   | 'disc-assessment'
+  | 'nps-survey'
   | 'forecast'
   | 'velocity'
   | 'pipeline'
@@ -110,6 +111,14 @@ export const WIDGET_REGISTRY: Record<WidgetType, {
     refreshFrequency: 'Weekly',
     widgetKind: 'Card',
   },
+  'nps-survey': {
+    title: 'NPS Survey',
+    defaultSize: 'medium',
+    defaultColumn: 'sidebar',
+    description: 'Agent feedback and NPS survey',
+    refreshFrequency: 'Weekly',
+    widgetKind: 'Card',
+  },
   'forecast': {
     title: 'Revenue Forecast',
     defaultSize: 'small',
@@ -152,6 +161,7 @@ export const DEFAULT_LAYOUT: DashboardWidget[] = [
   { id: 'news-training-1', type: 'news-training', title: 'News & Training', size: 'medium', column: 'sidebar' },
   { id: 'connect-upline-1', type: 'connect-upline', title: 'Connect Upline', size: 'medium', column: 'sidebar' },
   { id: 'disc-assessment-1', type: 'disc-assessment', title: 'DISC Assessment', size: 'medium', column: 'sidebar' },
+  { id: 'nps-survey-1', type: 'nps-survey', title: 'NPS Survey', size: 'medium', column: 'sidebar' },
 ];
 
 export const CATEGORY_STYLES: Record<TemplateCategory, { bg: string; text: string; label: string }> = {

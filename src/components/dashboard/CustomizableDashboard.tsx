@@ -35,6 +35,7 @@ const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
   'news-training': "I've removed News & Training. Want a more focused feed instead?",
   'connect-upline': "I've removed Connect Upline. Need a different way to stay connected?",
   'disc-assessment': "I've removed the DISC Assessment card.",
+  'nps-survey': "I've removed the NPS Survey card.",
   'ai-insight': "I've removed that insight. Want me to generate a new one?",
 };
 
