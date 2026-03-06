@@ -387,7 +387,7 @@ export default function YearEnd() {
                 {/* Summary rows */}
                 <div className="space-y-2">
                   {[
-                    [t("ye.date"), selectedTxn.reportingDate],
+                    [t("ye.date"), formatDate(selectedTxn.reportingDate)],
                     [t("ye.name"), selectedTxn.agentName],
                     [t("ye.companyName"), selectedTxn.companyName],
                     [t("ye.entity"), selectedTxn.entity],
