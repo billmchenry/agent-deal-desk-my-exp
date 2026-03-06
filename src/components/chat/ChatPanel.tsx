@@ -499,7 +499,7 @@ function ChatContent({
               <Plus className="h-4 w-4" />
             </Button>
             <Input
-              placeholder="Ask about your insights..."
+              placeholder={t("chat.askAboutInsights")}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendWithAttachments(); } }}
