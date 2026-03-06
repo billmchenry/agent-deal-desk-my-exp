@@ -36,7 +36,7 @@ export default function MentorRequests() {
         <Button
           variant="ghost"
           size="sm"
-          className="gap-1 text-muted-foreground hover:text-foreground -ml-2"
+          className="gap-1 text-muted-foreground hover:text-foreground -ms-2"
           onClick={() => navigate("/mentor")}
         >
           <ChevronLeft className="h-4 w-4" />
