@@ -56,7 +56,7 @@ export default function TeamDashboard() {
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             {t("team.backToTeam")}
           </Button>
-          <h1 className="text-2xl font-bold text-foreground">{t("team.agentDetails")}</h1>
+          <h1 className="text-page-title font-bold text-foreground">{t("team.agentDetails")}</h1>
           <div className="bg-muted/40 rounded-lg p-3 text-sm text-muted-foreground flex items-start gap-2">
             <Info className="h-4 w-4 mt-0.5 shrink-0" />
             {t("team.agentNote")}
