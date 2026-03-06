@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ArrowRight, Target, TrendingUp, Play } from "lucide-react";
+import { ArrowRight, TrendingUp, Play } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
