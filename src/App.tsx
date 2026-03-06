@@ -21,6 +21,7 @@ import OrganizationReporting from "./pages/revshare/Organization";
 import OrganizationTree from "./pages/revshare/OrganizationTree";
 import RevShareTrends from "./pages/revshare/Trends";
 import RevShareGroup from "./pages/revshare/RevShareGroup";
+import Financials from "./pages/revshare/Financials";
 import Pulse from "./pages/Pulse";
 import MiraHistory from "./pages/mira/History";
 
