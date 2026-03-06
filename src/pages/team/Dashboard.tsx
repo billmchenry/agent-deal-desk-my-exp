@@ -29,20 +29,18 @@ export default function TeamDashboard() {
   // --- Agent Details columns (requalification drill-down) ---
   const agentDetailColumns: ColumnDef<AgentDetail>[] = [
     { key: "agentName", header: t("team.agentName"), type: "string", sortable: true, filterable: true },
-    { key: "uuid", header: t("team.uuid"), type: "string", sortable: true, filterable: true },
-    { key: "agentId", header: t("team.agentId"), type: "string", sortable: true, filterable: true },
     { key: "active", header: t("team.active"), type: "string", sortable: true, filterable: true },
     { key: "teamMemberEffectiveDate", header: t("team.teamMemberEffectiveDate"), type: "string", sortable: true, filterable: true },
     { key: "capResetDate", header: t("team.capResetDateCol"), type: "string", sortable: true, filterable: true },
     { key: "closedTransactions", header: t("team.closedTransactions"), type: "number", sortable: true },
     { key: "salesVolume", header: t("team.salesVolume"), type: "currency", sortable: true },
     { key: "companyDollarPaidThrough", header: t("team.companyDollarPaidThrough"), type: "currency", sortable: true },
+    { key: "capPercent", header: "Cap %", type: "number", sortable: true },
   ];
 
   // --- Top Agents columns ---
   const topAgentColumns: ColumnDef<TopAgent>[] = [
     { key: "name", header: t("team.agentName"), type: "string", sortable: true, filterable: true },
-    { key: "uuid", header: t("team.uuid"), type: "string", sortable: true, filterable: true },
     { key: "units", header: t("team.unitsClosed"), type: "number", sortable: true },
     { key: "volume", header: t("team.salesVolume"), type: "currency", sortable: true },
     { key: "commission", header: t("team.gciSum"), type: "currency", sortable: true },
@@ -67,7 +65,7 @@ export default function TeamDashboard() {
             data={agentDetails}
             columns={agentDetailColumns}
             csvFilename="agent-details"
-            searchableKeys={["agentName", "uuid", "agentId"]}
+            searchableKeys={["agentName"]}
             mobileCardRender={(row) => (
               <div className="space-y-1">
                 <div className="flex justify-between gap-2">
@@ -76,10 +74,9 @@ export default function TeamDashboard() {
                     {row.active}
                   </Badge>
                 </div>
-                <p className="text-xs text-muted-foreground font-mono truncate">{row.uuid}</p>
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>ID: {row.agentId}</span>
                   <span>Cap Reset: {row.capResetDate}</span>
+                  <span className="font-medium text-foreground">Cap: {row.capPercent}%</span>
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>Closed: {row.closedTransactions}</span>
