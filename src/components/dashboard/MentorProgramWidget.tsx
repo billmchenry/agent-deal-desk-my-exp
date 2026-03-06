@@ -139,7 +139,7 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
       <div className="bg-white/15 backdrop-blur-sm rounded-lg px-3 py-2 min-w-[3.5rem] text-center">
-        <span className="text-3xl md:text-4xl font-bold tabular-nums">{String(value).padStart(2, "0")}</span>
+        <span className="text-stat-value font-bold tabular-nums">{String(value).padStart(2, "0")}</span>
       </div>
       <span className="text-[10px] uppercase tracking-wider text-white/70 mt-1.5">{label}</span>
     </div>

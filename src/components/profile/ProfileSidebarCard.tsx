@@ -23,7 +23,7 @@ export function ProfileSidebarCard() {
             </Avatar>
             <div className="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-exp-green border-2 border-background" />
           </div>
-          <h2 className="mt-4 text-xl font-semibold text-foreground">
+          <h2 className="mt-4 text-section-title font-semibold text-foreground">
             {currentUser.name}
           </h2>
           <p className="text-sm text-muted-foreground">{currentUser.role}</p>

@@ -555,7 +555,7 @@ export default function YearEnd() {
           {/* Right: Files panel */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">{t("ye.files")}</h2>
+              <h2 className="text-section-title font-semibold">{t("ye.files")}</h2>
               <Select value={year} onValueChange={setYear}>
                 <SelectTrigger className="w-24" aria-label={t("ye.yearSelect")}>
                   <SelectValue />

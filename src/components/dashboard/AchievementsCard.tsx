@@ -21,7 +21,7 @@ export function AchievementsCard() {
             </Badge>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl font-bold text-exp-blue">
+            <p className="text-stat-value font-bold text-exp-blue">
               {formatCurrency(achievements.flqa.amount)}
             </p>
             <p className="text-sm text-muted-foreground">

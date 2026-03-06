@@ -131,7 +131,7 @@ export function ConnectUplineCard() {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="text-lg font-semibold">{selectedPartner.name}</h3>
+                  <h3 className="text-section-title font-semibold">{selectedPartner.name}</h3>
                   <p className="text-sm text-muted-foreground">
                     {getLevelLabel(selectedPartner.level)}
                   </p>

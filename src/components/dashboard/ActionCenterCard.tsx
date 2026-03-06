@@ -9,7 +9,7 @@ export function ActionCenterCard() {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold">Influencer Status</CardTitle>
+        <CardTitle className="text-section-title font-semibold">Influencer Status</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Congratulations Banner */}

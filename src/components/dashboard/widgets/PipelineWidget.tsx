@@ -23,7 +23,7 @@ export function PipelineWidget({ compact = false }: PipelineWidgetProps) {
     <div className={`flex flex-col ${compact ? "gap-2 sm:gap-3" : "gap-4"}`}>
       <div>
         <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1">Total Pipeline Value</p>
-        <p className={`font-bold text-foreground ${compact ? "text-lg sm:text-xl" : "text-2xl"}`}>
+        <p className="font-bold text-foreground text-stat-value">
           {fmtCurrency(pipelineData.totalValue)}
         </p>
       </div>

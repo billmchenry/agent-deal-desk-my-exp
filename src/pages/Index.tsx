@@ -10,7 +10,7 @@ const Index = () => {
   return (
     <DashboardLayout>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">{t("dashboard.welcomeToExp")}</h1>
+        <h1 className="text-page-title font-bold text-foreground">{t("dashboard.welcomeToExp")}</h1>
         <p className="text-muted-foreground">{t("dashboard.hiUser")}</p>
       </div>
 

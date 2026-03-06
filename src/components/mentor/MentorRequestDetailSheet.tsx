@@ -47,7 +47,7 @@ export function MentorRequestDetailSheet({ open, onOpenChange, request }: Mentor
                   </AvatarFallback>
                 </Avatar>
                 <div className="space-y-1">
-                  <SheetTitle className="text-lg font-bold text-foreground">{fullName}</SheetTitle>
+                  <SheetTitle className="text-section-title font-bold text-foreground">{fullName}</SheetTitle>
                   <Badge className="bg-exp-green/10 text-exp-green border-exp-green/20 hover:bg-exp-green/10">
                     {request.status}
                   </Badge>

@@ -45,7 +45,7 @@ export function MentorProfileSheet({ mentor, open, onOpenChange, onChoose }: Men
               </AvatarFallback>
             </Avatar>
             <div className="text-center">
-              <SheetTitle className="text-lg">{mentor.name}</SheetTitle>
+              <SheetTitle className="text-section-title">{mentor.name}</SheetTitle>
               <p className="text-sm text-muted-foreground flex items-center justify-center gap-1 mt-1">
                 <MapPin className="h-3.5 w-3.5" />
                 {mentor.location}

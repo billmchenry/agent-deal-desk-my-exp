@@ -11,7 +11,7 @@ export function DiscAssessmentCard() {
             <Target className="h-5 w-5" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold mb-1">DISC Assessment</h3>
+            <h3 className="font-semibold mb-1 text-section-title">DISC Assessment</h3>
             <p className="text-sm text-muted-foreground mb-3">
               Understand your communication style and improve client relationships.
             </p>

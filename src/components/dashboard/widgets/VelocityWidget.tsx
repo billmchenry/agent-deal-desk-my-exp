@@ -13,7 +13,7 @@ export function VelocityWidget({ compact = false }: VelocityWidgetProps) {
   return (
     <div className={`flex flex-col ${compact ? "gap-1.5 sm:gap-2" : "gap-4"}`}>
       <div className="flex items-baseline gap-1.5 sm:gap-2">
-        <span className={`font-bold text-foreground ${compact ? "text-2xl sm:text-3xl" : "text-4xl"}`}>
+        <span className="font-bold text-foreground text-stat-value">
           {daysOnMarket}
         </span>
         <span className="text-muted-foreground text-xs sm:text-sm">days avg.</span>
