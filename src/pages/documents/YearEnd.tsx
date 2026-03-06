@@ -63,7 +63,7 @@ const COLORS = [
 
 const mockCompanyGroups: CompanyGroup[] = [
   {
-    company: "DSD Commercial, Inc.",
+    company: "Pinnacle Commercial, Inc.",
     entities: [
       {
         entity: "eXp Realty, LLC",
@@ -82,7 +82,7 @@ const mockCompanyGroups: CompanyGroup[] = [
     ],
   },
   {
-    company: "Fast Forward Movement, LLC",
+    company: "Horizon Partners, LLC",
     entities: [
       {
         entity: "eXp Realty of California, Inc",
@@ -93,7 +93,7 @@ const mockCompanyGroups: CompanyGroup[] = [
     ],
   },
   {
-    company: "Kyle Whissel",
+    company: "Michael Thompson",
     entities: [
       {
         entity: "eXp Realty of California, Inc",
@@ -111,7 +111,7 @@ const mockCompanyGroups: CompanyGroup[] = [
     ],
   },
   {
-    company: "Whissel Beer Group, LLC",
+    company: "Thompson Realty Group, LLC",
     entities: [
       {
         entity: "eXp Realty of California, Inc",
@@ -125,12 +125,12 @@ const mockCompanyGroups: CompanyGroup[] = [
 
 const mockTransactions: TransactionRow[] = Array.from({ length: 8 }, (_, i) => ({
   id: `t${i + 1}`,
-  companyName: i < 7 ? "Whissel Beer Group, LLC" : "DSD Commercial, Inc.",
+  companyName: i < 7 ? "Thompson Realty Group, LLC" : "Pinnacle Commercial, Inc.",
   entity: "eXp Realty of California, Inc",
   earningsType: "Real Estate Trx",
   reportingDate: "01/01/2026",
   amount: i === 0 ? 1212.50 : 800 + Math.round(Math.random() * 2000 * 100) / 100,
-  name: "Kyle Whissel",
+  name: "Michael Thompson",
   transactionId: `3652668.${i + 1}`,
   address: i === 0
     ? "#LEASE# DEC - 6089 Avenida Alteras, Rancho Santa Fe, CA 92067, US"
@@ -162,10 +162,10 @@ const mockTransactions: TransactionRow[] = Array.from({ length: 8 }, (_, i) => (
 }));
 
 const mockFiles: YearEndFile[] = [
-  { company: "Fast Forward Movement, LLC", filename: "Kyle Whissel_1099_NEC_13094_SB-36410_1..." },
-  { company: "Kyle Whissel", filename: "Kyle Whissel_1099_NEC_13094_SA-0013094..." },
-  { company: "Kyle Whissel", filename: "Kyle Whissel_1099_NEC_13094_SA-0013094..." },
-  { company: "Whissel Beer Group, LLC", filename: "Kyle Whissel_1099_NEC_13094_SB-36412_1..." },
+  { company: "Horizon Partners, LLC", filename: "M_Thompson_1099_NEC_13094_SB-36410_1..." },
+  { company: "Michael Thompson", filename: "M_Thompson_1099_NEC_13094_SA-0013094..." },
+  { company: "Michael Thompson", filename: "M_Thompson_1099_NEC_13094_SA-0013094..." },
+  { company: "Thompson Realty Group, LLC", filename: "M_Thompson_1099_NEC_13094_SB-36412_1..." },
 ];
 
 // ── Component ──
