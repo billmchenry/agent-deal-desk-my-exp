@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Phone, Mail, MapPin, Facebook, Linkedin, Globe, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import type { StateMentor, Mentee } from "@/data/mentorMockData";
 import { mockMentees } from "@/data/mentorMockData";
 import { MenteeContactSheet } from "@/components/mentor/MenteeContactSheet";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface StateMentorProfileSheetProps {
   mentor: StateMentor | null;
@@ -21,6 +21,7 @@ function getInitials(name: string) {
 }
 
 export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMentorProfileSheetProps) {
+  const { t } = useTranslation();
   const [selectedMentee, setSelectedMentee] = useState<Mentee | null>(null);
 
   if (!mentor) return null;
@@ -36,11 +37,13 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
             <div className="p-6 space-y-5">
               <SheetHeader className="pb-0">
                 <button
+                  type="button"
                   className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors -ml-1 mb-3"
                   onClick={() => onOpenChange(false)}
+                  aria-label={t("broker.back")}
                 >
-                  <ChevronLeft className="h-4 w-4" />
-                  Back
+                  <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                  {t("broker.back")}
                 </button>
                 <div className="flex items-start gap-4">
                   <Avatar className="h-16 w-16 border-2 border-border">
@@ -51,7 +54,7 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
                   <div className="pt-1">
                     <SheetTitle className="text-lg text-left">{mentor.name}</SheetTitle>
                     <p className="text-sm text-muted-foreground flex items-center gap-1 mt-0.5">
-                      <MapPin className="h-3.5 w-3.5" />
+                      <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
                       {mentor.city}, {mentor.state} {mentor.postalCode}
                     </p>
                   </div>
@@ -67,30 +70,30 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
 
               {/* Details Grid */}
               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                <DetailSection title="Locations Serviced" items={mentor.locationsServiced} />
-                <DetailSection title="Licenses" items={mentor.licenses.map((l) => `${l.state} — ${l.number}`)} />
-                <DetailSection title="Languages" items={mentor.languages} />
-                <DetailSection title="MLS" items={mentor.mls} />
-                <DetailSection title="Specializations" items={mentor.specializations} />
-                <DetailSection title="Certifications" items={mentor.certifications} />
+                <DetailSection title={t("broker.locationsServiced")} items={mentor.locationsServiced} />
+                <DetailSection title={t("broker.licenses")} items={mentor.licenses.map((l) => `${l.state} — ${l.number}`)} />
+                <DetailSection title={t("broker.languages")} items={mentor.languages} />
+                <DetailSection title={t("broker.mls")} items={mentor.mls} />
+                <DetailSection title={t("broker.specializations")} items={mentor.specializations} />
+                <DetailSection title={t("broker.certifications")} items={mentor.certifications} />
               </div>
 
               <Separator />
 
               {/* Contact */}
               <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground">Contact</p>
+                <p className="text-sm font-semibold text-foreground">{t("broker.contact")}</p>
                 <div className="flex gap-2">
                   <Button variant="outline" className="flex-1" asChild>
                     <a href={`tel:${mentor.phone}`}>
-                      <Phone className="h-4 w-4 mr-1.5" />
-                      Call
+                      <Phone className="h-4 w-4 mr-1.5" aria-hidden="true" />
+                      {t("broker.call")}
                     </a>
                   </Button>
                   <Button variant="outline" className="flex-1" asChild>
                     <a href={`mailto:${mentor.primaryEmail}`}>
-                      <Mail className="h-4 w-4 mr-1.5" />
-                      Email
+                      <Mail className="h-4 w-4 mr-1.5" aria-hidden="true" />
+                      {t("broker.email")}
                     </a>
                   </Button>
                 </div>
@@ -126,10 +129,10 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
               {/* Active Mentees */}
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                  Active Mentees ({mentees.length})
+                  {t("broker.activeMentees")} ({mentees.length})
                 </h3>
                 {mentees.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No active mentees.</p>
+                  <p className="text-sm text-muted-foreground">{t("broker.noActiveMentees")}</p>
                 ) : (
                   <div className="space-y-2">
                     {mentees.map((mentee) => (
@@ -138,6 +141,7 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
                         type="button"
                         className="w-full flex items-center gap-3 rounded-lg border p-3 hover:bg-accent/50 transition-colors text-left cursor-pointer"
                         onClick={() => setSelectedMentee(mentee)}
+                        aria-label={`${mentee.agentName} — ${mentee.transactionsRemaining} ${t("broker.txnsRemaining")}`}
                       >
                         <Avatar className="h-10 w-10">
                           <AvatarFallback className="bg-muted text-muted-foreground text-xs">
@@ -147,14 +151,14 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-foreground">{mentee.agentName}</p>
                           <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
-                            <span>{mentee.transactionsRemaining} txns remaining</span>
+                            <span>{mentee.transactionsRemaining} {t("broker.txnsRemaining")}</span>
                             <span className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              Joined {mentee.joinDate}
+                              <Calendar className="h-3 w-3" aria-hidden="true" />
+                              {t("broker.joined")} {mentee.joinDate}
                             </span>
                           </div>
                         </div>
-                        <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                        <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" aria-hidden="true" />
                       </button>
                     ))}
                   </div>
