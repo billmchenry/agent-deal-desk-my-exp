@@ -58,6 +58,7 @@ const App = () => (
                 <Route path="/revshare/organization-tree" element={<OrganizationTree />} />
                 <Route path="/revshare/trends" element={<RevShareTrends />} />
                 <Route path="/revshare/group" element={<RevShareGroup />} />
+                <Route path="/revshare/financials" element={<Financials />} />
                 <Route path="/pulse" element={<Pulse />} />
                 <Route path="/mira/history" element={<MiraHistory />} />
                 

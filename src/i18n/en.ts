@@ -377,6 +377,32 @@ export const en = {
   "revgroup.teamStatus": "Team Status",
   "revgroup.location": "Location",
   "revgroup.production": "Production",
+
+  // Financials
+  "nav.financials": "Financials",
+  "fin.title": "My Revenue Share",
+  "fin.back": "Back",
+  "fin.unpaid": "Unpaid",
+  "fin.expected": "Expected",
+  "fin.lastPaid": "Last Paid",
+  "fin.periodicOverview": "Periodic Overview",
+  "fin.agentName": "Agent Name",
+  "fin.uuid": "UUID",
+  "fin.level": "Level",
+  "fin.country": "Country",
+  "fin.state": "State",
+  "fin.totalRevShare": "Total Revenue Share",
+  "fin.paymentDetails": "Payment Details",
+  "fin.initialRevShare": "Initial Revenue Share",
+  "fin.adjustmentAmount": "Adjustment Amount",
+  "fin.finalRevShare": "Final Revenue Share",
+  "fin.batchId": "Batch ID",
+  "fin.date": "Date",
+  "fin.adjustment": "Adjustment",
+  "fin.transactionCount6Mo": "Transaction Count (6 Mo)",
+  "fin.memberCount": "Member Count",
+  "fin.monthly": "Monthly",
+  "fin.batchNumber": "Batch Number",
 } as const;
 
 export type TranslationKey = keyof typeof en;
