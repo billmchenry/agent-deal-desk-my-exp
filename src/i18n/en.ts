@@ -403,6 +403,17 @@ export const en = {
   "fin.memberCount": "Member Count",
   "fin.monthly": "Monthly",
   "fin.batchNumber": "Batch Number",
+  "fin.closedDate": "Closed Date",
+  "fin.revShareDetails": "Revenue Share Details",
+  "fin.transactionNumber": "Transaction Number",
+  "fin.transactionStatus": "Transaction Status",
+  "fin.paidStatus": "Paid Status",
+  "fin.salePrice": "Sale Price",
+  "fin.revShareSection": "Revenue Share",
+  "fin.revShareDollar": "Revenue Share Dollar",
+  "fin.expansionShare": "Revenue Share Dollar eXpansion Share",
+  "fin.exponentialShare": "Revenue Share Dollar eXponential Share",
+  "fin.revSharePercentage": "Revenue Share Dollar' Revenue Share Percentage",
 } as const;
 
 export type TranslationKey = keyof typeof en;
