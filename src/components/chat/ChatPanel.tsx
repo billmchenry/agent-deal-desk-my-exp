@@ -376,7 +376,7 @@ function ChatContent({
                 size="icon" 
                 onClick={onToggleExpand} 
                 className="h-8 w-8 shrink-0"
-                title={isExpanded ? "Exit full screen" : "Full screen"}
+                aria-label={isExpanded ? t("chat.exitFullScreen") : t("chat.fullScreen")}
               >
                 {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
               </Button>
