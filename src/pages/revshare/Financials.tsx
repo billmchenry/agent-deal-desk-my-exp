@@ -117,7 +117,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Salvador Fernando Rivas Hernandez": {
     agentName: "Salvador Fernando Rivas Hernandez", agentId: "371058", totalRevShare: 650.00, currency: "USD",
-    email: "salvador.rivas@exprealty.com", phone: "(617) 283-9401",
+    email: "salvador.rivas@exprealty.com", phone: "(617) 555-9401",
     transactions: [
       { address: "114 Beacon St, Boston...", fullAddress: "114 Beacon St, Boston, MA 02116, US", closedDate: "01/11/2026", revShareAmount: 650.00, currency: "USD", transactionNumber: "3648440.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 495000, revShareDollar: 1300.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 650.00 },
     ],
