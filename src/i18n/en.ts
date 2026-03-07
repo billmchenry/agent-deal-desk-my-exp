@@ -875,6 +875,7 @@ export const en = {
   "dashboard.playVideo": "Play video",
   "common.call": "Call",
   "common.email": "Email",
+  "common.viewContact": "View contact card",
   "common.download": "Download",
   "notif.expandSection": "Expand section",
 } as const;

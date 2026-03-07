@@ -779,6 +779,7 @@ export const ja: Record<string, string> = {
   "dashboard.playVideo": "動画を再生",
   "common.call": "電話する",
   "common.email": "メール",
+  "common.viewContact": "連絡先カードを表示",
   "common.download": "ダウンロード",
   "notif.expandSection": "セクションを展開",
 };

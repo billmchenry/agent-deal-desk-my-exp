@@ -771,6 +771,7 @@ export const ar: Record<string, string> = {
   "dashboard.playVideo": "تشغيل الفيديو",
   "common.call": "اتصال",
   "common.email": "بريد إلكتروني",
+  "common.viewContact": "عرض بطاقة جهة الاتصال",
   "common.download": "تنزيل",
   "notif.expandSection": "توسيع القسم",
 };
