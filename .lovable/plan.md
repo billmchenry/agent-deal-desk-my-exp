@@ -1,83 +1,82 @@
 
 
-# Team Reconciliation Page
+## Accessibility Consistency Sweep
 
-A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
-
----
-
-## Overview
-
-Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
+After auditing the full codebase against the project's WCAG 2.2 checklist, here are the remaining gaps organized into three categories.
 
 ---
 
-## New Files
+### Issue 1: Hardcoded `useDocumentTitle` strings (12 pages)
 
-### 1. `src/pages/team/Reconciliation.tsx`
+These pages pass raw English strings instead of translation keys, breaking the page title for non-English users:
 
-The main page, closely mirroring the Agent Production Details pattern:
+| Page | Current | Fix |
+|------|---------|-----|
+| `Index.tsx` | `"Home"` | `t("nav.home")` |
+| `agent/Dashboard.tsx` | `"Agent Dashboard"` | `t("nav.agentDashboard")` |
+| `agent/CustomServiceFees.tsx` | `"Custom Service Fees"` | `t("nav.customServiceFees")` |
+| `team/Dashboard.tsx` | `"My Team"` | `t("nav.myTeam")` |
+| `profile/PersonalDetails.tsx` | `"My Profile"` | `t("nav.myProfile")` |
+| `mira/History.tsx` | `"Chat History"` | `t("nav.chatHistory")` |
+| `revshare/Organization.tsx` | `"Organization Reporting"` | `t("nav.orgReporting")` |
+| `revshare/OrganizationTree.tsx` | `"Organization Tree"` | `t("nav.orgTree")` |
+| `revshare/Trends.tsx` | `"RevShare Trends"` | `t("nav.revShareTrends")` |
+| `notifications/Notifications.tsx` | `"Notifications"` | `t("nav.notifications")` |
+| `help/HelpCenter.tsx` | `"Help Center"` | `t("nav.helpCenter")` |
+| `Pulse.tsx` | `"Pulse"` | `t("nav.pulse")` |
 
-- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
-- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
-- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
-- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
-- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
-- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
-- CSV export enabled
-- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
-- Back button at top linking to `/team/dashboard`
-
-### 2. `src/components/team/TeamBreakdownSheet.tsx`
-
-Side panel matching the reference screenshot's "Transaction Details" breakdown:
-
-- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
-- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
-- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
-- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
-  - Agent identifier row (ID + Name) with a colored percentage badge
-  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
-  - Tax, Commission After Co-agents (highlighted)
-  - Agent Split Before Expenses
-  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
-- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
-- **Fees I Paid for Others** -- collapsible
-- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
-
-### 3. `src/components/shared/BreakdownComponents.tsx`
-
-Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
+Add the missing keys to `en.ts` and all 6 language files.
 
 ---
 
-## Modified Files
+### Issue 2: Icon-only buttons missing `aria-label` (~25 instances)
 
-### `src/components/agent/TransactionDetailsSheet.tsx`
-- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
+Per the checklist, every `size="icon"` button needs an `aria-label`. These are missing:
 
-### `src/data/mockData.ts`
-- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
-- Update the `navItems` array similarly
-
-### `src/components/layout/Sidebar.tsx`
-- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
-
-### `src/App.tsx`
-- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
-
-### `src/i18n/*.ts` (all 7 language files)
-- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
+| File | Button | aria-label to add |
+|------|--------|-------------------|
+| **Pulse.tsx** (×3) | Refresh pinned insights, Refresh insight, Remove insight | `t("pulse.refresh")`, `t("pulse.refreshInsight")`, `t("pulse.removeInsight")` |
+| **ChatPanel.tsx** (×8) | Back from history, Expand/collapse, History, Close, Stop listening, Attach files, Speech-to-text, Voice mode, Send | Replace `title` attrs with `aria-label` using translation keys |
+| **VoiceMode.tsx** (×2) | Attach files, Toggle listening | `t("chat.attachFiles")`, `t("chat.toggleListening")` |
+| **MiraChatbot.tsx** (×2) | Mic, Send | `t("chat.voiceInput")`, `t("chat.send")` |
+| **ConversationCard.tsx** (×1) | Delete conversation | `t("chat.deleteConversation")` |
+| **WidgetPreview.tsx** (×1) | Pin to dashboard — has `title` but needs `aria-label` |
+| **DraggableWidget.tsx** (×1) | Remove widget | `t("dashboard.removeWidget")` |
+| **NewsAndTrainingCard.tsx** (×1) | Play video | `t("dashboard.playVideo")` |
+| **UplinePartnersCard.tsx** (×2) | Phone, Email | `t("common.call")`, `t("common.email")` |
+| **Notifications.tsx** (×1) | Collapse trigger — needs `aria-label` |
 
 ---
 
-## Implementation Order
+### Issue 3: Remaining physical CSS `ml-auto` in content files (2 instances)
 
-1. Extract shared breakdown components into `BreakdownComponents.tsx`
-2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
-3. Create mock team reconciliation data and the `Reconciliation.tsx` page
-4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
-5. Add route in `App.tsx`
-6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
-7. Add translation keys to all 7 language files
+| File | Line | Fix |
+|------|------|-----|
+| `OrganizationTree.tsx` | `ml-auto` on ICON badge | `ms-auto` |
+| `Notifications.tsx` | `ml-auto` on collapsible trigger | `ms-auto` |
+| `DataTable.tsx` | `ml-auto` on results count | `ms-auto` |
+
+(Skip `ml-auto` in `src/components/ui/*` — those are shadcn primitives.)
+
+---
+
+### Implementation Plan
+
+**Batch 1 — aria-labels (~10 files)**
+Add `aria-label` with translation keys to all icon-only buttons listed above. Where `title` is used instead, replace with `aria-label` (or add both).
+
+**Batch 2 — Document titles (12 pages + 7 i18n files)**
+Replace hardcoded strings with `t()` calls. Add ~12 new `nav.*` keys to all language files.
+
+**Batch 3 — Physical CSS cleanup (3 files)**
+`ml-auto` → `ms-auto` in `OrganizationTree.tsx`, `Notifications.tsx`, `DataTable.tsx`.
+
+### Files to Change (~22 files)
+
+- `src/pages/Index.tsx`, `agent/Dashboard.tsx`, `agent/CustomServiceFees.tsx`, `team/Dashboard.tsx`, `profile/PersonalDetails.tsx`, `mira/History.tsx`, `revshare/Organization.tsx`, `revshare/OrganizationTree.tsx`, `revshare/Trends.tsx`, `notifications/Notifications.tsx`, `help/HelpCenter.tsx`, `Pulse.tsx`
+- `src/components/chat/ChatPanel.tsx`, `VoiceMode.tsx`, `ConversationCard.tsx`, `WidgetPreview.tsx`
+- `src/components/layout/MiraChatbot.tsx`
+- `src/components/dashboard/DraggableWidget.tsx`, `NewsAndTrainingCard.tsx`, `UplinePartnersCard.tsx`
+- `src/components/shared/DataTable.tsx`
+- `src/i18n/en.ts`, `ar.ts`, `es.ts`, `fr-CA.ts`, `de.ts`, `zh.ts`, `ja.ts`
 
