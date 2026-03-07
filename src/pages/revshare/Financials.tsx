@@ -102,7 +102,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Seth Steven Rhyne": {
     agentName: "Seth Steven Rhyne", agentId: "174903", totalRevShare: 790.80, currency: "USD",
-    email: "seth.rhyne@exprealty.com", phone: "(843) 592-4017",
+    email: "seth.rhyne@exprealty.com", phone: "(843) 555-4017",
     transactions: [
       { address: "1204 King St, Charleston...", fullAddress: "1204 King St, Charleston, SC 29403, US", closedDate: "01/13/2026", revShareAmount: 490.80, currency: "USD", transactionNumber: "3648560.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 380000, revShareDollar: 981.60, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 490.80 },
       { address: "567 Coleman Blvd, Mt Pl...", fullAddress: "567 Coleman Blvd, Mt Pleasant, SC 29464, US", closedDate: "01/04/2026", revShareAmount: 300.00, currency: "USD", transactionNumber: "3647960.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 265000, revShareDollar: 600.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 300.00 },
