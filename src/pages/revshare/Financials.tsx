@@ -87,7 +87,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Sarah Brennan": {
     agentName: "Sarah Brennan", agentId: "305821", totalRevShare: 889.15, currency: "USD",
-    email: "sarah.brennan@exprealty.com", phone: "(506) 214-8730",
+    email: "sarah.brennan@exprealty.com", phone: "(506) 555-8730",
     transactions: [
       { address: "45 King St, Fredericton...", fullAddress: "45 King St, Fredericton, NB E3B 1C6, CA", closedDate: "01/17/2026", revShareAmount: 524.15, currency: "USD", transactionNumber: "3648890.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 410000, revShareDollar: 1048.30, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 524.15 },
       { address: "220 Waterloo Row, Fred...", fullAddress: "220 Waterloo Row, Fredericton, NB E3B 1Z1, CA", closedDate: "01/09/2026", revShareAmount: 365.00, currency: "USD", transactionNumber: "3648310.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 295000, revShareDollar: 730.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 365.00 },
