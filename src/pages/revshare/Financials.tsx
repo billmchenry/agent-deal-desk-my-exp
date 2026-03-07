@@ -131,7 +131,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Abby Moorman Andes": {
     agentName: "Abby Moorman Andes", agentId: "318274", totalRevShare: 643.95, currency: "USD",
-    email: "abby.andes@exprealty.com", phone: "(770) 394-2810",
+    email: "abby.andes@exprealty.com", phone: "(770) 555-2810",
     transactions: [
       { address: "3350 Peachtree Rd NE, A...", fullAddress: "3350 Peachtree Rd NE, Atlanta, GA 30326, US", closedDate: "01/12/2026", revShareAmount: 643.95, currency: "USD", transactionNumber: "3648490.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 520000, revShareDollar: 1287.90, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 643.95 },
     ],
