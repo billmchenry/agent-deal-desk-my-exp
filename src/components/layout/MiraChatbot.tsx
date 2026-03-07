@@ -44,6 +44,7 @@ export function MiraChatbot() {
           size="icon"
           className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
           onClick={handleSend}
+          aria-label="Send message"
         >
           <Send className="h-4 w-4" />
         </Button>

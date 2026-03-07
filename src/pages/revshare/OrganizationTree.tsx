@@ -213,7 +213,7 @@ function AgentCard({
             <span className="text-muted-foreground">{t("orgTree.orgSize")}:</span>
             <span className="text-foreground">{agent.orgSize}</span>
             {agent.icon && (
-              <Badge variant="outline" className="text-xs text-primary border-primary ml-auto">
+              <Badge variant="outline" className="text-xs text-primary border-primary ms-auto">
                 ICON
               </Badge>
             )}

@@ -211,8 +211,10 @@ export function VoiceModeView({
             size="icon"
             onClick={isListening ? onStopListening : onStartListening}
             className="h-10 w-10 shrink-0 text-muted-foreground"
+            aria-label={isListening ? "Stop listening" : "Toggle listening"}
           >
             {isListening ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+          </Button>
           </Button>
           <Button
             onClick={onEnd}

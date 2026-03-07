@@ -43,6 +43,7 @@ export function NewsAndTrainingCard() {
                 <Button
                   size="icon"
                   className="h-14 w-14 rounded-full bg-white/90 hover:bg-white text-exp-navy"
+                  aria-label="Play video"
                 >
                   <Play className="h-6 w-6 ml-1" />
                 </Button>

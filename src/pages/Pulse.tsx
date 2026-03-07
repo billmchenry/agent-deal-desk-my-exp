@@ -199,7 +199,7 @@ export default function Pulse() {
                           <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={t("pulse.refreshInsight")}>
                             <RefreshCw className="h-3 w-3" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-6 w-6">
+                          <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={t("pulse.removeInsight")}>
                             <X className="h-3 w-3" />
                           </Button>
                         </div>

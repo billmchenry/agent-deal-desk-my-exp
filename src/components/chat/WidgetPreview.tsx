@@ -123,7 +123,7 @@ export function WidgetPreview({ type, id, title, onFollowUp }: WidgetPreviewProp
                   ? 'text-green-600 hover:text-green-600' 
                   : 'text-muted-foreground hover:text-foreground'
               }`}
-              title={isPinned ? "Pinned to Dashboard" : "Pin to Dashboard"}
+              aria-label={isPinned ? "Pinned to Dashboard" : "Pin to Dashboard"}
             >
               {isPinned ? (
                 <Check className="h-3 w-3 sm:h-4 sm:w-4" />

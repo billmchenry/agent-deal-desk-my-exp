@@ -72,6 +72,7 @@ export function DraggableWidget({ widget, isEditMode, onRemove, children }: Drag
         size="icon"
         className="absolute -right-2 -top-2 z-10 h-6 w-6 rounded-full shadow-md"
         onClick={() => onRemove(widget.id)}
+        aria-label="Remove widget"
       >
         <X className="h-3 w-3" />
       </Button>

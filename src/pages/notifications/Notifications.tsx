@@ -463,7 +463,7 @@ export default function Notifications() {
                     {category}
                   </Label>
                   <CollapsibleTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-6 w-6 ml-auto">
+                    <Button variant="ghost" size="icon" className="h-6 w-6 ms-auto" aria-label={t("notif.expandSection")}>
                       <ChevronUp className="h-4 w-4" />
                     </Button>
                   </CollapsibleTrigger>

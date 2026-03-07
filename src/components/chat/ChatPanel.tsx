@@ -526,7 +526,7 @@ function ChatContent({
             >
               <AudioWaveform className="h-4 w-4" />
             </Button>
-            <Button size="icon" onClick={handleSendWithAttachments} disabled={!inputValue.trim() && pendingAttachments.length === 0} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0">
+            <Button size="icon" onClick={handleSendWithAttachments} disabled={!inputValue.trim() && pendingAttachments.length === 0} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0" aria-label={t("chat.send")}>
               <Send className="h-4 w-4" />
             </Button>
           </div>
