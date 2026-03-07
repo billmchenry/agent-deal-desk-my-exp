@@ -522,7 +522,7 @@ function ChatContent({
               size="icon"
               onClick={onStartVoiceMode}
               className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
-              title="Voice mode"
+              aria-label={t("chat.voiceMode")}
             >
               <AudioWaveform className="h-4 w-4" />
             </Button>
