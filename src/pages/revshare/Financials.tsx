@@ -175,7 +175,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Sheri Morrison": {
     agentName: "Sheri Morrison", agentId: "253890", totalRevShare: 784.00, currency: "USD",
-    email: "sheri.morrison@exprealty.com", phone: "(561) 903-4218",
+    email: "sheri.morrison@exprealty.com", phone: "(561) 555-4218",
     transactions: [
       { address: "800 S Dixie Hwy, West P...", fullAddress: "800 S Dixie Hwy, West Palm Beach, FL 33401, US", closedDate: "01/11/2026", revShareAmount: 784.00, currency: "USD", transactionNumber: "3648420.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 545000, revShareDollar: 1568.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 784.00 },
     ],
