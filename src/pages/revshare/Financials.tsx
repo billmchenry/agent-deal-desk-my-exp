@@ -182,7 +182,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Amanda Bowen": {
     agentName: "Amanda Bowen", agentId: "210347", totalRevShare: 782.34, currency: "USD",
-    email: "amanda.bowen@exprealty.com", phone: "(253) 481-7630",
+    email: "amanda.bowen@exprealty.com", phone: "(253) 555-7630",
     transactions: [
       { address: "1702 Pacific Ave, Tacom...", fullAddress: "1702 Pacific Ave, Tacoma, WA 98402, US", closedDate: "01/19/2026", revShareAmount: 452.34, currency: "USD", transactionNumber: "3649070.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 390000, revShareDollar: 904.68, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 452.34 },
       { address: "3814 N 26th St, Tacoma...", fullAddress: "3814 N 26th St, Tacoma, WA 98407, US", closedDate: "01/08/2026", revShareAmount: 330.00, currency: "USD", transactionNumber: "3648250.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 285000, revShareDollar: 660.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 330.00 },
