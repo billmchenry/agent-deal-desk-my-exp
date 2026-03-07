@@ -160,21 +160,7 @@ function AgentCard({
   const hasChildren = agent.children && agent.children.length > 0;
 
   return (
-    <Card
-      className={`overflow-hidden transition-shadow ${hasChildren ? "cursor-pointer hover:shadow-md hover:border-primary/30 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none" : ""}`}
-      onClick={hasChildren ? onClick : undefined}
-      {...(hasChildren ? {
-        role: "button",
-        tabIndex: 0,
-        "aria-label": `${t("orgTree.viewOrg")} – ${agent.name}`,
-        onKeyDown: (e: React.KeyboardEvent) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            onClick?.();
-          }
-        },
-      } : {})}
-    >
+    <Card className="overflow-hidden transition-shadow hover:shadow-md">
       <CardContent className="p-4">
         <div className="flex items-start gap-3 mb-3">
           <div className="relative">
@@ -195,13 +181,15 @@ function AgentCard({
             <p className="text-xs text-muted-foreground">{agent.location}</p>
           </div>
           {onOpenContact && (
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={(e) => { e.stopPropagation(); onOpenContact(); }}
-              className="flex h-11 w-11 md:h-9 md:w-9 items-center justify-center rounded-full hover:bg-accent transition-colors text-muted-foreground hover:text-primary shrink-0 min-h-[48px] min-w-[48px] md:min-h-[44px] md:min-w-[44px]"
-              aria-label={`View contact card for ${agent.name}`}
+              className="shrink-0 min-h-[48px] min-w-[48px] md:min-h-[44px] md:min-w-[44px]"
+              aria-label={`${t("common.viewContact")} – ${agent.name}`}
             >
               <Contact className="h-5 w-5 md:h-4 md:w-4" />
-            </button>
+            </Button>
           )}
         </div>
 
@@ -229,6 +217,21 @@ function AgentCard({
               </Badge>
             )}
           </div>
+        </div>
+
+        {/* Keyboard-accessible action buttons */}
+        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
+          {hasChildren && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 text-xs"
+              onClick={onClick}
+              aria-label={`${t("orgTree.viewOrg")} – ${agent.name}`}
+            >
+              {t("orgTree.viewOrg")} ({agent.orgSize})
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
