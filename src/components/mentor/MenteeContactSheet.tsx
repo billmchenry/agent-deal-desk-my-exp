@@ -110,7 +110,7 @@ export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContact
 
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">{t("mentor.mentorshipMetrics")}</h3>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   <div className="rounded-lg border bg-card p-3 space-y-1">
                     <p className="text-xs text-muted-foreground">{t("mentor.txnsRemaining")}</p>
                     <p className="text-xl font-bold text-foreground">{mentee.transactionsRemaining}</p>
@@ -119,7 +119,7 @@ export function MenteeContactSheet({ open, onOpenChange, mentee }: MenteeContact
                     <p className="text-xs text-muted-foreground">{t("mentor.mentorFeeLabel")}</p>
                     <p className="text-xl font-bold text-foreground">{mentee.mentorFee}%</p>
                   </div>
-                  <div className="rounded-lg border bg-card p-3 space-y-1">
+                  <div className="rounded-lg border bg-card p-3 space-y-1 col-span-2 sm:col-span-1">
                     <p className="text-xs text-muted-foreground">{t("mentor.paidFees")}</p>
                     <p className="text-xl font-bold text-foreground">{formatCurrency(mentee.paidMentorFees)}</p>
                   </div>
