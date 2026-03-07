@@ -146,7 +146,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Lindsey Ruth Sampier": {
     agentName: "Lindsey Ruth Sampier", agentId: "264518", totalRevShare: 1000.00, currency: "USD",
-    email: "lindsey.sampier@exprealty.com", phone: "(720) 341-5928",
+    email: "lindsey.sampier@exprealty.com", phone: "(720) 555-5928",
     transactions: [
       { address: "1890 Wynkoop St, Denver...", fullAddress: "1890 Wynkoop St, Denver, CO 80202, US", closedDate: "01/18/2026", revShareAmount: 600.00, currency: "USD", transactionNumber: "3649030.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 525000, revShareDollar: 1200.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 600.00 },
       { address: "4502 S Broadway, Engle...", fullAddress: "4502 S Broadway, Englewood, CO 80113, US", closedDate: "01/05/2026", revShareAmount: 400.00, currency: "USD", transactionNumber: "3647980.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 340000, revShareDollar: 800.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 400.00 },
