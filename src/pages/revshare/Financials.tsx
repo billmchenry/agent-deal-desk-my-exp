@@ -49,7 +49,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Kendra Campbell Borja LLC": {
     agentName: "Kendra Campbell Borja LLC", agentId: "314209", totalRevShare: 1260.00, currency: "USD",
-    email: "kendra.borja@exprealty.com", phone: "(305) 482-1937",
+    email: "kendra.borja@exprealty.com", phone: "(305) 555-1937",
     transactions: [
       { address: "1842 Brickell Ave, Miami...", fullAddress: "1842 Brickell Ave, Miami, FL 33129, US", closedDate: "01/22/2026", revShareAmount: 760.00, currency: "USD", transactionNumber: "3649102.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 620000, revShareDollar: 1520.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 760.00 },
       { address: "309 Sunset Blvd, Fort L...", fullAddress: "309 Sunset Blvd, Fort Lauderdale, FL 33301, US", closedDate: "01/10/2026", revShareAmount: 500.00, currency: "USD", transactionNumber: "3648401.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 385000, revShareDollar: 1000.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 500.00 },
