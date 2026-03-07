@@ -168,7 +168,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Camille Anne Horvath": {
     agentName: "Camille Anne Horvath", agentId: "297163", totalRevShare: 815.63, currency: "USD",
-    email: "camille.horvath@exprealty.com", phone: "(954) 318-7042",
+    email: "camille.horvath@exprealty.com", phone: "(954) 555-7042",
     transactions: [
       { address: "3001 E Las Olas Blvd, F...", fullAddress: "3001 E Las Olas Blvd, Fort Lauderdale, FL 33316, US", closedDate: "01/22/2026", revShareAmount: 815.63, currency: "USD", transactionNumber: "3649170.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 710000, revShareDollar: 1631.26, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 815.63 },
     ],
