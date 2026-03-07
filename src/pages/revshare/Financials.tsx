@@ -64,7 +64,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Brittany A Garcia PLLC": {
     agentName: "Brittany A Garcia PLLC", agentId: "265413", totalRevShare: 937.50, currency: "USD",
-    email: "brittany.garcia@exprealty.com", phone: "(480) 719-3562",
+    email: "brittany.garcia@exprealty.com", phone: "(480) 555-3562",
     transactions: [
       { address: "2241 E Camelback Rd, Sc...", fullAddress: "2241 E Camelback Rd, Scottsdale, AZ 85251, US", closedDate: "01/14/2026", revShareAmount: 562.50, currency: "USD", transactionNumber: "3648630.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 475000, revShareDollar: 1125.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 562.50 },
       { address: "8830 N 7th St, Phoenix...", fullAddress: "8830 N 7th St, Phoenix, AZ 85020, US", closedDate: "01/03/2026", revShareAmount: 375.00, currency: "USD", transactionNumber: "3647920.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 325000, revShareDollar: 750.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 375.00 },
