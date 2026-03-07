@@ -166,7 +166,7 @@ function AgentCard({
       {...(hasChildren ? {
         role: "button",
         tabIndex: 0,
-        "aria-label": t("orgTree.viewOrg", { name: agent.name }),
+        "aria-label": `${t("orgTree.viewOrg")} – ${agent.name}`,
         onKeyDown: (e: React.KeyboardEvent) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
