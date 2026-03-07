@@ -852,6 +852,31 @@ export const en = {
   "icon.noteCultural": "In the month following completion of the Cultural Requirements during the ICON Cultural Benefit Year, a final audit will be completed to verify if the ICON agent has met the Cultural Commitment points requirements to earn the additional stock award.",
   "icon.noteEvents": "ICON agents have the opportunity to earn a stock award of up to an additional $4,000 worth of EXPI common stock in the month following attendance of eXp approved events; a stock award of $2,000 worth of EXPI common stock will be issued for each event attended, for a maximum of two events per ICON Cultural Benefit Year.",
   "icon.noteStockGrants": "All stock awards are subject to a one month delay, and will be posted by the last day of the month following the award date.",
+
+  // Accessibility — aria-labels & document titles
+  "nav.agentDashboard": "Agent Dashboard",
+  "nav.myTeam": "My Team",
+  "nav.myProfile": "My Profile",
+  "nav.chatHistory": "Chat History",
+  "nav.orgReporting": "Organization Reporting",
+  "nav.revShareTrends": "RevShare Trends",
+  "nav.notifications": "Notifications",
+  "nav.pulse": "Pulse",
+  "pulse.refresh": "Refresh",
+  "pulse.refreshInsight": "Refresh insight",
+  "pulse.removeInsight": "Remove insight",
+  "chat.send": "Send message",
+  "chat.voiceInput": "Voice input",
+  "chat.stopListening": "Stop listening",
+  "chat.backToChat": "Back to chat",
+  "chat.closeChatPanel": "Close chat",
+  "chat.toggleListening": "Toggle listening",
+  "dashboard.removeWidget": "Remove widget",
+  "dashboard.playVideo": "Play video",
+  "common.call": "Call",
+  "common.email": "Email",
+  "common.download": "Download",
+  "notif.expandSection": "Expand section",
 } as const;
 
 export type TranslationKey = keyof typeof en;

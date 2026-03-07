@@ -85,8 +85,8 @@ const quickActions = [
 ];
 
 export default function Pulse() {
-  useDocumentTitle("Pulse");
   const { t } = useTranslation();
+  useDocumentTitle(t("nav.pulse"));
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [timePeriod, setTimePeriod] = useState("1Y");
   const [insightFilter, setInsightFilter] = useState("daily");
@@ -162,7 +162,7 @@ export default function Pulse() {
                   {pinnedInsights.length}
                 </Badge>
               </div>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button variant="ghost" size="icon" className="h-8 w-8" aria-label={t("pulse.refresh")}>
                 <RefreshCw className="h-4 w-4" />
               </Button>
             </CardHeader>
@@ -196,10 +196,10 @@ export default function Pulse() {
                           <span className="font-medium text-sm">{insight.title}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Button variant="ghost" size="icon" className="h-6 w-6">
+                          <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={t("pulse.refreshInsight")}>
                             <RefreshCw className="h-3 w-3" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-6 w-6">
+                          <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={t("pulse.removeInsight")}>
                             <X className="h-3 w-3" />
                           </Button>
                         </div>

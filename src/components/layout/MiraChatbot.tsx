@@ -36,6 +36,7 @@ export function MiraChatbot() {
           variant="ghost"
           size="icon"
           className="shrink-0 text-muted-foreground hover:text-foreground"
+          aria-label="Voice input"
         >
           <Mic className="h-5 w-5" />
         </Button>
@@ -43,6 +44,7 @@ export function MiraChatbot() {
           size="icon"
           className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
           onClick={handleSend}
+          aria-label="Send message"
         >
           <Send className="h-4 w-4" />
         </Button>

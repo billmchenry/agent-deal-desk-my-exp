@@ -196,7 +196,7 @@ export function VoiceModeView({
         )}
         <div className="flex items-center gap-1.5">
           <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.csv" onChange={handleFileSelect} className="hidden" />
-          <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()} className="h-10 w-10 shrink-0 text-muted-foreground">
+          <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()} className="h-10 w-10 shrink-0 text-muted-foreground" aria-label="Attach files">
             <Plus className="h-4 w-4" />
           </Button>
           <Input
@@ -211,6 +211,7 @@ export function VoiceModeView({
             size="icon"
             onClick={isListening ? onStopListening : onStartListening}
             className="h-10 w-10 shrink-0 text-muted-foreground"
+            aria-label={isListening ? "Stop listening" : "Toggle listening"}
           >
             {isListening ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
           </Button>

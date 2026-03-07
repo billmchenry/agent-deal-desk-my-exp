@@ -260,6 +260,7 @@ function ChatContent({
               size="icon" 
               onClick={() => setShowHistory(false)} 
               className="h-8 w-8 shrink-0"
+              aria-label={t("chat.backToChat")}
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
@@ -375,7 +376,7 @@ function ChatContent({
                 size="icon" 
                 onClick={onToggleExpand} 
                 className="h-8 w-8 shrink-0"
-                title={isExpanded ? "Exit full screen" : "Full screen"}
+                aria-label={isExpanded ? t("chat.exitFullScreen") : t("chat.fullScreen")}
               >
                 {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
               </Button>
@@ -386,7 +387,7 @@ function ChatContent({
                 size="icon" 
                 onClick={() => setShowHistory(true)} 
                 className="h-8 w-8 shrink-0"
-                title="History"
+                aria-label={t("chat.history")}
               >
                 <History className="h-4 w-4" />
               </Button>
@@ -397,6 +398,7 @@ function ChatContent({
                 size="icon" 
                 onClick={onClose} 
                 className="h-8 w-8 shrink-0"
+                aria-label={t("chat.closeChatPanel")}
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -475,6 +477,7 @@ function ChatContent({
               size="icon"
               onClick={() => setIsMainListening(false)}
               className="h-8 w-8 shrink-0 text-destructive hover:text-destructive"
+              aria-label={t("chat.stopListening")}
             >
               <Square className="h-4 w-4" />
             </Button>
@@ -494,7 +497,7 @@ function ChatContent({
               size="icon"
               onClick={() => fileInputRef.current?.click()}
               className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
-              title="Attach files"
+              aria-label={t("chat.attachFiles")}
             >
               <Plus className="h-4 w-4" />
             </Button>
@@ -510,7 +513,7 @@ function ChatContent({
               size="icon"
               onClick={() => setIsMainListening(true)}
               className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
-              title="Speech to text"
+              aria-label={t("chat.speechToText")}
             >
               <Mic className="h-4 w-4" />
             </Button>
@@ -519,11 +522,11 @@ function ChatContent({
               size="icon"
               onClick={onStartVoiceMode}
               className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
-              title="Voice mode"
+              aria-label={t("chat.voiceMode")}
             >
               <AudioWaveform className="h-4 w-4" />
             </Button>
-            <Button size="icon" onClick={handleSendWithAttachments} disabled={!inputValue.trim() && pendingAttachments.length === 0} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0">
+            <Button size="icon" onClick={handleSendWithAttachments} disabled={!inputValue.trim() && pendingAttachments.length === 0} className="h-9 w-9 sm:h-10 sm:w-10 shrink-0" aria-label={t("chat.send")}>
               <Send className="h-4 w-4" />
             </Button>
           </div>

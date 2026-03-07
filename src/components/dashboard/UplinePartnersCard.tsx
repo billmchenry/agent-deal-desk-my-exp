@@ -66,6 +66,7 @@ export function UplinePartnersCard() {
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8 text-exp-blue hover:text-exp-blue hover:bg-exp-blue/10"
+                  aria-label={`Call ${partner.name}`}
                 >
                   <Phone className="h-4 w-4" />
                 </Button>
@@ -73,6 +74,7 @@ export function UplinePartnersCard() {
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8 text-exp-blue hover:text-exp-blue hover:bg-exp-blue/10"
+                  aria-label={`Email ${partner.name}`}
                 >
                   <Mail className="h-4 w-4" />
                 </Button>

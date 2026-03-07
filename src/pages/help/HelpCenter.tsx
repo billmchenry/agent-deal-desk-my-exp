@@ -25,8 +25,8 @@ const DEPARTMENTS = [
 ] as const;
 
 export default function HelpCenter() {
-  useDocumentTitle("Help Center");
   const { t } = useTranslation();
+  useDocumentTitle(t("nav.helpCenter"));
   const [emailOpen, setEmailOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [selectedDept, setSelectedDept] = useState<string | null>(null);

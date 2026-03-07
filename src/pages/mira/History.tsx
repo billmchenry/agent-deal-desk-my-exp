@@ -10,8 +10,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 type DateFilter = 'all' | 'today' | 'week' | 'month';
 
 export default function History() {
-  useDocumentTitle("Chat History");
   const { t } = useTranslation();
+  useDocumentTitle(t("nav.chatHistory"));
   const { conversations, loadConversation, deleteConversation } = useMiraChat();
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');

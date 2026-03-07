@@ -327,7 +327,7 @@ export function DataTable<T extends Record<string, any>>({
           {t("txn.downloadCsv")}
         </Button>
       )}
-      <span className="text-sm text-muted-foreground ml-auto" aria-live="polite">
+      <span className="text-sm text-muted-foreground ms-auto" aria-live="polite">
         {totalFiltered} {t("txn.results")}
       </span>
     </div>
