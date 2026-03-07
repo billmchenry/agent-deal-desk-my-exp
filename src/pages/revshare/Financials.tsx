@@ -161,7 +161,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Christian Smith": {
     agentName: "Christian Smith", agentId: "283451", totalRevShare: 834.50, currency: "USD",
-    email: "christian.smith@exprealty.com", phone: "(404) 629-1475",
+    email: "christian.smith@exprealty.com", phone: "(404) 555-1475",
     transactions: [
       { address: "560 Dutch Valley Rd, At...", fullAddress: "560 Dutch Valley Rd, Atlanta, GA 30324, US", closedDate: "01/16/2026", revShareAmount: 834.50, currency: "USD", transactionNumber: "3648750.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 490000, revShareDollar: 1669.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 834.50 },
     ],
