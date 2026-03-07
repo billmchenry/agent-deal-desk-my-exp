@@ -260,6 +260,7 @@ function ChatContent({
               size="icon" 
               onClick={() => setShowHistory(false)} 
               className="h-8 w-8 shrink-0"
+              aria-label={t("chat.backToChat")}
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
