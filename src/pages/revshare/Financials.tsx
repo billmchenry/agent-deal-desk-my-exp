@@ -154,7 +154,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Jennifer Horst": {
     agentName: "Jennifer Horst", agentId: "241906", totalRevShare: 855.00, currency: "USD",
-    email: "jennifer.horst@exprealty.com", phone: "(916) 472-8301",
+    email: "jennifer.horst@exprealty.com", phone: "(916) 555-8301",
     transactions: [
       { address: "2100 Capitol Ave, Sacra...", fullAddress: "2100 Capitol Ave, Sacramento, CA 95816, US", closedDate: "01/14/2026", revShareAmount: 855.00, currency: "USD", transactionNumber: "3648610.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 680000, revShareDollar: 1710.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 855.00 },
     ],
