@@ -41,7 +41,7 @@ interface PeriodicRow {
 const agentTransactionsMap: Record<string, AgentDetail> = {
   "Tatsiana Crawford": {
     agentName: "Tatsiana Crawford", agentId: "278153", totalRevShare: 2325.00, currency: "USD",
-    email: "tatsiana.crawford@exprealty.com", phone: "(207) 370-4821",
+    email: "tatsiana.crawford@exprealty.com", phone: "(207) 555-4821",
     transactions: [
       { address: "4521 Maple Dr, Portland...", fullAddress: "4521 Maple Dr, Portland, ME 04101, US", closedDate: "01/15/2026", revShareAmount: 1425.00, currency: "USD", transactionNumber: "3648712.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 890000, revShareDollar: 2850.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1425.00 },
       { address: "782 Oak Lane, Augusta...", fullAddress: "782 Oak Lane, Augusta, ME 04330, US", closedDate: "01/08/2026", revShareAmount: 900.00, currency: "USD", transactionNumber: "3648199.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 540000, revShareDollar: 1800.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 900.00 },
@@ -49,7 +49,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Kendra Campbell Borja LLC": {
     agentName: "Kendra Campbell Borja LLC", agentId: "314209", totalRevShare: 1260.00, currency: "USD",
-    email: "kendra.borja@exprealty.com", phone: "(305) 482-1937",
+    email: "kendra.borja@exprealty.com", phone: "(305) 555-1937",
     transactions: [
       { address: "1842 Brickell Ave, Miami...", fullAddress: "1842 Brickell Ave, Miami, FL 33129, US", closedDate: "01/22/2026", revShareAmount: 760.00, currency: "USD", transactionNumber: "3649102.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 620000, revShareDollar: 1520.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 760.00 },
       { address: "309 Sunset Blvd, Fort L...", fullAddress: "309 Sunset Blvd, Fort Lauderdale, FL 33301, US", closedDate: "01/10/2026", revShareAmount: 500.00, currency: "USD", transactionNumber: "3648401.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 385000, revShareDollar: 1000.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 500.00 },
@@ -57,14 +57,14 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Cindy A Ermeav-Williams": {
     agentName: "Cindy A Ermeav-Williams", agentId: "291847", totalRevShare: 1000.00, currency: "USD",
-    email: "cindy.williams@exprealty.com", phone: "(941) 263-8104",
+    email: "cindy.williams@exprealty.com", phone: "(941) 555-8104",
     transactions: [
       { address: "5610 Gulf Dr, Sarasota...", fullAddress: "5610 Gulf Dr, Sarasota, FL 34242, US", closedDate: "01/18/2026", revShareAmount: 1000.00, currency: "USD", transactionNumber: "3649055.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 750000, revShareDollar: 2000.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1000.00 },
     ],
   },
   "Brittany A Garcia PLLC": {
     agentName: "Brittany A Garcia PLLC", agentId: "265413", totalRevShare: 937.50, currency: "USD",
-    email: "brittany.garcia@exprealty.com", phone: "(480) 719-3562",
+    email: "brittany.garcia@exprealty.com", phone: "(480) 555-3562",
     transactions: [
       { address: "2241 E Camelback Rd, Sc...", fullAddress: "2241 E Camelback Rd, Scottsdale, AZ 85251, US", closedDate: "01/14/2026", revShareAmount: 562.50, currency: "USD", transactionNumber: "3648630.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 475000, revShareDollar: 1125.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 562.50 },
       { address: "8830 N 7th St, Phoenix...", fullAddress: "8830 N 7th St, Phoenix, AZ 85020, US", closedDate: "01/03/2026", revShareAmount: 375.00, currency: "USD", transactionNumber: "3647920.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 325000, revShareDollar: 750.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 375.00 },
@@ -72,7 +72,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Autumn Ceniza": {
     agentName: "Autumn Ceniza", agentId: "198274", totalRevShare: 917.04, currency: "USD",
-    email: "autumn.ceniza@exprealty.com", phone: "(619) 504-2718",
+    email: "autumn.ceniza@exprealty.com", phone: "(619) 555-2718",
     transactions: [
       { address: "1450 Front St, San Dieg...", fullAddress: "1450 Front St, San Diego, CA 92101, US", closedDate: "01/21/2026", revShareAmount: 517.04, currency: "USD", transactionNumber: "3649140.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 685000, revShareDollar: 1034.08, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 517.04 },
       { address: "3927 Park Blvd, San Di...", fullAddress: "3927 Park Blvd, San Diego, CA 92103, US", closedDate: "01/06/2026", revShareAmount: 400.00, currency: "USD", transactionNumber: "3648050.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 510000, revShareDollar: 800.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 400.00 },
@@ -80,14 +80,14 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Cara Darea Silverthorne": {
     agentName: "Cara Darea Silverthorne", agentId: "342106", totalRevShare: 898.47, currency: "USD",
-    email: "cara.silverthorne@exprealty.com", phone: "(407) 831-5249",
+    email: "cara.silverthorne@exprealty.com", phone: "(407) 555-5249",
     transactions: [
       { address: "712 Lake Eola Dr, Orlan...", fullAddress: "712 Lake Eola Dr, Orlando, FL 32801, US", closedDate: "01/19/2026", revShareAmount: 898.47, currency: "USD", transactionNumber: "3649080.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 590000, revShareDollar: 1796.94, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 898.47 },
     ],
   },
   "Sarah Brennan": {
     agentName: "Sarah Brennan", agentId: "305821", totalRevShare: 889.15, currency: "USD",
-    email: "sarah.brennan@exprealty.com", phone: "(506) 214-8730",
+    email: "sarah.brennan@exprealty.com", phone: "(506) 555-8730",
     transactions: [
       { address: "45 King St, Fredericton...", fullAddress: "45 King St, Fredericton, NB E3B 1C6, CA", closedDate: "01/17/2026", revShareAmount: 524.15, currency: "USD", transactionNumber: "3648890.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 410000, revShareDollar: 1048.30, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 524.15 },
       { address: "220 Waterloo Row, Fred...", fullAddress: "220 Waterloo Row, Fredericton, NB E3B 1Z1, CA", closedDate: "01/09/2026", revShareAmount: 365.00, currency: "USD", transactionNumber: "3648310.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 295000, revShareDollar: 730.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 365.00 },
@@ -95,14 +95,14 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Allison Mireau": {
     agentName: "Allison Mireau", agentId: "287634", totalRevShare: 852.19, currency: "USD",
-    email: "allison.mireau@exprealty.com", phone: "(201) 647-3912",
+    email: "allison.mireau@exprealty.com", phone: "(201) 555-3912",
     transactions: [
       { address: "88 River Rd, Edgewater...", fullAddress: "88 River Rd, Edgewater, NJ 07020, US", closedDate: "01/16/2026", revShareAmount: 852.19, currency: "USD", transactionNumber: "3648780.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 715000, revShareDollar: 1704.38, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 852.19 },
     ],
   },
   "Seth Steven Rhyne": {
     agentName: "Seth Steven Rhyne", agentId: "174903", totalRevShare: 790.80, currency: "USD",
-    email: "seth.rhyne@exprealty.com", phone: "(843) 592-4017",
+    email: "seth.rhyne@exprealty.com", phone: "(843) 555-4017",
     transactions: [
       { address: "1204 King St, Charleston...", fullAddress: "1204 King St, Charleston, SC 29403, US", closedDate: "01/13/2026", revShareAmount: 490.80, currency: "USD", transactionNumber: "3648560.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 380000, revShareDollar: 981.60, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 490.80 },
       { address: "567 Coleman Blvd, Mt Pl...", fullAddress: "567 Coleman Blvd, Mt Pleasant, SC 29464, US", closedDate: "01/04/2026", revShareAmount: 300.00, currency: "USD", transactionNumber: "3647960.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 265000, revShareDollar: 600.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 300.00 },
@@ -110,35 +110,35 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Susan A Thomas": {
     agentName: "Susan A Thomas", agentId: "356712", totalRevShare: 737.50, currency: "USD",
-    email: "susan.thomas@exprealty.com", phone: "(813) 428-6053",
+    email: "susan.thomas@exprealty.com", phone: "(813) 555-6053",
     transactions: [
       { address: "2903 Bayshore Blvd, Tam...", fullAddress: "2903 Bayshore Blvd, Tampa, FL 33629, US", closedDate: "01/20/2026", revShareAmount: 737.50, currency: "USD", transactionNumber: "3649120.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 560000, revShareDollar: 1475.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 737.50 },
     ],
   },
   "Salvador Fernando Rivas Hernandez": {
     agentName: "Salvador Fernando Rivas Hernandez", agentId: "371058", totalRevShare: 650.00, currency: "USD",
-    email: "salvador.rivas@exprealty.com", phone: "(617) 283-9401",
+    email: "salvador.rivas@exprealty.com", phone: "(617) 555-9401",
     transactions: [
       { address: "114 Beacon St, Boston...", fullAddress: "114 Beacon St, Boston, MA 02116, US", closedDate: "01/11/2026", revShareAmount: 650.00, currency: "USD", transactionNumber: "3648440.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 495000, revShareDollar: 1300.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 650.00 },
     ],
   },
   "Marcus Bell": {
     agentName: "Marcus Bell", agentId: "329841", totalRevShare: 612.33, currency: "USD",
-    email: "marcus.bell@exprealty.com", phone: "(214) 750-3186",
+    email: "marcus.bell@exprealty.com", phone: "(214) 555-3186",
     transactions: [
       { address: "4400 Cedar Springs Rd, ...", fullAddress: "4400 Cedar Springs Rd, Dallas, TX 75219, US", closedDate: "01/23/2026", revShareAmount: 612.33, currency: "USD", transactionNumber: "3649201.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 445000, revShareDollar: 1224.66, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 612.33 },
     ],
   },
   "Abby Moorman Andes": {
     agentName: "Abby Moorman Andes", agentId: "318274", totalRevShare: 643.95, currency: "USD",
-    email: "abby.andes@exprealty.com", phone: "(770) 394-2810",
+    email: "abby.andes@exprealty.com", phone: "(770) 555-2810",
     transactions: [
       { address: "3350 Peachtree Rd NE, A...", fullAddress: "3350 Peachtree Rd NE, Atlanta, GA 30326, US", closedDate: "01/12/2026", revShareAmount: 643.95, currency: "USD", transactionNumber: "3648490.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 520000, revShareDollar: 1287.90, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 643.95 },
     ],
   },
   "Ravi Ramachandran": {
     agentName: "Ravi Ramachandran", agentId: "278152", totalRevShare: 2556.64, currency: "USD",
-    email: "ravi.ramachandran@exprealty.com", phone: "(425) 610-8274",
+    email: "ravi.ramachandran@exprealty.com", phone: "(425) 555-8274",
     transactions: [
       { address: "9625 164th Ave NE, Red...", fullAddress: "9625 164th Ave NE, Redmond, WA 98052, US", closedDate: "01/20/2026", revShareAmount: 1876.43, currency: "USD", transactionNumber: "3648503.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 1270000, revShareDollar: 3752.85, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1876.43 },
       { address: "2525C 29th Ave S, Seatt...", fullAddress: "2525C 29th Ave S, Seattle, WA 98144, US", closedDate: "01/07/2026", revShareAmount: 680.21, currency: "USD", transactionNumber: "3647891.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 425000, revShareDollar: 1360.42, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 680.21 },
@@ -146,7 +146,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Lindsey Ruth Sampier": {
     agentName: "Lindsey Ruth Sampier", agentId: "264518", totalRevShare: 1000.00, currency: "USD",
-    email: "lindsey.sampier@exprealty.com", phone: "(720) 341-5928",
+    email: "lindsey.sampier@exprealty.com", phone: "(720) 555-5928",
     transactions: [
       { address: "1890 Wynkoop St, Denver...", fullAddress: "1890 Wynkoop St, Denver, CO 80202, US", closedDate: "01/18/2026", revShareAmount: 600.00, currency: "USD", transactionNumber: "3649030.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 525000, revShareDollar: 1200.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 600.00 },
       { address: "4502 S Broadway, Engle...", fullAddress: "4502 S Broadway, Englewood, CO 80113, US", closedDate: "01/05/2026", revShareAmount: 400.00, currency: "USD", transactionNumber: "3647980.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 340000, revShareDollar: 800.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 400.00 },
@@ -154,35 +154,35 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Jennifer Horst": {
     agentName: "Jennifer Horst", agentId: "241906", totalRevShare: 855.00, currency: "USD",
-    email: "jennifer.horst@exprealty.com", phone: "(916) 472-8301",
+    email: "jennifer.horst@exprealty.com", phone: "(916) 555-8301",
     transactions: [
       { address: "2100 Capitol Ave, Sacra...", fullAddress: "2100 Capitol Ave, Sacramento, CA 95816, US", closedDate: "01/14/2026", revShareAmount: 855.00, currency: "USD", transactionNumber: "3648610.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 680000, revShareDollar: 1710.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 855.00 },
     ],
   },
   "Christian Smith": {
     agentName: "Christian Smith", agentId: "283451", totalRevShare: 834.50, currency: "USD",
-    email: "christian.smith@exprealty.com", phone: "(404) 629-1475",
+    email: "christian.smith@exprealty.com", phone: "(404) 555-1475",
     transactions: [
       { address: "560 Dutch Valley Rd, At...", fullAddress: "560 Dutch Valley Rd, Atlanta, GA 30324, US", closedDate: "01/16/2026", revShareAmount: 834.50, currency: "USD", transactionNumber: "3648750.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 490000, revShareDollar: 1669.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 834.50 },
     ],
   },
   "Camille Anne Horvath": {
     agentName: "Camille Anne Horvath", agentId: "297163", totalRevShare: 815.63, currency: "USD",
-    email: "camille.horvath@exprealty.com", phone: "(954) 318-7042",
+    email: "camille.horvath@exprealty.com", phone: "(954) 555-7042",
     transactions: [
       { address: "3001 E Las Olas Blvd, F...", fullAddress: "3001 E Las Olas Blvd, Fort Lauderdale, FL 33316, US", closedDate: "01/22/2026", revShareAmount: 815.63, currency: "USD", transactionNumber: "3649170.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 710000, revShareDollar: 1631.26, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 815.63 },
     ],
   },
   "Sheri Morrison": {
     agentName: "Sheri Morrison", agentId: "253890", totalRevShare: 784.00, currency: "USD",
-    email: "sheri.morrison@exprealty.com", phone: "(561) 903-4218",
+    email: "sheri.morrison@exprealty.com", phone: "(561) 555-4218",
     transactions: [
       { address: "800 S Dixie Hwy, West P...", fullAddress: "800 S Dixie Hwy, West Palm Beach, FL 33401, US", closedDate: "01/11/2026", revShareAmount: 784.00, currency: "USD", transactionNumber: "3648420.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 545000, revShareDollar: 1568.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 784.00 },
     ],
   },
   "Amanda Bowen": {
     agentName: "Amanda Bowen", agentId: "210347", totalRevShare: 782.34, currency: "USD",
-    email: "amanda.bowen@exprealty.com", phone: "(253) 481-7630",
+    email: "amanda.bowen@exprealty.com", phone: "(253) 555-7630",
     transactions: [
       { address: "1702 Pacific Ave, Tacom...", fullAddress: "1702 Pacific Ave, Tacoma, WA 98402, US", closedDate: "01/19/2026", revShareAmount: 452.34, currency: "USD", transactionNumber: "3649070.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 390000, revShareDollar: 904.68, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 452.34 },
       { address: "3814 N 26th St, Tacoma...", fullAddress: "3814 N 26th St, Tacoma, WA 98407, US", closedDate: "01/08/2026", revShareAmount: 330.00, currency: "USD", transactionNumber: "3648250.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 285000, revShareDollar: 660.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 330.00 },
