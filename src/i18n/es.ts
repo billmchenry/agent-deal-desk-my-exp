@@ -814,6 +814,7 @@ export const es: Record<string, string> = {
   "dashboard.playVideo": "Reproducir video",
   "common.call": "Llamar",
   "common.email": "Correo",
+  "common.viewContact": "Ver tarjeta de contacto",
   "common.download": "Descargar",
   "notif.expandSection": "Expandir sección",
 };

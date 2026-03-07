@@ -772,6 +772,7 @@ export const zh: Record<string, string> = {
   "dashboard.playVideo": "播放视频",
   "common.call": "拨打电话",
   "common.email": "电子邮件",
+  "common.viewContact": "查看联系人卡片",
   "common.download": "下载",
   "notif.expandSection": "展开部分",
 };

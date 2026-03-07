@@ -814,6 +814,7 @@ export const frCA: Record<string, string> = {
   "dashboard.playVideo": "Lire la vidéo",
   "common.call": "Appeler",
   "common.email": "Courriel",
+  "common.viewContact": "Voir la fiche contact",
   "common.download": "Télécharger",
   "notif.expandSection": "Développer la section",
 };
