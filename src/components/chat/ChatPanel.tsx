@@ -497,7 +497,7 @@ function ChatContent({
               size="icon"
               onClick={() => fileInputRef.current?.click()}
               className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
-              title="Attach files"
+              aria-label={t("chat.attachFiles")}
             >
               <Plus className="h-4 w-4" />
             </Button>
