@@ -196,7 +196,7 @@ export default function Pulse() {
                           <span className="font-medium text-sm">{insight.title}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Button variant="ghost" size="icon" className="h-6 w-6">
+                          <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={t("pulse.refreshInsight")}>
                             <RefreshCw className="h-3 w-3" />
                           </Button>
                           <Button variant="ghost" size="icon" className="h-6 w-6">
