@@ -85,8 +85,8 @@ const quickActions = [
 ];
 
 export default function Pulse() {
-  useDocumentTitle(t("nav.pulse"));
   const { t } = useTranslation();
+  useDocumentTitle(t("nav.pulse"));
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [timePeriod, setTimePeriod] = useState("1Y");
   const [insightFilter, setInsightFilter] = useState("daily");

@@ -21,8 +21,8 @@ import { UniversalFilterBar } from "@/components/filters";
 type View = "overview" | "agentDetails" | "topAgents";
 
 export default function TeamDashboard() {
-  useDocumentTitle(t("nav.myTeam"));
   const { t } = useTranslation();
+  useDocumentTitle(t("nav.myTeam"));
   const { formatCurrency, formatNumber } = useFormatters();
   const navigate = useNavigate();
 

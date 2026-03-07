@@ -54,9 +54,9 @@ const levelBreakdowns = [
 ];
 
 export default function RevShareTrends() {
+  const { t } = useTranslation();
   useDocumentTitle(t("nav.revShareTrends"));
   const [openLevels, setOpenLevels] = useState<number[]>([1, 2, 3]);
-  const { t } = useTranslation();
 
   const toggleLevel = (level: number) => {
     setOpenLevels((prev) =>

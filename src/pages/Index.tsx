@@ -5,8 +5,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { UniversalFilterBar } from "@/components/filters";
 
 const Index = () => {
-  useDocumentTitle(t("nav.home"));
   const { t } = useTranslation();
+  useDocumentTitle(t("nav.home"));
 
   return (
     <DashboardLayout>

@@ -153,8 +153,8 @@ const RECOGNITION_FILTER_CATEGORIES: Record<string, MilestoneType[]> = {
 const PAGE_SIZE = 1000;
 
 export default function Notifications() {
-  useDocumentTitle(t("nav.notifications"));
   const { t } = useTranslation();
+  useDocumentTitle(t("nav.notifications"));
   const { formatCurrency, formatDate } = useFormatters();
 
   const [activeTab, setActiveTab] = useState<"activity" | "recognition">("activity");

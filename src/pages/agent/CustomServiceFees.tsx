@@ -44,8 +44,8 @@ const csvColumns: CsvColumnDef<ServiceFeeAgent>[] = [
 ];
 
 export default function CustomServiceFees() {
-  useDocumentTitle(t("nav.customServiceFees"));
   const { t } = useTranslation();
+  useDocumentTitle(t("nav.customServiceFees"));
   const { formatCurrency } = useFormatters();
   const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(2026, 1, 3),
