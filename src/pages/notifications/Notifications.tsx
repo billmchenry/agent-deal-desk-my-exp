@@ -153,7 +153,7 @@ const RECOGNITION_FILTER_CATEGORIES: Record<string, MilestoneType[]> = {
 const PAGE_SIZE = 1000;
 
 export default function Notifications() {
-  useDocumentTitle("Notifications");
+  useDocumentTitle(t("nav.notifications"));
   const { t } = useTranslation();
   const { formatCurrency, formatDate } = useFormatters();
 

@@ -317,7 +317,7 @@ function SelectedAgentCard({
 
 // --- Main Page ---
 export default function OrganizationTree() {
-  useDocumentTitle("Organization Tree");
+  useDocumentTitle(t("nav.organizationTree"));
   const { t } = useTranslation();
 
   // Navigation stack: each entry is the agent whose children we're viewing

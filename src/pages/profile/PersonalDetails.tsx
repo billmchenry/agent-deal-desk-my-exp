@@ -26,9 +26,11 @@ import { SettingsTab } from "@/components/profile/SettingsTab";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { EditProfileSheet } from "@/components/profile/EditProfileSheet";
 import { userProfile } from "@/data/mockData";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function PersonalDetails() {
-  useDocumentTitle("My Profile");
+  const { t } = useTranslation();
+  useDocumentTitle(t("nav.myProfile"));
   const [editSheetOpen, setEditSheetOpen] = useState(false);
   const [activeTopTab, setActiveTopTab] = useState("personal-details");
 

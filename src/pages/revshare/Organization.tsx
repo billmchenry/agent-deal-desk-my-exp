@@ -39,7 +39,7 @@ const countryProductionData = [
 ];
 
 export default function OrganizationReporting() {
-  useDocumentTitle("Organization Reporting");
+  useDocumentTitle(t("nav.orgReporting"));
   const { formatCurrency, formatNumber } = useFormatters();
   const { t } = useTranslation();
   const isMobile = useIsMobile();

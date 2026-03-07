@@ -8,7 +8,7 @@ import { CappingSection } from "@/components/agent/CappingSection";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function AgentDashboard() {
-  useDocumentTitle("Agent Dashboard");
+  useDocumentTitle(t("nav.agentDashboard"));
   const { t } = useTranslation();
   const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(2026, 0, 1),
