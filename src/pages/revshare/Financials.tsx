@@ -95,7 +95,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Allison Mireau": {
     agentName: "Allison Mireau", agentId: "287634", totalRevShare: 852.19, currency: "USD",
-    email: "allison.mireau@exprealty.com", phone: "(201) 647-3912",
+    email: "allison.mireau@exprealty.com", phone: "(201) 555-3912",
     transactions: [
       { address: "88 River Rd, Edgewater...", fullAddress: "88 River Rd, Edgewater, NJ 07020, US", closedDate: "01/16/2026", revShareAmount: 852.19, currency: "USD", transactionNumber: "3648780.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 715000, revShareDollar: 1704.38, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 852.19 },
     ],
