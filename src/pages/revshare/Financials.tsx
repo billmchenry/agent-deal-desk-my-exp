@@ -124,7 +124,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Marcus Bell": {
     agentName: "Marcus Bell", agentId: "329841", totalRevShare: 612.33, currency: "USD",
-    email: "marcus.bell@exprealty.com", phone: "(214) 750-3186",
+    email: "marcus.bell@exprealty.com", phone: "(214) 555-3186",
     transactions: [
       { address: "4400 Cedar Springs Rd, ...", fullAddress: "4400 Cedar Springs Rd, Dallas, TX 75219, US", closedDate: "01/23/2026", revShareAmount: 612.33, currency: "USD", transactionNumber: "3649201.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 445000, revShareDollar: 1224.66, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 612.33 },
     ],
