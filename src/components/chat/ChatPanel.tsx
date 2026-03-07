@@ -387,7 +387,7 @@ function ChatContent({
                 size="icon" 
                 onClick={() => setShowHistory(true)} 
                 className="h-8 w-8 shrink-0"
-                title="History"
+                aria-label={t("chat.history")}
               >
                 <History className="h-4 w-4" />
               </Button>
