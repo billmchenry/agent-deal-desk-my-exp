@@ -80,7 +80,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Cara Darea Silverthorne": {
     agentName: "Cara Darea Silverthorne", agentId: "342106", totalRevShare: 898.47, currency: "USD",
-    email: "cara.silverthorne@exprealty.com", phone: "(407) 831-5249",
+    email: "cara.silverthorne@exprealty.com", phone: "(407) 555-5249",
     transactions: [
       { address: "712 Lake Eola Dr, Orlan...", fullAddress: "712 Lake Eola Dr, Orlando, FL 32801, US", closedDate: "01/19/2026", revShareAmount: 898.47, currency: "USD", transactionNumber: "3649080.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 590000, revShareDollar: 1796.94, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 898.47 },
     ],
