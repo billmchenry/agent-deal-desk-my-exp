@@ -36,6 +36,7 @@ export function MiraChatbot() {
           variant="ghost"
           size="icon"
           className="shrink-0 text-muted-foreground hover:text-foreground"
+          aria-label="Voice input"
         >
           <Mic className="h-5 w-5" />
         </Button>
