@@ -72,7 +72,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Autumn Ceniza": {
     agentName: "Autumn Ceniza", agentId: "198274", totalRevShare: 917.04, currency: "USD",
-    email: "autumn.ceniza@exprealty.com", phone: "(619) 504-2718",
+    email: "autumn.ceniza@exprealty.com", phone: "(619) 555-2718",
     transactions: [
       { address: "1450 Front St, San Dieg...", fullAddress: "1450 Front St, San Diego, CA 92101, US", closedDate: "01/21/2026", revShareAmount: 517.04, currency: "USD", transactionNumber: "3649140.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 685000, revShareDollar: 1034.08, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 517.04 },
       { address: "3927 Park Blvd, San Di...", fullAddress: "3927 Park Blvd, San Diego, CA 92103, US", closedDate: "01/06/2026", revShareAmount: 400.00, currency: "USD", transactionNumber: "3648050.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 510000, revShareDollar: 800.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 400.00 },
