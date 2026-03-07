@@ -161,8 +161,19 @@ function AgentCard({
 
   return (
     <Card
-      className={`overflow-hidden transition-shadow ${hasChildren ? "cursor-pointer hover:shadow-md hover:border-primary/30" : ""}`}
+      className={`overflow-hidden transition-shadow ${hasChildren ? "cursor-pointer hover:shadow-md hover:border-primary/30 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none" : ""}`}
       onClick={hasChildren ? onClick : undefined}
+      {...(hasChildren ? {
+        role: "button",
+        tabIndex: 0,
+        "aria-label": `${t("orgTree.viewOrg")} – ${agent.name}`,
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onClick?.();
+          }
+        },
+      } : {})}
     >
       <CardContent className="p-4">
         <div className="flex items-start gap-3 mb-3">
