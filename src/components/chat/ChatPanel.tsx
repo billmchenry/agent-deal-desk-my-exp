@@ -513,7 +513,7 @@ function ChatContent({
               size="icon"
               onClick={() => setIsMainListening(true)}
               className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 text-muted-foreground hover:text-primary"
-              title="Speech to text"
+              aria-label={t("chat.speechToText")}
             >
               <Mic className="h-4 w-4" />
             </Button>
