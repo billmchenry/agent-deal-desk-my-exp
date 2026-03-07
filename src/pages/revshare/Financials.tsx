@@ -110,7 +110,7 @@ const agentTransactionsMap: Record<string, AgentDetail> = {
   },
   "Susan A Thomas": {
     agentName: "Susan A Thomas", agentId: "356712", totalRevShare: 737.50, currency: "USD",
-    email: "susan.thomas@exprealty.com", phone: "(813) 428-6053",
+    email: "susan.thomas@exprealty.com", phone: "(813) 555-6053",
     transactions: [
       { address: "2903 Bayshore Blvd, Tam...", fullAddress: "2903 Bayshore Blvd, Tampa, FL 33629, US", closedDate: "01/20/2026", revShareAmount: 737.50, currency: "USD", transactionNumber: "3649120.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 560000, revShareDollar: 1475.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 737.50 },
     ],
