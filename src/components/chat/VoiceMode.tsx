@@ -215,7 +215,6 @@ export function VoiceModeView({
           >
             {isListening ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
           </Button>
-          </Button>
           <Button
             onClick={onEnd}
             className="h-10 px-5 rounded-full bg-primary text-primary-foreground font-medium gap-2"
