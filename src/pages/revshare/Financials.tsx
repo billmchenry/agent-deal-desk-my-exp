@@ -41,7 +41,7 @@ interface PeriodicRow {
 const agentTransactionsMap: Record<string, AgentDetail> = {
   "Tatsiana Crawford": {
     agentName: "Tatsiana Crawford", agentId: "278153", totalRevShare: 2325.00, currency: "USD",
-    email: "tatsiana.crawford@exprealty.com", phone: "(207) 370-4821",
+    email: "tatsiana.crawford@exprealty.com", phone: "(207) 555-4821",
     transactions: [
       { address: "4521 Maple Dr, Portland...", fullAddress: "4521 Maple Dr, Portland, ME 04101, US", closedDate: "01/15/2026", revShareAmount: 1425.00, currency: "USD", transactionNumber: "3648712.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 890000, revShareDollar: 2850.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 1425.00 },
       { address: "782 Oak Lane, Augusta...", fullAddress: "782 Oak Lane, Augusta, ME 04330, US", closedDate: "01/08/2026", revShareAmount: 900.00, currency: "USD", transactionNumber: "3648199.1", transactionStatus: "Paid", paidStatus: "Paid", salePrice: 540000, revShareDollar: 1800.00, expansionShare: "0%", exponentialShare: "50%", revSharePercentage: "50%", finalRevShare: 900.00 },
