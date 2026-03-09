@@ -13,7 +13,7 @@ interface CappingSectionProps {
   hideHistory?: boolean;
 }
 
-export function CappingSection({ capCurrent, capTarget, capPercentage, dateRange }: CappingSectionProps) {
+export function CappingSection({ capCurrent, capTarget, capPercentage, dateRange, hideHistory }: CappingSectionProps) {
   const remaining = capTarget - capCurrent;
   const { formatCurrency } = useFormatters();
   const { t } = useTranslation();
