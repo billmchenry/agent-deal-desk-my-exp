@@ -126,11 +126,11 @@ export default function RevShareDashboard() {
 
   /* ── FLQA scenario data ── */
   const flqaScenarios = {
-    below_level4: { actual: 3, bonus: 0 },
-    at_level4:    { actual: 5, bonus: 2 },
-    at_level5:    { actual: 10, bonus: 2 },
-    at_level6:    { actual: 18, bonus: 0 },
-    maxed_out:    { actual: 18, bonus: 12 },
+    low:  { actual: 5, bonus: 0 },
+    mid:  { actual: 18, bonus: 12 },
+    high: { actual: 25, bonus: 5 },
+    max:  { actual: 30, bonus: 0 },
+    over: { actual: 28, bonus: 7 },
   };
 
   const flqaData = flqaScenarios[config.flqaMode];
