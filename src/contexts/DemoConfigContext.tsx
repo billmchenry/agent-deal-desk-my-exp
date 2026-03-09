@@ -19,10 +19,13 @@ export type FlqaMode =
 
 export type DistributionMode = "full" | "few_levels" | "few_countries" | "many_countries";
 
+export type CountryMode = "us" | "canada";
+
 interface DemoConfig {
   mentorMode: MentorMode;
   flqaMode: FlqaMode;
   distributionMode: DistributionMode;
+  countryMode: CountryMode;
 }
 
 interface DemoConfigContextValue {
@@ -30,6 +33,7 @@ interface DemoConfigContextValue {
   setMentorMode: (mode: MentorMode) => void;
   setFlqaMode: (mode: FlqaMode) => void;
   setDistributionMode: (mode: DistributionMode) => void;
+  setCountryMode: (mode: CountryMode) => void;
 }
 
 const DemoConfigContext = createContext<DemoConfigContextValue | null>(null);
