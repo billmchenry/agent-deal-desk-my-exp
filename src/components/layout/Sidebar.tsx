@@ -166,7 +166,7 @@ export function Sidebar() {
           </div>
           <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
             <div className="ms-9 mt-1 space-y-0.5">
-              {item.submenu?.filter((subItem) => !(isCanada && subItem.url === "/documents/year-end")).map((subItem) => (
+              {item.submenu?.map((subItem) => (
                 <a
                   key={subItem.url}
                   href={subItem.url}
