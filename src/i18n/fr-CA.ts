@@ -102,6 +102,7 @@ export const frCA: Record<string, string> = {
   "txn.paid": "Payé",
   "txn.pending": "En attente",
   "txn.withdrawn": "Retiré",
+  "txn.firm": "Ferme",
   "txn.searchTransactions": "Rechercher des transactions...",
   "txn.results": "Résultats",
   "txn.status": "Statut",

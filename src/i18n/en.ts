@@ -98,6 +98,7 @@ export const en = {
   "txn.paid": "Paid",
   "txn.pending": "Pending",
   "txn.withdrawn": "Withdrawn",
+  "txn.firm": "Firm",
   "txn.searchTransactions": "Search transactions...",
   "txn.results": "Results",
   "txn.status": "Status",
