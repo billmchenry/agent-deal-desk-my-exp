@@ -39,6 +39,7 @@ const distributionOptions: { value: DistributionMode; label: string; description
 const countryOptions: { value: CountryMode; label: string; description: string }[] = [
   { value: "us", label: "United States", description: "Default US experience" },
   { value: "canada", label: "Canada", description: "Shows Firm status, fractional units, disclaimer banner" },
+  { value: "global", label: "Global", description: "International agents — limited nav, closed transactions only" },
 ];
 
 export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {

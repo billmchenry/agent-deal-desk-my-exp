@@ -19,7 +19,7 @@ export type FlqaMode =
 
 export type DistributionMode = "full" | "few_levels" | "few_countries" | "many_countries";
 
-export type CountryMode = "us" | "canada";
+export type CountryMode = "us" | "canada" | "global";
 
 interface DemoConfig {
   mentorMode: MentorMode;

@@ -117,51 +117,61 @@ export function AgentHeroBanner({
             color="green"
             onClick={() => goToTransactions()}
           />
-          <div
-            className="flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-white/15 transition-colors"
-            role="link"
-            aria-label="View transaction details"
-          >
-            <div className="hidden sm:flex rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light">
-              <FileText className="h-4 w-4" />
-            </div>
-             <div className="flex gap-2 sm:gap-3 min-w-0">
-              <button
-                type="button"
-                className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
-                onClick={() => goToTransactions("paid")}
-              >
-                <p className="text-section-title font-bold text-white">{transactionsClosed}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">{t("txn.paid")}</p>
-              </button>
-              {transactionsFirm !== undefined && (
+          {hideStatusBreakdown ? (
+            <MiniStatCard
+              icon={<FileText className="h-4 w-4" />}
+              value={transactionsClosed.toString()}
+              label={t("agent.transactionsClosed")}
+              color="gold"
+              onClick={() => goToTransactions("paid")}
+            />
+          ) : (
+            <div
+              className="flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-white/15 transition-colors"
+              role="link"
+              aria-label="View transaction details"
+            >
+              <div className="hidden sm:flex rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light">
+                <FileText className="h-4 w-4" />
+              </div>
+               <div className="flex gap-2 sm:gap-3 min-w-0">
                 <button
                   type="button"
                   className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
-                  onClick={() => goToTransactions("firm")}
+                  onClick={() => goToTransactions("paid")}
                 >
-                  <p className="text-section-title font-bold text-white">{transactionsFirm}</p>
-                  <p className="text-xs sm:text-[11px] text-white/70">{t("txn.firm")}</p>
+                  <p className="text-section-title font-bold text-white">{transactionsClosed}</p>
+                  <p className="text-xs sm:text-[11px] text-white/70">{t("txn.paid")}</p>
                 </button>
-              )}
-              <button
-                type="button"
-                className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
-                onClick={() => goToTransactions("pending")}
-              >
-                <p className="text-section-title font-bold text-white">{transactionsPending}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">{t("txn.pending")}</p>
-              </button>
-              <button
-                type="button"
-                className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
-                onClick={() => goToTransactions("withdrawn")}
-              >
-                <p className="text-section-title font-bold text-white">{transactionsWithdrawn}</p>
-                <p className="text-xs sm:text-[11px] text-white/70">{t("txn.withdrawn")}</p>
-              </button>
+                {transactionsFirm !== undefined && (
+                  <button
+                    type="button"
+                    className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
+                    onClick={() => goToTransactions("firm")}
+                  >
+                    <p className="text-section-title font-bold text-white">{transactionsFirm}</p>
+                    <p className="text-xs sm:text-[11px] text-white/70">{t("txn.firm")}</p>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
+                  onClick={() => goToTransactions("pending")}
+                >
+                  <p className="text-section-title font-bold text-white">{transactionsPending}</p>
+                  <p className="text-xs sm:text-[11px] text-white/70">{t("txn.pending")}</p>
+                </button>
+                <button
+                  type="button"
+                  className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
+                  onClick={() => goToTransactions("withdrawn")}
+                >
+                  <p className="text-section-title font-bold text-white">{transactionsWithdrawn}</p>
+                  <p className="text-xs sm:text-[11px] text-white/70">{t("txn.withdrawn")}</p>
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </Card>
