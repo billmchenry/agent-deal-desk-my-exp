@@ -469,20 +469,25 @@ export default function RevShareDashboard() {
               </div>
             </div>
 
-            {/* Yearly: bar chart */}
+            {/* Yearly: line chart */}
             {compPeriod === "yearly" && (
               <div className="h-[200px] sm:h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
+                  <LineChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
+                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
                     <Tooltip
-                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), t("revshare.revenue")]}
+                      formatter={(value: number, name: string) => {
+                        const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
+                        return [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), label];
+                      }}
                       contentStyle={tooltipStyle}
                     />
-                    <Bar dataKey="revenue" fill="hsl(var(--exp-navy))" radius={[4, 4, 0, 0]} barSize={48} />
-                  </ComposedChart>
+                    <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-navy))" }} connectNulls />
+                    <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-blue))" }} connectNulls />
+                    <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-green))" }} connectNulls />
+                  </LineChart>
                 </ResponsiveContainer>
               </div>
             )}
