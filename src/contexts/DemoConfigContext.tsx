@@ -37,7 +37,7 @@ function loadConfig(): DemoConfig {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      return { mentorMode: "none", flqaMode: "below_level4", ...parsed };
+      return { mentorMode: "none", flqaMode: "low", ...parsed };
     }
   } catch {}
   return { mentorMode: "none", flqaMode: "below_level4" };
