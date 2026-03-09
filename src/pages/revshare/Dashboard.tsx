@@ -84,15 +84,6 @@ const levelRevShare = [
   { name: "Level 7", value: 85049, color: "hsl(220, 25%, 88%)" },
 ];
 
-const countryRevShare = [
-  { name: "United States", value: 77710, color: "hsl(262, 83%, 58%)" },
-  { name: "United Kingdom", value: 23117, color: "hsl(217, 91%, 60%)" },
-  { name: "Canada", value: 17980, color: "hsl(142, 71%, 45%)" },
-  { name: "Germany", value: 15697, color: "hsl(45, 93%, 47%)" },
-  { name: "Australia", value: 14270, color: "hsl(0, 84%, 60%)" },
-  { name: "Brazil", value: 13132, color: "hsl(220, 45%, 30%)" },
-  { name: "France", value: 11494, color: "hsl(210, 40%, 75%)" },
-];
 
 const chartTickStyle = {
   fill: "hsl(var(--muted-foreground))",
