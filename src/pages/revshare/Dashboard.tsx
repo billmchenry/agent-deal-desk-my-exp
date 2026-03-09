@@ -470,11 +470,11 @@ export default function RevShareDashboard() {
               </div>
             </div>
 
-            {/* Yearly: bar chart */}
+            {/* Yearly: line chart */}
             {compPeriod === "yearly" && (
               <div className="h-[200px] sm:h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
+                  <LineChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
     <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
@@ -482,8 +482,8 @@ export default function RevShareDashboard() {
                       formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), t("revshare.revenue")]}
                       contentStyle={tooltipStyle}
                     />
-                    <Bar dataKey="revenue" fill="hsl(var(--exp-navy))" radius={[4, 4, 0, 0]} barSize={48} />
-                  </ComposedChart>
+                    <Line type="monotone" dataKey="revenue" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 4, fill: "hsl(var(--exp-navy))" }} activeDot={{ r: 6 }} />
+                  </LineChart>
                 </ResponsiveContainer>
               </div>
             )}
