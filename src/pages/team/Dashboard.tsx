@@ -125,7 +125,7 @@ export default function TeamDashboard() {
               <div className="space-y-1">
                 <div className="flex justify-between gap-2">
                   <span className="font-semibold text-sm truncate">{row.name}</span>
-                  <span className="text-sm font-bold tabular-nums font-secondary shrink-0">{row.units} units</span>
+                  <span className="text-sm font-bold tabular-nums font-secondary shrink-0">{isCanada ? (row.units + 0.25).toFixed(2) : row.units} units</span>
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span className="tabular-nums font-secondary">Vol: {formatCurrency(row.volume)}</span>
