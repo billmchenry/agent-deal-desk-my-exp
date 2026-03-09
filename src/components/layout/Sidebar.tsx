@@ -235,7 +235,7 @@ export function Sidebar() {
         </div>
       ) : null}
       <div className={cn("space-y-0.5", isCollapsed && "flex flex-col items-center")}>
-        {section.items.map(renderNavItem)}
+        {filterNavItems(section.items).map(renderNavItem)}
       </div>
     </div>
   );
