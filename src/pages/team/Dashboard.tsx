@@ -183,9 +183,12 @@ export default function TeamDashboard() {
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.volume")}</p>
                 <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.volume.total)} <span className="text-body font-normal text-muted-foreground">USD</span>
+                  {formatCurrency(teamOverview.volume.total)} <span className="text-body font-normal text-muted-foreground">{isCanada ? "CAD" : "USD"}</span>
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.volume.pending)} USD</p>
+                {isCanada && (
+                  <p className="text-sm text-muted-foreground mt-1">{t("txn.firm")} : {formatCurrency(850000)} {isCanada ? "CAD" : "USD"}</p>
+                )}
+                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.volume.pending)} {isCanada ? "CAD" : "USD"}</p>
               </button>
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.teamLeadSplit")}</p>
