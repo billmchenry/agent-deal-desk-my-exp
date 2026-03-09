@@ -137,6 +137,7 @@ export default function Transactions() {
   return (
     <DashboardLayout>
       <div className="space-y-4">
+        <CanadianDisclaimer variant="agent" email="canada.support@exprealty.com" />
         <UniversalFilterBar title={t("txn.agentProductionDetails")}>
           <DropdownFilter
             label={t("txn.status")}

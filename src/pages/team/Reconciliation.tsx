@@ -177,6 +177,7 @@ export default function Reconciliation() {
   return (
     <DashboardLayout>
       <div className="space-y-4">
+        <CanadianDisclaimer variant="teamLead" email="canada.support@exprealty.com" />
         <Button
           variant="ghost"
           size="sm"
