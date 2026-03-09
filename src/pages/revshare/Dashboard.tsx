@@ -470,7 +470,7 @@ export default function RevShareDashboard() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" /> 2024</span>
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-gold inline-block" /> 2024</span>
                     <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" /> 2025</span>
                     <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-green inline-block" /> 2026</span>
                   </div>
@@ -511,7 +511,7 @@ export default function RevShareDashboard() {
                       }}
                       contentStyle={tooltipStyle}
                     />
-                    <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-navy))" }} connectNulls />
+                    <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-gold))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-gold))" }} connectNulls />
                     <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-blue))" }} connectNulls />
                     <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-green))" }} connectNulls />
                   </LineChart>
@@ -546,7 +546,7 @@ export default function RevShareDashboard() {
                           }}
                           contentStyle={tooltipStyle}
                         />
-                        <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 5, fill: "hsl(var(--exp-navy))" }} connectNulls />
+                        <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-gold))" strokeWidth={2} dot={{ r: 5, fill: "hsl(var(--exp-gold))" }} connectNulls />
                         <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 5, fill: "hsl(var(--exp-blue))" }} connectNulls />
                         <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 5, fill: "hsl(var(--exp-green))" }} connectNulls />
                       </LineChart>
@@ -563,7 +563,7 @@ export default function RevShareDashboard() {
                             }}
                             contentStyle={tooltipStyle}
                           />
-                          <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-navy))" }} connectNulls />
+                          <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-gold))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-gold))" }} connectNulls />
                           <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-blue))" }} connectNulls />
                           <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-green))" }} connectNulls />
                         </LineChart>
@@ -578,7 +578,7 @@ export default function RevShareDashboard() {
                     <div className="flex gap-3 font-secondary">
                       {selectedMonth.y2024 != null && (
                         <span className="flex items-center gap-1">
-                          <span className="w-2 h-2 rounded-full bg-exp-navy inline-block" />
+                          <span className="w-2 h-2 rounded-full bg-exp-gold inline-block" />
                           {formatCurrency((selectedMonth.y2024 as number) * 1000, { compact: true, decimals: 0 })}
                         </span>
                       )}
