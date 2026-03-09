@@ -32,6 +32,8 @@ function getStatusBadge(status: string) {
 export default function Transactions() {
   const { t } = useTranslation();
   const { formatCurrency, formatDate } = useFormatters();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
   useDocumentTitle(t("txn.agentProductionDetails"));
 
   const [searchParams] = useSearchParams();
