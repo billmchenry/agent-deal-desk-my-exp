@@ -123,6 +123,8 @@ export default function RevShareDashboard() {
   const isMobile = useIsMobile();
   const [compPeriod, setCompPeriod] = useState("yearly");
   const [selectedMonth, setSelectedMonth] = useState<Record<string, unknown> | null>(null);
+  const [showAllLevels, setShowAllLevels] = useState(false);
+  const [showAllCountries, setShowAllCountries] = useState(false);
   // distMode removed – showing both agents & revshare inline
   const { formatNumber, formatCurrency } = useFormatters();
   const { t } = useTranslation();
