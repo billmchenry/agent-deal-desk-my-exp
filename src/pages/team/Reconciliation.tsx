@@ -59,7 +59,6 @@ export default function Reconciliation() {
   const navigate = useNavigate();
   const { config } = useDemoConfig();
   const isCanada = config.countryMode === "canada";
-  const navigate = useNavigate();
   useDocumentTitle(t("team.reconciliation"));
 
   const [search, setSearch] = useState("");
