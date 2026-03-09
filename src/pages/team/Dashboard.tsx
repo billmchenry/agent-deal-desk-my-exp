@@ -125,7 +125,7 @@ export default function TeamDashboard() {
               <div className="space-y-1">
                 <div className="flex justify-between gap-2">
                   <span className="font-semibold text-sm truncate">{row.name}</span>
-                  <span className="text-sm font-bold tabular-nums font-secondary shrink-0">{row.units} units</span>
+                  <span className="text-sm font-bold tabular-nums font-secondary shrink-0">{isCanada ? (row.units + 0.25).toFixed(2) : row.units} units</span>
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span className="tabular-nums font-secondary">Vol: {formatCurrency(row.volume)}</span>
@@ -175,21 +175,30 @@ export default function TeamDashboard() {
                 <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
                   {formatNumber(isCanada ? 13.25 : teamOverview.units.total)} <span className="text-body font-normal text-muted-foreground">{t("team.units")}</span>
                 </p>
+                {isCanada && (
+                  <p className="text-sm text-muted-foreground mt-1">{t("txn.firm")} : {formatNumber(4.75)} {t("team.units")}</p>
+                )}
                 <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatNumber(isCanada ? 2.5 : teamOverview.units.pending)} {t("team.units")}</p>
               </button>
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.volume")}</p>
                 <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.volume.total)} <span className="text-body font-normal text-muted-foreground">USD</span>
+                  {formatCurrency(teamOverview.volume.total)} <span className="text-body font-normal text-muted-foreground">{isCanada ? "CAD" : "USD"}</span>
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.volume.pending)} USD</p>
+                {isCanada && (
+                  <p className="text-sm text-muted-foreground mt-1">{t("txn.firm")} : {formatCurrency(850000)} {isCanada ? "CAD" : "USD"}</p>
+                )}
+                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.volume.pending)} {isCanada ? "CAD" : "USD"}</p>
               </button>
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.teamLeadSplit")}</p>
                 <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.teamLeadSplit.total)} <span className="text-body font-normal text-muted-foreground">USD</span>
+                  {formatCurrency(teamOverview.teamLeadSplit.total)} <span className="text-body font-normal text-muted-foreground">{isCanada ? "CAD" : "USD"}</span>
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.teamLeadSplit.pending)} USD</p>
+                {isCanada && (
+                  <p className="text-sm text-muted-foreground mt-1">{t("txn.firm")} : {formatCurrency(12500)} {isCanada ? "CAD" : "USD"}</p>
+                )}
+                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.teamLeadSplit.pending)} {isCanada ? "CAD" : "USD"}</p>
               </button>
             </div>
           </CardContent>
@@ -295,7 +304,7 @@ export default function TeamDashboard() {
                             </div>
                             <div className="flex items-center gap-2">
                               <span className="font-medium text-foreground text-body tabular-nums font-secondary">
-                                {tab === "units" ? `${agent.units} ${t("team.units")}` :
+                                {tab === "units" ? `${isCanada ? (agent.units + 0.25).toFixed(2) : agent.units} ${t("team.units")}` :
                                  tab === "volume" ? formatCurrency(agent.volume) :
                                  formatCurrency(agent.commission)}
                               </span>
