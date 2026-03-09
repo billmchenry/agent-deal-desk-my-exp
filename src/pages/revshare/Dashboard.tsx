@@ -62,18 +62,18 @@ const revenueMonthlyGrouped = [
 
 const levelScenarios = {
   full: [
-    { name: "Level 1", agents: 129, revShare: 1998, color: "hsl(244, 14%, 22%)" },
-    { name: "Level 2", agents: 374, revShare: 5993, color: "hsl(230, 25%, 32%)" },
-    { name: "Level 3", agents: 962, revShare: 15412, color: "hsl(218, 35%, 42%)" },
-    { name: "Level 4", agents: 2190, revShare: 35104, color: "hsl(210, 40%, 52%)" },
-    { name: "Level 5", agents: 3704, revShare: 59363, color: "hsl(200, 35%, 62%)" },
-    { name: "Level 6", agents: 5146, revShare: 82481, color: "hsl(215, 30%, 76%)" },
-    { name: "Level 7", agents: 5311, revShare: 85049, color: "hsl(220, 25%, 88%)" },
+    { name: "L1", agents: 129, revShare: 1998, color: "hsl(244, 14%, 22%)" },
+    { name: "L2", agents: 374, revShare: 5993, color: "hsl(230, 25%, 32%)" },
+    { name: "L3", agents: 962, revShare: 15412, color: "hsl(218, 35%, 42%)" },
+    { name: "L4", agents: 2190, revShare: 35104, color: "hsl(210, 40%, 52%)" },
+    { name: "L5", agents: 3704, revShare: 59363, color: "hsl(200, 35%, 62%)" },
+    { name: "L6", agents: 5146, revShare: 82481, color: "hsl(215, 30%, 76%)" },
+    { name: "L7", agents: 5311, revShare: 85049, color: "hsl(220, 25%, 88%)" },
   ],
   few_levels: [
-    { name: "Level 1", agents: 42, revShare: 620, color: "hsl(244, 14%, 22%)" },
-    { name: "Level 2", agents: 18, revShare: 285, color: "hsl(230, 25%, 32%)" },
-    { name: "Level 3", agents: 5, revShare: 95, color: "hsl(218, 35%, 42%)" },
+    { name: "L1", agents: 42, revShare: 620, color: "hsl(244, 14%, 22%)" },
+    { name: "L2", agents: 18, revShare: 285, color: "hsl(230, 25%, 32%)" },
+    { name: "L3", agents: 5, revShare: 95, color: "hsl(218, 35%, 42%)" },
   ],
 };
 
@@ -123,6 +123,8 @@ export default function RevShareDashboard() {
   const isMobile = useIsMobile();
   const [compPeriod, setCompPeriod] = useState("yearly");
   const [selectedMonth, setSelectedMonth] = useState<Record<string, unknown> | null>(null);
+  const [showAllLevels, setShowAllLevels] = useState(false);
+  const [showAllCountries, setShowAllCountries] = useState(false);
   // distMode removed – showing both agents & revshare inline
   const { formatNumber, formatCurrency } = useFormatters();
   const { t } = useTranslation();
@@ -418,81 +420,97 @@ export default function RevShareDashboard() {
               {/* By Level */}
               <div>
                 <h3 className="text-sm font-semibold text-foreground mb-2">{t("revshare.byLevel")}</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-border text-xs text-muted-foreground">
-                        <th className="text-left py-2 pr-4 font-medium">Level</th>
-                        <th className="text-right py-2 px-4 font-medium">%</th>
-                        <th className="text-right py-2 px-4 font-medium">{t("revshare.agents")}</th>
-                        <th className="text-right py-2 pl-4 font-medium">{t("revshare.revShareLabel")}</th>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border text-xs text-muted-foreground">
+                      <th className="text-left py-2 pr-2 font-medium">Level</th>
+                      <th className="text-right py-2 px-2 font-medium">%</th>
+                      <th className="text-right py-2 px-2 font-medium">{t("revshare.agents")}</th>
+                      <th className="text-right py-2 pl-2 font-medium">{t("revshare.revShareLabel")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(showAllLevels ? levelTableData : levelTableData.slice(0, 3)).map((row) => (
+                      <tr key={row.level} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
+                        <td className="py-2 pr-2 font-medium text-foreground">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
+                            {row.level}
+                          </div>
+                        </td>
+                        <td className="py-2 px-2 text-right font-secondary text-muted-foreground">{row.pct}%</td>
+                        <td className="py-2 px-2 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
+                        <td className="py-2 pl-2 text-right font-secondary text-foreground whitespace-nowrap">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {levelTableData.map((row) => (
-                        <tr key={row.level} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
-                          <td className="py-2 pr-4 font-medium text-foreground">
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
-                              {row.level}
-                            </div>
-                          </td>
-                          <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
-                          <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
-                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
-                        </tr>
-                      ))}
-                    </tbody>
+                    ))}
+                  </tbody>
+                  {showAllLevels && (
                     <tfoot>
                       <tr className="border-t border-border font-semibold text-foreground">
-                        <td className="py-2 pr-4">Total</td>
-                        <td className="py-2 px-4 text-right font-secondary">100%</td>
-                        <td className="py-2 px-4 text-right font-secondary">{formatNumber(totalAgents)}</td>
-                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(totalRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
+                        <td className="py-2 pr-2">Total</td>
+                        <td className="py-2 px-2 text-right font-secondary">100%</td>
+                        <td className="py-2 px-2 text-right font-secondary">{formatNumber(totalAgents)}</td>
+                        <td className="py-2 pl-2 text-right font-secondary whitespace-nowrap">{formatCurrency(totalRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
                     </tfoot>
-                  </table>
-                </div>
+                  )}
+                </table>
+                {levelTableData.length > 3 && (
+                  <button
+                    onClick={() => setShowAllLevels(!showAllLevels)}
+                    className="mt-2 text-xs text-primary hover:underline font-medium min-h-[44px] sm:min-h-0"
+                  >
+                    {showAllLevels ? "View less" : `View more (${levelTableData.length - 3})`}
+                  </button>
+                )}
               </div>
 
               {/* By Country */}
               <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-s lg:ps-4 border-border">
                 <h3 className="text-sm font-semibold text-foreground mb-2">{t("revshare.byCountry")}</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-border text-xs text-muted-foreground">
-                        <th className="text-left py-2 pr-4 font-medium">Country</th>
-                        <th className="text-right py-2 px-4 font-medium">%</th>
-                        <th className="text-right py-2 px-4 font-medium">{t("revshare.agents")}</th>
-                        <th className="text-right py-2 pl-4 font-medium">{t("revshare.revShareLabel")}</th>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border text-xs text-muted-foreground">
+                      <th className="text-left py-2 pr-2 font-medium">Country</th>
+                      <th className="text-right py-2 px-2 font-medium">%</th>
+                      <th className="text-right py-2 px-2 font-medium">{t("revshare.agents")}</th>
+                      <th className="text-right py-2 pl-2 font-medium">{t("revshare.revShareLabel")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(showAllCountries ? countryTableData : countryTableData.slice(0, 3)).map((row) => (
+                      <tr key={row.name} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
+                        <td className="py-2 pr-2 font-medium text-foreground">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
+                            <span className="truncate">{row.name}</span>
+                          </div>
+                        </td>
+                        <td className="py-2 px-2 text-right font-secondary text-muted-foreground">{row.pct}%</td>
+                        <td className="py-2 px-2 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
+                        <td className="py-2 pl-2 text-right font-secondary text-foreground whitespace-nowrap">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {countryTableData.map((row) => (
-                        <tr key={row.name} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
-                          <td className="py-2 pr-4 font-medium text-foreground">
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
-                              {row.name}
-                            </div>
-                          </td>
-                          <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
-                          <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
-                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
-                        </tr>
-                      ))}
-                    </tbody>
+                    ))}
+                  </tbody>
+                  {showAllCountries && (
                     <tfoot>
                       <tr className="border-t border-border font-semibold text-foreground">
-                        <td className="py-2 pr-4">Total</td>
-                        <td className="py-2 px-4 text-right font-secondary">100%</td>
-                        <td className="py-2 px-4 text-right font-secondary">{formatNumber(totalCountryAgents)}</td>
-                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(totalCountryRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
+                        <td className="py-2 pr-2">Total</td>
+                        <td className="py-2 px-2 text-right font-secondary">100%</td>
+                        <td className="py-2 px-2 text-right font-secondary">{formatNumber(totalCountryAgents)}</td>
+                        <td className="py-2 pl-2 text-right font-secondary whitespace-nowrap">{formatCurrency(totalCountryRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
                     </tfoot>
-                  </table>
-                </div>
+                  )}
+                </table>
+                {countryTableData.length > 3 && (
+                  <button
+                    onClick={() => setShowAllCountries(!showAllCountries)}
+                    className="mt-2 text-xs text-primary hover:underline font-medium min-h-[44px] sm:min-h-0"
+                  >
+                    {showAllCountries ? "View less" : `View more (${countryTableData.length - 3})`}
+                  </button>
+                )}
               </div>
             </div>
           </CardContent>
