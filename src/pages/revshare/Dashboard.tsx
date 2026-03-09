@@ -578,7 +578,7 @@ export default function RevShareDashboard() {
                     <div className="flex gap-3 font-secondary">
                       {selectedMonth.y2024 != null && (
                         <span className="flex items-center gap-1">
-                          <span className="w-2 h-2 rounded-full bg-exp-navy inline-block" />
+                          <span className="w-2 h-2 rounded-full bg-exp-gold inline-block" />
                           {formatCurrency((selectedMonth.y2024 as number) * 1000, { compact: true, decimals: 0 })}
                         </span>
                       )}
