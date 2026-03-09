@@ -25,7 +25,7 @@ import {
 import {
   HoverCard, HoverCardContent, HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { DistributionDonut } from "@/components/revshare/DistributionDonut";
+
 
 /* ── Mock Data ─────────────────────────────────────────── */
 
