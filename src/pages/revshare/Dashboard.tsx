@@ -13,6 +13,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -120,7 +121,39 @@ export default function RevShareDashboard() {
   const [distMode, setDistMode] = useState<"agents" | "revshare">("agents");
   const { formatNumber, formatCurrency } = useFormatters();
   const { t } = useTranslation();
+  const { config } = useDemoConfig();
   useDocumentTitle(t("revshare.revenueShare"));
+
+  /* ── FLQA scenario data ── */
+  const flqaScenarios = {
+    below_level4: { actual: 3, bonus: 0 },
+    at_level4:    { actual: 5, bonus: 2 },
+    at_level5:    { actual: 10, bonus: 2 },
+    at_level6:    { actual: 18, bonus: 0 },
+    maxed_out:    { actual: 18, bonus: 12 },
+  };
+
+  const flqaData = flqaScenarios[config.flqaMode];
+  const flqaTotal = flqaData.actual + flqaData.bonus;
+
+  // Level thresholds: L1-3 = 0, L4 = 5, L5 = 10, L6 = 15, max goal = 30
+  const levelThresholds = [
+    { level: 4, flqa: 5 },
+    { level: 5, flqa: 10 },
+    { level: 6, flqa: 15 },
+  ];
+
+  const currentLevel = (() => {
+    if (flqaTotal >= 15) return 6;
+    if (flqaTotal >= 10) return 5;
+    if (flqaTotal >= 5) return 4;
+    return 3; // levels 1-3 all unlock at 0
+  })();
+
+  const isMaxed = flqaTotal >= 30;
+  const nextLevelInfo = levelThresholds.find((lt) => lt.flqa > flqaTotal);
+  const flqaGoal = 30;
+  const progressPercent = Math.min((flqaTotal / flqaGoal) * 100, 100);
 
   const levelDonutData =
     distMode === "agents"
@@ -234,28 +267,47 @@ export default function RevShareDashboard() {
 
                 <div className="flex items-end gap-4 mb-2">
                   <div>
-                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(18)}</p>
+                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(flqaData.actual)}</p>
                     <p className="text-xs text-white/70">{t("revshare.actual")}</p>
                   </div>
+                  {flqaData.bonus > 0 && (
+                    <div>
+                      <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 text-sm px-2 py-0">
+                        <span className="font-secondary font-bold">+ {flqaData.bonus}</span>
+                      </Badge>
+                      <p className="text-xs text-white/70">{t("revshare.bonus")}</p>
+                    </div>
+                  )}
                   <div>
-                    <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 text-sm px-2 py-0">
-                      <span className="font-secondary font-bold">+ 12</span>
-                    </Badge>
-                    <p className="text-xs text-white/70">{t("revshare.bonus")}</p>
+                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(flqaTotal)}</p>
+                    <p className="text-xs text-white/70">Total</p>
                   </div>
                 </div>
 
-                <p className="text-xs text-exp-gold-light">
-                  Level 3. <span className="font-semibold">2 more agents</span> for{" "}
-                  <span className="font-semibold">Level 4</span>.
-                </p>
+                {isMaxed ? (
+                  <p className="text-xs text-exp-green-light font-semibold">
+                    ✓ All levels unlocked
+                  </p>
+                ) : nextLevelInfo ? (
+                  <p className="text-xs text-exp-gold-light">
+                    Level {currentLevel}. <span className="font-semibold">{nextLevelInfo.flqa - flqaTotal} more agents</span> for{" "}
+                    <span className="font-semibold">Level {nextLevelInfo.level}</span>.
+                  </p>
+                ) : (
+                  <p className="text-xs text-exp-gold-light">
+                    Level {currentLevel}.
+                  </p>
+                )}
 
                 <div className="mt-2 mb-2">
-                  <Progress value={(18 / 30) * 100} className="h-2 bg-white/20 [&>div]:bg-exp-gold" />
+                  <Progress
+                    value={progressPercent}
+                    className={`h-2 bg-white/20 ${isMaxed ? "[&>div]:bg-exp-green" : "[&>div]:bg-exp-gold"}`}
+                  />
                   <div className="flex justify-between mt-1 text-xs text-white/50 font-secondary">
                     <span>0</span>
-                    <span>18 ({t("revshare.current")})</span>
-                    <span>30 ({t("revshare.goalLabel")})</span>
+                    <span>{flqaTotal} ({t("revshare.current")})</span>
+                    <span>{flqaGoal} ({t("revshare.goalLabel")})</span>
                   </div>
                 </div>
 

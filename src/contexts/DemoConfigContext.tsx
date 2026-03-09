@@ -10,13 +10,22 @@ export type MentorMode =
   | "approved_certification"
   | "active_mentor";
 
+export type FlqaMode =
+  | "below_level4"
+  | "at_level4"
+  | "at_level5"
+  | "at_level6"
+  | "maxed_out";
+
 interface DemoConfig {
   mentorMode: MentorMode;
+  flqaMode: FlqaMode;
 }
 
 interface DemoConfigContextValue {
   config: DemoConfig;
   setMentorMode: (mode: MentorMode) => void;
+  setFlqaMode: (mode: FlqaMode) => void;
 }
 
 const DemoConfigContext = createContext<DemoConfigContextValue | null>(null);
@@ -26,9 +35,12 @@ const STORAGE_KEY = "demoConfig";
 function loadConfig(): DemoConfig {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return { mentorMode: "none", flqaMode: "below_level4", ...parsed };
+    }
   } catch {}
-  return { mentorMode: "none" };
+  return { mentorMode: "none", flqaMode: "below_level4" };
 }
 
 function saveConfig(config: DemoConfig) {
@@ -46,8 +58,16 @@ export function DemoConfigProvider({ children }: { children: React.ReactNode }) 
     });
   }, []);
 
+  const setFlqaMode = useCallback((mode: FlqaMode) => {
+    setConfig((prev) => {
+      const next = { ...prev, flqaMode: mode };
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
   return (
-    <DemoConfigContext.Provider value={{ config, setMentorMode }}>
+    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode }}>
       {children}
     </DemoConfigContext.Provider>
   );
