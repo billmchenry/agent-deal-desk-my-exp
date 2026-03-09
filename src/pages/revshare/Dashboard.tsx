@@ -25,7 +25,7 @@ import {
 import {
   HoverCard, HoverCardContent, HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { DistributionDonut } from "@/components/revshare/DistributionDonut";
+
 
 /* ── Mock Data ─────────────────────────────────────────── */
 
@@ -39,15 +39,6 @@ const levelDistribution = [
   { name: "Level 7", value: 29.8, agents: 5311, color: "hsl(220, 25%, 88%)" },
 ];
 
-const countryDistribution = [
-  { name: "United States", agents: 4850, color: "hsl(262, 83%, 58%)" },
-  { name: "United Kingdom", agents: 1450, color: "hsl(217, 91%, 60%)" },
-  { name: "Canada", agents: 1125, color: "hsl(142, 71%, 45%)" },
-  { name: "Germany", agents: 980, color: "hsl(45, 93%, 47%)" },
-  { name: "Australia", agents: 890, color: "hsl(0, 84%, 60%)" },
-  { name: "Brazil", agents: 820, color: "hsl(220, 45%, 30%)" },
-  { name: "France", agents: 720, color: "hsl(210, 40%, 75%)" },
-];
 
 // Yearly: single line showing total revshare per year
 const revenueYearlyGrouped = [
@@ -93,15 +84,6 @@ const levelRevShare = [
   { name: "Level 7", value: 85049, color: "hsl(220, 25%, 88%)" },
 ];
 
-const countryRevShare = [
-  { name: "United States", value: 77710, color: "hsl(262, 83%, 58%)" },
-  { name: "United Kingdom", value: 23117, color: "hsl(217, 91%, 60%)" },
-  { name: "Canada", value: 17980, color: "hsl(142, 71%, 45%)" },
-  { name: "Germany", value: 15697, color: "hsl(45, 93%, 47%)" },
-  { name: "Australia", value: 14270, color: "hsl(0, 84%, 60%)" },
-  { name: "Brazil", value: 13132, color: "hsl(220, 45%, 30%)" },
-  { name: "France", value: 11494, color: "hsl(210, 40%, 75%)" },
-];
 
 const chartTickStyle = {
   fill: "hsl(var(--muted-foreground))",
@@ -121,7 +103,7 @@ export default function RevShareDashboard() {
   const isMobile = useIsMobile();
   const [compPeriod, setCompPeriod] = useState("yearly");
   const [selectedMonth, setSelectedMonth] = useState<Record<string, unknown> | null>(null);
-  const [distMode, setDistMode] = useState<"agents" | "revshare">("agents");
+  // distMode removed – showing both agents & revshare inline
   const { formatNumber, formatCurrency } = useFormatters();
   const { t } = useTranslation();
   const { config } = useDemoConfig();
@@ -158,20 +140,17 @@ export default function RevShareDashboard() {
   const flqaGoal = 30;
   const progressPercent = Math.min((flqaTotal / flqaGoal) * 100, 100);
 
-  const levelDonutData =
-    distMode === "agents"
-      ? levelDistribution.map((l) => ({ name: l.name, value: l.agents, color: l.color, label: l.name }))
-      : levelRevShare.map((l) => ({ name: l.name, value: l.value, color: l.color, label: l.name }));
-
-  const countryDonutData =
-    distMode === "agents"
-      ? countryDistribution.map((c) => ({ name: c.name, value: c.agents, color: c.color }))
-      : countryRevShare.map((c) => ({ name: c.name, value: c.value, color: c.color }));
-
-  const donutTotal = distMode === "agents" ? TOTAL_AGENTS : TOTAL_REVSHARE;
-  const donutFormat = (v: number) =>
-    distMode === "agents" ? formatNumber(v) : formatCurrency(v);
-  const donutCenterLabel = distMode === "agents" ? t("revshare.agents") : t("revshare.revShareLabel");
+  // Combine level data for inline table
+  const levelTableData = levelDistribution.map((l, i) => {
+    const pct = TOTAL_AGENTS > 0 ? ((l.agents / TOTAL_AGENTS) * 100).toFixed(1) : "0";
+    return {
+      level: l.name,
+      pct,
+      agents: l.agents,
+      revShare: levelRevShare[i]?.value ?? 0,
+      color: l.color,
+    };
+  });
 
   return (
     <DashboardLayout>
@@ -400,43 +379,45 @@ export default function RevShareDashboard() {
         {/* ═══ Section 3: RevShare Group Distribution ═══ */}
         <Card>
           <CardContent className="p-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-              <div>
-                <h2 className="text-sm font-semibold text-foreground">{t("revshare.groupDistribution")}</h2>
-                <p className="text-xs text-muted-foreground">
-                  {distMode === "agents"
-                    ? t("revshare.agentDistDesc")
-                    : t("revshare.revShareDistDesc")}
-                </p>
-              </div>
-              <Tabs value={distMode} onValueChange={(v) => setDistMode(v as "agents" | "revshare")}>
-                <TabsList className="h-9 sm:h-7">
-                  <TabsTrigger value="agents" className="text-xs px-3 min-h-[44px] sm:min-h-0 sm:h-6">{t("revshare.agents")}</TabsTrigger>
-                  <TabsTrigger value="revshare" className="text-xs px-3 min-h-[44px] sm:min-h-0 sm:h-6">{t("revshare.revShareLabel")}</TabsTrigger>
-                </TabsList>
-              </Tabs>
+            <div className="mb-3">
+              <h2 className="text-sm font-semibold text-foreground">{t("revshare.groupDistribution")}</h2>
+              <p className="text-xs text-muted-foreground">{t("revshare.agentDistDesc")}</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div>
-                <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byLevel")}</span>
-                <DistributionDonut
-                  data={levelDonutData}
-                  total={donutTotal}
-                  formatValue={donutFormat}
-                  centerLabel={donutCenterLabel}
-                />
-              </div>
-              <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-s lg:ps-4 border-border">
-                <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byCountry")}</span>
-                <DistributionDonut
-                  data={countryDonutData}
-                  total={donutTotal}
-                  formatValue={donutFormat}
-                  centerLabel={donutCenterLabel}
-                  showPercentage={false}
-                />
-              </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-xs text-muted-foreground">
+                    <th className="text-left py-2 pr-4 font-medium">{t("revshare.levelLabel")}</th>
+                    <th className="text-right py-2 px-4 font-medium">%</th>
+                    <th className="text-right py-2 px-4 font-medium">{t("revshare.agents")}</th>
+                    <th className="text-right py-2 pl-4 font-medium">{t("revshare.revShareLabel")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {levelTableData.map((row) => (
+                    <tr key={row.level} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
+                      <td className="py-2 pr-4 font-medium text-foreground">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
+                          {row.level}
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
+                      <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
+                      <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t border-border font-semibold text-foreground">
+                    <td className="py-2 pr-4">{t("revshare.total")}</td>
+                    <td className="py-2 px-4 text-right font-secondary">100%</td>
+                    <td className="py-2 px-4 text-right font-secondary">{formatNumber(TOTAL_AGENTS)}</td>
+                    <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(TOTAL_REVSHARE)}</td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
           </CardContent>
         </Card>
