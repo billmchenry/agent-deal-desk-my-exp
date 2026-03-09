@@ -226,96 +226,100 @@ export default function RevShareDashboard() {
                 </div>
               </div>
 
-              {/* FLA */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
-                    <Users className="h-3.5 w-3.5" />
+              {/* FLA + FLQA */}
+              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* FLA */}
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
+                      <Users className="h-3.5 w-3.5" />
+                    </div>
+                    <span className="text-xs font-semibold text-white">{t("revshare.flaTitle")}</span>
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <Info className="h-3 w-3 text-white/50 cursor-help" aria-label="FLA information" />
+                      </HoverCardTrigger>
+                      <HoverCardContent className="text-xs w-64">
+                        {t("revshare.flaInfo")}
+                      </HoverCardContent>
+                    </HoverCard>
                   </div>
-                  <span className="text-xs font-semibold text-white">{t("revshare.flaTitle")}</span>
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <Info className="h-3 w-3 text-white/50 cursor-help" aria-label="FLA information" />
-                    </HoverCardTrigger>
-                    <HoverCardContent className="text-xs w-64">
-                      {t("revshare.flaInfo")}
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
-                <div className="flex items-center justify-between gap-2">
                   <p className="text-stat-value font-bold font-secondary text-white">{formatNumber(24)}</p>
+                </div>
+
+                {/* FLQA */}
+                <div className="border-t pt-3 sm:border-t-0 sm:pt-0 sm:border-s sm:ps-4 border-white/15">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
+                      <Users className="h-3.5 w-3.5" />
+                    </div>
+                    <span className="text-xs font-semibold text-white">{t("revshare.flqaTitle")}</span>
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <Info className="h-3 w-3 text-white/50 cursor-help" aria-label="FLQA information" />
+                      </HoverCardTrigger>
+                      <HoverCardContent className="text-xs w-64">
+                        {t("revshare.flqaInfo")}
+                      </HoverCardContent>
+                    </HoverCard>
+                  </div>
+
+                  <div className="flex items-end gap-4 mb-2">
+                    <div>
+                      <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(flqaData.actual)}</p>
+                      <p className="text-xs text-white/70">{t("revshare.actual")}</p>
+                    </div>
+                    {flqaData.bonus > 0 && (
+                      <div>
+                        <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 px-2 py-0.5">
+                          <span className="text-stat-value font-bold font-secondary leading-none">+ {flqaData.bonus}</span>
+                        </Badge>
+                        <p className="text-xs text-white/70">{t("revshare.bonus")}</p>
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-stat-value font-bold font-secondary text-exp-gold-light leading-none">{formatNumber(flqaTotal)}</p>
+                      <p className="text-xs text-white/70">Total</p>
+                    </div>
+                  </div>
+
+                  {isMaxed ? (
+                    <p className="text-xs text-exp-green-light font-semibold">
+                      ✓ All levels unlocked
+                    </p>
+                  ) : nextLevelInfo ? (
+                    <p className="text-xs text-exp-gold-light">
+                      Level {currentLevel}. <span className="font-semibold">{nextLevelInfo.flqa - flqaTotal} more agents</span> for{" "}
+                      <span className="font-semibold">Level {nextLevelInfo.level}</span>.
+                    </p>
+                  ) : (
+                    <p className="text-xs text-exp-gold-light">
+                      Level {currentLevel}.
+                    </p>
+                  )}
+
+                  <div className="mt-2 mb-2">
+                    <Progress
+                      value={progressPercent}
+                      className={`h-2 bg-white/20 ${isMaxed ? "[&>div]:bg-exp-green" : "[&>div]:bg-exp-gold"}`}
+                    />
+                    <div className="flex justify-between mt-1 text-xs text-white/50 font-secondary">
+                      <span>0</span>
+                      <span>{flqaTotal} ({t("revshare.current")})</span>
+                      <span>{flqaGoal} ({t("revshare.goalLabel")})</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Shared button row */}
+                <div className="sm:col-span-2 flex items-center gap-2 border-t border-white/15 pt-3">
                   <button className="inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label={t("revshare.viewFLAList")}>
                     {t("revshare.viewFLAList")} <ChevronRight className="h-3 w-3" />
                   </button>
+                  <button className="inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLQA List">
+                    View FLQA List <ChevronRight className="h-3 w-3" />
+                  </button>
                 </div>
-              </div>
-
-              {/* FLQA */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
-                    <Users className="h-3.5 w-3.5" />
-                  </div>
-                  <span className="text-xs font-semibold text-white">{t("revshare.flqaTitle")}</span>
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <Info className="h-3 w-3 text-white/50 cursor-help" aria-label="FLQA information" />
-                    </HoverCardTrigger>
-                    <HoverCardContent className="text-xs w-64">
-                      {t("revshare.flqaInfo")}
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
-
-                <div className="flex items-end gap-4 mb-2">
-                  <div>
-                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(flqaData.actual)}</p>
-                    <p className="text-xs text-white/70">{t("revshare.actual")}</p>
-                  </div>
-                  {flqaData.bonus > 0 && (
-                    <div>
-                      <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 px-2 py-0.5">
-                        <span className="text-stat-value font-bold font-secondary leading-none">+ {flqaData.bonus}</span>
-                      </Badge>
-                      <p className="text-xs text-white/70">{t("revshare.bonus")}</p>
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-stat-value font-bold font-secondary text-exp-gold-light leading-none">{formatNumber(flqaTotal)}</p>
-                    <p className="text-xs text-white/70">Total</p>
-                  </div>
-                </div>
-
-                {isMaxed ? (
-                  <p className="text-xs text-exp-green-light font-semibold">
-                    ✓ All levels unlocked
-                  </p>
-                ) : nextLevelInfo ? (
-                  <p className="text-xs text-exp-gold-light">
-                    Level {currentLevel}. <span className="font-semibold">{nextLevelInfo.flqa - flqaTotal} more agents</span> for{" "}
-                    <span className="font-semibold">Level {nextLevelInfo.level}</span>.
-                  </p>
-                ) : (
-                  <p className="text-xs text-exp-gold-light">
-                    Level {currentLevel}.
-                  </p>
-                )}
-
-                <div className="mt-2 mb-2">
-                  <Progress
-                    value={progressPercent}
-                    className={`h-2 bg-white/20 ${isMaxed ? "[&>div]:bg-exp-green" : "[&>div]:bg-exp-gold"}`}
-                  />
-                  <div className="flex justify-between mt-1 text-xs text-white/50 font-secondary">
-                    <span>0</span>
-                    <span>{flqaTotal} ({t("revshare.current")})</span>
-                    <span>{flqaGoal} ({t("revshare.goalLabel")})</span>
-                  </div>
-                </div>
-
-                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLQA List">
-                  View FLQA List <ChevronRight className="h-3 w-3" />
-                </button>
               </div>
 
             </div>
