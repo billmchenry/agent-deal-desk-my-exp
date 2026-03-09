@@ -158,20 +158,17 @@ export default function RevShareDashboard() {
   const flqaGoal = 30;
   const progressPercent = Math.min((flqaTotal / flqaGoal) * 100, 100);
 
-  const levelDonutData =
-    distMode === "agents"
-      ? levelDistribution.map((l) => ({ name: l.name, value: l.agents, color: l.color, label: l.name }))
-      : levelRevShare.map((l) => ({ name: l.name, value: l.value, color: l.color, label: l.name }));
-
-  const countryDonutData =
-    distMode === "agents"
-      ? countryDistribution.map((c) => ({ name: c.name, value: c.agents, color: c.color }))
-      : countryRevShare.map((c) => ({ name: c.name, value: c.value, color: c.color }));
-
-  const donutTotal = distMode === "agents" ? TOTAL_AGENTS : TOTAL_REVSHARE;
-  const donutFormat = (v: number) =>
-    distMode === "agents" ? formatNumber(v) : formatCurrency(v);
-  const donutCenterLabel = distMode === "agents" ? t("revshare.agents") : t("revshare.revShareLabel");
+  // Combine level data for inline table
+  const levelTableData = levelDistribution.map((l, i) => {
+    const pct = TOTAL_AGENTS > 0 ? ((l.agents / TOTAL_AGENTS) * 100).toFixed(1) : "0";
+    return {
+      level: l.name,
+      pct,
+      agents: l.agents,
+      revShare: levelRevShare[i]?.value ?? 0,
+      color: l.color,
+    };
+  });
 
   return (
     <DashboardLayout>
