@@ -62,6 +62,24 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const { isRTL } = useLocale();
   const { config } = useDemoConfig();
   const isCanada = config.countryMode === "canada";
+  const isGlobal = config.countryMode === "global";
+
+  const globalHiddenTitles = ["Team", "Documents", "Mentor Program", "Broker Hub", "Custom Service Fees"];
+
+  const filterNavItems = (items: SidebarNavItem[]): SidebarNavItem[] => {
+    if (!isGlobal && !isCanada) return items;
+    return items
+      .filter((item) => !(isGlobal && globalHiddenTitles.includes(item.title)))
+      .map((item) => {
+        if (!item.submenu) return item;
+        const filteredSub = item.submenu.filter((sub) => {
+          if (isCanada && sub.url === "/documents/year-end") return false;
+          if (isGlobal && globalHiddenTitles.includes(sub.title)) return false;
+          return true;
+        });
+        return { ...item, submenu: filteredSub };
+      });
+  };
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
@@ -146,7 +164,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
         {hasSubmenu && expanded && (
           <div className="ms-9 mt-1 space-y-0.5">
-            {item.submenu?.filter((subItem) => !(isCanada && subItem.url === "/documents/year-end")).map((subItem) => (
+            {item.submenu?.map((subItem) => (
               <button
                 key={subItem.url}
                 onClick={() => handleSubItemClick(subItem.url)}
@@ -182,7 +200,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
               {tn(sidebarNavigation.myDesk.label)}
             </span>
             <div className="space-y-0.5">
-              {sidebarNavigation.myDesk.items.map(renderNavItem)}
+              {filterNavItems(sidebarNavigation.myDesk.items).map(renderNavItem)}
             </div>
           </div>
 
@@ -191,7 +209,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
               {tn(sidebarNavigation.businessGrowth.label)}
             </span>
             <div className="space-y-0.5">
-              {sidebarNavigation.businessGrowth.items.map(renderNavItem)}
+              {filterNavItems(sidebarNavigation.businessGrowth.items).map(renderNavItem)}
             </div>
           </div>
 
@@ -200,7 +218,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
               {tn(sidebarNavigation.resources.label)}
             </span>
             <div className="space-y-0.5">
-              {sidebarNavigation.resources.items.map(renderNavItem)}
+              {filterNavItems(sidebarNavigation.resources.items).map(renderNavItem)}
             </div>
           </div>
         </nav>

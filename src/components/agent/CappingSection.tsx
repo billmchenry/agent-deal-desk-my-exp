@@ -10,9 +10,10 @@ interface CappingSectionProps {
   capTarget: number;
   capPercentage: number;
   dateRange?: { from: Date | undefined; to: Date | undefined };
+  hideHistory?: boolean;
 }
 
-export function CappingSection({ capCurrent, capTarget, capPercentage, dateRange }: CappingSectionProps) {
+export function CappingSection({ capCurrent, capTarget, capPercentage, dateRange, hideHistory }: CappingSectionProps) {
   const remaining = capTarget - capCurrent;
   const { formatCurrency } = useFormatters();
   const { t } = useTranslation();
@@ -49,7 +50,7 @@ export function CappingSection({ capCurrent, capTarget, capPercentage, dateRange
                 </p>
               </div>
             </div>
-            <CappingHistoryTable dateRange={dateRange} />
+            {!hideHistory && <CappingHistoryTable dateRange={dateRange} />}
           </div>
         </CardContent>
       </Card>

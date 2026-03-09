@@ -62,6 +62,7 @@ export function Sidebar() {
   const { t } = useTranslation();
   const { config } = useDemoConfig();
   const isCanada = config.countryMode === "canada";
+  const isGlobal = config.countryMode === "global";
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
@@ -165,7 +166,7 @@ export function Sidebar() {
           </div>
           <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
             <div className="ms-9 mt-1 space-y-0.5">
-              {item.submenu?.filter((subItem) => !(isCanada && subItem.url === "/documents/year-end")).map((subItem) => (
+              {item.submenu?.map((subItem) => (
                 <a
                   key={subItem.url}
                   href={subItem.url}
@@ -196,6 +197,22 @@ export function Sidebar() {
         <span>{tn(item.title)}</span>
       </a>
     );
+  };
+  const globalHiddenTitles = ["Team", "Documents", "Mentor Program", "Broker Hub", "Custom Service Fees"];
+
+  const filterNavItems = (items: SidebarNavItem[]): SidebarNavItem[] => {
+    if (!isGlobal && !isCanada) return items;
+    return items
+      .filter((item) => !(isGlobal && globalHiddenTitles.includes(item.title)))
+      .map((item) => {
+        if (!item.submenu) return item;
+        const filteredSub = item.submenu.filter((sub) => {
+          if (isCanada && sub.url === "/documents/year-end") return false;
+          if (isGlobal && globalHiddenTitles.includes(sub.title)) return false;
+          return true;
+        });
+        return { ...item, submenu: filteredSub };
+      });
   };
 
   const renderSection = (section: { label: string; items: SidebarNavItem[] }, className?: string, showToggle?: boolean) => (
@@ -235,7 +252,7 @@ export function Sidebar() {
         </div>
       ) : null}
       <div className={cn("space-y-0.5", isCollapsed && "flex flex-col items-center")}>
-        {section.items.map(renderNavItem)}
+        {filterNavItems(section.items).map(renderNavItem)}
       </div>
     </div>
   );
