@@ -59,7 +59,7 @@ export default function Transactions() {
       );
     }
     return true;
-  });
+  }).map((r) => isCanada ? { ...r, currency: "CAD" } : r);
 
   const statusOptions = [
     { value: "all", label: t("txn.allStatuses") },
