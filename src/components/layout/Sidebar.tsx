@@ -11,6 +11,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Home, LayoutDashboard, User, Users, DollarSign, FileText,
