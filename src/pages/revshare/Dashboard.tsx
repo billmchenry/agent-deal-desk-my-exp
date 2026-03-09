@@ -30,21 +30,22 @@ import {
 const revenueYearlyGrouped = [
   { name: "2024", value: 1.0 },
   { name: "2025", value: 3.8 },
+  { name: "2026", value: 0.9 },
 ];
 
-// Quarterly: two lines comparing 2024 vs 2025
+// Quarterly: three lines comparing 2024 vs 2025 vs 2026
 const revenueQuarterlyGrouped = [
-  { name: "Q1", y2024: 0.2, y2025: 0.8 },
+  { name: "Q1", y2024: 0.2, y2025: 0.8, y2026: 0.9 },
   { name: "Q2", y2024: 0.3, y2025: 1.0 },
   { name: "Q3", y2024: 0.25, y2025: 1.1 },
   { name: "Q4", y2024: 0.25, y2025: 0.9 },
 ];
 
-// Monthly: two lines comparing 2024 vs 2025
+// Monthly: three lines comparing 2024 vs 2025 vs 2026
 const revenueMonthlyGrouped = [
-  { name: "Jan", y2024: 0.05, y2025: 0.25 },
-  { name: "Feb", y2024: 0.06, y2025: 0.27 },
-  { name: "Mar", y2024: 0.09, y2025: 0.28 },
+  { name: "Jan", y2024: 0.05, y2025: 0.25, y2026: 0.30 },
+  { name: "Feb", y2024: 0.06, y2025: 0.27, y2026: 0.33 },
+  { name: "Mar", y2024: 0.09, y2025: 0.28, y2026: 0.28 },
   { name: "Apr", y2024: 0.08, y2025: 0.30 },
   { name: "May", y2024: 0.10, y2025: 0.35 },
   { name: "Jun", y2024: 0.12, y2025: 0.35 },
@@ -438,7 +439,7 @@ export default function RevShareDashboard() {
                           </td>
                           <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
                           <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
-                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)}</td>
+                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                         </tr>
                       ))}
                     </tbody>
@@ -447,7 +448,7 @@ export default function RevShareDashboard() {
                         <td className="py-2 pr-4">Total</td>
                         <td className="py-2 px-4 text-right font-secondary">100%</td>
                         <td className="py-2 px-4 text-right font-secondary">{formatNumber(totalAgents)}</td>
-                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(totalRevShare)}</td>
+                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(totalRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
                     </tfoot>
                   </table>
@@ -478,7 +479,7 @@ export default function RevShareDashboard() {
                           </td>
                           <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
                           <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
-                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)}</td>
+                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                         </tr>
                       ))}
                     </tbody>
@@ -487,7 +488,7 @@ export default function RevShareDashboard() {
                         <td className="py-2 pr-4">Total</td>
                         <td className="py-2 px-4 text-right font-secondary">100%</td>
                         <td className="py-2 px-4 text-right font-secondary">{formatNumber(totalCountryAgents)}</td>
-                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(totalCountryRevShare)}</td>
+                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(totalCountryRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
                     </tfoot>
                   </table>
@@ -542,9 +543,9 @@ export default function RevShareDashboard() {
                   <LineChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
+                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 }) + " USD"} domain={[0, "auto"]} width={70} />
                     <Tooltip
-                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), "Revenue Share"]}
+                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }) + " USD", "Revenue Share"]}
                       contentStyle={tooltipStyle}
                     />
                     <Line type="monotone" dataKey="value" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 4, fill: "hsl(var(--exp-blue))" }} />
@@ -560,11 +561,11 @@ export default function RevShareDashboard() {
                   <LineChart data={revenueQuarterlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 })} domain={[0, 1.5]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 }) + " USD"} domain={[0, 1.5]} width={70} />
                     <Tooltip
                       formatter={(value: number, name: string) => {
                         const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                        return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }), label];
+                        return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }) + " USD", label];
                       }}
                       contentStyle={tooltipStyle}
                     />
@@ -595,11 +596,11 @@ export default function RevShareDashboard() {
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                         <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 })} domain={[0, 0.5]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 }) + " USD"} domain={[0, 0.5]} width={70} />
                         <Tooltip
                           formatter={(value: number, name: string) => {
                             const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                            return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }), label];
+                            return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }) + " USD", label];
                           }}
                           contentStyle={tooltipStyle}
                         />
@@ -612,11 +613,11 @@ export default function RevShareDashboard() {
                         <LineChart data={revenueMonthlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                           <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 })} domain={[0, 0.5]} width={50} />
+    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000, { compact: true, decimals: 0 }) + " USD"} domain={[0, 0.5]} width={70} />
                           <Tooltip
                             formatter={(value: number, name: string) => {
                               const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                              return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }), label];
+                              return [formatCurrency(value * 1_000, { compact: true, decimals: 0 }) + " USD", label];
                             }}
                             contentStyle={tooltipStyle}
                           />
