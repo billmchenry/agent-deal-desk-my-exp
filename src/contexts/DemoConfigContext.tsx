@@ -82,8 +82,16 @@ export function DemoConfigProvider({ children }: { children: React.ReactNode }) 
     });
   }, []);
 
+  const setCountryMode = useCallback((mode: CountryMode) => {
+    setConfig((prev) => {
+      const next = { ...prev, countryMode: mode };
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
   return (
-    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode }}>
+    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode }}>
       {children}
     </DemoConfigContext.Provider>
   );
