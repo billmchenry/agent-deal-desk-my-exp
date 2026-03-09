@@ -50,7 +50,7 @@ export function CappingSection({ capCurrent, capTarget, capPercentage, dateRange
                 </p>
               </div>
             </div>
-            <CappingHistoryTable dateRange={dateRange} />
+            {!hideHistory && <CappingHistoryTable dateRange={dateRange} />}
           </div>
         </CardContent>
       </Card>
