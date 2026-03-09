@@ -49,12 +49,14 @@ const countryDistribution = [
   { name: "France", agents: 720, color: "hsl(210, 40%, 75%)" },
 ];
 
+// Yearly: single line showing total revshare per year
 const revenueYearlyGrouped = [
-  { name: "2024", y2024: 1.0, y2025: 0, y2026: 0 },
-  { name: "2025", y2024: 1.0, y2025: 3.8, y2026: 0 },
-  { name: "2026", y2024: 1.0, y2025: 3.8, y2026: 0.285 },
+  { name: "2024", value: 1.0 },
+  { name: "2025", value: 3.8 },
+  { name: "2026", value: 0.285 },
 ];
 
+// Quarterly: each line = a year, x-axis = quarters
 const revenueQuarterlyGrouped = [
   { name: "Q1", y2024: 0.18, y2025: 0.82, y2026: 0.285 },
   { name: "Q2", y2024: 0.22, y2025: 1.05 },
@@ -62,6 +64,7 @@ const revenueQuarterlyGrouped = [
   { name: "Q4", y2024: 0.32, y2025: 0.81 },
 ];
 
+// Monthly: each line = a year, x-axis = months
 const revenueMonthlyGrouped = [
   { name: "Jan", y2024: 0.05, y2025: 0.25, y2026: 0.15 },
   { name: "Feb", y2024: 0.05, y2025: 0.28, y2026: 0.135 },
@@ -461,15 +464,21 @@ export default function RevShareDashboard() {
                     </TabsList>
                   </Tabs>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" /> 2024</span>
-                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" /> 2025</span>
-                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-green inline-block" /> 2026</span>
-                </div>
+                {compPeriod === "yearly" ? (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" /> Revenue Share</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" /> 2024</span>
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" /> 2025</span>
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-green inline-block" /> 2026</span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Yearly: line chart */}
+            {/* Yearly: single line showing total per year */}
             {compPeriod === "yearly" && (
               <div className="h-[200px] sm:h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -478,15 +487,10 @@ export default function RevShareDashboard() {
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
                     <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
                     <Tooltip
-                      formatter={(value: number, name: string) => {
-                        const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                        return [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), label];
-                      }}
+                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), "Revenue Share"]}
                       contentStyle={tooltipStyle}
                     />
-                    <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-navy))" }} connectNulls />
-                    <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-blue))" }} connectNulls />
-                    <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-green))" }} connectNulls />
+                    <Line type="monotone" dataKey="value" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 4, fill: "hsl(var(--exp-blue))" }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
