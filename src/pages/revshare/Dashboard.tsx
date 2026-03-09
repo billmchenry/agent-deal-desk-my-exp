@@ -39,15 +39,6 @@ const levelDistribution = [
   { name: "Level 7", value: 29.8, agents: 5311, color: "hsl(220, 25%, 88%)" },
 ];
 
-const countryDistribution = [
-  { name: "United States", agents: 4850, color: "hsl(262, 83%, 58%)" },
-  { name: "United Kingdom", agents: 1450, color: "hsl(217, 91%, 60%)" },
-  { name: "Canada", agents: 1125, color: "hsl(142, 71%, 45%)" },
-  { name: "Germany", agents: 980, color: "hsl(45, 93%, 47%)" },
-  { name: "Australia", agents: 890, color: "hsl(0, 84%, 60%)" },
-  { name: "Brazil", agents: 820, color: "hsl(220, 45%, 30%)" },
-  { name: "France", agents: 720, color: "hsl(210, 40%, 75%)" },
-];
 
 // Yearly: single line showing total revshare per year
 const revenueYearlyGrouped = [
