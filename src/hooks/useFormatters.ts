@@ -13,7 +13,7 @@ export function useFormatters() {
     formatNumber: (value: number, options?: Intl.NumberFormatOptions) =>
       _formatNumber(value, numberFormat, options),
 
-    formatCurrency: (value: number, options?: { compact?: boolean; decimals?: number }) =>
+    formatCurrency: (value: number, options?: { compact?: boolean; decimals?: number; symbol?: boolean }) =>
       _formatCurrency(value, numberFormat, options),
 
     formatDate: (date: Date | string) =>
