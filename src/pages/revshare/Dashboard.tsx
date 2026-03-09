@@ -26,6 +26,36 @@ import {
   HoverCard, HoverCardContent, HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
+// Yearly: single line showing total revshare per year
+const revenueYearlyGrouped = [
+  { name: "2024", value: 1.0 },
+  { name: "2025", value: 3.8 },
+];
+
+// Quarterly: two lines comparing 2024 vs 2025
+const revenueQuarterlyGrouped = [
+  { name: "Q1", y2024: 0.2, y2025: 0.8 },
+  { name: "Q2", y2024: 0.3, y2025: 1.0 },
+  { name: "Q3", y2024: 0.25, y2025: 1.1 },
+  { name: "Q4", y2024: 0.25, y2025: 0.9 },
+];
+
+// Monthly: two lines comparing 2024 vs 2025
+const revenueMonthlyGrouped = [
+  { name: "Jan", y2024: 0.05, y2025: 0.25 },
+  { name: "Feb", y2024: 0.06, y2025: 0.27 },
+  { name: "Mar", y2024: 0.09, y2025: 0.28 },
+  { name: "Apr", y2024: 0.08, y2025: 0.30 },
+  { name: "May", y2024: 0.10, y2025: 0.35 },
+  { name: "Jun", y2024: 0.12, y2025: 0.35 },
+  { name: "Jul", y2024: 0.09, y2025: 0.38 },
+  { name: "Aug", y2024: 0.08, y2025: 0.37 },
+  { name: "Sep", y2024: 0.08, y2025: 0.35 },
+  { name: "Oct", y2024: 0.09, y2025: 0.30 },
+  { name: "Nov", y2024: 0.08, y2025: 0.30 },
+  { name: "Dec", y2024: 0.08, y2025: 0.30 },
+];
+
 
 /* ── Mock Data ─────────────────────────────────────────── */
 
