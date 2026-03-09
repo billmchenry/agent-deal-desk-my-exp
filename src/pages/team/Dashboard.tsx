@@ -193,9 +193,12 @@ export default function TeamDashboard() {
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.teamLeadSplit")}</p>
                 <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.teamLeadSplit.total)} <span className="text-body font-normal text-muted-foreground">USD</span>
+                  {formatCurrency(teamOverview.teamLeadSplit.total)} <span className="text-body font-normal text-muted-foreground">{isCanada ? "CAD" : "USD"}</span>
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.teamLeadSplit.pending)} USD</p>
+                {isCanada && (
+                  <p className="text-sm text-muted-foreground mt-1">{t("txn.firm")} : {formatCurrency(12500)} {isCanada ? "CAD" : "USD"}</p>
+                )}
+                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.teamLeadSplit.pending)} {isCanada ? "CAD" : "USD"}</p>
               </button>
             </div>
           </CardContent>
