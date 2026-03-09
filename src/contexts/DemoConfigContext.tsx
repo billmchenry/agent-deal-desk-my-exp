@@ -11,11 +11,11 @@ export type MentorMode =
   | "active_mentor";
 
 export type FlqaMode =
-  | "below_level4"
-  | "at_level4"
-  | "at_level5"
-  | "at_level6"
-  | "maxed_out";
+  | "low"
+  | "mid"
+  | "high"
+  | "max"
+  | "over";
 
 interface DemoConfig {
   mentorMode: MentorMode;
