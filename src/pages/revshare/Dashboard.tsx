@@ -62,18 +62,18 @@ const revenueMonthlyGrouped = [
 
 const levelScenarios = {
   full: [
-    { name: "L1", agents: 129, revShare: 1998, color: "hsl(244, 14%, 22%)" },
-    { name: "L2", agents: 374, revShare: 5993, color: "hsl(230, 25%, 32%)" },
-    { name: "L3", agents: 962, revShare: 15412, color: "hsl(218, 35%, 42%)" },
-    { name: "L4", agents: 2190, revShare: 35104, color: "hsl(210, 40%, 52%)" },
-    { name: "L5", agents: 3704, revShare: 59363, color: "hsl(200, 35%, 62%)" },
-    { name: "L6", agents: 5146, revShare: 82481, color: "hsl(215, 30%, 76%)" },
-    { name: "L7", agents: 5311, revShare: 85049, color: "hsl(220, 25%, 88%)" },
+    { name: "Level 1", agents: 129, revShare: 1998, color: "hsl(244, 14%, 22%)" },
+    { name: "Level 2", agents: 374, revShare: 5993, color: "hsl(230, 25%, 32%)" },
+    { name: "Level 3", agents: 962, revShare: 15412, color: "hsl(218, 35%, 42%)" },
+    { name: "Level 4", agents: 2190, revShare: 35104, color: "hsl(210, 40%, 52%)" },
+    { name: "Level 5", agents: 3704, revShare: 59363, color: "hsl(200, 35%, 62%)" },
+    { name: "Level 6", agents: 5146, revShare: 82481, color: "hsl(215, 30%, 76%)" },
+    { name: "Level 7", agents: 5311, revShare: 85049, color: "hsl(220, 25%, 88%)" },
   ],
   few_levels: [
-    { name: "L1", agents: 42, revShare: 620, color: "hsl(244, 14%, 22%)" },
-    { name: "L2", agents: 18, revShare: 285, color: "hsl(230, 25%, 32%)" },
-    { name: "L3", agents: 5, revShare: 95, color: "hsl(218, 35%, 42%)" },
+    { name: "Level 1", agents: 42, revShare: 620, color: "hsl(244, 14%, 22%)" },
+    { name: "Level 2", agents: 18, revShare: 285, color: "hsl(230, 25%, 32%)" },
+    { name: "Level 3", agents: 5, revShare: 95, color: "hsl(218, 35%, 42%)" },
   ],
 };
 
