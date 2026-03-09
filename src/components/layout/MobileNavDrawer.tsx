@@ -60,6 +60,8 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const [manuallyToggled, setManuallyToggled] = useState<Set<string>>(new Set());
   const { t } = useTranslation();
   const { isRTL } = useLocale();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
