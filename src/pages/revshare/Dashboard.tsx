@@ -214,15 +214,15 @@ export default function RevShareDashboard() {
                   </div>
                   <span className="text-xs font-semibold text-white">{t("revshare.revenueShare")}</span>
                 </div>
-                <div className="flex items-baseline gap-1.5 mb-1">
-                <p className="text-stat-value font-bold font-secondary text-white">
-                    {formatCurrency(264138.52)} <span className="text-sm font-medium text-white/70">USD</span>
+                <div className="flex items-baseline gap-1.5 mb-2">
+                  <p className="text-stat-value font-bold font-secondary text-white">
+                    {formatNumber(264138.52, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm font-medium text-white/70">USD</span>
                   </p>
                   <span className="text-xs text-white/70">{t("revshare.afterAdj")}</span>
                 </div>
-                <div className="mt-1 space-y-1 text-xs text-white/70">
-                  <p>{t("revshare.beforeAdj")} <span className="font-secondary">{formatCurrency(242857.04)}</span> USD</p>
-                  <p>{t("revshare.adjustment")} <span className="font-secondary">+{formatCurrency(21281.48)}</span> USD</p>
+                <div className="mt-1 space-y-1.5 text-body text-white/70">
+                  <p>{t("revshare.beforeAdj")} <span className="font-secondary font-medium">{formatNumber(242857.04, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> USD</p>
+                  <p>{t("revshare.adjustment")} <span className="font-secondary font-medium">+{formatNumber(21281.48, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> USD</p>
                 </div>
               </div>
 
