@@ -92,6 +92,7 @@ export const frCA: Record<string, string> = {
   "agent.units": "Unités",
   "agent.volume": "Volume",
   "agent.commission": "Commission",
+  "agent.transactionsClosed": "Transactions conclues",
   "agent.currentYear": "Année en cours",
   "agent.previousYear": "Année précédente",
   "agent.tapToSee": "Touchez une barre pour voir les détails",
