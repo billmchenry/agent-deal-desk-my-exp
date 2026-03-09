@@ -64,6 +64,7 @@ export function AgentHeroBanner({
   transactionsPending,
   transactionsWithdrawn,
   transactionsFirm,
+  hideStatusBreakdown,
 }: AgentHeroBannerProps) {
   const { formatCurrency } = useFormatters();
   const { t } = useTranslation();
