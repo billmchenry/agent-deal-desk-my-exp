@@ -11,6 +11,8 @@ import { useFormatters } from "@/hooks/useFormatters";
 import { Badge } from "@/components/ui/badge";
 import { DropdownFilter } from "@/components/filters/DropdownFilter";
 import { SearchFilter } from "@/components/filters/SearchFilter";
+import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 function getStatusBadge(status: string) {
   switch (status.toLowerCase()) {
@@ -20,6 +22,8 @@ function getStatusBadge(status: string) {
       return <Badge className="bg-exp-gold/10 text-exp-gold border-exp-gold/20 hover:bg-exp-gold/10">Pending</Badge>;
     case "withdrawn":
       return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Withdrawn</Badge>;
+    case "firm":
+      return <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/10">Firm</Badge>;
     default:
       return <Badge variant="outline">{status}</Badge>;
   }
