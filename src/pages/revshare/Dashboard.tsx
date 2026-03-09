@@ -464,15 +464,21 @@ export default function RevShareDashboard() {
                     </TabsList>
                   </Tabs>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" /> 2024</span>
-                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" /> 2025</span>
-                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-green inline-block" /> 2026</span>
-                </div>
+                {compPeriod === "yearly" ? (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" /> Revenue Share</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" /> 2024</span>
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" /> 2025</span>
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-green inline-block" /> 2026</span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Yearly: line chart */}
+            {/* Yearly: single line showing total per year */}
             {compPeriod === "yearly" && (
               <div className="h-[200px] sm:h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -481,15 +487,10 @@ export default function RevShareDashboard() {
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
                     <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
                     <Tooltip
-                      formatter={(value: number, name: string) => {
-                        const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
-                        return [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), label];
-                      }}
+                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), "Revenue Share"]}
                       contentStyle={tooltipStyle}
                     />
-                    <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-navy))" }} connectNulls />
-                    <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-blue))" }} connectNulls />
-                    <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-green))" }} connectNulls />
+                    <Line type="monotone" dataKey="value" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 4, fill: "hsl(var(--exp-blue))" }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
