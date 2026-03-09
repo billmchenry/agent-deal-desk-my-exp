@@ -22,11 +22,11 @@ const mentorOptions: { value: MentorMode; label: string; description: string }[]
 ];
 
 const flqaOptions: { value: FlqaMode; label: string; description: string }[] = [
-  { value: "below_level4", label: "Below Level 4 (3 FLQA)", description: "Actual 3, no bonus — needs 2 more for Level 4" },
-  { value: "at_level4", label: "At Level 4 (7 FLQA)", description: "Actual 5 + Bonus 2 — needs 3 more for Level 5" },
-  { value: "at_level5", label: "At Level 5 (12 FLQA)", description: "Actual 10 + Bonus 2 — needs 3 more for Level 6" },
-  { value: "at_level6", label: "At Level 6 (18 FLQA)", description: "Actual 18, no bonus — above Level 6 threshold" },
-  { value: "maxed_out", label: "Maxed Out (30 FLQA)", description: "Actual 18 + Bonus 12 — all levels unlocked, green bar" },
+  { value: "low", label: "Low (5 actual, 0 bonus)", description: "Total 5 — below Level 4 threshold" },
+  { value: "mid", label: "Mid (18 actual, 12 bonus)", description: "Total 30 — all levels unlocked via bonus" },
+  { value: "high", label: "High (25 actual, 5 bonus)", description: "Total 30 — all levels unlocked" },
+  { value: "max", label: "Max (30 actual, 0 bonus)", description: "Total 30 — maxed out, no bonus needed" },
+  { value: "over", label: "Over (28 actual, 7 bonus)", description: "Total 35 — exceeds 30 goal" },
 ];
 
 export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {

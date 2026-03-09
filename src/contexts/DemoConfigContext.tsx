@@ -11,11 +11,11 @@ export type MentorMode =
   | "active_mentor";
 
 export type FlqaMode =
-  | "below_level4"
-  | "at_level4"
-  | "at_level5"
-  | "at_level6"
-  | "maxed_out";
+  | "low"
+  | "mid"
+  | "high"
+  | "max"
+  | "over";
 
 interface DemoConfig {
   mentorMode: MentorMode;
@@ -37,10 +37,10 @@ function loadConfig(): DemoConfig {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      return { mentorMode: "none", flqaMode: "below_level4", ...parsed };
+      return { mentorMode: "none", flqaMode: "low", ...parsed };
     }
   } catch {}
-  return { mentorMode: "none", flqaMode: "below_level4" };
+  return { mentorMode: "none", flqaMode: "low" };
 }
 
 function saveConfig(config: DemoConfig) {
