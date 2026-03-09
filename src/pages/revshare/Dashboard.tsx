@@ -441,12 +441,12 @@ export default function RevShareDashboard() {
 
               {/* By Country */}
               <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-s lg:ps-4 border-border">
-                <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byCountry")}</span>
+                <h3 className="text-sm font-semibold text-foreground mb-2">{t("revshare.byCountry")}</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-border text-xs text-muted-foreground">
-                        <th className="text-left py-2 pr-4 font-medium">{t("revshare.country")}</th>
+                        <th className="text-left py-2 pr-4 font-medium">Country</th>
                         <th className="text-right py-2 px-4 font-medium">%</th>
                         <th className="text-right py-2 px-4 font-medium">{t("revshare.agents")}</th>
                         <th className="text-right py-2 pl-4 font-medium">{t("revshare.revShareLabel")}</th>
