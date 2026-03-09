@@ -88,6 +88,7 @@ export const en = {
   "agent.units": "Units",
   "agent.volume": "Volume",
   "agent.commission": "Commission",
+  "agent.transactionsClosed": "Closed Transactions",
   "agent.currentYear": "Current Year",
   "agent.previousYear": "Previous Year",
   "agent.tapToSee": "Tap a bar to see details",
