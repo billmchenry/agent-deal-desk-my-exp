@@ -60,6 +60,8 @@ export function Sidebar() {
   const [manuallyCollapsed, setManuallyCollapsed] = useState<string | null>(null);
   const { isCollapsed, toggleCollapse } = useSidebarCollapse();
   const { t } = useTranslation();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
