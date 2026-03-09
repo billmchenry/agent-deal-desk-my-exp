@@ -10,6 +10,7 @@ interface CappingSectionProps {
   capTarget: number;
   capPercentage: number;
   dateRange?: { from: Date | undefined; to: Date | undefined };
+  hideHistory?: boolean;
 }
 
 export function CappingSection({ capCurrent, capTarget, capPercentage, dateRange }: CappingSectionProps) {
