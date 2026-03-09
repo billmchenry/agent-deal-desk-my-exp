@@ -243,11 +243,6 @@ export default function YearEnd() {
     []
   );
 
-  if (config.countryMode === "canada") {
-    return <Navigate to="/documents/downloads" replace />;
-  }
-
-  // Donut data
   const donutData = useMemo(() => {
     const items: { name: string; value: number }[] = [];
     mockCompanyGroups.forEach((cg) => {
@@ -259,6 +254,10 @@ export default function YearEnd() {
     });
     return items;
   }, []);
+
+  if (config.countryMode === "canada") {
+    return <Navigate to="/documents/downloads" replace />;
+  }
 
   const handleDrilldown = (line: EarningLine) => {
     setDrilldownLine(line);
