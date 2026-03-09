@@ -50,8 +50,8 @@ const countryDistribution = [
 ];
 
 const revenueYearlyGrouped = [
-  { name: "2024", y2024: 1.0, y2025: null, y2026: null },
-  { name: "2025", y2024: 1.0, y2025: 3.8, y2026: null },
+  { name: "2024", y2024: 1.0, y2025: 0, y2026: 0 },
+  { name: "2025", y2024: 1.0, y2025: 3.8, y2026: 0 },
   { name: "2026", y2024: 1.0, y2025: 3.8, y2026: 0.285 },
 ];
 
