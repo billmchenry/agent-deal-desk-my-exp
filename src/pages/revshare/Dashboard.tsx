@@ -429,7 +429,7 @@ export default function RevShareDashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {(showAllLevels ? levelTableData : levelTableData.slice(0, 3)).map((row) => (
+                    {(isMobile ? (showAllLevels ? levelTableData : levelTableData.slice(0, 3)) : levelTableData).map((row) => (
                       <tr key={row.level} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
                         <td className="py-2 pr-2 font-medium text-foreground">
                           <div className="flex items-center gap-2">
@@ -442,7 +442,7 @@ export default function RevShareDashboard() {
                       </tr>
                     ))}
                   </tbody>
-                  {showAllLevels && (
+                  {(!isMobile || showAllLevels) && (
                     <tfoot>
                       <tr className="border-t border-border font-semibold text-foreground">
                         <td className="py-2 pr-2">Total</td>
@@ -452,10 +452,10 @@ export default function RevShareDashboard() {
                     </tfoot>
                   )}
                 </table>
-                {levelTableData.length > 3 && (
+                {isMobile && levelTableData.length > 3 && (
                   <button
                     onClick={() => setShowAllLevels(!showAllLevels)}
-                    className="mt-2 text-xs text-primary hover:underline font-medium min-h-[44px] sm:min-h-0"
+                    className="mt-2 text-xs text-primary hover:underline font-medium min-h-[44px]"
                   >
                     {showAllLevels ? "View less" : `View more (${levelTableData.length - 3})`}
                   </button>
