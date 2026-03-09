@@ -469,7 +469,7 @@ export default function RevShareDashboard() {
                     </tbody>
                     <tfoot>
                       <tr className="border-t border-border font-semibold text-foreground">
-                        <td className="py-2 pr-4">{t("revshare.total")}</td>
+                        <td className="py-2 pr-4">Total</td>
                         <td className="py-2 px-4 text-right font-secondary">100%</td>
                         <td className="py-2 px-4 text-right font-secondary">{formatNumber(TOTAL_AGENTS)}</td>
                         <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(TOTAL_REVSHARE)}</td>
