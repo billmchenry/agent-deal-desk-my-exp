@@ -11,6 +11,8 @@ import { useFormatters } from "@/hooks/useFormatters";
 import { Badge } from "@/components/ui/badge";
 import { DropdownFilter } from "@/components/filters/DropdownFilter";
 import { SearchFilter } from "@/components/filters/SearchFilter";
+import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 function getStatusBadge(status: string) {
   switch (status.toLowerCase()) {
@@ -20,6 +22,8 @@ function getStatusBadge(status: string) {
       return <Badge className="bg-exp-gold/10 text-exp-gold border-exp-gold/20 hover:bg-exp-gold/10">Pending</Badge>;
     case "withdrawn":
       return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Withdrawn</Badge>;
+    case "firm":
+      return <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/10">Firm</Badge>;
     default:
       return <Badge variant="outline">{status}</Badge>;
   }
@@ -28,6 +32,8 @@ function getStatusBadge(status: string) {
 export default function Transactions() {
   const { t } = useTranslation();
   const { formatCurrency, formatDate } = useFormatters();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
   useDocumentTitle(t("txn.agentProductionDetails"));
 
   const [searchParams] = useSearchParams();
@@ -60,6 +66,7 @@ export default function Transactions() {
     { value: "paid", label: t("txn.paid") },
     { value: "pending", label: t("txn.pending") },
     { value: "withdrawn", label: t("txn.withdrawn") },
+    ...(isCanada ? [{ value: "firm", label: t("txn.firm") }] : []),
   ];
 
   const columns: ColumnDef<Transaction>[] = [
@@ -130,6 +137,7 @@ export default function Transactions() {
   return (
     <DashboardLayout>
       <div className="space-y-4">
+        <CanadianDisclaimer variant="agent" email="canada.support@exprealty.com" />
         <UniversalFilterBar title={t("txn.agentProductionDetails")}>
           <DropdownFilter
             label={t("txn.status")}

@@ -17,6 +17,8 @@ import { topAgents, teamOverview, teamRequirements, onboardingAgents, agentDetai
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { UniversalFilterBar } from "@/components/filters";
+import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 type View = "overview" | "agentDetails" | "topAgents";
 
@@ -25,6 +27,8 @@ export default function TeamDashboard() {
   useDocumentTitle(t("nav.myTeam"));
   const { formatCurrency, formatNumber } = useFormatters();
   const navigate = useNavigate();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
 
   const [view, setView] = useState<View>("overview");
   const [selectedOnboardingAgent, setSelectedOnboardingAgent] = useState<OnboardingAgent | null>(null);
@@ -140,6 +144,7 @@ export default function TeamDashboard() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <UniversalFilterBar title={t("team.myTeam")} />
+        <CanadianDisclaimer variant="teamLead" email="canada.support@exprealty.com" />
 
         <p className="text-body-lg font-medium text-foreground mb-6">
           {t("team.myTeam")}: {teamOverview.name}
@@ -168,9 +173,9 @@ export default function TeamDashboard() {
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.units")}</p>
                 <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatNumber(teamOverview.units.total)} <span className="text-body font-normal text-muted-foreground">{t("team.units")}</span>
+                  {formatNumber(isCanada ? 13.25 : teamOverview.units.total)} <span className="text-body font-normal text-muted-foreground">{t("team.units")}</span>
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatNumber(teamOverview.units.pending)} {t("team.units")}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatNumber(isCanada ? 2.5 : teamOverview.units.pending)} {t("team.units")}</p>
               </button>
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.volume")}</p>

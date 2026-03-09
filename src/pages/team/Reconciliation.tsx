@@ -13,6 +13,8 @@ import { DropdownFilter } from "@/components/filters/DropdownFilter";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 export interface TeamTransaction {
   number: number;
@@ -57,6 +59,8 @@ export default function Reconciliation() {
   const { t } = useTranslation();
   const { formatCurrency, formatDate } = useFormatters();
   const navigate = useNavigate();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
   useDocumentTitle(t("team.reconciliation"));
 
   const [search, setSearch] = useState("");
@@ -70,6 +74,7 @@ export default function Reconciliation() {
     { value: "paid", label: t("txn.paid") },
     { value: "pending", label: t("txn.pending") },
     { value: "withdrawn", label: t("txn.withdrawn") },
+    ...(isCanada ? [{ value: "firm", label: t("txn.firm") }] : []),
   ];
 
   const filteredData = teamTransactionsData.filter((r) => {
@@ -173,6 +178,7 @@ export default function Reconciliation() {
   return (
     <DashboardLayout>
       <div className="space-y-4">
+        <CanadianDisclaimer variant="teamLead" email="canada.support@exprealty.com" />
         <Button
           variant="ghost"
           size="sm"

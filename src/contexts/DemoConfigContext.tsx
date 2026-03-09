@@ -19,10 +19,13 @@ export type FlqaMode =
 
 export type DistributionMode = "full" | "few_levels" | "few_countries" | "many_countries";
 
+export type CountryMode = "us" | "canada";
+
 interface DemoConfig {
   mentorMode: MentorMode;
   flqaMode: FlqaMode;
   distributionMode: DistributionMode;
+  countryMode: CountryMode;
 }
 
 interface DemoConfigContextValue {
@@ -30,6 +33,7 @@ interface DemoConfigContextValue {
   setMentorMode: (mode: MentorMode) => void;
   setFlqaMode: (mode: FlqaMode) => void;
   setDistributionMode: (mode: DistributionMode) => void;
+  setCountryMode: (mode: CountryMode) => void;
 }
 
 const DemoConfigContext = createContext<DemoConfigContextValue | null>(null);
@@ -41,10 +45,10 @@ function loadConfig(): DemoConfig {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, ...parsed };
+      return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, countryMode: "us" as const, ...parsed };
     }
   } catch {}
-  return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const };
+  return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, countryMode: "us" as const };
 }
 
 function saveConfig(config: DemoConfig) {
@@ -78,8 +82,16 @@ export function DemoConfigProvider({ children }: { children: React.ReactNode }) 
     });
   }, []);
 
+  const setCountryMode = useCallback((mode: CountryMode) => {
+    setConfig((prev) => {
+      const next = { ...prev, countryMode: mode };
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
   return (
-    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode }}>
+    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode }}>
       {children}
     </DemoConfigContext.Provider>
   );

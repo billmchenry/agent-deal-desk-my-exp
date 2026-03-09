@@ -2,8 +2,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { useDemoConfig, type MentorMode, type FlqaMode, type DistributionMode } from "@/contexts/DemoConfigContext";
-import { Users, Target, BarChart3 } from "lucide-react";
+import { useDemoConfig, type MentorMode, type FlqaMode, type DistributionMode, type CountryMode } from "@/contexts/DemoConfigContext";
+import { Users, Target, BarChart3, Globe } from "lucide-react";
 
 interface DemoConfigSheetProps {
   open: boolean;
@@ -36,8 +36,13 @@ const distributionOptions: { value: DistributionMode; label: string; description
   { value: "many_countries", label: "Many Countries (10 countries)", description: "10 countries — global presence" },
 ];
 
+const countryOptions: { value: CountryMode; label: string; description: string }[] = [
+  { value: "us", label: "United States", description: "Default US experience" },
+  { value: "canada", label: "Canada", description: "Shows Firm status, fractional units, disclaimer banner" },
+];
+
 export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
-  const { config, setMentorMode, setFlqaMode, setDistributionMode } = useDemoConfig();
+  const { config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode } = useDemoConfig();
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -122,6 +127,35 @@ export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
             className="space-y-2"
           >
             {distributionOptions.map((opt) => (
+              <label
+                key={opt.value}
+                className="flex items-start gap-3 p-3 rounded-lg border cursor-pointer hover:bg-accent/50 transition-colors has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5"
+              >
+                <RadioGroupItem value={opt.value} className="mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">{opt.label}</p>
+                  <p className="text-xs text-muted-foreground">{opt.description}</p>
+                </div>
+              </label>
+            ))}
+          </RadioGroup>
+        </div>
+
+        <Separator className="my-4" />
+
+        {/* Country Mode */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Globe className="h-4 w-4 text-primary" />
+            <h3 className="text-sm font-semibold text-foreground">Country</h3>
+          </div>
+
+          <RadioGroup
+            value={config.countryMode}
+            onValueChange={(val) => setCountryMode(val as CountryMode)}
+            className="space-y-2"
+          >
+            {countryOptions.map((opt) => (
               <label
                 key={opt.value}
                 className="flex items-start gap-3 p-3 rounded-lg border cursor-pointer hover:bg-accent/50 transition-colors has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5"
