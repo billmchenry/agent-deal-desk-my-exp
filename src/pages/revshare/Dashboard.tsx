@@ -30,21 +30,22 @@ import {
 const revenueYearlyGrouped = [
   { name: "2024", value: 1.0 },
   { name: "2025", value: 3.8 },
+  { name: "2026", value: 0.9 },
 ];
 
-// Quarterly: two lines comparing 2024 vs 2025
+// Quarterly: three lines comparing 2024 vs 2025 vs 2026
 const revenueQuarterlyGrouped = [
-  { name: "Q1", y2024: 0.2, y2025: 0.8 },
+  { name: "Q1", y2024: 0.2, y2025: 0.8, y2026: 0.9 },
   { name: "Q2", y2024: 0.3, y2025: 1.0 },
   { name: "Q3", y2024: 0.25, y2025: 1.1 },
   { name: "Q4", y2024: 0.25, y2025: 0.9 },
 ];
 
-// Monthly: two lines comparing 2024 vs 2025
+// Monthly: three lines comparing 2024 vs 2025 vs 2026
 const revenueMonthlyGrouped = [
-  { name: "Jan", y2024: 0.05, y2025: 0.25 },
-  { name: "Feb", y2024: 0.06, y2025: 0.27 },
-  { name: "Mar", y2024: 0.09, y2025: 0.28 },
+  { name: "Jan", y2024: 0.05, y2025: 0.25, y2026: 0.30 },
+  { name: "Feb", y2024: 0.06, y2025: 0.27, y2026: 0.33 },
+  { name: "Mar", y2024: 0.09, y2025: 0.28, y2026: 0.28 },
   { name: "Apr", y2024: 0.08, y2025: 0.30 },
   { name: "May", y2024: 0.10, y2025: 0.35 },
   { name: "Jun", y2024: 0.12, y2025: 0.35 },
