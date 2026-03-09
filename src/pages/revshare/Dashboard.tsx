@@ -439,7 +439,7 @@ export default function RevShareDashboard() {
                           </td>
                           <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
                           <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
-                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)}</td>
+                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                         </tr>
                       ))}
                     </tbody>
