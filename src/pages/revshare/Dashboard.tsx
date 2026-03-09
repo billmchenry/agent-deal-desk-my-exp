@@ -424,8 +424,7 @@ export default function RevShareDashboard() {
                   <thead>
                     <tr className="border-b border-border text-xs text-muted-foreground">
                       <th className="text-left py-2 pr-2 font-medium">Level</th>
-                      <th className="text-right py-2 px-2 font-medium">%</th>
-                      <th className="text-right py-2 px-2 font-medium">{t("revshare.agents")}</th>
+                      <th className="text-right py-2 px-2 font-medium">{t("revshare.agents")} (%)</th>
                       <th className="text-right py-2 pl-2 font-medium">{t("revshare.revShareLabel")}</th>
                     </tr>
                   </thead>
@@ -438,8 +437,7 @@ export default function RevShareDashboard() {
                             {row.level}
                           </div>
                         </td>
-                        <td className="py-2 px-2 text-right font-secondary text-muted-foreground">{row.pct}%</td>
-                        <td className="py-2 px-2 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
+                        <td className="py-2 px-2 text-right font-secondary text-foreground">{formatNumber(row.agents)} <span className="text-muted-foreground">({row.pct}%)</span></td>
                         <td className="py-2 pl-2 text-right font-secondary text-foreground whitespace-nowrap">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
                     ))}
@@ -448,8 +446,7 @@ export default function RevShareDashboard() {
                     <tfoot>
                       <tr className="border-t border-border font-semibold text-foreground">
                         <td className="py-2 pr-2">Total</td>
-                        <td className="py-2 px-2 text-right font-secondary">100%</td>
-                        <td className="py-2 px-2 text-right font-secondary">{formatNumber(totalAgents)}</td>
+                        <td className="py-2 px-2 text-right font-secondary">{formatNumber(totalAgents)} <span className="font-normal text-muted-foreground">(100%)</span></td>
                         <td className="py-2 pl-2 text-right font-secondary whitespace-nowrap">{formatCurrency(totalRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
                     </tfoot>
