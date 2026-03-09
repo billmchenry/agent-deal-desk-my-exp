@@ -136,7 +136,7 @@ export default function Reconciliation() {
     { key: "status", header: "txn.status", type: "badge", sortable: true, filterable: true },
     { key: "netCommission", header: "team.netCommission", type: "currency", sortable: true, currencyCodeKey: "currency" },
     {
-      key: "uuid" as keyof TeamTransaction,
+      key: "number" as keyof TeamTransaction,
       header: "team.viewBreakdown",
       type: "string",
       render: (_val, row) => (
@@ -205,7 +205,7 @@ export default function Reconciliation() {
         <DataTable
           data={filteredData}
           columns={columns}
-          searchableKeys={["agentName", "uuid", "address", "status"]}
+          searchableKeys={["agentName", "address", "status"]}
           onRowClick={handleRowClick}
           defaultPageSize={25}
           defaultSort={{ key: "number", direction: "asc" }}
