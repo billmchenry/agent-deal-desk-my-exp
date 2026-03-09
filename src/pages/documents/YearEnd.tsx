@@ -230,10 +230,6 @@ export default function YearEnd() {
   const { config } = useDemoConfig();
   const { t } = useTranslation();
   const { formatCurrency, formatDate, formatNumber } = useFormatters();
-
-  if (config.countryMode === "canada") {
-    return <Navigate to="/documents/downloads" replace />;
-  }
   useDocumentTitle(t("nav.yearEnd"));
 
   const [year, setYear] = useState("2025");
@@ -241,6 +237,10 @@ export default function YearEnd() {
   const [view, setView] = useState<View>("summary");
   const [drilldownLine, setDrilldownLine] = useState<EarningLine | null>(null);
   const [selectedTxn, setSelectedTxn] = useState<TransactionRow | null>(null);
+
+  if (config.countryMode === "canada") {
+    return <Navigate to="/documents/downloads" replace />;
+  }
 
   const grandTotal = useMemo(
     () => mockCompanyGroups.reduce((sum, cg) => sum + cg.entities.reduce((s, eg) => s + eg.lines.reduce((a, l) => a + l.amount, 0), 0), 0),
