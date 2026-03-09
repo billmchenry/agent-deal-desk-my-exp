@@ -227,8 +227,13 @@ const mockFiles: YearEndFile[] = [
 type View = "summary" | "drilldown";
 
 export default function YearEnd() {
+  const { config } = useDemoConfig();
   const { t } = useTranslation();
   const { formatCurrency, formatDate, formatNumber } = useFormatters();
+
+  if (config.countryMode === "canada") {
+    return <Navigate to="/documents/downloads" replace />;
+  }
   useDocumentTitle(t("nav.yearEnd"));
 
   const [year, setYear] = useState("2025");
