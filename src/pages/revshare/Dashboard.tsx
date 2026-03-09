@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { UniversalFilterBar } from "@/components/filters";
 import {
-  ResponsiveContainer, LineChart, Line, ComposedChart, Bar,
+  ResponsiveContainer, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip,
 } from "recharts";
 import {
