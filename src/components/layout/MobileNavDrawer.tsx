@@ -10,6 +10,7 @@ import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useLocale } from "@/contexts/LocaleContext";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Home, LayoutDashboard, User, Users, DollarSign, FileText,
