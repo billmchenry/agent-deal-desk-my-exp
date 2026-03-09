@@ -13,6 +13,7 @@ interface AgentHeroBannerProps {
   transactionsClosed: number;
   transactionsPending: number;
   transactionsWithdrawn: number;
+  transactionsFirm?: number;
 }
 
 function MiniStatCard({
