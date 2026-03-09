@@ -136,7 +136,7 @@ export default function Reconciliation() {
     { key: "status", header: "txn.status", type: "badge", sortable: true, filterable: true },
     { key: "netCommission", header: "team.netCommission", type: "currency", sortable: true, currencyCodeKey: "currency" },
     {
-      key: "uuid" as keyof TeamTransaction,
+      key: "number" as keyof TeamTransaction,
       header: "team.viewBreakdown",
       type: "string",
       render: (_val, row) => (
