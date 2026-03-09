@@ -144,7 +144,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
         {hasSubmenu && expanded && (
           <div className="ms-9 mt-1 space-y-0.5">
-            {item.submenu?.map((subItem) => (
+            {item.submenu?.filter((subItem) => !(isCanada && subItem.url === "/documents/year-end")).map((subItem) => (
               <button
                 key={subItem.url}
                 onClick={() => handleSubItemClick(subItem.url)}
