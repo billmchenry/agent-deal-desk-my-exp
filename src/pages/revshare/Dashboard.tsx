@@ -424,7 +424,7 @@ export default function RevShareDashboard() {
                   <thead>
                     <tr className="border-b border-border text-xs text-muted-foreground">
                       <th className="text-left py-2 pr-2 font-medium">Level</th>
-                      <th className="text-right py-2 px-2 font-medium">{t("revshare.agents")} (%)</th>
+                      <th className="text-right py-2 px-2 font-medium">{t("revshare.agents")}</th>
                       <th className="text-right py-2 pl-2 font-medium">{t("revshare.revShareLabel")}</th>
                     </tr>
                   </thead>
