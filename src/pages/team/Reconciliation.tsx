@@ -101,7 +101,7 @@ export default function Reconciliation() {
 
   const columns: ColumnDef<TeamTransaction>[] = [
     { key: "agentName", header: "team.agentName", type: "string", sortable: true, filterable: true },
-    { key: "uuid", header: "txn.transactionNumber", type: "string", sortable: true },
+    
     {
       key: "address",
       header: "txn.address",
