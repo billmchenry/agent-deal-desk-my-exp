@@ -205,7 +205,7 @@ export default function Reconciliation() {
         <DataTable
           data={filteredData}
           columns={columns}
-          searchableKeys={["agentName", "uuid", "address", "status"]}
+          searchableKeys={["agentName", "address", "status"]}
           onRowClick={handleRowClick}
           defaultPageSize={25}
           defaultSort={{ key: "number", direction: "asc" }}
