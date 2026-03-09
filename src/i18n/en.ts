@@ -103,6 +103,7 @@ export const en = {
   "txn.results": "Results",
   "txn.status": "Status",
   "txn.transactionId": "Transaction ID",
+  "txn.transactionNumber": "Transaction Number",
   "txn.closeDate": "Close Date",
   "txn.salePrice": "Sale Price",
   "txn.gci": "GCI",

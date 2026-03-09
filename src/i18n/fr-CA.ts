@@ -107,6 +107,7 @@ export const frCA: Record<string, string> = {
   "txn.results": "Résultats",
   "txn.status": "Statut",
   "txn.transactionId": "ID de transaction",
+  "txn.transactionNumber": "Numéro de transaction",
   "txn.closeDate": "Date de clôture",
   "txn.salePrice": "Prix de vente",
   "txn.gci": "GCI",
