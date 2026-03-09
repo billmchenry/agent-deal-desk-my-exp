@@ -245,7 +245,8 @@ export default function RevShareDashboard() {
                     </HoverCardContent>
                   </HoverCard>
                 </div>
-                <p className="text-stat-value font-bold font-secondary text-white">{formatNumber(24)}</p>
+                <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(24)}</p>
+                <p className="text-xs text-white/70">{t("revshare.actual")}</p>
                 <div className="flex-1" />
                 <button className="mt-2 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors self-start" aria-label={t("revshare.viewFLAList")}>
                   {t("revshare.viewFLAList")} <ChevronRight className="h-3 w-3" />
