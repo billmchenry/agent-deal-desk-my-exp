@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Navigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -12,6 +13,7 @@ import { DataTable } from "@/components/shared/DataTable";
 import { ChevronRight, ChevronLeft, FileText, Copy } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 // ── Types ──
 
@@ -225,6 +227,7 @@ const mockFiles: YearEndFile[] = [
 type View = "summary" | "drilldown";
 
 export default function YearEnd() {
+  const { config } = useDemoConfig();
   const { t } = useTranslation();
   const { formatCurrency, formatDate, formatNumber } = useFormatters();
   useDocumentTitle(t("nav.yearEnd"));
@@ -240,7 +243,6 @@ export default function YearEnd() {
     []
   );
 
-  // Donut data
   const donutData = useMemo(() => {
     const items: { name: string; value: number }[] = [];
     mockCompanyGroups.forEach((cg) => {
@@ -252,6 +254,10 @@ export default function YearEnd() {
     });
     return items;
   }, []);
+
+  if (config.countryMode === "canada") {
+    return <Navigate to="/documents/downloads" replace />;
+  }
 
   const handleDrilldown = (line: EarningLine) => {
     setDrilldownLine(line);

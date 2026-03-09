@@ -11,6 +11,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Home, LayoutDashboard, User, Users, DollarSign, FileText,
@@ -59,6 +60,8 @@ export function Sidebar() {
   const [manuallyCollapsed, setManuallyCollapsed] = useState<string | null>(null);
   const { isCollapsed, toggleCollapse } = useSidebarCollapse();
   const { t } = useTranslation();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
@@ -162,7 +165,7 @@ export function Sidebar() {
           </div>
           <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
             <div className="ms-9 mt-1 space-y-0.5">
-              {item.submenu?.map((subItem) => (
+              {item.submenu?.filter((subItem) => !(isCanada && subItem.url === "/documents/year-end")).map((subItem) => (
                 <a
                   key={subItem.url}
                   href={subItem.url}

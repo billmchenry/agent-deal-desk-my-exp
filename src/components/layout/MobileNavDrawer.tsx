@@ -10,6 +10,7 @@ import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useLocale } from "@/contexts/LocaleContext";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Home, LayoutDashboard, User, Users, DollarSign, FileText,
@@ -59,6 +60,8 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const [manuallyToggled, setManuallyToggled] = useState<Set<string>>(new Set());
   const { t } = useTranslation();
   const { isRTL } = useLocale();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
@@ -143,7 +146,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
 
         {hasSubmenu && expanded && (
           <div className="ms-9 mt-1 space-y-0.5">
-            {item.submenu?.map((subItem) => (
+            {item.submenu?.filter((subItem) => !(isCanada && subItem.url === "/documents/year-end")).map((subItem) => (
               <button
                 key={subItem.url}
                 onClick={() => handleSubItemClick(subItem.url)}
