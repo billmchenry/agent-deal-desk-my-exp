@@ -1,83 +1,73 @@
 
 
-# Team Reconciliation Page
-
-A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
-
----
+# Plan: Canadian Demo Mode for Agent & Team Dashboards
 
 ## Overview
 
-Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
+Add a new "Country Mode" toggle to the Demo Config system with two options: **US** (default) and **Canada**. When Canada is selected, the affected screens will show:
 
----
+1. A **4th transaction status ("Firm")** in agent hero banner and team dashboard
+2. **Fractional units** (e.g., 5.05) instead of whole numbers
+3. A **disclaimer banner** at the top of agent dashboard, team dashboard, agent transactions, and team reconciliation pages (in English and French Canadian)
 
-## New Files
+## Files to Change
 
-### 1. `src/pages/team/Reconciliation.tsx`
+### 1. `src/contexts/DemoConfigContext.tsx`
+- Add `CountryMode = "us" | "canada"` type
+- Add `countryMode` to `DemoConfig` interface (default: `"us"`)
+- Add `setCountryMode` setter and expose it
 
-The main page, closely mirroring the Agent Production Details pattern:
+### 2. `src/components/layout/DemoConfigSheet.tsx`
+- Add a new "Country" radio group section (with Globe icon) with two options:
+  - **United States** — Default US experience
+  - **Canada** — Shows Firm status, fractional units, disclaimer banner
 
-- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
-- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
-- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
-- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
-- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
-- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
-- CSV export enabled
-- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
-- Back button at top linking to `/team/dashboard`
+### 3. `src/i18n/en.ts` and `src/i18n/fr-CA.ts`
+- Add new keys:
+  - `txn.firm`: "Firm" / "Ferme"
+  - `disclaimer.canadianAgentTitle`: "Notice for Canadian agents"
+  - `disclaimer.canadianTeamLeadTitle`: "Notice for Canadian team leaders"  
+  - `disclaimer.canadianMessage`: The full disclaimer text (with `{email}` placeholder and real line breaks)
+  - French translations for all of the above
 
-### 2. `src/components/team/TeamBreakdownSheet.tsx`
+### 4. `src/components/shared/CanadianDisclaimer.tsx` (new)
+- A reusable alert/banner component that:
+  - Accepts `variant: "agent" | "teamLead"` and `email: string`
+  - Shows the appropriate title based on variant
+  - Renders the disclaimer message with `{email}` replaced and `\n` as actual line breaks
+  - Uses an `Alert` or info-styled card with an `Info` icon
+  - Only renders when `countryMode === "canada"` (reads from `useDemoConfig`)
 
-Side panel matching the reference screenshot's "Transaction Details" breakdown:
+### 5. `src/components/agent/AgentHeroBanner.tsx`
+- Add optional `transactionsFirm` prop
+- When provided (Canada mode), render a 4th button in the transaction status group for "Firm"
+- Adjust grid to accommodate 4 statuses (the transaction mini-stats area already uses a flex layout, so it will naturally accommodate)
 
-- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
-- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
-- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
-- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
-  - Agent identifier row (ID + Name) with a colored percentage badge
-  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
-  - Tax, Commission After Co-agents (highlighted)
-  - Agent Split Before Expenses
-  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
-- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
-- **Fees I Paid for Others** -- collapsible
-- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
+### 6. `src/pages/agent/Dashboard.tsx`
+- Import `useDemoConfig` and `CanadianDisclaimer`
+- When `countryMode === "canada"`:
+  - Pass fractional units (e.g., `5.05`) and `transactionsFirm={3}` to `AgentHeroBanner`
+  - Render `<CanadianDisclaimer variant="agent" email="agentsupport@example.com" />` above the hero banner
 
-### 3. `src/components/shared/BreakdownComponents.tsx`
+### 7. `src/pages/team/Dashboard.tsx`
+- Import `useDemoConfig` and `CanadianDisclaimer`
+- When `countryMode === "canada"`:
+  - Render `<CanadianDisclaimer variant="teamLead" email="teamsupport@example.com" />` at top of overview
+  - Show fractional units in overview stats (the formatter already handles decimals)
 
-Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
+### 8. `src/pages/agent/Transactions.tsx`
+- Add "Firm" status badge case in `getStatusBadge` (blue-ish styling)
+- Add "Firm" to the status filter dropdown when Canada mode
+- Render `CanadianDisclaimer` at top when Canada mode
 
----
+### 9. `src/pages/team/Reconciliation.tsx`
+- Add "Firm" status badge case
+- Add "Firm" to the status filter dropdown when Canada mode
+- Render `CanadianDisclaimer` at top when Canada mode
 
-## Modified Files
+## Technical Notes
 
-### `src/components/agent/TransactionDetailsSheet.tsx`
-- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
-
-### `src/data/mockData.ts`
-- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
-- Update the `navItems` array similarly
-
-### `src/components/layout/Sidebar.tsx`
-- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
-
-### `src/App.tsx`
-- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
-
-### `src/i18n/*.ts` (all 7 language files)
-- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
-
----
-
-## Implementation Order
-
-1. Extract shared breakdown components into `BreakdownComponents.tsx`
-2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
-3. Create mock team reconciliation data and the `Reconciliation.tsx` page
-4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
-5. Add route in `App.tsx`
-6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
-7. Add translation keys to all 7 language files
+- The disclaimer email is a variable passed as a prop — in a real app this would come from config/API. For demo purposes, a hardcoded placeholder email will be used.
+- Units display: when Canada mode is active, the agent dashboard passes `5.05` instead of `5`; team dashboard shows fractional values. The existing `formatNumber` already handles decimals.
+- The `CanadianDisclaimer` component internally checks `useDemoConfig().config.countryMode` so consuming pages just need to include it — it self-hides when not in Canada mode.
 
