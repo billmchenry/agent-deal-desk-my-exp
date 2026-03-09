@@ -100,9 +100,8 @@ export default function Reconciliation() {
   }).map((r) => isCanada ? { ...r, currency: "CAD" } : r);
 
   const columns: ColumnDef<TeamTransaction>[] = [
-    { key: "number", header: "team.number", type: "number", sortable: true },
     { key: "agentName", header: "team.agentName", type: "string", sortable: true, filterable: true },
-    { key: "uuid", header: "team.uuid", type: "string", sortable: true },
+    { key: "uuid", header: "txn.transactionNumber", type: "string", sortable: true },
     {
       key: "address",
       header: "txn.address",
@@ -134,7 +133,6 @@ export default function Reconciliation() {
         return s === "-" ? "-" : formatDate(s);
       },
     },
-    { key: "typeOfProperty", header: "team.typeOfProperty", type: "string", sortable: true, filterable: true },
     { key: "status", header: "txn.status", type: "badge", sortable: true, filterable: true },
     { key: "netCommission", header: "team.netCommission", type: "currency", sortable: true, currencyCodeKey: "currency" },
     {
