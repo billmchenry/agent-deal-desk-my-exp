@@ -159,20 +159,25 @@ export default function RevShareDashboard() {
   const flqaGoal = 30;
   const progressPercent = Math.min((flqaTotal / flqaGoal) * 100, 100);
 
-  // Combine level data for inline table
-  const levelTableData = levelDistribution.map((l, i) => {
-    const pct = TOTAL_AGENTS > 0 ? ((l.agents / TOTAL_AGENTS) * 100).toFixed(1) : "0";
-    return {
-      level: l.name,
-      pct,
-      agents: l.agents,
-      revShare: levelRevShare[i]?.value ?? 0,
-      color: l.color,
-    };
+  // Distribution data driven by demo config
+  const distMode = config.distributionMode;
+  const activeLevels = distMode === "few_levels" ? levelScenarios.few_levels : levelScenarios.full;
+  const activeCountries = distMode === "few_countries" ? countryScenarios.few_countries
+    : distMode === "many_countries" ? countryScenarios.many_countries
+    : countryScenarios.full;
+
+  const totalAgents = activeLevels.reduce((s, l) => s + l.agents, 0);
+  const totalRevShare = activeLevels.reduce((s, l) => s + l.revShare, 0);
+  const totalCountryAgents = activeCountries.reduce((s, c) => s + c.agents, 0);
+  const totalCountryRevShare = activeCountries.reduce((s, c) => s + c.revShare, 0);
+
+  const levelTableData = activeLevels.map((l) => {
+    const pct = totalAgents > 0 ? ((l.agents / totalAgents) * 100).toFixed(1) : "0";
+    return { level: l.name, pct, agents: l.agents, revShare: l.revShare, color: l.color };
   });
 
-  const countryTableData = countryDistribution.map((c) => {
-    const pct = TOTAL_AGENTS > 0 ? ((c.agents / TOTAL_AGENTS) * 100).toFixed(1) : "0";
+  const countryTableData = activeCountries.map((c) => {
+    const pct = totalCountryAgents > 0 ? ((c.agents / totalCountryAgents) * 100).toFixed(1) : "0";
     return { name: c.name, pct, agents: c.agents, revShare: c.revShare, color: c.color };
   });
 
