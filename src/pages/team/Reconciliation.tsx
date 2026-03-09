@@ -97,7 +97,7 @@ export default function Reconciliation() {
       r.address.toLowerCase().includes(q) ||
       r.status.toLowerCase().includes(q)
     );
-  });
+  }).map((r) => isCanada ? { ...r, currency: "CAD" } : r);
 
   const columns: ColumnDef<TeamTransaction>[] = [
     { key: "number", header: "team.number", type: "number", sortable: true },
