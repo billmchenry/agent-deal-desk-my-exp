@@ -173,9 +173,9 @@ export default function TeamDashboard() {
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.units")}</p>
                 <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatNumber(teamOverview.units.total)} <span className="text-body font-normal text-muted-foreground">{t("team.units")}</span>
+                  {formatNumber(isCanada ? 13.25 : teamOverview.units.total)} <span className="text-body font-normal text-muted-foreground">{t("team.units")}</span>
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatNumber(teamOverview.units.pending)} {t("team.units")}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatNumber(isCanada ? 2.5 : teamOverview.units.pending)} {t("team.units")}</p>
               </button>
               <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
                 <p className="text-sm text-muted-foreground mb-1">{t("team.volume")}</p>
