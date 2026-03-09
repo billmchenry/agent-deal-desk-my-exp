@@ -34,19 +34,19 @@ export default function Transactions() {
   const { formatCurrency, formatDate } = useFormatters();
   const { config } = useDemoConfig();
   const isCanada = config.countryMode === "canada";
+  const isGlobal = config.countryMode === "global";
   useDocumentTitle(t("txn.agentProductionDetails"));
 
   const [searchParams] = useSearchParams();
-  const initialStatus = searchParams.get("status") || "all";
+  const initialStatus = isGlobal ? "paid" : (searchParams.get("status") || "all");
 
   const [statusFilter, setStatusFilter] = useState(initialStatus);
   const [search, setSearch] = useState("");
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  // Filter data by status (top-level filter bar)
-  // Filter by status and search (search across all data, not just visible page)
   const filteredData = transactionsData.filter((r) => {
+    if (isGlobal && r.status.toLowerCase() !== "paid") return false;
     if (statusFilter !== "all" && r.status.toLowerCase() !== statusFilter) return false;
     if (search) {
       const q = search.toLowerCase();
@@ -61,13 +61,15 @@ export default function Transactions() {
     return true;
   }).map((r) => isCanada ? { ...r, currency: "CAD" } : r);
 
-  const statusOptions = [
-    { value: "all", label: t("txn.allStatuses") },
-    { value: "paid", label: t("txn.paid") },
-    { value: "pending", label: t("txn.pending") },
-    { value: "withdrawn", label: t("txn.withdrawn") },
-    ...(isCanada ? [{ value: "firm", label: t("txn.firm") }] : []),
-  ];
+  const statusOptions = isGlobal
+    ? [{ value: "paid", label: t("txn.paid") }]
+    : [
+        { value: "all", label: t("txn.allStatuses") },
+        { value: "paid", label: t("txn.paid") },
+        { value: "pending", label: t("txn.pending") },
+        { value: "withdrawn", label: t("txn.withdrawn") },
+        ...(isCanada ? [{ value: "firm", label: t("txn.firm") }] : []),
+      ];
 
   const columns: ColumnDef<Transaction>[] = [
     { key: "status", header: "txn.status", type: "badge", sortable: true, filterable: true },
