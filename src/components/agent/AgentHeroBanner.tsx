@@ -14,6 +14,7 @@ interface AgentHeroBannerProps {
   transactionsPending: number;
   transactionsWithdrawn: number;
   transactionsFirm?: number;
+  hideStatusBreakdown?: boolean;
 }
 
 function MiniStatCard({
