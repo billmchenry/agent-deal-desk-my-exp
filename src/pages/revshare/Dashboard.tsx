@@ -563,7 +563,7 @@ export default function RevShareDashboard() {
                             }}
                             contentStyle={tooltipStyle}
                           />
-                          <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-navy))" }} connectNulls />
+                          <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-gold))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-gold))" }} connectNulls />
                           <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-blue))" }} connectNulls />
                           <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-green))" }} connectNulls />
                         </LineChart>
