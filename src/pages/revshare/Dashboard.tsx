@@ -121,7 +121,39 @@ export default function RevShareDashboard() {
   const [distMode, setDistMode] = useState<"agents" | "revshare">("agents");
   const { formatNumber, formatCurrency } = useFormatters();
   const { t } = useTranslation();
+  const { config } = useDemoConfig();
   useDocumentTitle(t("revshare.revenueShare"));
+
+  /* ── FLQA scenario data ── */
+  const flqaScenarios = {
+    below_level4: { actual: 3, bonus: 0 },
+    at_level4:    { actual: 5, bonus: 2 },
+    at_level5:    { actual: 10, bonus: 2 },
+    at_level6:    { actual: 18, bonus: 0 },
+    maxed_out:    { actual: 18, bonus: 12 },
+  };
+
+  const flqaData = flqaScenarios[config.flqaMode];
+  const flqaTotal = flqaData.actual + flqaData.bonus;
+
+  // Level thresholds: L1-3 = 0, L4 = 5, L5 = 10, L6 = 15, max goal = 30
+  const levelThresholds = [
+    { level: 4, flqa: 5 },
+    { level: 5, flqa: 10 },
+    { level: 6, flqa: 15 },
+  ];
+
+  const currentLevel = (() => {
+    if (flqaTotal >= 15) return 6;
+    if (flqaTotal >= 10) return 5;
+    if (flqaTotal >= 5) return 4;
+    return 3; // levels 1-3 all unlock at 0
+  })();
+
+  const isMaxed = flqaTotal >= 30;
+  const nextLevelInfo = levelThresholds.find((lt) => lt.flqa > flqaTotal);
+  const flqaGoal = 30;
+  const progressPercent = Math.min((flqaTotal / flqaGoal) * 100, 100);
 
   const levelDonutData =
     distMode === "agents"
