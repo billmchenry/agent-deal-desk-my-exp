@@ -197,6 +197,22 @@ export function Sidebar() {
       </a>
     );
   };
+  const globalHiddenTitles = ["Team", "Documents", "Mentor Program", "Broker Hub", "Custom Service Fees"];
+
+  const filterNavItems = (items: SidebarNavItem[]): SidebarNavItem[] => {
+    if (!isGlobal && !isCanada) return items;
+    return items
+      .filter((item) => !(isGlobal && globalHiddenTitles.includes(item.title)))
+      .map((item) => {
+        if (!item.submenu) return item;
+        const filteredSub = item.submenu.filter((sub) => {
+          if (isCanada && sub.url === "/documents/year-end") return false;
+          if (isGlobal && globalHiddenTitles.includes(sub.title)) return false;
+          return true;
+        });
+        return { ...item, submenu: filteredSub };
+      });
+  };
 
   const renderSection = (section: { label: string; items: SidebarNavItem[] }, className?: string, showToggle?: boolean) => (
     <div className={cn("mb-4", className)}>
