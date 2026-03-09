@@ -133,7 +133,7 @@ export default function RevShareDashboard() {
     over: { actual: 28, bonus: 7 },
   };
 
-  const flqaData = flqaScenarios[config.flqaMode];
+  const flqaData = flqaScenarios[config.flqaMode] ?? flqaScenarios.low;
   const flqaTotal = flqaData.actual + flqaData.bonus;
 
   // Level thresholds: L1-3 = 0, L4 = 5, L5 = 10, L6 = 15, max goal = 30
