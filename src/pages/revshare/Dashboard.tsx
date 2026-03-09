@@ -26,73 +26,83 @@ import {
   HoverCard, HoverCardContent, HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-
-/* ── Mock Data ─────────────────────────────────────────── */
-
-const levelDistribution = [
-  { name: "Level 1", value: 0.7, agents: 129, color: "hsl(244, 14%, 22%)" },
-  { name: "Level 2", value: 2.1, agents: 374, color: "hsl(230, 25%, 32%)" },
-  { name: "Level 3", value: 5.4, agents: 962, color: "hsl(218, 35%, 42%)" },
-  { name: "Level 4", value: 12.3, agents: 2190, color: "hsl(210, 40%, 52%)" },
-  { name: "Level 5", value: 20.8, agents: 3704, color: "hsl(200, 35%, 62%)" },
-  { name: "Level 6", value: 28.9, agents: 5146, color: "hsl(215, 30%, 76%)" },
-  { name: "Level 7", value: 29.8, agents: 5311, color: "hsl(220, 25%, 88%)" },
-];
-
-const countryDistribution = [
-  { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
-  { name: "United Kingdom", agents: 1450, revShare: 23117, color: "hsl(217, 91%, 60%)" },
-  { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
-  { name: "Germany", agents: 980, revShare: 15697, color: "hsl(45, 93%, 47%)" },
-  { name: "Australia", agents: 890, revShare: 14270, color: "hsl(0, 84%, 60%)" },
-  { name: "Brazil", agents: 820, revShare: 13132, color: "hsl(220, 45%, 30%)" },
-  { name: "France", agents: 720, revShare: 11494, color: "hsl(210, 40%, 75%)" },
-];
-
 // Yearly: single line showing total revshare per year
 const revenueYearlyGrouped = [
   { name: "2024", value: 1.0 },
   { name: "2025", value: 3.8 },
-  { name: "2026", value: 0.285 },
 ];
 
-// Quarterly: each line = a year, x-axis = quarters
+// Quarterly: two lines comparing 2024 vs 2025
 const revenueQuarterlyGrouped = [
-  { name: "Q1", y2024: 0.18, y2025: 0.82, y2026: 0.285 },
-  { name: "Q2", y2024: 0.22, y2025: 1.05 },
-  { name: "Q3", y2024: 0.28, y2025: 1.12 },
-  { name: "Q4", y2024: 0.32, y2025: 0.81 },
+  { name: "Q1", y2024: 0.2, y2025: 0.8 },
+  { name: "Q2", y2024: 0.3, y2025: 1.0 },
+  { name: "Q3", y2024: 0.25, y2025: 1.1 },
+  { name: "Q4", y2024: 0.25, y2025: 0.9 },
 ];
 
-// Monthly: each line = a year, x-axis = months
+// Monthly: two lines comparing 2024 vs 2025
 const revenueMonthlyGrouped = [
-  { name: "Jan", y2024: 0.05, y2025: 0.25, y2026: 0.15 },
-  { name: "Feb", y2024: 0.05, y2025: 0.28, y2026: 0.135 },
-  { name: "Mar", y2024: 0.06, y2025: 0.3 },
-  { name: "Apr", y2024: 0.07, y2025: 0.35 },
-  { name: "May", y2024: 0.08, y2025: 0.36 },
-  { name: "Jun", y2024: 0.08, y2025: 0.38 },
-  { name: "Jul", y2024: 0.1, y2025: 0.4 },
-  { name: "Aug", y2024: 0.09, y2025: 0.37 },
-  { name: "Sep", y2024: 0.1, y2025: 0.35 },
-  { name: "Oct", y2024: 0.11, y2025: 0.28 },
-  { name: "Nov", y2024: 0.1, y2025: 0.25 },
-  { name: "Dec", y2024: 0.11, y2025: 0.28 },
+  { name: "Jan", y2024: 0.05, y2025: 0.25 },
+  { name: "Feb", y2024: 0.06, y2025: 0.27 },
+  { name: "Mar", y2024: 0.09, y2025: 0.28 },
+  { name: "Apr", y2024: 0.08, y2025: 0.30 },
+  { name: "May", y2024: 0.10, y2025: 0.35 },
+  { name: "Jun", y2024: 0.12, y2025: 0.35 },
+  { name: "Jul", y2024: 0.09, y2025: 0.38 },
+  { name: "Aug", y2024: 0.08, y2025: 0.37 },
+  { name: "Sep", y2024: 0.08, y2025: 0.35 },
+  { name: "Oct", y2024: 0.09, y2025: 0.30 },
+  { name: "Nov", y2024: 0.08, y2025: 0.30 },
+  { name: "Dec", y2024: 0.08, y2025: 0.30 },
 ];
 
-const TOTAL_AGENTS = 17816;
-const TOTAL_REVSHARE = 285400;
 
-const levelRevShare = [
-  { name: "Level 1", value: 1998, color: "hsl(244, 14%, 22%)" },
-  { name: "Level 2", value: 5993, color: "hsl(230, 25%, 32%)" },
-  { name: "Level 3", value: 15412, color: "hsl(218, 35%, 42%)" },
-  { name: "Level 4", value: 35104, color: "hsl(210, 40%, 52%)" },
-  { name: "Level 5", value: 59363, color: "hsl(200, 35%, 62%)" },
-  { name: "Level 6", value: 82481, color: "hsl(215, 30%, 76%)" },
-  { name: "Level 7", value: 85049, color: "hsl(220, 25%, 88%)" },
-];
+/* ── Mock Data ─────────────────────────────────────────── */
 
+const levelScenarios = {
+  full: [
+    { name: "Level 1", agents: 129, revShare: 1998, color: "hsl(244, 14%, 22%)" },
+    { name: "Level 2", agents: 374, revShare: 5993, color: "hsl(230, 25%, 32%)" },
+    { name: "Level 3", agents: 962, revShare: 15412, color: "hsl(218, 35%, 42%)" },
+    { name: "Level 4", agents: 2190, revShare: 35104, color: "hsl(210, 40%, 52%)" },
+    { name: "Level 5", agents: 3704, revShare: 59363, color: "hsl(200, 35%, 62%)" },
+    { name: "Level 6", agents: 5146, revShare: 82481, color: "hsl(215, 30%, 76%)" },
+    { name: "Level 7", agents: 5311, revShare: 85049, color: "hsl(220, 25%, 88%)" },
+  ],
+  few_levels: [
+    { name: "Level 1", agents: 42, revShare: 620, color: "hsl(244, 14%, 22%)" },
+    { name: "Level 2", agents: 18, revShare: 285, color: "hsl(230, 25%, 32%)" },
+    { name: "Level 3", agents: 5, revShare: 95, color: "hsl(218, 35%, 42%)" },
+  ],
+};
+
+const countryScenarios = {
+  full: [
+    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
+    { name: "United Kingdom", agents: 1450, revShare: 23117, color: "hsl(217, 91%, 60%)" },
+    { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
+    { name: "Germany", agents: 980, revShare: 15697, color: "hsl(45, 93%, 47%)" },
+    { name: "Australia", agents: 890, revShare: 14270, color: "hsl(0, 84%, 60%)" },
+    { name: "Brazil", agents: 820, revShare: 13132, color: "hsl(220, 45%, 30%)" },
+    { name: "France", agents: 720, revShare: 11494, color: "hsl(210, 40%, 75%)" },
+  ],
+  few_countries: [
+    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
+    { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
+  ],
+  many_countries: [
+    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
+    { name: "United Kingdom", agents: 1450, revShare: 23117, color: "hsl(217, 91%, 60%)" },
+    { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
+    { name: "Germany", agents: 980, revShare: 15697, color: "hsl(45, 93%, 47%)" },
+    { name: "Australia", agents: 890, revShare: 14270, color: "hsl(0, 84%, 60%)" },
+    { name: "Brazil", agents: 820, revShare: 13132, color: "hsl(220, 45%, 30%)" },
+    { name: "France", agents: 720, revShare: 11494, color: "hsl(210, 40%, 75%)" },
+    { name: "India", agents: 650, revShare: 10400, color: "hsl(30, 80%, 50%)" },
+    { name: "South Africa", agents: 420, revShare: 6720, color: "hsl(160, 60%, 40%)" },
+    { name: "Portugal", agents: 310, revShare: 4960, color: "hsl(350, 70%, 55%)" },
+  ],
+};
 
 const chartTickStyle = {
   fill: "hsl(var(--muted-foreground))",
@@ -149,20 +159,25 @@ export default function RevShareDashboard() {
   const flqaGoal = 30;
   const progressPercent = Math.min((flqaTotal / flqaGoal) * 100, 100);
 
-  // Combine level data for inline table
-  const levelTableData = levelDistribution.map((l, i) => {
-    const pct = TOTAL_AGENTS > 0 ? ((l.agents / TOTAL_AGENTS) * 100).toFixed(1) : "0";
-    return {
-      level: l.name,
-      pct,
-      agents: l.agents,
-      revShare: levelRevShare[i]?.value ?? 0,
-      color: l.color,
-    };
+  // Distribution data driven by demo config
+  const distMode = config.distributionMode;
+  const activeLevels = distMode === "few_levels" ? levelScenarios.few_levels : levelScenarios.full;
+  const activeCountries = distMode === "few_countries" ? countryScenarios.few_countries
+    : distMode === "many_countries" ? countryScenarios.many_countries
+    : countryScenarios.full;
+
+  const totalAgents = activeLevels.reduce((s, l) => s + l.agents, 0);
+  const totalRevShare = activeLevels.reduce((s, l) => s + l.revShare, 0);
+  const totalCountryAgents = activeCountries.reduce((s, c) => s + c.agents, 0);
+  const totalCountryRevShare = activeCountries.reduce((s, c) => s + c.revShare, 0);
+
+  const levelTableData = activeLevels.map((l) => {
+    const pct = totalAgents > 0 ? ((l.agents / totalAgents) * 100).toFixed(1) : "0";
+    return { level: l.name, pct, agents: l.agents, revShare: l.revShare, color: l.color };
   });
 
-  const countryTableData = countryDistribution.map((c) => {
-    const pct = TOTAL_AGENTS > 0 ? ((c.agents / TOTAL_AGENTS) * 100).toFixed(1) : "0";
+  const countryTableData = activeCountries.map((c) => {
+    const pct = totalCountryAgents > 0 ? ((c.agents / totalCountryAgents) * 100).toFixed(1) : "0";
     return { name: c.name, pct, agents: c.agents, revShare: c.revShare, color: c.color };
   });
 
@@ -429,10 +444,10 @@ export default function RevShareDashboard() {
                     </tbody>
                     <tfoot>
                       <tr className="border-t border-border font-semibold text-foreground">
-                        <td className="py-2 pr-4">{t("revshare.total")}</td>
+                        <td className="py-2 pr-4">Total</td>
                         <td className="py-2 px-4 text-right font-secondary">100%</td>
-                        <td className="py-2 px-4 text-right font-secondary">{formatNumber(TOTAL_AGENTS)}</td>
-                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(TOTAL_REVSHARE)}</td>
+                        <td className="py-2 px-4 text-right font-secondary">{formatNumber(totalAgents)}</td>
+                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(totalRevShare)}</td>
                       </tr>
                     </tfoot>
                   </table>
@@ -469,10 +484,10 @@ export default function RevShareDashboard() {
                     </tbody>
                     <tfoot>
                       <tr className="border-t border-border font-semibold text-foreground">
-                        <td className="py-2 pr-4">{t("revshare.total")}</td>
+                        <td className="py-2 pr-4">Total</td>
                         <td className="py-2 px-4 text-right font-secondary">100%</td>
-                        <td className="py-2 px-4 text-right font-secondary">{formatNumber(TOTAL_AGENTS)}</td>
-                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(TOTAL_REVSHARE)}</td>
+                        <td className="py-2 px-4 text-right font-secondary">{formatNumber(totalCountryAgents)}</td>
+                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(totalCountryRevShare)}</td>
                       </tr>
                     </tfoot>
                   </table>

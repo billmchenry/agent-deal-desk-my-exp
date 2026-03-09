@@ -17,15 +17,19 @@ export type FlqaMode =
   | "max"
   | "over";
 
+export type DistributionMode = "full" | "few_levels" | "few_countries" | "many_countries";
+
 interface DemoConfig {
   mentorMode: MentorMode;
   flqaMode: FlqaMode;
+  distributionMode: DistributionMode;
 }
 
 interface DemoConfigContextValue {
   config: DemoConfig;
   setMentorMode: (mode: MentorMode) => void;
   setFlqaMode: (mode: FlqaMode) => void;
+  setDistributionMode: (mode: DistributionMode) => void;
 }
 
 const DemoConfigContext = createContext<DemoConfigContextValue | null>(null);
@@ -37,10 +41,10 @@ function loadConfig(): DemoConfig {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      return { mentorMode: "none", flqaMode: "low", ...parsed };
+      return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, ...parsed };
     }
   } catch {}
-  return { mentorMode: "none", flqaMode: "low" };
+  return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const };
 }
 
 function saveConfig(config: DemoConfig) {
@@ -66,8 +70,16 @@ export function DemoConfigProvider({ children }: { children: React.ReactNode }) 
     });
   }, []);
 
+  const setDistributionMode = useCallback((mode: DistributionMode) => {
+    setConfig((prev) => {
+      const next = { ...prev, distributionMode: mode };
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
   return (
-    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode }}>
+    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode }}>
       {children}
     </DemoConfigContext.Provider>
   );
