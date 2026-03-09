@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Navigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -12,6 +13,7 @@ import { DataTable } from "@/components/shared/DataTable";
 import { ChevronRight, ChevronLeft, FileText, Copy } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 // ── Types ──
 
