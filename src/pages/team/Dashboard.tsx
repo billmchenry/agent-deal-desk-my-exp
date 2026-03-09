@@ -304,7 +304,7 @@ export default function TeamDashboard() {
                             </div>
                             <div className="flex items-center gap-2">
                               <span className="font-medium text-foreground text-body tabular-nums font-secondary">
-                                {tab === "units" ? `${agent.units} ${t("team.units")}` :
+                                {tab === "units" ? `${isCanada ? (agent.units + 0.25).toFixed(2) : agent.units} ${t("team.units")}` :
                                  tab === "volume" ? formatCurrency(agent.volume) :
                                  formatCurrency(agent.commission)}
                               </span>
