@@ -49,12 +49,14 @@ const countryDistribution = [
   { name: "France", agents: 720, color: "hsl(210, 40%, 75%)" },
 ];
 
+// Yearly: single line showing total revshare per year
 const revenueYearlyGrouped = [
-  { name: "2024", y2024: 1.0, y2025: 0, y2026: 0 },
-  { name: "2025", y2024: 1.0, y2025: 3.8, y2026: 0 },
-  { name: "2026", y2024: 1.0, y2025: 3.8, y2026: 0.285 },
+  { name: "2024", value: 1.0 },
+  { name: "2025", value: 3.8 },
+  { name: "2026", value: 0.285 },
 ];
 
+// Quarterly: each line = a year, x-axis = quarters
 const revenueQuarterlyGrouped = [
   { name: "Q1", y2024: 0.18, y2025: 0.82, y2026: 0.285 },
   { name: "Q2", y2024: 0.22, y2025: 1.05 },
@@ -62,6 +64,7 @@ const revenueQuarterlyGrouped = [
   { name: "Q4", y2024: 0.32, y2025: 0.81 },
 ];
 
+// Monthly: each line = a year, x-axis = months
 const revenueMonthlyGrouped = [
   { name: "Jan", y2024: 0.05, y2025: 0.25, y2026: 0.15 },
   { name: "Feb", y2024: 0.05, y2025: 0.28, y2026: 0.135 },
