@@ -482,7 +482,7 @@ export default function RevShareDashboard() {
                             <span className="truncate">{row.name}</span>
                           </div>
                         </td>
-                        <td className="py-2 px-2 text-right font-secondary text-foreground">{formatNumber(row.agents)} <span className="text-muted-foreground">({row.pct}%)</span></td>
+                        <td className="py-2 px-2 text-right font-secondary text-foreground whitespace-nowrap">{formatNumber(row.agents)} <span className="text-muted-foreground">({row.pct}%)</span></td>
                         <td className="py-2 pl-2 text-right font-secondary text-foreground whitespace-nowrap">{formatCurrency(row.revShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
                     ))}
