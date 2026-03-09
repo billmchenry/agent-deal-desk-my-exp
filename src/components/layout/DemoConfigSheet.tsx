@@ -29,8 +29,15 @@ const flqaOptions: { value: FlqaMode; label: string; description: string }[] = [
   { value: "over", label: "Over (28 actual, 7 bonus)", description: "Total 35 — exceeds 30 goal" },
 ];
 
+const distributionOptions: { value: DistributionMode; label: string; description: string }[] = [
+  { value: "full", label: "Full (7 levels, 7 countries)", description: "Default — all 7 levels and 7 countries shown" },
+  { value: "few_levels", label: "Few Levels (3 levels)", description: "Only 3 levels — simulates a smaller org" },
+  { value: "few_countries", label: "Few Countries (2 countries)", description: "Only 2 countries — domestic-focused agent" },
+  { value: "many_countries", label: "Many Countries (10 countries)", description: "10 countries — global presence" },
+];
+
 export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
-  const { config, setMentorMode, setFlqaMode } = useDemoConfig();
+  const { config, setMentorMode, setFlqaMode, setDistributionMode } = useDemoConfig();
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
