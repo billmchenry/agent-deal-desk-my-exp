@@ -267,28 +267,47 @@ export default function RevShareDashboard() {
 
                 <div className="flex items-end gap-4 mb-2">
                   <div>
-                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(18)}</p>
+                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(flqaData.actual)}</p>
                     <p className="text-xs text-white/70">{t("revshare.actual")}</p>
                   </div>
+                  {flqaData.bonus > 0 && (
+                    <div>
+                      <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 text-sm px-2 py-0">
+                        <span className="font-secondary font-bold">+ {flqaData.bonus}</span>
+                      </Badge>
+                      <p className="text-xs text-white/70">{t("revshare.bonus")}</p>
+                    </div>
+                  )}
                   <div>
-                    <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 text-sm px-2 py-0">
-                      <span className="font-secondary font-bold">+ 12</span>
-                    </Badge>
-                    <p className="text-xs text-white/70">{t("revshare.bonus")}</p>
+                    <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(flqaTotal)}</p>
+                    <p className="text-xs text-white/70">Total</p>
                   </div>
                 </div>
 
-                <p className="text-xs text-exp-gold-light">
-                  Level 3. <span className="font-semibold">2 more agents</span> for{" "}
-                  <span className="font-semibold">Level 4</span>.
-                </p>
+                {isMaxed ? (
+                  <p className="text-xs text-exp-green-light font-semibold">
+                    ✓ All levels unlocked
+                  </p>
+                ) : nextLevelInfo ? (
+                  <p className="text-xs text-exp-gold-light">
+                    Level {currentLevel}. <span className="font-semibold">{nextLevelInfo.flqa - flqaTotal} more agents</span> for{" "}
+                    <span className="font-semibold">Level {nextLevelInfo.level}</span>.
+                  </p>
+                ) : (
+                  <p className="text-xs text-exp-gold-light">
+                    Level {currentLevel}.
+                  </p>
+                )}
 
                 <div className="mt-2 mb-2">
-                  <Progress value={(18 / 30) * 100} className="h-2 bg-white/20 [&>div]:bg-exp-gold" />
+                  <Progress
+                    value={progressPercent}
+                    className={`h-2 bg-white/20 ${isMaxed ? "[&>div]:bg-exp-green" : "[&>div]:bg-exp-gold"}`}
+                  />
                   <div className="flex justify-between mt-1 text-xs text-white/50 font-secondary">
                     <span>0</span>
-                    <span>18 ({t("revshare.current")})</span>
-                    <span>30 ({t("revshare.goalLabel")})</span>
+                    <span>{flqaTotal} ({t("revshare.current")})</span>
+                    <span>{flqaGoal} ({t("revshare.goalLabel")})</span>
                   </div>
                 </div>
 
