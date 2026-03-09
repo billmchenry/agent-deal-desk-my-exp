@@ -17,15 +17,19 @@ export type FlqaMode =
   | "max"
   | "over";
 
+export type DistributionMode = "full" | "few_levels" | "few_countries" | "many_countries";
+
 interface DemoConfig {
   mentorMode: MentorMode;
   flqaMode: FlqaMode;
+  distributionMode: DistributionMode;
 }
 
 interface DemoConfigContextValue {
   config: DemoConfig;
   setMentorMode: (mode: MentorMode) => void;
   setFlqaMode: (mode: FlqaMode) => void;
+  setDistributionMode: (mode: DistributionMode) => void;
 }
 
 const DemoConfigContext = createContext<DemoConfigContextValue | null>(null);
