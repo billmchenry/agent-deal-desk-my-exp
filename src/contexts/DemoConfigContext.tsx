@@ -70,8 +70,16 @@ export function DemoConfigProvider({ children }: { children: React.ReactNode }) 
     });
   }, []);
 
+  const setDistributionMode = useCallback((mode: DistributionMode) => {
+    setConfig((prev) => {
+      const next = { ...prev, distributionMode: mode };
+      saveConfig(next);
+      return next;
+    });
+  }, []);
+
   return (
-    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode }}>
+    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode }}>
       {children}
     </DemoConfigContext.Provider>
   );
