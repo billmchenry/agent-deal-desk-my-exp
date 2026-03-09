@@ -14,27 +14,28 @@ export function formatNumber(
 export function formatCurrency(
   value: number,
   numberFormat: NumberFormatOption,
-  options?: { compact?: boolean; decimals?: number }
+  options?: { compact?: boolean; decimals?: number; symbol?: boolean }
 ): string {
-  const { compact = false, decimals = 2 } = options ?? {};
+  const { compact = false, decimals = 2, symbol = false } = options ?? {};
+  const prefix = symbol ? "$" : "";
 
   if (compact) {
     const abs = Math.abs(value);
     if (abs >= 1_000_000) {
-      return "$" + formatNumber(value / 1_000_000, numberFormat, {
+      return prefix + formatNumber(value / 1_000_000, numberFormat, {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
       }) + "M";
     }
     if (abs >= 1_000) {
-      return "$" + formatNumber(value / 1_000, numberFormat, {
+      return prefix + formatNumber(value / 1_000, numberFormat, {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
       }) + "K";
     }
   }
 
-  return "$" + formatNumber(value, numberFormat, {
+  return prefix + formatNumber(value, numberFormat, {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });
