@@ -27,6 +27,8 @@ export default function TeamDashboard() {
   useDocumentTitle(t("nav.myTeam"));
   const { formatCurrency, formatNumber } = useFormatters();
   const navigate = useNavigate();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
 
   const [view, setView] = useState<View>("overview");
   const [selectedOnboardingAgent, setSelectedOnboardingAgent] = useState<OnboardingAgent | null>(null);
