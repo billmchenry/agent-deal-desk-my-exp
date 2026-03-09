@@ -1,17 +1,10 @@
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { useDocumentTitle } from "@/hooks/use-document-title";
 import { SettingsTab } from "@/components/profile/SettingsTab";
-import { useTranslation } from "@/hooks/useTranslation";
+import { ProfilePageLayout } from "@/components/profile/ProfilePageLayout";
 
 export default function Settings() {
-  const { t } = useTranslation();
-  useDocumentTitle(t("settings.title"));
   return (
-    <DashboardLayout>
-      <div className="p-4 lg:p-6">
-        <h1 className="text-page-title font-bold text-foreground mb-6">{t("settings.title")}</h1>
-        <SettingsTab />
-      </div>
-    </DashboardLayout>
+    <ProfilePageLayout>
+      <SettingsTab />
+    </ProfilePageLayout>
   );
 }
