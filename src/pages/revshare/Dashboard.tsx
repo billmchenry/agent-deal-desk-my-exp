@@ -272,7 +272,9 @@ export default function RevShareDashboard() {
                   </div>
                   {flqaData.bonus > 0 && (
                     <div>
-                      <p className="text-stat-value font-bold font-secondary text-exp-green-light leading-none">+ {flqaData.bonus}</p>
+                      <Badge className="bg-exp-green/20 text-exp-green-light border-exp-green/30 px-2 py-0.5">
+                        <span className="text-stat-value font-bold font-secondary leading-none">+ {flqaData.bonus}</span>
+                      </Badge>
                       <p className="text-xs text-white/70">{t("revshare.bonus")}</p>
                     </div>
                   )}
