@@ -818,4 +818,7 @@ export const frCA: Record<string, string> = {
   "common.viewContact": "Voir la fiche contact",
   "common.download": "Télécharger",
   "notif.expandSection": "Développer la section",
+  "disclaimer.canadianAgentTitle": "Avis aux agents canadiens",
+  "disclaimer.canadianTeamLeadTitle": "Avis aux chefs d'équipe canadiens",
+  "disclaimer.canadianMessage": "Veuillez noter que les données de transaction présentées dans ce tableau de bord proviennent à la fois de TRX et de BrokerWolf. Bien que notre objectif soit une harmonisation complète, ces systèmes ne sont pas encore intégrés techniquement et les mises à jour reposent sur un rapprochement manuel. Par conséquent, il se peut que vous remarquiez parfois des écarts ou des données manquantes.\nSi quelque chose vous semble incorrect, nous vous invitons à communiquer avec votre équipe des transactions pour obtenir des éclaircissements. Veuillez écrire à {email}.\nÀ noter également : toutes les données sont basées sur les dates de clôture et non sur les dates de paiement. Cela peut entraîner des différences prévues lorsque vous comparez avec les systèmes financiers, comme les relevés bancaires. Il s'agit simplement d'une différence dans la logique de production des rapports — et non d'une erreur de données.\nNous vous remercions de votre leadership et de votre patience alors que nous travaillons vers une solution pleinement intégrée.",
 };

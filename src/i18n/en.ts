@@ -879,6 +879,9 @@ export const en = {
   "common.viewContact": "View contact card",
   "common.download": "Download",
   "notif.expandSection": "Expand section",
+  "disclaimer.canadianAgentTitle": "Notice for Canadian agents",
+  "disclaimer.canadianTeamLeadTitle": "Notice for Canadian team leaders",
+  "disclaimer.canadianMessage": "Please be aware that transaction data in this dashboard is sourced from both TRX and BrokerWolf. While our goal is full alignment, these systems are not yet technically integrated, and updates rely on manual reconciliation. As a result, you may occasionally notice discrepancies or missing data.\nIf you see something that doesn't look right, we encourage you to connect with your transaction team for clarification. Please reach out to {email}.\nAlso note: All data is based on close dates, not payout dates. This may cause expected differences when comparing to financial systems such as bank statements. It's simply a difference in reporting logic—not a data error.\nWe appreciate your leadership and patience as we work toward a fully integrated solution.",
 } as const;
 
 export type TranslationKey = keyof typeof en;
