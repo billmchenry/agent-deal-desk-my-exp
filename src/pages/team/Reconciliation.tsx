@@ -13,6 +13,8 @@ import { DropdownFilter } from "@/components/filters/DropdownFilter";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 export interface TeamTransaction {
   number: number;
