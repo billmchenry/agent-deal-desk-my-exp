@@ -470,7 +470,7 @@ export default function RevShareDashboard() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-navy inline-block" /> 2024</span>
+                    <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-gold inline-block" /> 2024</span>
                     <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-blue inline-block" /> 2025</span>
                     <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-sm bg-exp-green inline-block" /> 2026</span>
                   </div>
