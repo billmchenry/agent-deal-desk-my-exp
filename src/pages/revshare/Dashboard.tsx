@@ -474,7 +474,7 @@ export default function RevShareDashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {(showAllCountries ? countryTableData : countryTableData.slice(0, 3)).map((row) => (
+                    {(isMobile ? (showAllCountries ? countryTableData : countryTableData.slice(0, 3)) : countryTableData).map((row) => (
                       <tr key={row.name} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
                         <td className="py-2 pr-2 font-medium text-foreground">
                           <div className="flex items-center gap-2">
@@ -487,7 +487,7 @@ export default function RevShareDashboard() {
                       </tr>
                     ))}
                   </tbody>
-                  {showAllCountries && (
+                  {(!isMobile || showAllCountries) && (
                     <tfoot>
                       <tr className="border-t border-border font-semibold text-foreground">
                         <td className="py-2 pr-2">Total</td>
@@ -497,10 +497,10 @@ export default function RevShareDashboard() {
                     </tfoot>
                   )}
                 </table>
-                {countryTableData.length > 3 && (
+                {isMobile && countryTableData.length > 3 && (
                   <button
                     onClick={() => setShowAllCountries(!showAllCountries)}
-                    className="mt-2 text-xs text-primary hover:underline font-medium min-h-[44px] sm:min-h-0"
+                    className="mt-2 text-xs text-primary hover:underline font-medium min-h-[44px]"
                   >
                     {showAllCountries ? "View less" : `View more (${countryTableData.length - 3})`}
                   </button>
