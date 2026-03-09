@@ -39,6 +39,15 @@ const levelDistribution = [
   { name: "Level 7", value: 29.8, agents: 5311, color: "hsl(220, 25%, 88%)" },
 ];
 
+const countryDistribution = [
+  { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
+  { name: "United Kingdom", agents: 1450, revShare: 23117, color: "hsl(217, 91%, 60%)" },
+  { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
+  { name: "Germany", agents: 980, revShare: 15697, color: "hsl(45, 93%, 47%)" },
+  { name: "Australia", agents: 890, revShare: 14270, color: "hsl(0, 84%, 60%)" },
+  { name: "Brazil", agents: 820, revShare: 13132, color: "hsl(220, 45%, 30%)" },
+  { name: "France", agents: 720, revShare: 11494, color: "hsl(210, 40%, 75%)" },
+];
 
 // Yearly: single line showing total revshare per year
 const revenueYearlyGrouped = [
@@ -150,6 +159,11 @@ export default function RevShareDashboard() {
       revShare: levelRevShare[i]?.value ?? 0,
       color: l.color,
     };
+  });
+
+  const countryTableData = countryDistribution.map((c) => {
+    const pct = TOTAL_AGENTS > 0 ? ((c.agents / TOTAL_AGENTS) * 100).toFixed(1) : "0";
+    return { name: c.name, pct, agents: c.agents, revShare: c.revShare, color: c.color };
   });
 
   return (
@@ -384,40 +398,78 @@ export default function RevShareDashboard() {
               <p className="text-xs text-muted-foreground">{t("revshare.agentDistDesc")}</p>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border text-xs text-muted-foreground">
-                    <th className="text-left py-2 pr-4 font-medium">{t("revshare.levelLabel")}</th>
-                    <th className="text-right py-2 px-4 font-medium">%</th>
-                    <th className="text-right py-2 px-4 font-medium">{t("revshare.agents")}</th>
-                    <th className="text-right py-2 pl-4 font-medium">{t("revshare.revShareLabel")}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {levelTableData.map((row) => (
-                    <tr key={row.level} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
-                      <td className="py-2 pr-4 font-medium text-foreground">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
-                          {row.level}
-                        </div>
-                      </td>
-                      <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
-                      <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
-                      <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr className="border-t border-border font-semibold text-foreground">
-                    <td className="py-2 pr-4">{t("revshare.total")}</td>
-                    <td className="py-2 px-4 text-right font-secondary">100%</td>
-                    <td className="py-2 px-4 text-right font-secondary">{formatNumber(TOTAL_AGENTS)}</td>
-                    <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(TOTAL_REVSHARE)}</td>
-                  </tr>
-                </tfoot>
-              </table>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* By Level */}
+              <div>
+                <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byLevel")}</span>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border text-xs text-muted-foreground">
+                        <th className="text-left py-2 pr-4 font-medium">{t("revshare.levelLabel")}</th>
+                        <th className="text-right py-2 px-4 font-medium">%</th>
+                        <th className="text-right py-2 px-4 font-medium">{t("revshare.agents")}</th>
+                        <th className="text-right py-2 pl-4 font-medium">{t("revshare.revShareLabel")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {levelTableData.map((row) => (
+                        <tr key={row.level} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
+                          <td className="py-2 pr-4 font-medium text-foreground">
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
+                              {row.level}
+                            </div>
+                          </td>
+                          <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
+                          <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
+                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr className="border-t border-border font-semibold text-foreground">
+                        <td className="py-2 pr-4">{t("revshare.total")}</td>
+                        <td className="py-2 px-4 text-right font-secondary">100%</td>
+                        <td className="py-2 px-4 text-right font-secondary">{formatNumber(TOTAL_AGENTS)}</td>
+                        <td className="py-2 pl-4 text-right font-secondary">{formatCurrency(TOTAL_REVSHARE)}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+
+              {/* By Country */}
+              <div className="border-t pt-4 lg:border-t-0 lg:pt-0 lg:border-s lg:ps-4 border-border">
+                <span className="text-xs font-medium text-muted-foreground mb-2 block">{t("revshare.byCountry")}</span>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border text-xs text-muted-foreground">
+                        <th className="text-left py-2 pr-4 font-medium">{t("revshare.country")}</th>
+                        <th className="text-right py-2 px-4 font-medium">%</th>
+                        <th className="text-right py-2 px-4 font-medium">{t("revshare.agents")}</th>
+                        <th className="text-right py-2 pl-4 font-medium">{t("revshare.revShareLabel")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {countryTableData.map((row) => (
+                        <tr key={row.name} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
+                          <td className="py-2 pr-4 font-medium text-foreground">
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
+                              {row.name}
+                            </div>
+                          </td>
+                          <td className="py-2 px-4 text-right font-secondary text-muted-foreground">{row.pct}%</td>
+                          <td className="py-2 px-4 text-right font-secondary text-foreground">{formatNumber(row.agents)}</td>
+                          <td className="py-2 pl-4 text-right font-secondary text-foreground">{formatCurrency(row.revShare)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
