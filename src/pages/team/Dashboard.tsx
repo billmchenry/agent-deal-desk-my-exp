@@ -144,6 +144,7 @@ export default function TeamDashboard() {
     <DashboardLayout>
       <div className="p-4 lg:p-6">
         <UniversalFilterBar title={t("team.myTeam")} />
+        <CanadianDisclaimer variant="teamLead" email="canada.support@exprealty.com" />
 
         <p className="text-body-lg font-medium text-foreground mb-6">
           {t("team.myTeam")}: {teamOverview.name}
