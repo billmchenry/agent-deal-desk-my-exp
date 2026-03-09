@@ -20,6 +20,7 @@ export default function AgentDashboard() {
   const [includePipeline, setIncludePipeline] = useState(false);
 
   const isCanada = config.countryMode === "canada";
+  const isGlobal = config.countryMode === "global";
 
   return (
     <DashboardLayout>
@@ -29,11 +30,13 @@ export default function AgentDashboard() {
             value={dateRange}
             onChange={setDateRange}
           />
-          <UniversalFilterBar.Toggle
-            label={t("common.pending")}
-            checked={includePipeline}
-            onChange={setIncludePipeline}
-          />
+          {!isGlobal && (
+            <UniversalFilterBar.Toggle
+              label={t("common.pending")}
+              checked={includePipeline}
+              onChange={setIncludePipeline}
+            />
+          )}
         </UniversalFilterBar>
         <CanadianDisclaimer variant="agent" email="canada.support@exprealty.com" />
         <AgentHeroBanner
@@ -44,6 +47,7 @@ export default function AgentDashboard() {
           transactionsPending={15}
           transactionsWithdrawn={5}
           {...(isCanada ? { transactionsFirm: 3 } : {})}
+          hideStatusBreakdown={isGlobal}
         />
         <YearOverYearChart />
         <CappingSection
@@ -51,6 +55,7 @@ export default function AgentDashboard() {
           capTarget={16000}
           capPercentage={3}
           dateRange={dateRange}
+          hideHistory={isGlobal}
         />
       </div>
     </DashboardLayout>
