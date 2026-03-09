@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { UniversalFilterBar } from "@/components/filters";
 import {
-  ResponsiveContainer, LineChart, Line, ComposedChart, Bar,
+  ResponsiveContainer, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip,
 } from "recharts";
 import {
@@ -50,9 +50,9 @@ const countryDistribution = [
 ];
 
 const revenueYearlyGrouped = [
-  { name: "2024", revenue: 1.0 },
-  { name: "2025", revenue: 3.8 },
-  { name: "2026", revenue: 0.285 },
+  { name: "2024", y2024: 1.0 },
+  { name: "2025", y2024: 1.0, y2025: 3.8 },
+  { name: "2026", y2024: 1.0, y2025: 3.8, y2026: 0.285 },
 ];
 
 const revenueQuarterlyGrouped = [
@@ -216,18 +216,18 @@ export default function RevShareDashboard() {
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-1">
                 <p className="text-stat-value font-bold font-secondary text-white">
-                    {formatCurrency(264138.52)} <span className="text-sm font-medium text-white/70">USD</span>
+                    {formatNumber(264138.52, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm font-medium text-white/70">USD</span>
                   </p>
                   <span className="text-xs text-white/70">{t("revshare.afterAdj")}</span>
                 </div>
-                <div className="mt-1 space-y-1 text-xs text-white/70">
-                  <p>{t("revshare.beforeAdj")} <span className="font-secondary">{formatCurrency(242857.04)}</span> USD</p>
-                  <p>{t("revshare.adjustment")} <span className="font-secondary">+{formatCurrency(21281.48)}</span> USD</p>
+                <div className="mt-2 space-y-1.5 text-sm text-white/80">
+                  <p>{t("revshare.beforeAdj")} <span className="font-secondary font-semibold">{formatNumber(242857.04, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> USD</p>
+                  <p>{t("revshare.adjustment")} <span className="font-secondary font-semibold">+{formatNumber(21281.48, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span> USD</p>
                 </div>
               </div>
 
               {/* FLA */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
+              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0 flex flex-col">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
                     <Users className="h-3.5 w-3.5" />
@@ -243,7 +243,8 @@ export default function RevShareDashboard() {
                   </HoverCard>
                 </div>
                 <p className="text-stat-value font-bold font-secondary text-white">{formatNumber(24)}</p>
-                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label={t("revshare.viewFLAList")}>
+                <div className="flex-1" />
+                <button className="mt-2 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors self-start" aria-label={t("revshare.viewFLAList")}>
                   {t("revshare.viewFLAList")} <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -468,20 +469,25 @@ export default function RevShareDashboard() {
               </div>
             </div>
 
-            {/* Yearly: bar chart */}
+            {/* Yearly: line chart */}
             {compPeriod === "yearly" && (
               <div className="h-[200px] sm:h-[240px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
+                  <LineChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
+                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
                     <Tooltip
-                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), t("revshare.revenue")]}
+                      formatter={(value: number, name: string) => {
+                        const label = name === "y2024" ? "2024" : name === "y2025" ? "2025" : "2026";
+                        return [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), label];
+                      }}
                       contentStyle={tooltipStyle}
                     />
-                    <Bar dataKey="revenue" fill="hsl(var(--exp-navy))" radius={[4, 4, 0, 0]} barSize={48} />
-                  </ComposedChart>
+                    <Line type="monotone" dataKey="y2024" stroke="hsl(var(--exp-navy))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-navy))" }} connectNulls />
+                    <Line type="monotone" dataKey="y2025" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-blue))" }} connectNulls />
+                    <Line type="monotone" dataKey="y2026" stroke="hsl(var(--exp-green))" strokeWidth={2} dot={{ r: 3, fill: "hsl(var(--exp-green))" }} connectNulls />
+                  </LineChart>
                 </ResponsiveContainer>
               </div>
             )}
