@@ -36,8 +36,13 @@ const distributionOptions: { value: DistributionMode; label: string; description
   { value: "many_countries", label: "Many Countries (10 countries)", description: "10 countries — global presence" },
 ];
 
+const countryOptions: { value: CountryMode; label: string; description: string }[] = [
+  { value: "us", label: "United States", description: "Default US experience" },
+  { value: "canada", label: "Canada", description: "Shows Firm status, fractional units, disclaimer banner" },
+];
+
 export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
-  const { config, setMentorMode, setFlqaMode, setDistributionMode } = useDemoConfig();
+  const { config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode } = useDemoConfig();
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
