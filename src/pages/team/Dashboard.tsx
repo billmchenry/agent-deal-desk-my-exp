@@ -17,6 +17,8 @@ import { topAgents, teamOverview, teamRequirements, onboardingAgents, agentDetai
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { UniversalFilterBar } from "@/components/filters";
+import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 type View = "overview" | "agentDetails" | "topAgents";
 
