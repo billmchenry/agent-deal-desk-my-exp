@@ -200,7 +200,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
               {tn(sidebarNavigation.myDesk.label)}
             </span>
             <div className="space-y-0.5">
-              {sidebarNavigation.myDesk.items.map(renderNavItem)}
+              {filterNavItems(sidebarNavigation.myDesk.items).map(renderNavItem)}
             </div>
           </div>
 
@@ -209,7 +209,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
               {tn(sidebarNavigation.businessGrowth.label)}
             </span>
             <div className="space-y-0.5">
-              {sidebarNavigation.businessGrowth.items.map(renderNavItem)}
+              {filterNavItems(sidebarNavigation.businessGrowth.items).map(renderNavItem)}
             </div>
           </div>
 
@@ -218,7 +218,7 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
               {tn(sidebarNavigation.resources.label)}
             </span>
             <div className="space-y-0.5">
-              {sidebarNavigation.resources.items.map(renderNavItem)}
+              {filterNavItems(sidebarNavigation.resources.items).map(renderNavItem)}
             </div>
           </div>
         </nav>
