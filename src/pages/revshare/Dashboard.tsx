@@ -543,9 +543,9 @@ export default function RevShareDashboard() {
                   <LineChart data={revenueYearlyGrouped} margin={{ top: 15, right: 10, bottom: 0, left: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={chartTickStyle} />
-                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 })} domain={[0, "auto"]} width={50} />
+                    <YAxis axisLine={false} tickLine={false} tick={chartTickStyle} tickFormatter={(v) => formatCurrency(v * 1_000_000, { compact: true, decimals: 1 }) + " USD"} domain={[0, "auto"]} width={70} />
                     <Tooltip
-                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }), "Revenue Share"]}
+                      formatter={(value: number) => [formatCurrency(value * 1_000_000, { compact: true, decimals: value < 1 ? 0 : 2 }) + " USD", "Revenue Share"]}
                       contentStyle={tooltipStyle}
                     />
                     <Line type="monotone" dataKey="value" stroke="hsl(var(--exp-blue))" strokeWidth={2} dot={{ r: 4, fill: "hsl(var(--exp-blue))" }} />
