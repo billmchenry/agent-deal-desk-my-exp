@@ -123,7 +123,7 @@ export function AgentHeroBanner({
             <div className="hidden sm:flex rounded-lg p-2 shrink-0 bg-exp-gold/20 text-exp-gold-light">
               <FileText className="h-4 w-4" />
             </div>
-            <div className="flex gap-2 sm:gap-3 min-w-0">
+             <div className="flex gap-2 sm:gap-3 min-w-0">
               <button
                 type="button"
                 className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
@@ -132,6 +132,16 @@ export function AgentHeroBanner({
                 <p className="text-section-title font-bold text-white">{transactionsClosed}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.paid")}</p>
               </button>
+              {transactionsFirm !== undefined && (
+                <button
+                  type="button"
+                  className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
+                  onClick={() => goToTransactions("firm")}
+                >
+                  <p className="text-section-title font-bold text-white">{transactionsFirm}</p>
+                  <p className="text-xs sm:text-[11px] text-white/70">{t("txn.firm")}</p>
+                </button>
+              )}
               <button
                 type="button"
                 className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
@@ -148,16 +158,6 @@ export function AgentHeroBanner({
                 <p className="text-section-title font-bold text-white">{transactionsWithdrawn}</p>
                 <p className="text-xs sm:text-[11px] text-white/70">{t("txn.withdrawn")}</p>
               </button>
-              {transactionsFirm !== undefined && (
-                <button
-                  type="button"
-                  className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
-                  onClick={() => goToTransactions("firm")}
-                >
-                  <p className="text-section-title font-bold text-white">{transactionsFirm}</p>
-                  <p className="text-xs sm:text-[11px] text-white/70">{t("txn.firm")}</p>
-                </button>
-              )}
             </div>
           </div>
         </div>
