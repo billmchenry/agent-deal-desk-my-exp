@@ -161,6 +161,11 @@ export default function RevShareDashboard() {
     };
   });
 
+  const countryTableData = countryDistribution.map((c) => {
+    const pct = TOTAL_AGENTS > 0 ? ((c.agents / TOTAL_AGENTS) * 100).toFixed(1) : "0";
+    return { name: c.name, pct, agents: c.agents, revShare: c.revShare, color: c.color };
+  });
+
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
