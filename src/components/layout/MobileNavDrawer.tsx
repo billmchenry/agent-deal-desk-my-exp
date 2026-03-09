@@ -62,6 +62,24 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   const { isRTL } = useLocale();
   const { config } = useDemoConfig();
   const isCanada = config.countryMode === "canada";
+  const isGlobal = config.countryMode === "global";
+
+  const globalHiddenTitles = ["Team", "Documents", "Mentor Program", "Broker Hub", "Custom Service Fees"];
+
+  const filterNavItems = (items: SidebarNavItem[]): SidebarNavItem[] => {
+    if (!isGlobal && !isCanada) return items;
+    return items
+      .filter((item) => !(isGlobal && globalHiddenTitles.includes(item.title)))
+      .map((item) => {
+        if (!item.submenu) return item;
+        const filteredSub = item.submenu.filter((sub) => {
+          if (isCanada && sub.url === "/documents/year-end") return false;
+          if (isGlobal && globalHiddenTitles.includes(sub.title)) return false;
+          return true;
+        });
+        return { ...item, submenu: filteredSub };
+      });
+  };
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
