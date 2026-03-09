@@ -62,6 +62,7 @@ export function Sidebar() {
   const { t } = useTranslation();
   const { config } = useDemoConfig();
   const isCanada = config.countryMode === "canada";
+  const isGlobal = config.countryMode === "global";
 
   const tn = (title: string) => NAV_KEYS[title] ? t(NAV_KEYS[title]) : title;
 
