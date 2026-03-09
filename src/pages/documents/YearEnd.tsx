@@ -238,14 +238,14 @@ export default function YearEnd() {
   const [drilldownLine, setDrilldownLine] = useState<EarningLine | null>(null);
   const [selectedTxn, setSelectedTxn] = useState<TransactionRow | null>(null);
 
-  if (config.countryMode === "canada") {
-    return <Navigate to="/documents/downloads" replace />;
-  }
-
   const grandTotal = useMemo(
     () => mockCompanyGroups.reduce((sum, cg) => sum + cg.entities.reduce((s, eg) => s + eg.lines.reduce((a, l) => a + l.amount, 0), 0), 0),
     []
   );
+
+  if (config.countryMode === "canada") {
+    return <Navigate to="/documents/downloads" replace />;
+  }
 
   // Donut data
   const donutData = useMemo(() => {
