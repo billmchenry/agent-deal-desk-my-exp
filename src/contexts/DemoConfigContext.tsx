@@ -45,10 +45,10 @@ function loadConfig(): DemoConfig {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, ...parsed };
+      return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, countryMode: "us" as const, ...parsed };
     }
   } catch {}
-  return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const };
+  return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, countryMode: "us" as const };
 }
 
 function saveConfig(config: DemoConfig) {
