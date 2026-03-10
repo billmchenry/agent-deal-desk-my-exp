@@ -148,11 +148,60 @@ export default function RevShareDashboard() {
   const [selectedMonth, setSelectedMonth] = useState<Record<string, unknown> | null>(null);
   const [showAllLevels, setShowAllLevels] = useState(false);
   const [showAllCountries, setShowAllCountries] = useState(false);
-  // distMode removed – showing both agents & revshare inline
   const { formatNumber, formatCurrency } = useFormatters();
   const { t } = useTranslation();
   const { config } = useDemoConfig();
   useDocumentTitle(t("revshare.revenueShare"));
+
+  // ── Date filter state ──
+  const [filterPreset, setFilterPreset] = useState<FilterPreset>("ytd");
+  const [appliedPreset, setAppliedPreset] = useState<FilterPreset>("ytd");
+  const [appliedRange, setAppliedRange] = useState(getPresetRange("ytd"));
+  const [customFrom, setCustomFrom] = useState<Date | undefined>(undefined);
+  const [customTo, setCustomTo] = useState<Date | undefined>(undefined);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const handlePresetClick = (preset: FilterPreset) => {
+    setFilterPreset(preset);
+    if (preset !== "custom") {
+      setCustomFrom(undefined);
+      setCustomTo(undefined);
+    }
+  };
+
+  const handleApply = () => {
+    if (filterPreset === "custom") {
+      if (customFrom && customTo) {
+        setAppliedRange({ from: customFrom, to: customTo });
+        setAppliedPreset("custom");
+        setFilterOpen(false);
+      }
+    } else {
+      setAppliedRange(getPresetRange(filterPreset));
+      setAppliedPreset(filterPreset);
+      setFilterOpen(false);
+    }
+  };
+
+  const handleReset = () => {
+    setFilterPreset("ytd");
+    setAppliedPreset("ytd");
+    setAppliedRange(getPresetRange("ytd"));
+    setCustomFrom(undefined);
+    setCustomTo(undefined);
+    setFilterOpen(false);
+  };
+
+  const presetLabels: Record<FilterPreset, string> = {
+    ytd: t("revshare.yearToDate"),
+    lastYear: t("filter.lastYear"),
+    lastMonth: t("filter.lastMonth"),
+    custom: t("filter.custom"),
+  };
+
+  const filterLabel = appliedPreset === "custom"
+    ? `${format(appliedRange.from, "MMM d, yyyy")} – ${format(appliedRange.to, "MMM d, yyyy")}`
+    : presetLabels[appliedPreset];
 
   /* ── FLQA scenario data ── */
   const flqaScenarios = {
@@ -166,7 +215,6 @@ export default function RevShareDashboard() {
   const flqaData = flqaScenarios[config.flqaMode];
   const flqaTotal = flqaData.actual + flqaData.bonus;
 
-  // Level thresholds: L1-3 = 0, L4 = 5, L5 = 10, L6 = 15, max goal = 30
   const levelThresholds = [
     { level: 4, flqa: 5 },
     { level: 5, flqa: 10 },
@@ -177,7 +225,7 @@ export default function RevShareDashboard() {
     if (flqaTotal >= 15) return 6;
     if (flqaTotal >= 10) return 5;
     if (flqaTotal >= 5) return 4;
-    return 3; // levels 1-3 all unlock at 0
+    return 3;
   })();
 
   const isMaxed = flqaTotal >= 30;
@@ -185,7 +233,6 @@ export default function RevShareDashboard() {
   const flqaGoal = 30;
   const progressPercent = Math.min((flqaTotal / flqaGoal) * 100, 100);
 
-  // Distribution data driven by demo config
   const distMode = config.distributionMode;
   const activeLevels = distMode === "few_levels" ? levelScenarios.few_levels : levelScenarios.full;
   const activeCountries = distMode === "few_countries" ? countryScenarios.few_countries
@@ -213,17 +260,95 @@ export default function RevShareDashboard() {
 
         {/* ═══ Page Header ═══ */}
         <UniversalFilterBar title={t("revshare.revenueShare")}>
-          <Select defaultValue="ytd">
-            <SelectTrigger className="w-[140px] h-8 min-h-[44px] sm:min-h-0 text-xs">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ytd">{t("revshare.yearToDate")}</SelectItem>
-              <SelectItem value="q1">Q1</SelectItem>
-              <SelectItem value="q2">Q2</SelectItem>
-              <SelectItem value="monthly">{t("revshare.monthly")}</SelectItem>
-            </SelectContent>
-          </Select>
+          <Popover open={filterOpen} onOpenChange={setFilterOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="gap-2 text-sm h-9">
+                <CalendarDays className="h-4 w-4" />
+                {filterLabel}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-4" align="end">
+              {/* Preset pills */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {(["ytd", "lastYear", "lastMonth", "custom"] as FilterPreset[]).map((p) => (
+                  <Button
+                    key={p}
+                    variant={filterPreset === p ? "default" : "outline"}
+                    size="sm"
+                    className="text-xs h-7"
+                    onClick={() => handlePresetClick(p)}
+                  >
+                    {presetLabels[p]}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Custom date pickers */}
+              {filterPreset === "custom" && (
+                <div className="space-y-3 mb-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">Start Date</label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className={cn("w-full justify-start text-left text-xs h-8", !customFrom && "text-muted-foreground")}>
+                            <CalendarDays className="h-3.5 w-3.5 mr-1.5" />
+                            {customFrom ? format(customFrom, "MMM d, yyyy") : "Select"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={customFrom}
+                            onSelect={setCustomFrom}
+                            initialFocus
+                            className={cn("p-3 pointer-events-auto")}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">End Date</label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className={cn("w-full justify-start text-left text-xs h-8", !customTo && "text-muted-foreground")}>
+                            <CalendarDays className="h-3.5 w-3.5 mr-1.5" />
+                            {customTo ? format(customTo, "MMM d, yyyy") : "Select"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={customTo}
+                            onSelect={setCustomTo}
+                            disabled={(date) => customFrom ? date < customFrom : false}
+                            initialFocus
+                            className={cn("p-3 pointer-events-auto")}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Apply / Reset buttons */}
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+                <Button variant="ghost" size="sm" className="text-xs h-7 gap-1" onClick={handleReset}>
+                  <RotateCcw className="h-3 w-3" />
+                  Reset
+                </Button>
+                <Button
+                  size="sm"
+                  className="text-xs h-7"
+                  onClick={handleApply}
+                  disabled={filterPreset === "custom" && (!customFrom || !customTo)}
+                >
+                  Apply
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
         </UniversalFilterBar>
 
         {/* ═══ Section 1: Hero Banner ═══ */}
