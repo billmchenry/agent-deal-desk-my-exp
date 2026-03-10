@@ -136,10 +136,10 @@ export function HeroBannerCard() {
         </div>
 
         {/* CTA row – mobile only, rendered at bottom */}
-        <div className="flex sm:hidden flex-col gap-3 pt-2">
-          <div className="flex items-center gap-2 text-sm flex-wrap">
+        <div className="flex sm:hidden flex-col items-center gap-3 pt-2">
+          <div className="flex items-center gap-2 text-sm">
             <TrendingUp className="h-4 w-4 text-exp-green-light" />
-            <span className="min-w-0 break-words">
+            <span>
               {t("common.current")}:{" "}
               <span className="font-semibold text-exp-green-light">
                 {formatCurrency(cappingData.current)}
