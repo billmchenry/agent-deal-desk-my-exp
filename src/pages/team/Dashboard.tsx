@@ -33,6 +33,10 @@ export default function TeamDashboard() {
 
   const [view, setView] = useState<View>("overview");
   const [selectedOnboardingAgent, setSelectedOnboardingAgent] = useState<OnboardingAgent | null>(null);
+  const [overviewDateRange, setOverviewDateRange] = useState<DateRange>({
+    from: new Date(2026, 0, 1),
+    to: new Date(2026, 2, 5),
+  });
 
   // --- Agent Details columns (requalification drill-down) ---
   const agentDetailColumns: ColumnDef<AgentDetail>[] = [
