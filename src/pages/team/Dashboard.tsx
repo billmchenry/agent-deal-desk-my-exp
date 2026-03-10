@@ -149,7 +149,9 @@ export default function TeamDashboard() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <UniversalFilterBar title={t("team.myTeam")} />
+        <UniversalFilterBar title={t("team.myTeam")}>
+          <UniversalFilterBar.DateRange value={overviewDateRange} onChange={setOverviewDateRange} />
+        </UniversalFilterBar>
         <CanadianDisclaimer variant="teamLead" email="canada.support@exprealty.com" />
 
         <p className="text-body-lg font-medium text-foreground mb-6">
@@ -165,11 +167,10 @@ export default function TeamDashboard() {
           </div>
 
           <div className="relative z-10">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4">
               <Badge className="bg-exp-charcoal-blue/10 text-exp-charcoal-blue border-exp-charcoal-blue/20">
                 {t("team.overview")}
               </Badge>
-              <DateRangeFilter value={overviewDateRange} onChange={setOverviewDateRange} />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
