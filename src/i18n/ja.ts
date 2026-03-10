@@ -120,7 +120,6 @@ export const ja: Record<string, string> = {
   "team.topAgents": "トップエージェント",
   "team.noReports": "レポートはありません。",
   "team.viewAll": "すべて表示",
-  "team.showLess": "閉じる",
   "team.requalification": "再資格認定",
   "team.contactTeamServices": "チームサービスに連絡",
   "team.requirements": "要件",

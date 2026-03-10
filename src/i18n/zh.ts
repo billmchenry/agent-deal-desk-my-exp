@@ -121,7 +121,6 @@ export const zh: Record<string, string> = {
   "team.topAgents": "顶级经纪人",
   "team.noReports": "暂无报告。",
   "team.viewAll": "查看全部",
-  "team.showLess": "收起",
   "team.requalification": "重新资格认定",
   "team.contactTeamServices": "联系团队服务",
   "team.requirements": "要求",
