@@ -40,6 +40,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
   // Reset sort when tab changes
   const handleTabChange = (tab: TabKey) => {
