@@ -83,6 +83,12 @@ export default {
           purple: "hsl(var(--exp-purple))",
           gray: "hsl(var(--exp-gray))",
           "gray-dark": "hsl(var(--exp-gray-dark))",
+          "charcoal-blue": "hsl(var(--exp-charcoal-blue))",
+          "dark-navy": "hsl(var(--exp-dark-navy))",
+          "moss-grey": "hsl(var(--exp-moss-grey))",
+          "light-grey": "hsl(var(--exp-light-grey))",
+          "slate-blue": "hsl(var(--exp-slate-blue))",
+          "frosted-blue": "hsl(var(--exp-frosted-blue))",
         },
       },
       borderRadius: {
