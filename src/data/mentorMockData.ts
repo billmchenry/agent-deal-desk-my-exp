@@ -603,7 +603,7 @@ export const mockStateMentors: StateMentor[] = [
     state: "CA",
     postalCode: "95814",
     agentId: "7104",
-    primaryStateLicense: "CA-019283",
+    primaryStateLicense: "CA",
     bio: "I specialize in guiding new agents through the Sacramento and Northern California markets. Having closed over 200 transactions in the past decade.",
     locationsServiced: ["Sacramento", "Elk Grove", "Roseville", "Folsom"],
     licenses: [{ state: "CA", number: "CA-019283" }],
