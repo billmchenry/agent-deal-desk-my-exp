@@ -60,8 +60,14 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
     setPage(1);
   };
 
+  const filtered = useMemo(() => {
+    if (!search.trim()) return topAgents;
+    const q = search.toLowerCase();
+    return topAgents.filter((a) => a.name.toLowerCase().includes(q));
+  }, [search]);
+
   const sorted = useMemo(() => {
-    const arr = [...topAgents];
+    const arr = [...filtered];
     arr.sort((a, b) => {
       const aVal = a[sortKey];
       const bVal = b[sortKey];
@@ -71,7 +77,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
       return sortDir === "asc" ? (aVal as number) - (bVal as number) : (bVal as number) - (aVal as number);
     });
     return arr;
-  }, [sortKey, sortDir]);
+  }, [filtered, sortKey, sortDir]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / rowsPerPage));
   const pageData = sorted.slice((page - 1) * rowsPerPage, page * rowsPerPage);
