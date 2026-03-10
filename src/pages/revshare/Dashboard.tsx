@@ -10,6 +10,7 @@ import {
   Users, DollarSign, ExternalLink, Target, CalendarDays, RotateCcw,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useNavigate } from "react-router-dom";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -144,6 +145,7 @@ const tooltipStyle = {
 
 export default function RevShareDashboard() {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const [compPeriod, setCompPeriod] = useState("yearly");
   const [selectedMonth, setSelectedMonth] = useState<Record<string, unknown> | null>(null);
   const [showAllLevels, setShowAllLevels] = useState(false);
@@ -576,11 +578,19 @@ export default function RevShareDashboard() {
                   </thead>
                   <tbody>
                     {(isMobile ? (showAllLevels ? levelTableData : levelTableData.slice(0, 3)) : levelTableData).map((row) => (
-                      <tr key={row.level} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
+                      <tr
+                        key={row.level}
+                        className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors cursor-pointer"
+                        onClick={() => navigate(`/revshare/group?level=${encodeURIComponent(row.level)}`)}
+                        role="link"
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === "Enter" && navigate(`/revshare/group?level=${encodeURIComponent(row.level)}`)}
+                      >
                         <td className="py-2 pr-2 font-medium text-foreground">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
                             {row.level}
+                            <ChevronRight className="h-3 w-3 text-muted-foreground ml-auto" />
                           </div>
                         </td>
                         <td className="py-2 px-2 text-right font-secondary text-foreground">{formatNumber(row.agents)} <span className="text-muted-foreground">({row.pct}%)</span></td>
@@ -590,8 +600,19 @@ export default function RevShareDashboard() {
                   </tbody>
                   {(!isMobile || showAllLevels) && (
                     <tfoot>
-                      <tr className="border-t border-border font-semibold text-foreground">
-                        <td className="py-2 pr-2">Total</td>
+                      <tr
+                        className="border-t border-border font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors"
+                        onClick={() => navigate("/revshare/group")}
+                        role="link"
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === "Enter" && navigate("/revshare/group")}
+                      >
+                        <td className="py-2 pr-2">
+                          <div className="flex items-center gap-2">
+                            Total
+                            <ChevronRight className="h-3 w-3 text-muted-foreground ml-auto" />
+                          </div>
+                        </td>
                         <td className="py-2 px-2 text-right font-secondary">{formatNumber(totalAgents)} <span className="font-normal text-muted-foreground">(100%)</span></td>
                         <td className="py-2 pl-2 text-right font-secondary whitespace-nowrap">{formatCurrency(totalRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
@@ -621,11 +642,19 @@ export default function RevShareDashboard() {
                   </thead>
                   <tbody>
                     {(isMobile ? (showAllCountries ? countryTableData : countryTableData.slice(0, 3)) : countryTableData).map((row) => (
-                      <tr key={row.name} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
+                      <tr
+                        key={row.name}
+                        className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors cursor-pointer"
+                        onClick={() => navigate(`/revshare/group?country=${encodeURIComponent(row.name)}`)}
+                        role="link"
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === "Enter" && navigate(`/revshare/group?country=${encodeURIComponent(row.name)}`)}
+                      >
                         <td className="py-2 pr-2 font-medium text-foreground">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
                             <span className="truncate">{row.name}</span>
+                            <ChevronRight className="h-3 w-3 text-muted-foreground ml-auto" />
                           </div>
                         </td>
                         <td className="py-2 px-2 text-right font-secondary text-foreground whitespace-nowrap">{formatNumber(row.agents)} <span className="text-muted-foreground">({row.pct}%)</span></td>
@@ -635,8 +664,19 @@ export default function RevShareDashboard() {
                   </tbody>
                   {(!isMobile || showAllCountries) && (
                     <tfoot>
-                      <tr className="border-t border-border font-semibold text-foreground">
-                        <td className="py-2 pr-2">Total</td>
+                      <tr
+                        className="border-t border-border font-semibold text-foreground cursor-pointer hover:bg-muted/50 transition-colors"
+                        onClick={() => navigate("/revshare/group")}
+                        role="link"
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === "Enter" && navigate("/revshare/group")}
+                      >
+                        <td className="py-2 pr-2">
+                          <div className="flex items-center gap-2">
+                            Total
+                            <ChevronRight className="h-3 w-3 text-muted-foreground ml-auto" />
+                          </div>
+                        </td>
                         <td className="py-2 px-2 text-right font-secondary">{formatNumber(totalCountryAgents)} <span className="font-normal text-muted-foreground">(100%)</span></td>
                         <td className="py-2 pl-2 text-right font-secondary whitespace-nowrap">{formatCurrency(totalCountryRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
                       </tr>
