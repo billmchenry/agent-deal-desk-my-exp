@@ -18,7 +18,7 @@ export function CappingCelebrationModal({ open, onDismiss }: CappingCelebrationM
     <>
       {open && <ConfettiCelebration />}
       <Dialog open={open} onOpenChange={(v) => !v && onDismiss()}>
-        <DialogContent className="sm:max-w-md text-center p-8 gap-0 [&>button]:hidden">
+        <DialogContent className="sm:max-w-md text-center p-8 gap-0 border-none outline-none ring-0 [&>button]:hidden">
           {/* Checkmark circle */}
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#2D2A6E]">
             <Check className="h-10 w-10 text-white" strokeWidth={3} />
