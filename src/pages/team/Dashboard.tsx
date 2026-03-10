@@ -317,12 +317,13 @@ export default function TeamDashboard() {
                           </div>
                         ))}
                     </div>
-                    <button
-                      className="w-full text-center text-primary hover:underline text-sm mt-4"
+                    <Button
+                      variant="outline"
+                      className="w-full mt-4 rounded-full border-border text-primary"
                       onClick={() => setView("topAgents")}
                     >
                       {t("team.viewAll")}
-                    </button>
+                    </Button>
                   </TabsContent>
                 ))}
               </Tabs>
