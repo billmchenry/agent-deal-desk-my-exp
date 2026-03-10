@@ -91,8 +91,8 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
   ];
 
   const SortIcon = ({ col }: { col: SortKey }) => {
-    if (sortKey !== col) return <ChevronDown className="h-3 w-3 opacity-30" />;
-    return sortDir === "asc" ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />;
+    if (sortKey !== col) return <span className="text-[10px] opacity-40 leading-none">◇</span>;
+    return sortDir === "asc" ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />;
   };
 
   return (
