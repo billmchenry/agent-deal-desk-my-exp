@@ -268,16 +268,17 @@ export function Sidebar() {
         )}
       >
         <div className={cn(
-          "flex h-16 items-center border-b border-border bg-background transition-all duration-300",
-          isCollapsed ? "justify-center px-2" : "gap-1 px-5"
+          "flex h-16 items-center border-b border-border bg-sidebar transition-all duration-300",
+          isCollapsed ? "justify-center px-2" : "gap-2 px-5"
         )}>
-          <span className="text-xl font-bold leading-none text-foreground">MY</span>
-          {!isCollapsed && (
-            <>
-              <span className="text-xl leading-none text-muted-foreground">|</span>
-              <span className="text-xl font-bold leading-none text-exp-blue">eXp</span>
-            </>
-          )}
+          <img
+            src={expLogo}
+            alt="eXp Realty"
+            className={cn(
+              "object-contain transition-all duration-300",
+              isCollapsed ? "h-8 w-8" : "h-8"
+            )}
+          />
         </div>
 
         <nav className="flex flex-1 flex-col overflow-y-auto py-4">
