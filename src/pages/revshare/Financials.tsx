@@ -554,17 +554,17 @@ export default function Financials() {
 
         {/* Tabs */}
         <Tabs defaultValue={defaultTab} className="w-full">
-          <TabsList className="bg-transparent border-b border-border rounded-none h-auto p-0 gap-6">
-            <TabsTrigger value="unpaid" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 pb-2 text-sm">
+          <TabsList>
+            <TabsTrigger value="unpaid" className="text-sm">
               {t("fin.unpaid")}
             </TabsTrigger>
-            <TabsTrigger value="expected" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 pb-2 text-sm">
+            <TabsTrigger value="expected" className="text-sm">
               {t("fin.expected")}
             </TabsTrigger>
-            <TabsTrigger value="lastPaid" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 pb-2 text-sm">
+            <TabsTrigger value="lastPaid" className="text-sm">
               {t("fin.lastPaid")}
             </TabsTrigger>
-            <TabsTrigger value="periodic" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 pb-2 text-sm">
+            <TabsTrigger value="periodic" className="text-sm">
               {t("fin.periodicOverview")}
             </TabsTrigger>
           </TabsList>

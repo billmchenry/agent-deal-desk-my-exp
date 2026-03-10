@@ -257,23 +257,14 @@ export default function TeamDashboard() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="units" className="w-full">
-                <TabsList className="bg-transparent border-b border-border rounded-none w-full justify-start h-auto p-0 mb-4">
-                  <TabsTrigger
-                    value="units"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-2"
-                  >
+                <TabsList className="mb-4">
+                  <TabsTrigger value="units">
                     {t("team.unitsClosed")}
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="volume"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-2"
-                  >
+                  <TabsTrigger value="volume">
                     {t("team.highestVolume")}
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="commission"
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-2"
-                  >
+                  <TabsTrigger value="commission">
                     {t("team.commission")}
                   </TabsTrigger>
                 </TabsList>
