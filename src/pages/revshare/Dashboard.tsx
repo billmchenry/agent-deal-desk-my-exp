@@ -286,7 +286,7 @@ export default function RevShareDashboard() {
                 <div className="space-y-3 mb-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs font-medium text-muted-foreground mb-1 block">Start Date</label>
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">From</label>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button variant="outline" className={cn("w-full justify-start text-left text-xs h-8", !customFrom && "text-muted-foreground")}>
@@ -306,7 +306,7 @@ export default function RevShareDashboard() {
                       </Popover>
                     </div>
                     <div>
-                      <label className="text-xs font-medium text-muted-foreground mb-1 block">End Date</label>
+                      <label className="text-xs font-medium text-muted-foreground mb-1 block">To</label>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button variant="outline" className={cn("w-full justify-start text-left text-xs h-8", !customTo && "text-muted-foreground")}>
