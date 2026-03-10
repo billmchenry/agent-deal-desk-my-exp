@@ -47,8 +47,13 @@ const countryOptions: { value: CountryMode; label: string; description: string }
   { value: "global", label: "Global", description: "International agents — limited nav, closed transactions only" },
 ];
 
+const brokerHubOptions: { value: BrokerHubMode; label: string; description: string }[] = [
+  { value: "us", label: "US", description: "Default US experience — State Mentors" },
+  { value: "canada", label: "CAN", description: "Canadian experience — Provincial Mentors" },
+];
+
 export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
-  const { config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode } = useDemoConfig();
+  const { config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode, setBrokerHubMode } = useDemoConfig();
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
