@@ -27,7 +27,7 @@ function StatCard({ icon, value, label, color, isLoading }: StatCardProps) {
     <Card className="relative overflow-hidden">
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
-          <div className={`rounded-lg p-2.5 ${colors.bg}`}>
+          <div className={`rounded-full p-2.5 ${colors.bg}`}>
             <div className={colors.icon}>{icon}</div>
           </div>
           <div className="h-8 flex items-center">
