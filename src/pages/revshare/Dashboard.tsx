@@ -199,9 +199,7 @@ export default function RevShareDashboard() {
     custom: t("filter.custom"),
   };
 
-  const filterLabel = appliedPreset === "custom"
-    ? `${format(appliedRange.from, "MMM d, yyyy")} – ${format(appliedRange.to, "MMM d, yyyy")}`
-    : presetLabels[appliedPreset];
+  const filterLabel = `${presetLabels[appliedPreset]}: ${format(appliedRange.from, "MMM d, yyyy")} – ${format(appliedRange.to, "MMM d, yyyy")}`;
 
   /* ── FLQA scenario data ── */
   const flqaScenarios = {
