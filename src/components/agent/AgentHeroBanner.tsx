@@ -45,7 +45,7 @@ function MiniStatCard({
       role="link"
       aria-label={`${label}: ${value}. View details`}
     >
-      <div className={cn("rounded-lg p-2 shrink-0", colorClasses[color])}>
+      <div className={cn("rounded-full p-2 shrink-0", colorClasses[color])}>
         {icon}
       </div>
       <div className="min-w-0">
