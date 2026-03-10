@@ -358,24 +358,21 @@ export default function TeamDashboard() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-4">
-              <div className="font-medium text-foreground">{t("team.requirements")}</div>
-              <div className="font-medium text-foreground">{t("team.progress")}</div>
-
+            <div className="divide-y divide-border/50">
               {teamRequirements.map((req) => (
-                <>
-                  <div key={`label-${req.label}`} className="flex items-center gap-2 text-sm text-muted-foreground">
-                    {req.label}
-                    {req.hasInfo && <Info className="h-4 w-4" />}
+                <div key={req.label} className="py-3 first:pt-0">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      {req.label}
+                      {req.hasInfo && <Info className="h-3.5 w-3.5" />}
+                    </div>
+                    <span className="text-sm font-medium text-foreground tabular-nums">{req.value}</span>
                   </div>
-                  <div key={`progress-${req.label}`} className="space-y-1">
-                    <p className="text-sm text-foreground">{req.value}</p>
-                    <Progress
-                      value={req.progress}
-                      className={`h-2 ${req.isWarning ? '[&>div]:bg-yellow-500' : req.progress === 100 ? '[&>div]:bg-green-500' : ''}`}
-                    />
-                  </div>
-                </>
+                  <Progress
+                    value={req.progress}
+                    className={`h-2 ${req.isWarning ? '[&>div]:bg-yellow-500' : req.progress === 100 ? '[&>div]:bg-green-500' : ''}`}
+                  />
+                </div>
               ))}
             </div>
 
