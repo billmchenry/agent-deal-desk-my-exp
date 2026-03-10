@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const CONFETTI_COLORS = ["#2D2A6E", "#4A47A3", "#8B88C9", "#C5C3E8"];
+const CONFETTI_COLORS = ["#E9EBF6", "#6065AE", "#989ECB", "#4142A3"];
 const PARTICLE_COUNT = 80;
 const DURATION = 4000;
 
