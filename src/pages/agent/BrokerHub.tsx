@@ -6,6 +6,7 @@ import { ArrowLeft, Download, GraduationCap, ChevronRight } from "lucide-react";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { mockStateMentors, type StateMentor } from "@/data/mentorMockData";
 import { StateMentorProfileSheet } from "@/components/agent/StateMentorProfileSheet";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 
