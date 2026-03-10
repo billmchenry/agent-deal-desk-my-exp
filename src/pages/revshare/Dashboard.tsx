@@ -725,10 +725,10 @@ export default function RevShareDashboard() {
                     {t("revshare.viewTrends")} <ExternalLink className="h-3 w-3" />
                   </button>
                   <Tabs value={compPeriod} onValueChange={(v) => { setCompPeriod(v); setSelectedMonth(null); }}>
-                    <TabsList className="h-9 sm:h-7">
-                      <TabsTrigger value="yearly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">{t("revshare.yearly")}</TabsTrigger>
-                      <TabsTrigger value="quarterly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">{t("revshare.quarterly")}</TabsTrigger>
-                      <TabsTrigger value="monthly" className="text-xs px-2 py-0.5 h-8 sm:h-6 min-h-[44px] sm:min-h-0">{t("revshare.monthly")}</TabsTrigger>
+                    <TabsList>
+                      <TabsTrigger value="yearly" className="text-xs px-2">{t("revshare.yearly")}</TabsTrigger>
+                      <TabsTrigger value="quarterly" className="text-xs px-2">{t("revshare.quarterly")}</TabsTrigger>
+                      <TabsTrigger value="monthly" className="text-xs px-2">{t("revshare.monthly")}</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </div>

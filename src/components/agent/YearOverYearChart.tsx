@@ -125,7 +125,7 @@ export function YearOverYearChart() {
             Year-over-Year Comparison
           </CardTitle>
           <Tabs value={chartTab} onValueChange={(v) => { setChartTab(v); setSelectedMonth(null); }}>
-            <TabsList className="bg-muted h-8">
+            <TabsList className="h-8">
               <TabsTrigger value="units" className="text-xs h-7 px-3">Units</TabsTrigger>
               <TabsTrigger value="volume" className="text-xs h-7 px-3">Volume</TabsTrigger>
               <TabsTrigger value="commission" className="text-xs h-7 px-3">Commission</TabsTrigger>

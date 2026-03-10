@@ -169,9 +169,9 @@ export default function Pulse() {
             <CardContent className="space-y-4">
               {/* Tabs */}
               <Tabs value={insightFilter} onValueChange={setInsightFilter}>
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="daily">Daily</TabsTrigger>
-                  <TabsTrigger value="weekly">Weekly</TabsTrigger>
+                <TabsList className="w-full">
+                  <TabsTrigger value="daily" className="flex-1">Daily</TabsTrigger>
+                  <TabsTrigger value="weekly" className="flex-1">Weekly</TabsTrigger>
                 </TabsList>
               </Tabs>
 
