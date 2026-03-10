@@ -26,7 +26,7 @@ export default function BrokerHub() {
 
   const columns: ColumnDef<StateMentor>[] = [
     { key: "name", header: t("broker.name"), type: "string", sortable: true, filterable: true },
-    { key: "totalActiveMentees", header: t("broker.totalActiveMentees"), type: "number", sortable: true, filterable: true },
+    { key: "totalActiveMentees", header: t("broker.totalActiveMentees"), type: "string", sortable: true, filterable: true, render: (val) => String(val ?? 0) },
     { key: "primaryEmail", header: t("broker.primaryEmail"), type: "string", sortable: true, filterable: true },
     { key: "phone", header: t("broker.phone"), type: "string", filterable: true },
     { key: "secondaryEmail", header: t("broker.secondaryEmail"), type: "string", filterable: true },
