@@ -105,25 +105,6 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
           </div>
         </SheetHeader>
 
-        {/* Tabs */}
-        <div className="px-6 pt-4 pb-2 shrink-0">
-          <div className="inline-flex bg-muted/60 backdrop-blur-sm border border-border/50 rounded-full p-1 gap-0.5">
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => handleTabChange(tab.key)}
-                className={cn(
-                  "px-4 py-1.5 text-sm font-medium rounded-full transition-all whitespace-nowrap",
-                  activeTab === tab.key
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
 
         {/* Table */}
         <div className="flex-1 overflow-auto px-6">
