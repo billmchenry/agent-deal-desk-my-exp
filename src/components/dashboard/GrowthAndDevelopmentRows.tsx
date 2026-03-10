@@ -47,15 +47,41 @@ interface RowCard {
 }
 
 function ScrollRow({ title, cards }: { title: string; cards: RowCard[] }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        const idx = cardRefs.current.indexOf(entry.target as HTMLDivElement);
+        if (idx !== -1) setActiveIndex(idx);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: containerRef.current,
+      threshold: 0.6,
+    });
+    cardRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, [handleIntersection, cards.length]);
+
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold text-section-title">{title}</h2>
-      <div className="overflow-x-auto flex gap-3 pb-2 snap-x snap-mandatory scrollbar-none">
-        {cards.map((card) => {
+      <div ref={containerRef} className="overflow-x-auto flex gap-3 pb-2 snap-x snap-mandatory scrollbar-none">
+        {cards.map((card, i) => {
           const styles = themeStyles[card.theme];
           const Icon = card.icon;
           return (
-            <Card key={card.id} className={cn("min-w-[280px] flex-1 snap-start", styles.card)}>
+            <Card
+              key={card.id}
+              ref={(el) => { cardRefs.current[i] = el; }}
+              className={cn("min-w-[280px] flex-1 snap-start", styles.card)}
+            >
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
                   <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full", styles.icon)}>
@@ -75,6 +101,19 @@ function ScrollRow({ title, cards }: { title: string; cards: RowCard[] }) {
           );
         })}
       </div>
+      {cards.length > 1 && (
+        <div className="flex justify-center gap-1.5">
+          {cards.map((card, i) => (
+            <span
+              key={card.id}
+              className={cn(
+                "h-1.5 w-1.5 rounded-full transition-colors",
+                i === activeIndex ? "bg-primary" : "bg-muted-foreground/30"
+              )}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
