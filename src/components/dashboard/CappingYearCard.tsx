@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { cappingData } from "@/data/mockData";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 export function CappingYearCard() {
   const progressPercentage = (cappingData.current / cappingData.target) * 100;
