@@ -74,7 +74,8 @@ export function HeroBannerCard() {
             away from capping this year
           </p>
 
-          <div className="flex flex-col xs:flex-row xs:items-center gap-3 xs:gap-4 pt-2">
+          {/* CTA row – visible on desktop, hidden on mobile */}
+          <div className="hidden sm:flex flex-col xs:flex-row xs:items-center gap-3 xs:gap-4 pt-2">
             <Button
               className={
                 isLight
@@ -132,6 +133,28 @@ export function HeroBannerCard() {
               </span>
             </div>
           </div>
+        </div>
+
+        {/* CTA row – mobile only, rendered at bottom */}
+        <div className="flex sm:hidden flex-col gap-3 pt-2">
+          <div className="flex items-center gap-2 text-sm flex-wrap">
+            <TrendingUp className="h-4 w-4 text-exp-green-light" />
+            <span className="min-w-0 break-words">
+              {t("common.current")}:{" "}
+              <span className="font-semibold text-exp-green-light">
+                {formatCurrency(cappingData.current)}
+              </span>
+            </span>
+          </div>
+          <Button
+            className={
+              isLight
+                ? "bg-exp-dark-navy text-white hover:bg-exp-charcoal-blue w-full"
+                : "bg-white text-exp-navy hover:bg-white/90 w-full"
+            }
+          >
+            {t("revshare.viewDetails")}
+          </Button>
         </div>
       </div>
     </Card>
