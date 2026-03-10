@@ -31,6 +31,7 @@ interface DemoConfig {
   distributionMode: DistributionMode;
   countryMode: CountryMode;
   cappingMode: CappingMode;
+  brokerHubMode: BrokerHubMode;
 }
 
 interface DemoConfigContextValue {
