@@ -29,7 +29,7 @@ export default function BrokerHub() {
     { key: "secondaryEmail", header: t("broker.secondaryEmail"), type: "string", filterable: true },
     { key: "city", header: t("broker.city"), type: "string", sortable: true, filterable: true },
     { key: "state", header: t("broker.state"), type: "string", sortable: true, filterable: true },
-    { key: "postalCode", header: t("broker.postalCode"), type: "string", filterable: true },
+    { key: "postalCode", header: config.brokerHubMode === "us" ? "ZIP Code" : t("broker.postalCode"), type: "string", filterable: true },
   ];
 
   return (
