@@ -50,7 +50,7 @@ export default function BrokerHub() {
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setView("list"); }}
-                aria-label={`${t("broker.stateMentors")} — ${totalMentors}`}
+                aria-label={`${mentorLabel} — ${totalMentors}`}
               >
                 <CardContent className="p-6 flex items-center gap-4">
                   <div className="rounded-full bg-primary-foreground/20 p-3">
