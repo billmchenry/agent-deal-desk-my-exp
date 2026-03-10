@@ -147,32 +147,22 @@ export function Sidebar() {
     if (hasSubmenu) {
       return (
         <Collapsible key={item.title} open={expanded}>
-          <div className="flex items-center mx-2">
+          <CollapsibleTrigger asChild>
             <button
               onClick={() => handleParentClick(item)}
               className={cn(
-                "flex flex-1 items-center gap-3 rounded-lg px-3 py-1.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent",
+                "mx-2 flex w-[calc(100%-1rem)] items-center gap-3 rounded-lg px-3 py-1.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent",
                 isActive(item.url) && "bg-sidebar-accent"
               )}>
-              
               {Icon && <Icon className="h-4 w-4" />}
-              <span>{tn(item.title)}</span>
+              <span className="flex-1 text-start">{tn(item.title)}</span>
+              <ChevronRight
+                className={cn(
+                  "h-4 w-4 text-sidebar-foreground/60 transition-transform duration-200",
+                  expanded && "rotate-90"
+                )} />
             </button>
-            <CollapsibleTrigger asChild>
-              <button
-                onClick={(e) => handleChevronClick(e, item)}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md hover:bg-sidebar-accent transition-colors"
-                aria-label={`${expanded ? "Collapse" : "Expand"} ${tn(item.title)}`}>
-                
-                <ChevronRight
-                  className={cn(
-                    "h-4 w-4 text-sidebar-foreground/60 transition-transform duration-200",
-                    expanded && "rotate-90"
-                  )} />
-                
-              </button>
-            </CollapsibleTrigger>
-          </div>
+          </CollapsibleTrigger>
           <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
             <div className="ms-9 mt-1 space-y-0.5">
               {item.submenu?.map((subItem) =>
@@ -183,7 +173,6 @@ export function Sidebar() {
                   "mx-2 flex items-center rounded-lg px-3 py-1.5 text-sm text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground",
                   isActive(subItem.url) && "bg-sidebar-accent text-sidebar-foreground font-medium"
                 )}>
-                
                   {tn(subItem.title)}
                 </a>
               )}
