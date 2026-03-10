@@ -275,8 +275,8 @@ export function Sidebar() {
             src={expLogo}
             alt="eXp Realty"
             className={cn(
-              "object-contain transition-all duration-300",
-              isCollapsed ? "h-8 w-8" : "h-8"
+              "object-contain transition-all duration-300 brightness-0 invert",
+              isCollapsed ? "h-6 w-10" : "h-10 max-w-[140px]"
             )}
           />
         </div>
