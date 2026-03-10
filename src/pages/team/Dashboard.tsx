@@ -163,9 +163,10 @@ export default function TeamDashboard() {
           </div>
 
           <div className="relative z-10">
-            <div className="mb-4">
+            <div className="flex items-center gap-2 mb-4">
               <Badge className="bg-exp-charcoal-blue/10 text-exp-charcoal-blue border-exp-charcoal-blue/20">
-                {t("team.overview")}
+                <Target className="me-1 h-3 w-3" />
+                TEAM
               </Badge>
             </div>
 
