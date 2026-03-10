@@ -22,9 +22,9 @@ export function CappingYearCard() {
           <CardTitle className="text-section-title font-semibold">{t("dashboard.cappingYear")}</CardTitle>
           <Badge 
             variant="secondary" 
-            className="bg-exp-green/10 text-exp-green border-exp-green/20 font-medium"
+            className={`font-medium ${isCapped ? "bg-[#2D2A6E]/10 text-[#2D2A6E] border-[#2D2A6E]/20" : "bg-exp-green/10 text-exp-green border-exp-green/20"}`}
           >
-            {cappingData.status}
+            {status}
           </Badge>
         </div>
       </CardHeader>
