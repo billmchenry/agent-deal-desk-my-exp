@@ -51,7 +51,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           size="icon"
           aria-label={t("common.openMiraChat")}
         >
-          <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-shine" />
+          <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine" />
           <Sparkles className="h-6 w-6 relative z-10" />
         </Button>
       )}
