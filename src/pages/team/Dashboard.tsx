@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { TopAgentsSheet } from "@/components/team/TopAgentsSheet";
+import { AgentDetailsSheet } from "@/components/team/AgentDetailsSheet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Home, Building2, DollarSign } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
@@ -37,6 +38,7 @@ export default function TeamDashboard() {
   const [selectedOnboardingAgent, setSelectedOnboardingAgent] = useState<OnboardingAgent | null>(null);
   const [topAgentsSheetOpen, setTopAgentsSheetOpen] = useState(false);
   const [topAgentsDefaultTab, setTopAgentsDefaultTab] = useState<"units" | "volume" | "commission">("units");
+  const [agentDetailsSheetOpen, setAgentDetailsSheetOpen] = useState(false);
   const [overviewDateRange, setOverviewDateRange] = useState<DateRange>({
     from: new Date(2026, 0, 1),
     to: new Date(2026, 2, 5),
@@ -379,7 +381,7 @@ export default function TeamDashboard() {
 
             <button
               className="text-primary hover:underline text-sm mt-6"
-              onClick={() => setView("agentDetails")}
+              onClick={() => setAgentDetailsSheetOpen(true)}
             >
               {t("team.viewDetails")}
             </button>
@@ -489,6 +491,10 @@ export default function TeamDashboard() {
         open={topAgentsSheetOpen}
         onOpenChange={setTopAgentsSheetOpen}
         defaultTab={topAgentsDefaultTab}
+      />
+      <AgentDetailsSheet
+        open={agentDetailsSheetOpen}
+        onOpenChange={setAgentDetailsSheetOpen}
       />
     </DashboardLayout>
   );
