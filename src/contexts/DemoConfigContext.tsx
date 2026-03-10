@@ -87,9 +87,10 @@ export function DemoConfigProvider({ children }: { children: React.ReactNode }) 
   const setDistributionMode = useCallback((mode: DistributionMode) => update("distributionMode", mode), [update]);
   const setCountryMode = useCallback((mode: CountryMode) => update("countryMode", mode), [update]);
   const setCappingMode = useCallback((mode: CappingMode) => update("cappingMode", mode), [update]);
+  const setBrokerHubMode = useCallback((mode: BrokerHubMode) => update("brokerHubMode", mode), [update]);
 
   return (
-    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode }}>
+    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode, setBrokerHubMode }}>
       {children}
     </DemoConfigContext.Provider>
   );
