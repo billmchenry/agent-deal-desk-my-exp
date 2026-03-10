@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, GraduationCap, ChevronRight } from "lucide-react";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
-import { mockStateMentors, type StateMentor } from "@/data/mentorMockData";
+import { mockStateMentors, mockCanadianStateMentors, type StateMentor } from "@/data/mentorMockData";
 import { StateMentorProfileSheet } from "@/components/agent/StateMentorProfileSheet";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import { useDocumentTitle } from "@/hooks/use-document-title";
@@ -19,7 +19,8 @@ export default function BrokerHub() {
   const [view, setView] = useState<View>("tiles");
   const [selectedMentor, setSelectedMentor] = useState<StateMentor | null>(null);
 
-  const totalMentors = mockStateMentors.length;
+  const mentors = config.brokerHubMode === "us" ? mockStateMentors : mockCanadianStateMentors;
+  const totalMentors = mentors.length;
 
   const columns: ColumnDef<StateMentor>[] = [
     { key: "name", header: t("broker.name"), type: "string", sortable: true, filterable: true },
@@ -81,7 +82,7 @@ export default function BrokerHub() {
             </div>
 
             <DataTable
-              data={mockStateMentors}
+              data={mentors}
               columns={columns}
               searchableKeys={["name", "primaryEmail", "city", "state"]}
               onRowClick={(mentor) => setSelectedMentor(mentor)}
