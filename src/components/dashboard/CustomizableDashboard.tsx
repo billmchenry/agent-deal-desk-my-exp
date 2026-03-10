@@ -66,7 +66,7 @@ export function CustomizableDashboard() {
     }
   };
 
-  const mainWidgets = widgets.filter((w) => w.column === "main");
+  const mainWidgets = widgets.filter((w) => w.column === "main" && w.type !== "promo-carousel");
   const sidebarWidgets = widgets.filter((w) => w.column === "sidebar");
 
   return (
