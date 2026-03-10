@@ -26,9 +26,6 @@ export function NewsAndTrainingCard() {
           
           <TabsContent value="updates" className="space-y-3 mt-0">
             {/* Video Thumbnail */}
-            <div className="flex items-center gap-2 mb-2">
-              <Badge variant="destructive" className="text-xs">NEW</Badge>
-            </div>
             <div className="relative rounded-lg overflow-hidden bg-exp-navy aspect-video group cursor-pointer">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-2 text-white">
