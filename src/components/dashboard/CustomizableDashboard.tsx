@@ -93,7 +93,7 @@ export function CustomizableDashboard() {
             >
               {(() => {
                 const heroBannerIdx = mainWidgets.findIndex(w => w.type === "hero-banner");
-                const insertAfterIdx = heroBannerIdx >= 0 ? heroBannerIdx : -1; // after hero-banner, or at top if missing
+                const insertAfterIdx = heroBannerIdx >= 0 ? heroBannerIdx : -1;
 
                 const elements: React.ReactNode[] = [];
 
@@ -108,12 +108,15 @@ export function CustomizableDashboard() {
                 }
 
                 mainWidgets.forEach((widget, index) => {
+                  // On mobile, skip promo-carousel here — it renders at the bottom
+                  const isPromo = widget.type === "promo-carousel";
                   elements.push(
                     <DraggableWidget
                       key={widget.id}
                       widget={widget}
                       isEditMode={isEditMode}
                       onRemove={removeWidget}
+                      className={isPromo ? "lg:block hidden" : undefined}
                     >
                       <WidgetRenderer widget={widget} />
                     </DraggableWidget>
