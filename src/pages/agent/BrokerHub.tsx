@@ -21,6 +21,8 @@ export default function BrokerHub() {
 
   const mentors = config.brokerHubMode === "us" ? mockStateMentors : mockCanadianStateMentors;
   const totalMentors = mentors.length;
+  const mentorLabel = config.brokerHubMode === "us" ? t("broker.stateMentors") : t("broker.provincialMentors");
+  const mentorDesc = config.brokerHubMode === "us" ? t("broker.stateMentorsDesc") : t("broker.provincialMentorsDesc");
 
   const columns: ColumnDef<StateMentor>[] = [
     { key: "name", header: t("broker.name"), type: "string", sortable: true, filterable: true },

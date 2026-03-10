@@ -476,6 +476,8 @@ export const es: Record<string, string> = {
   "broker.title": "Centro de corretaje",
   "broker.stateMentors": "Mentores estatales",
   "broker.stateMentorsDesc": "Cantidad de todos los mentores en su(s) estado(s).",
+  "broker.provincialMentors": "Mentores provinciales",
+  "broker.provincialMentorsDesc": "Cantidad de todos los mentores en su(s) provincia(s).",
   "broker.back": "Atrás",
   "broker.activeMentees": "Mentees activos",
   "broker.noActiveMentees": "Sin mentees activos.",

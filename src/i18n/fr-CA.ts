@@ -479,6 +479,8 @@ export const frCA: Record<string, string> = {
   "broker.title": "Centre courtier",
   "broker.stateMentors": "Mentors d'État",
   "broker.stateMentorsDesc": "Nombre de tous les mentors dans votre/vos état(s).",
+  "broker.provincialMentors": "Mentors provinciaux",
+  "broker.provincialMentorsDesc": "Nombre de tous les mentors dans votre/vos province(s).",
   "broker.back": "Retour",
   "broker.activeMentees": "Mentorés actifs",
   "broker.noActiveMentees": "Aucun mentoré actif.",

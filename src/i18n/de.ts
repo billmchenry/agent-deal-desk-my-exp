@@ -476,6 +476,8 @@ export const de: Record<string, string> = {
   "broker.title": "Makler-Hub",
   "broker.stateMentors": "Landesmentoren",
   "broker.stateMentorsDesc": "Anzahl aller Mentoren in Ihrem/Ihren Bundesstaat(en).",
+  "broker.provincialMentors": "Provinzmentoren",
+  "broker.provincialMentorsDesc": "Anzahl aller Mentoren in Ihrer/Ihren Provinz(en).",
   "broker.back": "Zurück",
   "broker.activeMentees": "Aktive Mentees",
   "broker.noActiveMentees": "Keine aktiven Mentees.",

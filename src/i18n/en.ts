@@ -482,6 +482,8 @@ export const en = {
   "broker.title": "Broker Hub",
   "broker.stateMentors": "State Mentors",
   "broker.stateMentorsDesc": "Count of all Mentors in your state(s).",
+  "broker.provincialMentors": "Provincial Mentors",
+  "broker.provincialMentorsDesc": "Count of all Mentors in your province(s).",
   "broker.back": "Back",
   "broker.activeMentees": "Active Mentees",
   "broker.noActiveMentees": "No active mentees.",
