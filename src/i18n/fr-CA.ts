@@ -136,6 +136,7 @@ export const frCA: Record<string, string> = {
   "team.topAgents": "Meilleurs agents",
   "team.noReports": "Aucun rapport disponible.",
   "team.viewAll": "Voir tout",
+  "team.showLess": "Voir moins",
   "team.requalification": "Requalification",
   "team.contactTeamServices": "Contacter les services d'équipe",
   "team.requirements": "Exigences",

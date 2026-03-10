@@ -133,6 +133,7 @@ export const es: Record<string, string> = {
   "team.topAgents": "Mejores agentes",
   "team.noReports": "No hay informes disponibles.",
   "team.viewAll": "Ver todo",
+  "team.showLess": "Ver menos",
   "team.requalification": "Recalificación",
   "team.contactTeamServices": "Contactar servicios del equipo",
   "team.requirements": "Requisitos",

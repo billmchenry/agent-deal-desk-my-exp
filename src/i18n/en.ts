@@ -132,6 +132,7 @@ export const en = {
   "team.topAgents": "Top Agents",
   "team.noReports": "No reports available.",
   "team.viewAll": "View All",
+  "team.showLess": "Show Less",
   "team.requalification": "Re-qualification",
   "team.contactTeamServices": "Contact Team Services",
   "team.requirements": "Requirements",
