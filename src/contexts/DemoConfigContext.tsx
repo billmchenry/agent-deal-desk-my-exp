@@ -54,6 +54,7 @@ const DEFAULT_CONFIG: DemoConfig = {
   distributionMode: "full",
   countryMode: "us",
   cappingMode: "uncapped",
+  brokerHubMode: "us",
 };
 
 function loadConfig(): DemoConfig {
