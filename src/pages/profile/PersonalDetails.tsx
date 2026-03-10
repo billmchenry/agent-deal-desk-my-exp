@@ -49,12 +49,12 @@ export default function PersonalDetails() {
               </div>
 
               <Tabs defaultValue="general" className="w-full">
-                <TabsList className="mb-6 h-auto gap-1 bg-transparent p-0">
-                  <TabsTrigger value="general" className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm">General</TabsTrigger>
-                  <TabsTrigger value="contact" className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm">Contact</TabsTrigger>
-                  <TabsTrigger value="email" className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm">Email</TabsTrigger>
-                  <TabsTrigger value="addresses" className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm">Addresses</TabsTrigger>
-                  <TabsTrigger value="emergency" className="data-[state=active]:bg-exp-navy data-[state=active]:text-primary-foreground rounded-full px-4 py-1.5 text-sm">Emergency Contacts</TabsTrigger>
+                <TabsList className="mb-6">
+                  <TabsTrigger value="general">General</TabsTrigger>
+                  <TabsTrigger value="contact">Contact</TabsTrigger>
+                  <TabsTrigger value="email">Email</TabsTrigger>
+                  <TabsTrigger value="addresses">Addresses</TabsTrigger>
+                  <TabsTrigger value="emergency">Emergency Contacts</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="general" className="mt-0"><GeneralTab /></TabsContent>

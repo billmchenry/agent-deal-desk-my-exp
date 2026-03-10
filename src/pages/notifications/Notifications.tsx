@@ -222,30 +222,12 @@ export default function Notifications() {
         <h1 className="text-page-title font-bold text-foreground">{t("notif.title")}</h1>
 
         <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v as "activity" | "recognition"); setPage(1); }}>
-          <TabsList className="bg-transparent border-b rounded-none w-full justify-start gap-4 px-0">
-            <TabsTrigger
-              value="activity"
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 pb-3"
-            >
+          <TabsList>
+            <TabsTrigger value="activity">
               {t("notif.activityFeed")}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="h-3.5 w-3.5 ml-1 text-muted-foreground" aria-hidden="true" />
-                </TooltipTrigger>
-                <TooltipContent>{t("notif.activityFeedInfo")}</TooltipContent>
-              </Tooltip>
             </TabsTrigger>
-            <TabsTrigger
-              value="recognition"
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 pb-3"
-            >
+            <TabsTrigger value="recognition">
               {t("notif.recognition")}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="h-3.5 w-3.5 ml-1 text-muted-foreground" aria-hidden="true" />
-                </TooltipTrigger>
-                <TooltipContent>{t("notif.recognitionInfo")}</TooltipContent>
-              </Tooltip>
             </TabsTrigger>
           </TabsList>
 
