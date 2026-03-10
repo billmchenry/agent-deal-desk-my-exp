@@ -179,6 +179,9 @@ export function CustomizableDashboard() {
           </div>
         </div>
       </DndContext>
+
+      {/* Growth & Development — always at the very bottom */}
+      <GrowthAndDevelopmentRows />
     </div>
   );
 }

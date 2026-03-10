@@ -67,8 +67,8 @@ function CarouselRow({ title, cards }: { title: string; cards: RowCard[] }) {
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold text-section-title">{title}</h2>
-      <Carousel opts={{ loop: false, align: "start" }} setApi={setApi}>
-        <CarouselContent>
+      <Carousel opts={{ loop: false, align: "start" }} setApi={setApi} className="touch-action-manipulation">
+        <CarouselContent className="touch-action-manipulation">
           {cards.map((card) => {
             const styles = themeStyles[card.theme];
             const Icon = card.icon;
