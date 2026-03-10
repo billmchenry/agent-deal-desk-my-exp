@@ -379,12 +379,14 @@ export default function TeamDashboard() {
               ))}
             </div>
 
-            <button
-              className="text-primary hover:underline text-sm mt-6"
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full mt-6"
               onClick={() => setAgentDetailsSheetOpen(true)}
             >
               {t("team.viewDetails")}
-            </button>
+            </Button>
           </CardContent>
         </Card>
       </div>
