@@ -347,8 +347,10 @@ const paymentDetails = {
 
 export default function Financials() {
   const { t } = useTranslation();
-  const { formatCurrency } = useFormatters();
+  const { formatCurrency, formatDate } = useFormatters();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const defaultTab = searchParams.get("tab") || "unpaid";
   useDocumentTitle(t("fin.title"));
 
   // Drill-down state
