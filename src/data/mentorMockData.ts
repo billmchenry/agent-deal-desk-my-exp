@@ -670,7 +670,7 @@ export const mockStateMentors: StateMentor[] = [
     state: "OR",
     postalCode: "97201",
     agentId: "82",
-    primaryStateLicense: "OR-220194",
+    primaryStateLicense: "OR",
     bio: "Focused on sustainable real estate practices and community-driven development in the Pacific Northwest.",
     locationsServiced: ["Portland", "Beaverton", "Lake Oswego"],
     licenses: [{ state: "OR", number: "OR-220194" }],
