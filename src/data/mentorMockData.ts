@@ -549,6 +549,8 @@ export interface StateMentor {
   city: string;
   state: string;
   postalCode: string;
+  agentId: string;
+  primaryStateLicense: string;
   // Profile fields (reuse AvailableMentor shape)
   avatarUrl?: string;
   bio: string;
