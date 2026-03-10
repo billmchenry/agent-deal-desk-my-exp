@@ -53,6 +53,14 @@
     --exp-gray: 220 13% 91%;
     --exp-gray-dark: 220 13% 46%;
 
+    /* Capping Hero Light Mode Palette */
+    --exp-charcoal-blue: 244 14% 22%;
+    --exp-dark-navy: 233 50% 9%;
+    --exp-moss-grey: 250 6% 42%;
+    --exp-light-grey: 0 0% 93%;
+    --exp-slate-blue: 221 36% 49%;
+    --exp-frosted-blue: 221 33% 87%;
+
     /* Sidebar - Dark Navy */
     --sidebar-background: 230 50% 9%;
     --sidebar-foreground: 0 0% 100%;
