@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -9,9 +9,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Filter, MessageCircle, ChevronRight, ChevronLeft, Info, Phone, Mail, MapPin } from "lucide-react";
+import { MessageCircle, ChevronRight, ChevronLeft, Info, Phone, Mail, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DateRangeFilter, type DateRange } from "@/components/filters/DateRangeFilter";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { topAgents, teamOverview, teamRequirements, onboardingAgents, agentDetails, type OnboardingAgent, type TopAgent, type AgentDetail } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -32,6 +33,10 @@ export default function TeamDashboard() {
 
   const [view, setView] = useState<View>("overview");
   const [selectedOnboardingAgent, setSelectedOnboardingAgent] = useState<OnboardingAgent | null>(null);
+  const [overviewDateRange, setOverviewDateRange] = useState<DateRange>({
+    from: new Date(2026, 0, 1),
+    to: new Date(2026, 2, 5),
+  });
 
   // --- Agent Details columns (requalification drill-down) ---
   const agentDetailColumns: ColumnDef<AgentDetail>[] = [
@@ -154,19 +159,7 @@ export default function TeamDashboard() {
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-section-title font-medium">{t("team.overview")}</CardTitle>
-            <Select defaultValue="jan2026">
-              <SelectTrigger className="w-[220px]">
-                <div className="flex items-center gap-2">
-                  <Filter className="h-4 w-4" />
-                  <span>01/01/2026 - 03/05/2026</span>
-                </div>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="jan2026">01/01/2026 - 03/05/2026</SelectItem>
-                <SelectItem value="dec2025">12/01/2025 - 12/31/2025</SelectItem>
-                <SelectItem value="q42025">Q4 2025</SelectItem>
-              </SelectContent>
-            </Select>
+            <DateRangeFilter value={overviewDateRange} onChange={setOverviewDateRange} />
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
