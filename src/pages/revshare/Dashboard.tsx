@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
@@ -6,17 +6,14 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
-  Info, ChevronRight, Clock, Calendar, CheckCircle2, TrendingUp,
-  Users, DollarSign, ExternalLink, Target,
+  Info, ChevronRight, Clock, Calendar as CalendarIcon, CheckCircle2, TrendingUp,
+  Users, DollarSign, ExternalLink, Target, CalendarDays, RotateCcw,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
 import { UniversalFilterBar } from "@/components/filters";
 import {
   ResponsiveContainer, LineChart, Line,
@@ -25,6 +22,32 @@ import {
 import {
   HoverCard, HoverCardContent, HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import {
+  Popover, PopoverContent, PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { startOfYear, startOfMonth, subMonths, subYears, format } from "date-fns";
+
+type FilterPreset = "ytd" | "lastYear" | "lastMonth" | "custom";
+
+function getPresetRange(preset: FilterPreset): { from: Date; to: Date } {
+  const now = new Date();
+  switch (preset) {
+    case "ytd":
+      return { from: startOfYear(now), to: now };
+    case "lastYear": {
+      const ly = subYears(now, 1);
+      return { from: startOfYear(ly), to: new Date(ly.getFullYear(), 11, 31) };
+    }
+    case "lastMonth": {
+      const lm = subMonths(now, 1);
+      return { from: startOfMonth(lm), to: new Date(lm.getFullYear(), lm.getMonth() + 1, 0) };
+    }
+    default:
+      return { from: startOfYear(now), to: now };
+  }
+}
 
 // Yearly: single line showing total revshare per year
 const revenueYearlyGrouped = [
