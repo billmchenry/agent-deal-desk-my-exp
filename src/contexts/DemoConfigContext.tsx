@@ -41,6 +41,7 @@ interface DemoConfigContextValue {
   setDistributionMode: (mode: DistributionMode) => void;
   setCountryMode: (mode: CountryMode) => void;
   setCappingMode: (mode: CappingMode) => void;
+  setBrokerHubMode: (mode: BrokerHubMode) => void;
 }
 
 const DemoConfigContext = createContext<DemoConfigContextValue | null>(null);
