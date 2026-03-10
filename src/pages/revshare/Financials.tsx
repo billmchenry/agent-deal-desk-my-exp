@@ -629,14 +629,124 @@ export default function Financials() {
           </TabsContent>
 
           <TabsContent value="periodic" className="mt-4">
-            <DataTable
-              data={periodicData}
-              columns={periodicColumns}
-              csvFilename="periodic-revshare"
-              mobileCardRender={periodicMobileCard}
-              defaultPageSize={25}
-              onRowClick={handlePeriodClick}
-            />
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <Card className="p-5">
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalRevenue6Mo")}</p>
+                <p className="text-2xl font-semibold text-primary font-secondary">
+                  {formatCurrency(totalRevenue)} <span className="text-xs text-muted-foreground">USD</span>
+                </p>
+              </Card>
+              <Card className="p-5">
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalTransactions")}</p>
+                <p className="text-2xl font-semibold text-foreground font-secondary">{totalTransactions}</p>
+              </Card>
+              <Card className="p-5">
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalPayNowTransactions")}</p>
+                <p className="text-2xl font-semibold text-exp-green font-secondary">
+                  {formatCurrency(totalPayNow)} <span className="text-xs text-muted-foreground">USD</span>
+                </p>
+              </Card>
+            </div>
+
+            {/* Monthly Payment Batches */}
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-foreground">{t("fin.monthlyPaymentBatches")}</h2>
+              <Button variant="outline" size="sm">
+                <Download className="h-4 w-4 mr-2" />
+                {t("fin.downloadReport")}
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              {monthlyBatches.map((batch) => {
+                const isExpanded = expandedBatchId === batch.id;
+                const hasPayNow = batch.payNowTransactions.length > 0;
+                return (
+                  <div key={batch.id} className="border border-border rounded-lg overflow-hidden">
+                    {/* Batch header row */}
+                    <div
+                      className={cn(
+                        "flex flex-wrap md:flex-nowrap items-center justify-between p-4 bg-muted/30 transition-colors",
+                        hasPayNow && "cursor-pointer hover:bg-muted/50"
+                      )}
+                      onClick={() => hasPayNow && setExpandedBatchId(isExpanded ? null : batch.id)}
+                    >
+                      <div className="flex items-center gap-2">
+                        {hasPayNow && (
+                          isExpanded
+                            ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" />
+                            : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                        )}
+                        <div>
+                          <h3 className="font-medium text-foreground">
+                            {batch.month} {batch.year} Batch
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {batch.totalDeals} total deals · {batch.memberCount} members
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">{t("fin.initialRevenue")}</p>
+                          <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(batch.initialRevenue)}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
+                          <p className="text-sm font-medium font-secondary text-destructive">
+                            - {formatCurrency(batch.payNowDeduction)}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">{t("fin.adjustmentAmount")}</p>
+                          <p className="text-sm font-medium font-secondary text-exp-green">{formatCurrency(batch.adjustmentAmount)}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">{t("fin.finalPayout")}</p>
+                          <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Expanded PayNow Early Payouts */}
+                    {isExpanded && hasPayNow && (
+                      <div className="border-t border-border">
+                        <div className="p-4">
+                          <h4 className="font-medium text-sm text-exp-green mb-3">{t("fin.payNowEarlyPayouts")}</h4>
+
+                          {/* Table header */}
+                          <div className="hidden md:grid grid-cols-5 gap-4 px-3 py-2 bg-muted/50 rounded text-xs font-medium text-muted-foreground mb-1">
+                            <div>{t("fin.date")}</div>
+                            <div className="text-right">{t("fin.initialAmount")}</div>
+                            <div className="text-right">{t("fin.serviceFee")}</div>
+                            <div className="text-right">{t("fin.finalAmount")}</div>
+                            <div className="text-right">{t("fin.dealCount")}</div>
+                          </div>
+
+                          {batch.payNowTransactions.map((pn) => (
+                            <div
+                              key={pn.id}
+                              className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 px-3 py-3 border-b border-border/50 last:border-0 bg-accent/30 hover:bg-accent/50 transition-colors items-center"
+                            >
+                              <div className="text-sm text-foreground">{formatDate(pn.date)}</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.initialAmount)}</div>
+                              <div className="text-sm font-medium font-secondary text-destructive text-right">{formatCurrency(pn.serviceFee)}</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.finalAmount)}</div>
+                              <div className="flex items-center justify-between md:justify-end gap-2">
+                                <span className="text-sm text-foreground">{pn.dealCount} deals</span>
+                                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </TabsContent>
         </Tabs>
       </div>
