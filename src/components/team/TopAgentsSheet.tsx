@@ -127,12 +127,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
           </div>
         );
       case "units":
-        return (
-          <div className="flex items-center justify-end gap-3">
-            <Progress value={(agent.units / maxUnits) * 100} className="h-1.5 w-16 hidden sm:block" />
-            <span className="tabular-nums font-secondary font-medium min-w-[2ch]">{agent.units}</span>
-          </div>
-        );
+        return <span className="tabular-nums font-secondary font-medium">{agent.units}</span>;
       case "volume":
         return <span className="tabular-nums font-secondary">{formatCurrency(agent.volume)}</span>;
       case "commission":
