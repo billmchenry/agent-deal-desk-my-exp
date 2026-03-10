@@ -68,6 +68,9 @@ export function CustomizableDashboard() {
 
   const mainWidgets = widgets.filter((w) => w.column === "main");
   const sidebarWidgets = widgets.filter((w) => w.column === "sidebar");
+  // On mobile, pull promo-carousel out of the grid so it renders at the very bottom
+  const mainWidgetsFiltered = mainWidgets.filter((w) => w.type !== "promo-carousel");
+  const hasPromoWidget = mainWidgets.some((w) => w.type === "promo-carousel");
 
   return (
     <div className="space-y-4 min-w-0 max-w-full">
