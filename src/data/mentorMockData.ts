@@ -713,7 +713,7 @@ export const mockStateMentors: StateMentor[] = [
     state: "NV",
     postalCode: "89101",
     agentId: "149203",
-    primaryStateLicense: "NV-112039",
+    primaryStateLicense: "NV",
     bio: "Helping new agents build their dream careers in the Las Vegas and Henderson real estate markets.",
     locationsServiced: ["Las Vegas", "Henderson", "Summerlin"],
     licenses: [{ state: "NV", number: "NV-112039" }],
