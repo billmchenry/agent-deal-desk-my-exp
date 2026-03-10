@@ -323,7 +323,10 @@ export default function TeamDashboard() {
                     <Button
                       variant="outline"
                       className="w-full mt-4 rounded-full border-border text-primary"
-                      onClick={() => setView("topAgents")}
+                      onClick={() => {
+                        setTopAgentsDefaultTab(tab);
+                        setTopAgentsSheetOpen(true);
+                      }}
                     >
                       {t("team.viewAll")}
                     </Button>
