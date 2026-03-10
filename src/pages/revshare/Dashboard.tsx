@@ -521,7 +521,7 @@ export default function RevShareDashboard() {
               {/* Expected Next */}
               <div className="rounded-lg border border-exp-blue/30 bg-exp-blue/5 p-3">
                 <div className="flex items-center gap-2 mb-1">
-                  <Calendar className="h-4 w-4 text-exp-blue" />
+                  <CalendarIcon className="h-4 w-4 text-exp-blue" />
                   <span className="text-xs font-semibold text-foreground">{t("revshare.expectedNext")}</span>
                 </div>
                 <p className="text-xs text-muted-foreground mb-2">{t("revshare.estimatedNextPayout")}</p>
