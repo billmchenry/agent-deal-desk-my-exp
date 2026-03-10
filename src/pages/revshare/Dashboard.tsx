@@ -103,29 +103,29 @@ const levelScenarios = {
 
 const countryScenarios = {
   full: [
-    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
-    { name: "United Kingdom", agents: 1450, revShare: 23117, color: "hsl(217, 91%, 60%)" },
-    { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
-    { name: "Germany", agents: 980, revShare: 15697, color: "hsl(45, 93%, 47%)" },
     { name: "Australia", agents: 890, revShare: 14270, color: "hsl(0, 84%, 60%)" },
     { name: "Brazil", agents: 820, revShare: 13132, color: "hsl(220, 45%, 30%)" },
+    { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
     { name: "France", agents: 720, revShare: 11494, color: "hsl(210, 40%, 75%)" },
+    { name: "Germany", agents: 980, revShare: 15697, color: "hsl(45, 93%, 47%)" },
+    { name: "United Kingdom", agents: 1450, revShare: 23117, color: "hsl(217, 91%, 60%)" },
+    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
   ],
   few_countries: [
-    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
     { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
+    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
   ],
   many_countries: [
-    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
-    { name: "United Kingdom", agents: 1450, revShare: 23117, color: "hsl(217, 91%, 60%)" },
-    { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
-    { name: "Germany", agents: 980, revShare: 15697, color: "hsl(45, 93%, 47%)" },
     { name: "Australia", agents: 890, revShare: 14270, color: "hsl(0, 84%, 60%)" },
     { name: "Brazil", agents: 820, revShare: 13132, color: "hsl(220, 45%, 30%)" },
+    { name: "Canada", agents: 1125, revShare: 17980, color: "hsl(142, 71%, 45%)" },
     { name: "France", agents: 720, revShare: 11494, color: "hsl(210, 40%, 75%)" },
+    { name: "Germany", agents: 980, revShare: 15697, color: "hsl(45, 93%, 47%)" },
     { name: "India", agents: 650, revShare: 10400, color: "hsl(30, 80%, 50%)" },
-    { name: "South Africa", agents: 420, revShare: 6720, color: "hsl(160, 60%, 40%)" },
     { name: "Portugal", agents: 310, revShare: 4960, color: "hsl(350, 70%, 55%)" },
+    { name: "South Africa", agents: 420, revShare: 6720, color: "hsl(160, 60%, 40%)" },
+    { name: "United Kingdom", agents: 1450, revShare: 23117, color: "hsl(217, 91%, 60%)" },
+    { name: "United States", agents: 4850, revShare: 77710, color: "hsl(262, 83%, 58%)" },
   ],
 };
 
