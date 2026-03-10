@@ -99,9 +99,17 @@ export function Sidebar() {
   };
 
   const handleParentClick = (item: SidebarNavItem) => {
-    if (item.url) {
+    if (item.submenu) {
+      // If already in this section, toggle collapse
+      if (isInSection(location.pathname, item)) {
+        setManuallyCollapsed((prev) => prev === item.title ? null : item.title);
+      } else if (item.url) {
+        // Navigate and ensure expanded
+        navigate(item.url);
+        setManuallyCollapsed(null);
+      }
+    } else if (item.url) {
       navigate(item.url);
-      setManuallyCollapsed(null);
     }
   };
 
