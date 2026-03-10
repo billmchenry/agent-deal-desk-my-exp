@@ -381,8 +381,7 @@ export default function TeamDashboard() {
 
             <Button
               variant="outline"
-              size="sm"
-              className="rounded-full mt-6"
+              className="rounded-full mt-6 px-8"
               onClick={() => setAgentDetailsSheetOpen(true)}
             >
               {t("team.viewDetails")}
