@@ -755,6 +755,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Phoenix",
     state: "AZ",
     postalCode: "85001",
+    agentId: "EXP-145382",
+    primaryStateLicense: "AZ-882014",
     bio: "20+ year veteran of the Arizona real estate market. Ready to mentor the next generation of top producers.",
     locationsServiced: ["Phoenix", "Scottsdale", "Tempe", "Mesa"],
     licenses: [{ state: "AZ", number: "AZ-882014" }],
