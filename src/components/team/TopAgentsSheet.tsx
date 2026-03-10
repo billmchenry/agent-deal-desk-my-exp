@@ -218,7 +218,23 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
         </div>
 
         {/* Footer / Pagination */}
-        <div className="px-6 py-3 border-t border-border flex items-center justify-end shrink-0 text-sm">
+        <div className="px-6 py-3 border-t border-border flex items-center justify-between shrink-0 text-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">{t("team.rowsPerPage")}</span>
+            <Select
+              value={String(rowsPerPage)}
+              onValueChange={(v) => { setRowsPerPage(Number(v)); setPage(1); }}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="25">25</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">
               {t("team.pageOf").replace("{page}", String(page)).replace("{total}", String(totalPages))}
@@ -226,7 +242,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8"
+              className="h-8 w-8 rounded-full"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
             >
@@ -235,7 +251,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8"
+              className="h-8 w-8 rounded-full"
               disabled={page >= totalPages}
               onClick={() => setPage((p) => p + 1)}
             >
