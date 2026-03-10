@@ -82,7 +82,7 @@ export default function BrokerHub() {
             </div>
 
             <DataTable
-              data={mockStateMentors}
+              data={mentors}
               columns={columns}
               searchableKeys={["name", "primaryEmail", "city", "state"]}
               onRowClick={(mentor) => setSelectedMentor(mentor)}
