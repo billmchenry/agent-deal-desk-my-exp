@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Filter, MessageCircle, ChevronRight, ChevronLeft, Info, Phone, Mail, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DateRangeFilter, type DateRange } from "@/components/filters/DateRangeFilter";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { topAgents, teamOverview, teamRequirements, onboardingAgents, agentDetails, type OnboardingAgent, type TopAgent, type AgentDetail } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
