@@ -18,6 +18,7 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import { DraggableWidget } from "./DraggableWidget";
 import { WidgetRenderer } from "./WidgetRenderer";
+import { GrowthAndDevelopmentRows } from "./GrowthAndDevelopmentRows";
 import { MentorProgramWidget } from "./MentorProgramWidget";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { Button } from "@/components/ui/button";
@@ -67,6 +68,9 @@ export function CustomizableDashboard() {
 
   const mainWidgets = widgets.filter((w) => w.column === "main");
   const sidebarWidgets = widgets.filter((w) => w.column === "sidebar");
+  // On mobile, pull promo-carousel out of the grid so it renders at the very bottom
+  const mainWidgetsFiltered = mainWidgets.filter((w) => w.type !== "promo-carousel");
+  const hasPromoWidget = mainWidgets.some((w) => w.type === "promo-carousel");
 
   return (
     <div className="space-y-4 min-w-0 max-w-full">
@@ -89,7 +93,7 @@ export function CustomizableDashboard() {
             >
               {(() => {
                 const heroBannerIdx = mainWidgets.findIndex(w => w.type === "hero-banner");
-                const insertAfterIdx = heroBannerIdx >= 0 ? heroBannerIdx : -1; // after hero-banner, or at top if missing
+                const insertAfterIdx = heroBannerIdx >= 0 ? heroBannerIdx : -1;
 
                 const elements: React.ReactNode[] = [];
 
@@ -104,7 +108,8 @@ export function CustomizableDashboard() {
                 }
 
                 mainWidgets.forEach((widget, index) => {
-                  elements.push(
+                  const isPromo = widget.type === "promo-carousel";
+                  const widgetEl = (
                     <DraggableWidget
                       key={widget.id}
                       widget={widget}
@@ -113,6 +118,12 @@ export function CustomizableDashboard() {
                     >
                       <WidgetRenderer widget={widget} />
                     </DraggableWidget>
+                  );
+                  // On mobile, hide promo-carousel here — it renders at the bottom
+                  elements.push(
+                    isPromo ? (
+                      <div key={widget.id + "-wrap"} className="hidden lg:block">{widgetEl}</div>
+                    ) : widgetEl
                   );
 
                   if (showMentorWidget && index === insertAfterIdx) {
@@ -178,6 +189,13 @@ export function CustomizableDashboard() {
           </div>
         </div>
       </DndContext>
+
+      {/* Growth & Development rows – bottom of page on mobile */}
+      {hasPromoWidget && (
+        <div className="lg:hidden">
+          <GrowthAndDevelopmentRows />
+        </div>
+      )}
     </div>
   );
 }
