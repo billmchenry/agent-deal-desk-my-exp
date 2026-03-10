@@ -37,6 +37,28 @@ interface PeriodicRow {
   currency: string;
 }
 
+interface PayNowTransaction {
+  id: string;
+  date: string;
+  initialAmount: number;
+  serviceFee: number;
+  finalAmount: number;
+  dealCount: number;
+}
+
+interface MonthlyBatchRow {
+  id: string;
+  month: string;
+  year: number;
+  totalDeals: number;
+  memberCount: number;
+  initialRevenue: number;
+  payNowDeduction: number;
+  adjustmentAmount: number;
+  finalPayout: number;
+  payNowTransactions: PayNowTransaction[];
+}
+
 // ── Mock Transaction Data per Agent ──
 
 const agentTransactionsMap: Record<string, AgentDetail> = {
