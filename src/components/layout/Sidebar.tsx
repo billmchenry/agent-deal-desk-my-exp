@@ -267,7 +267,7 @@ export function Sidebar() {
           isCollapsed ? "w-16" : "w-64"
         )}>
         
-        <div className={cn("flex h-16 items-center border-b border-border bg-sidebar transition-all duration-300 text-secondary-foreground",
+        <div className={cn("flex h-16 items-center bg-sidebar transition-all duration-300 text-secondary-foreground",
 
         isCollapsed ? "justify-center px-2" : "gap-2 px-5"
         )}>
