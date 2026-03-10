@@ -2,8 +2,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { useDemoConfig, type MentorMode, type FlqaMode, type DistributionMode, type CountryMode } from "@/contexts/DemoConfigContext";
-import { Users, Target, BarChart3, Globe } from "lucide-react";
+import { useDemoConfig, type MentorMode, type FlqaMode, type DistributionMode, type CountryMode, type CappingMode } from "@/contexts/DemoConfigContext";
+import { Users, Target, BarChart3, Globe, Trophy } from "lucide-react";
 
 interface DemoConfigSheetProps {
   open: boolean;
