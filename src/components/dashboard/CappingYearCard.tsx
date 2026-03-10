@@ -7,7 +7,11 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 export function CappingYearCard() {
-  const progressPercentage = (cappingData.current / cappingData.target) * 100;
+  const { config } = useDemoConfig();
+  const isCapped = config.cappingMode === "capped";
+  const current = isCapped ? cappingData.target : cappingData.current;
+  const status = isCapped ? "Capped" : cappingData.status;
+  const progressPercentage = (current / cappingData.target) * 100;
   const { formatCurrency } = useFormatters();
   const { t } = useTranslation();
 
