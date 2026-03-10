@@ -23,25 +23,6 @@ import { GrowthAndDevelopmentRows } from "./GrowthAndDevelopmentRows";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { Sparkles } from "lucide-react";
-import { useDashboard } from "@/contexts/DashboardContext";
-import { useMiraChat } from "@/contexts/MiraChatContext";
-import { useDemoConfig } from "@/contexts/DemoConfigContext";
-import { DraggableWidget } from "./DraggableWidget";
-import { WidgetRenderer } from "./WidgetRenderer";
-import { MentorProgramWidget } from "./MentorProgramWidget";
-import { DashboardToolbar } from "./DashboardToolbar";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 // Widget-specific removal messages
 const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
