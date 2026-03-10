@@ -174,6 +174,33 @@ export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
               </label>
             ))}
           </RadioGroup>
+        <Separator className="my-4" />
+
+        {/* Capping Mode */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Trophy className="h-4 w-4 text-primary" />
+            <h3 className="text-sm font-semibold text-foreground">Capping Scenario</h3>
+          </div>
+
+          <RadioGroup
+            value={config.cappingMode}
+            onValueChange={(val) => setCappingMode(val as CappingMode)}
+            className="space-y-2"
+          >
+            {cappingOptions.map((opt) => (
+              <label
+                key={opt.value}
+                className="flex items-start gap-3 p-3 rounded-lg border cursor-pointer hover:bg-accent/50 transition-colors has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5"
+              >
+                <RadioGroupItem value={opt.value} className="mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">{opt.label}</p>
+                  <p className="text-xs text-muted-foreground">{opt.description}</p>
+                </div>
+              </label>
+            ))}
+          </RadioGroup>
         </div>
       </SheetContent>
     </Sheet>
