@@ -442,6 +442,8 @@ export const zh: Record<string, string> = {
   "broker.title": "经纪中心",
   "broker.stateMentors": "州导师",
   "broker.stateMentorsDesc": "您所在州的所有导师数量。",
+  "broker.provincialMentors": "省级导师",
+  "broker.provincialMentorsDesc": "您所在省份的所有导师数量。",
   "broker.back": "返回",
   "broker.activeMentees": "活跃学员",
   "broker.noActiveMentees": "没有活跃学员。",

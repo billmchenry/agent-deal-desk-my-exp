@@ -21,6 +21,8 @@ export default function BrokerHub() {
 
   const mentors = config.brokerHubMode === "us" ? mockStateMentors : mockCanadianStateMentors;
   const totalMentors = mentors.length;
+  const mentorLabel = config.brokerHubMode === "us" ? t("broker.stateMentors") : t("broker.provincialMentors");
+  const mentorDesc = config.brokerHubMode === "us" ? t("broker.stateMentorsDesc") : t("broker.provincialMentorsDesc");
 
   const columns: ColumnDef<StateMentor>[] = [
     { key: "name", header: t("broker.name"), type: "string", sortable: true, filterable: true },
@@ -48,16 +50,16 @@ export default function BrokerHub() {
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setView("list"); }}
-                aria-label={`${t("broker.stateMentors")} — ${totalMentors}`}
+                aria-label={`${mentorLabel} — ${totalMentors}`}
               >
                 <CardContent className="p-6 flex items-center gap-4">
                   <div className="rounded-full bg-primary-foreground/20 p-3">
                     <GraduationCap className="h-6 w-6" aria-hidden="true" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium opacity-90">{t("broker.stateMentors")}</p>
+                    <p className="text-sm font-medium opacity-90">{mentorLabel}</p>
                     <p className="text-stat-value font-bold font-secondary">{totalMentors}</p>
-                    <p className="text-xs opacity-75 mt-0.5">{t("broker.stateMentorsDesc")}</p>
+                    <p className="text-xs opacity-75 mt-0.5">{mentorDesc}</p>
                   </div>
                   <ChevronRight className="h-5 w-5 opacity-60" aria-hidden="true" />
                 </CardContent>
@@ -78,7 +80,7 @@ export default function BrokerHub() {
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <h1 className="text-page-title font-bold text-foreground">{t("broker.stateMentors")}</h1>
+              <h1 className="text-page-title font-bold text-foreground">{mentorLabel}</h1>
             </div>
 
             <DataTable

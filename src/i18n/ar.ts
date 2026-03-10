@@ -441,6 +441,8 @@ export const ar: Record<string, string> = {
   "broker.title": "مركز الوسيط",
   "broker.stateMentors": "مرشدو الولاية",
   "broker.stateMentorsDesc": "عدد جميع المرشدين في ولايتك/ولاياتك.",
+  "broker.provincialMentors": "مرشدو المقاطعة",
+  "broker.provincialMentorsDesc": "عدد جميع المرشدين في مقاطعتك/مقاطعاتك.",
   "broker.back": "رجوع",
   "broker.activeMentees": "المتدربون النشطون",
   "broker.noActiveMentees": "لا يوجد متدربون نشطون.",

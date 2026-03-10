@@ -449,6 +449,8 @@ export const ja: Record<string, string> = {
   "broker.title": "ブローカーハブ",
   "broker.stateMentors": "州メンター",
   "broker.stateMentorsDesc": "あなたの州のすべてのメンター数。",
+  "broker.provincialMentors": "州メンター",
+  "broker.provincialMentorsDesc": "あなたの州のすべてのメンター数。",
   "broker.back": "戻る",
   "broker.activeMentees": "アクティブメンティー",
   "broker.noActiveMentees": "アクティブなメンティーはいません。",
