@@ -691,7 +691,7 @@ export const mockStateMentors: StateMentor[] = [
     state: "FL",
     postalCode: "33101",
     agentId: "5291",
-    primaryStateLicense: "FL-990832",
+    primaryStateLicense: "FL",
     bio: "Bilingual mentor specializing in South Florida luxury and international markets.",
     locationsServiced: ["Miami", "Fort Lauderdale", "Coral Gables"],
     licenses: [{ state: "FL", number: "FL-990832" }],
