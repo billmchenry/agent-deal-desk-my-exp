@@ -734,7 +734,7 @@ export const mockStateMentors: StateMentor[] = [
     state: "WA",
     postalCode: "98101",
     agentId: "34",
-    primaryStateLicense: "WA-554012",
+    primaryStateLicense: "WA",
     bio: "Multilingual agent serving the diverse Seattle metro communities with cultural sensitivity and expertise.",
     locationsServiced: ["Seattle", "Bellevue", "Redmond", "Kirkland"],
     licenses: [{ state: "WA", number: "WA-554012" }],
