@@ -13,8 +13,10 @@ interface Particle {
   size: number;
   rotation: number;
   rotationSpeed: number;
-  shape: "rect" | "circle" | "triangle";
+  shape: "squiggle" | "curl" | "dot";
   opacity: number;
+  wobble: number;
+  wobbleSpeed: number;
 }
 
 function createParticle(width: number): Particle {
@@ -24,12 +26,61 @@ function createParticle(width: number): Particle {
     vx: (Math.random() - 0.5) * 8,
     vy: Math.random() * 3 + 2,
     color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
-    size: Math.random() * 8 + 4,
+    size: Math.random() * 12 + 8,
     rotation: Math.random() * 360,
     rotationSpeed: (Math.random() - 0.5) * 10,
-    shape: (["rect", "circle", "triangle"] as const)[Math.floor(Math.random() * 3)],
+    shape: (["squiggle", "squiggle", "curl", "curl", "dot"] as const)[
+      Math.floor(Math.random() * 5)
+    ],
     opacity: 1,
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: Math.random() * 0.1 + 0.03,
   };
+}
+
+function drawSquiggle(ctx: CanvasRenderingContext2D, size: number) {
+  const amplitude = size * 0.35;
+  const length = size;
+  ctx.beginPath();
+  ctx.moveTo(-length / 2, 0);
+  ctx.bezierCurveTo(
+    -length / 4, -amplitude,
+    0, amplitude,
+    length / 4, -amplitude * 0.5
+  );
+  ctx.bezierCurveTo(
+    length / 3, amplitude * 0.8,
+    length * 0.4, -amplitude * 0.3,
+    length / 2, 0
+  );
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = "round";
+  ctx.stroke();
+}
+
+function drawCurl(ctx: CanvasRenderingContext2D, size: number) {
+  const r = size * 0.4;
+  ctx.beginPath();
+  ctx.moveTo(0, -r);
+  ctx.bezierCurveTo(
+    r * 1.5, -r,
+    r * 1.5, r,
+    0, r * 0.5
+  );
+  ctx.bezierCurveTo(
+    -r * 0.8, r * 0.2,
+    -r * 0.6, -r * 0.8,
+    r * 0.2, -r * 0.3
+  );
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.stroke();
+}
+
+function drawDot(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.beginPath();
+  ctx.arc(0, 0, size * 0.15, 0, Math.PI * 2);
+  ctx.fill();
 }
 
 export function ConfettiCelebration() {
@@ -50,7 +101,6 @@ export function ConfettiCelebration() {
     window.addEventListener("resize", resize);
 
     const particles: Particle[] = [];
-    // Stagger particle creation
     let spawned = 0;
     const startTime = performance.now();
     let animId: number;
@@ -59,20 +109,19 @@ export function ConfettiCelebration() {
       const elapsed = now - startTime;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Spawn particles over first 500ms
       while (spawned < PARTICLE_COUNT && elapsed > (spawned / PARTICLE_COUNT) * 500) {
         particles.push(createParticle(canvas.width));
         spawned++;
       }
 
       for (const p of particles) {
-        p.vy += 0.15; // gravity
-        p.x += p.vx;
+        p.vy += 0.15;
+        p.wobble += p.wobbleSpeed;
+        p.x += p.vx + Math.sin(p.wobble) * 0.5;
         p.y += p.vy;
         p.rotation += p.rotationSpeed;
         p.vx *= 0.99;
 
-        // Fade out in last second
         if (elapsed > DURATION - 1000) {
           p.opacity = Math.max(0, 1 - (elapsed - (DURATION - 1000)) / 1000);
         }
@@ -81,21 +130,15 @@ export function ConfettiCelebration() {
         ctx.translate(p.x, p.y);
         ctx.rotate((p.rotation * Math.PI) / 180);
         ctx.globalAlpha = p.opacity;
+        ctx.strokeStyle = p.color;
         ctx.fillStyle = p.color;
 
-        if (p.shape === "rect") {
-          ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
-        } else if (p.shape === "circle") {
-          ctx.beginPath();
-          ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
-          ctx.fill();
+        if (p.shape === "squiggle") {
+          drawSquiggle(ctx, p.size);
+        } else if (p.shape === "curl") {
+          drawCurl(ctx, p.size);
         } else {
-          ctx.beginPath();
-          ctx.moveTo(0, -p.size / 2);
-          ctx.lineTo(p.size / 2, p.size / 2);
-          ctx.lineTo(-p.size / 2, p.size / 2);
-          ctx.closePath();
-          ctx.fill();
+          drawDot(ctx, p.size);
         }
 
         ctx.restore();
