@@ -23,6 +23,8 @@ export type CountryMode = "us" | "canada" | "global";
 
 export type CappingMode = "uncapped" | "capped";
 
+export type BrokerHubMode = "us" | "canada";
+
 interface DemoConfig {
   mentorMode: MentorMode;
   flqaMode: FlqaMode;
