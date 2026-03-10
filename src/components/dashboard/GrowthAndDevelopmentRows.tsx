@@ -50,32 +50,36 @@ function CarouselRow({ title, cards }: { title: string; cards: RowCard[] }) {
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold text-section-title">{title}</h2>
-      <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none">
-        {cards.map((card) => {
-          const styles = themeStyles[card.theme];
-          const Icon = card.icon;
-          return (
-            <div key={card.id} className="min-w-[80%] md:min-w-0 md:flex-1 snap-start">
-              <Card className={cn("h-full", styles.card)}>
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full", styles.icon)}>
-                      <Icon className="h-5 w-5" />
+      <div className="relative">
+        <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none">
+          {cards.map((card) => {
+            const styles = themeStyles[card.theme];
+            const Icon = card.icon;
+            return (
+              <div key={card.id} className="min-w-[80%] md:min-w-0 md:flex-1 snap-start">
+                <Card className={cn("h-full", styles.card)}>
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full", styles.icon)}>
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold mb-1">{card.title}</h3>
+                        <p className="text-sm text-muted-foreground mb-3">{card.description}</p>
+                        <Button size="sm" className={cn("gap-2", styles.button)} onClick={card.onClick}>
+                          {card.buttonText}
+                          <ArrowRight className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold mb-1">{card.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-3">{card.description}</p>
-                      <Button size="sm" className={cn("gap-2", styles.button)} onClick={card.onClick}>
-                        {card.buttonText}
-                        <ArrowRight className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          );
-        })}
+                  </CardContent>
+                </Card>
+              </div>
+            );
+          })}
+        </div>
+        {/* Right fade hint – mobile only */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background to-transparent md:hidden" />
       </div>
     </div>
   );
