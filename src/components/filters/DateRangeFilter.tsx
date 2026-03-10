@@ -87,14 +87,14 @@ export function DateRangeFilter({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="gap-2 text-sm">
-          <CalendarDays className="h-4 w-4" />
+        <Button variant="outline" className="gap-2 text-sm rounded-full px-4 h-9 font-normal">
+          <CalendarDays className="h-4 w-4 text-muted-foreground" />
           {value.from && value.to ? (
-            <>
+            <span className="text-foreground">
               {formatDate(value.from)} – {formatDate(value.to)}
-            </>
+            </span>
           ) : (
-            t("filter.selectDateRange")
+            <span className="text-muted-foreground">{t("filter.selectDateRange")}</span>
           )}
         </Button>
       </PopoverTrigger>
