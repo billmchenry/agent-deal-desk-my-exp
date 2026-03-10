@@ -174,6 +174,8 @@ export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
               </label>
             ))}
           </RadioGroup>
+        </div>
+
         <Separator className="my-4" />
 
         {/* Capping Mode */}
