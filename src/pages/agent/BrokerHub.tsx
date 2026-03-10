@@ -14,6 +14,7 @@ type View = "tiles" | "list";
 
 export default function BrokerHub() {
   const { t } = useTranslation();
+  const { config } = useDemoConfig();
   useDocumentTitle(t("broker.title"));
   const [view, setView] = useState<View>("tiles");
   const [selectedMentor, setSelectedMentor] = useState<StateMentor | null>(null);
