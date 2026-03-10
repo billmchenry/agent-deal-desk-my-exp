@@ -154,25 +154,25 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
         </div>
         <div className="flex-1 overflow-auto px-6">
           <table className="w-full text-sm">
-            <thead className="sticky top-0 bg-background z-10">
-              <tr className="border-b border-border">
+            <thead className="sticky top-0 z-10">
+              <tr className="bg-muted/60 border-b border-border">
                 {([
                   { key: "name" as SortKey, label: t("team.agentName"), align: "text-start" },
-                  { key: "units" as SortKey, label: t("team.unitsClosed"), align: "text-end" },
-                  { key: "volume" as SortKey, label: t("team.salesVolume"), align: "text-end" },
-                  { key: "commission" as SortKey, label: t("team.gciSum"), align: "text-end" },
-                  { key: null, label: t("team.currency"), align: "text-end" },
+                  { key: "units" as SortKey, label: t("team.unitsClosed"), align: "text-start" },
+                  { key: "volume" as SortKey, label: t("team.salesVolume"), align: "text-start" },
+                  { key: "commission" as SortKey, label: t("team.gciSum"), align: "text-start" },
+                  { key: null, label: t("team.currency"), align: "text-start" },
                 ] as const).map((col, i) => (
                   <th
                     key={i}
                     className={cn(
-                      "py-3 px-2 font-medium text-muted-foreground whitespace-nowrap",
+                      "py-3 px-4 text-body font-medium text-muted-foreground whitespace-nowrap",
                       col.align,
                       col.key && "cursor-pointer select-none hover:text-foreground"
                     )}
                     onClick={() => col.key && handleSort(col.key)}
                   >
-                    <span className="inline-flex items-center gap-1">
+                    <span className="inline-flex items-center gap-1.5">
                       {col.label}
                       {col.key && <SortIcon col={col.key} />}
                     </span>
