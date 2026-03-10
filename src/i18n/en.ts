@@ -237,6 +237,7 @@ export const en = {
   "filter.ytd": "YTD",
   "filter.mtd": "MTD",
   "filter.lastWeek": "Last Week",
+  "filter.lastMonth": "Last Month",
   "filter.lastYear": "Last Year",
   "filter.custom": "Custom",
   "filter.selectDateRange": "Select date range",
