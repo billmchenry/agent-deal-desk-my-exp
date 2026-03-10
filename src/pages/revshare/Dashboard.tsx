@@ -642,11 +642,19 @@ export default function RevShareDashboard() {
                   </thead>
                   <tbody>
                     {(isMobile ? (showAllCountries ? countryTableData : countryTableData.slice(0, 3)) : countryTableData).map((row) => (
-                      <tr key={row.name} className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors">
+                      <tr
+                        key={row.name}
+                        className="border-b border-border/50 last:border-0 hover:bg-muted/50 transition-colors cursor-pointer"
+                        onClick={() => navigate(`/revshare/group?country=${encodeURIComponent(row.name)}`)}
+                        role="link"
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === "Enter" && navigate(`/revshare/group?country=${encodeURIComponent(row.name)}`)}
+                      >
                         <td className="py-2 pr-2 font-medium text-foreground">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
                             <span className="truncate">{row.name}</span>
+                            <ChevronRight className="h-3 w-3 text-muted-foreground ml-auto" />
                           </div>
                         </td>
                         <td className="py-2 px-2 text-right font-secondary text-foreground whitespace-nowrap">{formatNumber(row.agents)} <span className="text-muted-foreground">({row.pct}%)</span></td>
