@@ -47,11 +47,11 @@ export function ConnectUplineCard() {
           <div className="flex items-center justify-between gap-2">
             <CardTitle className="text-base font-semibold">Connect with your Upline</CardTitle>
             <Tabs value={view} onValueChange={(v) => setView(v as "lineage" | "contributor")}>
-              <TabsList className="h-8">
-                <TabsTrigger value="lineage" className="text-xs px-3">
+              <TabsList className="h-8 bg-muted/60 backdrop-blur-sm border border-border/50 rounded-full p-1">
+                <TabsTrigger value="lineage" className="rounded-full text-xs px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm data-[state=active]:text-primary data-[state=active]:font-bold">
                   Lineage
                 </TabsTrigger>
-                <TabsTrigger value="contributor" className="text-xs px-3">
+                <TabsTrigger value="contributor" className="rounded-full text-xs px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm data-[state=active]:text-primary data-[state=active]:font-bold">
                   Contributor
                 </TabsTrigger>
               </TabsList>
