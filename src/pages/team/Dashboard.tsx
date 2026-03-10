@@ -485,6 +485,11 @@ export default function TeamDashboard() {
           )}
         </SheetContent>
       </Sheet>
+      <TopAgentsSheet
+        open={topAgentsSheetOpen}
+        onOpenChange={setTopAgentsSheetOpen}
+        defaultTab={topAgentsDefaultTab}
+      />
     </DashboardLayout>
   );
 }
