@@ -2,8 +2,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { useDemoConfig, type MentorMode, type FlqaMode, type DistributionMode, type CountryMode, type CappingMode } from "@/contexts/DemoConfigContext";
-import { Users, Target, BarChart3, Globe, Trophy } from "lucide-react";
+import { useDemoConfig, type MentorMode, type FlqaMode, type DistributionMode, type CountryMode, type CappingMode, type BrokerHubMode } from "@/contexts/DemoConfigContext";
+import { Users, Target, BarChart3, Globe, Trophy, Building } from "lucide-react";
 
 interface DemoConfigSheetProps {
   open: boolean;
@@ -47,8 +47,13 @@ const countryOptions: { value: CountryMode; label: string; description: string }
   { value: "global", label: "Global", description: "International agents — limited nav, closed transactions only" },
 ];
 
+const brokerHubOptions: { value: BrokerHubMode; label: string; description: string }[] = [
+  { value: "us", label: "US", description: "Default US experience — State Mentors" },
+  { value: "canada", label: "CAN", description: "Canadian experience — Provincial Mentors" },
+];
+
 export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
-  const { config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode } = useDemoConfig();
+  const { config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode, setBrokerHubMode } = useDemoConfig();
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -191,6 +196,35 @@ export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
             className="space-y-2"
           >
             {cappingOptions.map((opt) => (
+              <label
+                key={opt.value}
+                className="flex items-start gap-3 p-3 rounded-lg border cursor-pointer hover:bg-accent/50 transition-colors has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5"
+              >
+                <RadioGroupItem value={opt.value} className="mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">{opt.label}</p>
+                  <p className="text-xs text-muted-foreground">{opt.description}</p>
+                </div>
+              </label>
+            ))}
+          </RadioGroup>
+        </div>
+
+        <Separator className="my-4" />
+
+        {/* Broker Hub Mode */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Building className="h-4 w-4 text-primary" />
+            <h3 className="text-sm font-semibold text-foreground">Broker Hub</h3>
+          </div>
+
+          <RadioGroup
+            value={config.brokerHubMode}
+            onValueChange={(val) => setBrokerHubMode(val as BrokerHubMode)}
+            className="space-y-2"
+          >
+            {brokerHubOptions.map((opt) => (
               <label
                 key={opt.value}
                 className="flex items-start gap-3 p-3 rounded-lg border cursor-pointer hover:bg-accent/50 transition-colors has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5"

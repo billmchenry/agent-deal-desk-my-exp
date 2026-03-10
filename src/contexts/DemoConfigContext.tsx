@@ -23,12 +23,15 @@ export type CountryMode = "us" | "canada" | "global";
 
 export type CappingMode = "uncapped" | "capped";
 
+export type BrokerHubMode = "us" | "canada";
+
 interface DemoConfig {
   mentorMode: MentorMode;
   flqaMode: FlqaMode;
   distributionMode: DistributionMode;
   countryMode: CountryMode;
   cappingMode: CappingMode;
+  brokerHubMode: BrokerHubMode;
 }
 
 interface DemoConfigContextValue {
@@ -38,6 +41,7 @@ interface DemoConfigContextValue {
   setDistributionMode: (mode: DistributionMode) => void;
   setCountryMode: (mode: CountryMode) => void;
   setCappingMode: (mode: CappingMode) => void;
+  setBrokerHubMode: (mode: BrokerHubMode) => void;
 }
 
 const DemoConfigContext = createContext<DemoConfigContextValue | null>(null);
@@ -50,6 +54,7 @@ const DEFAULT_CONFIG: DemoConfig = {
   distributionMode: "full",
   countryMode: "us",
   cappingMode: "uncapped",
+  brokerHubMode: "us",
 };
 
 function loadConfig(): DemoConfig {
@@ -82,9 +87,10 @@ export function DemoConfigProvider({ children }: { children: React.ReactNode }) 
   const setDistributionMode = useCallback((mode: DistributionMode) => update("distributionMode", mode), [update]);
   const setCountryMode = useCallback((mode: CountryMode) => update("countryMode", mode), [update]);
   const setCappingMode = useCallback((mode: CappingMode) => update("cappingMode", mode), [update]);
+  const setBrokerHubMode = useCallback((mode: BrokerHubMode) => update("brokerHubMode", mode), [update]);
 
   return (
-    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode }}>
+    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode, setBrokerHubMode }}>
       {children}
     </DemoConfigContext.Provider>
   );
