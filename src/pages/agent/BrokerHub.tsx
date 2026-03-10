@@ -57,9 +57,9 @@ export default function BrokerHub() {
                     <GraduationCap className="h-6 w-6" aria-hidden="true" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium opacity-90">{t("broker.stateMentors")}</p>
+                    <p className="text-sm font-medium opacity-90">{mentorLabel}</p>
                     <p className="text-stat-value font-bold font-secondary">{totalMentors}</p>
-                    <p className="text-xs opacity-75 mt-0.5">{t("broker.stateMentorsDesc")}</p>
+                    <p className="text-xs opacity-75 mt-0.5">{mentorDesc}</p>
                   </div>
                   <ChevronRight className="h-5 w-5 opacity-60" aria-hidden="true" />
                 </CardContent>
