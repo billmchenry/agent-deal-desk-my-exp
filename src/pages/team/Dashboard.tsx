@@ -149,14 +149,10 @@ export default function TeamDashboard() {
   return (
     <DashboardLayout>
       <div className="p-4 lg:p-6">
-        <UniversalFilterBar title={t("team.myTeam")}>
+        <UniversalFilterBar title={`${t("team.myTeam")}: ${teamOverview.name}`}>
           <UniversalFilterBar.DateRange value={overviewDateRange} onChange={setOverviewDateRange} />
         </UniversalFilterBar>
         <CanadianDisclaimer variant="teamLead" email="canada.support@exprealty.com" />
-
-        <p className="text-body-lg font-medium text-foreground mb-6">
-          {t("team.myTeam")}: {teamOverview.name}
-        </p>
 
         {/* Overview Section - Hero Banner style */}
         <Card className="relative overflow-hidden bg-gradient-to-r from-exp-frosted-blue via-exp-light-grey to-exp-frosted-blue p-4 sm:p-6 mb-6">
