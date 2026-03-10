@@ -97,7 +97,7 @@ function CarouselRow({ title, cards }: { title: string; cards: RowCard[] }) {
         </CarouselContent>
       </Carousel>
       {cards.length > 1 && (
-        <div className="flex justify-center gap-1.5">
+        <div className="flex justify-center gap-1.5 md:hidden">
           {cards.map((_, i) => (
             <span
               key={i}
