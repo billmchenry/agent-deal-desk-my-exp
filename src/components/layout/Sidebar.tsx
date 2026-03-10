@@ -220,7 +220,7 @@ export function Sidebar() {
   <div className={cn("mb-4", className)}>
       {!isCollapsed ?
     <div className="mx-3 mb-2 flex items-center justify-between">
-          <span className="mx-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/60">
+          <span className="mx-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/80">
             {tn(section.label)}
           </span>
           {showToggle &&
