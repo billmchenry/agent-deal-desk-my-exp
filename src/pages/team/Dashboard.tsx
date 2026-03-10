@@ -22,7 +22,7 @@ import { UniversalFilterBar } from "@/components/filters";
 import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
-type View = "overview" | "agentDetails" | "topAgents";
+type View = "overview" | "agentDetails";
 
 export default function TeamDashboard() {
   const { t } = useTranslation();
