@@ -552,7 +552,7 @@ export default function Financials() {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="unpaid" className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="bg-transparent border-b border-border rounded-none h-auto p-0 gap-6">
             <TabsTrigger value="unpaid" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 pb-2 text-sm">
               {t("fin.unpaid")}
