@@ -19,6 +19,7 @@ import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import { DraggableWidget } from "./DraggableWidget";
 import { WidgetRenderer } from "./WidgetRenderer";
 import { MentorProgramWidget } from "./MentorProgramWidget";
+import { GrowthAndDevelopmentRows } from "./GrowthAndDevelopmentRows";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -65,7 +66,7 @@ export function CustomizableDashboard() {
     }
   };
 
-  const mainWidgets = widgets.filter((w) => w.column === "main");
+  const mainWidgets = widgets.filter((w) => w.column === "main" && w.type !== "promo-carousel");
   const sidebarWidgets = widgets.filter((w) => w.column === "sidebar");
 
   return (
@@ -178,6 +179,9 @@ export function CustomizableDashboard() {
           </div>
         </div>
       </DndContext>
+
+      {/* Growth & Development — always at the very bottom */}
+      <GrowthAndDevelopmentRows />
     </div>
   );
 }
