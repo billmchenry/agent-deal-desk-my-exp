@@ -131,7 +131,7 @@ export function AgentHeroBanner({
               role="link"
               aria-label="View transaction details"
             >
-              <div className="hidden sm:flex rounded-lg p-2 shrink-0 bg-exp-gold/15 text-exp-gold">
+              <div className="hidden sm:flex rounded-full p-2 shrink-0 bg-exp-gold/15 text-exp-gold">
                 <FileText className="h-4 w-4" />
               </div>
                <div className="flex gap-2 sm:gap-3 min-w-0">
