@@ -44,14 +44,14 @@ export function ConnectUplineCard() {
     <>
       <Card>
         <CardHeader className="pb-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <CardTitle className="text-base font-semibold whitespace-nowrap">Connect with your Upline</CardTitle>
-            <Tabs value={view} onValueChange={(v) => setView(v as "lineage" | "contributor")} className="shrink-0">
-              <TabsList className="h-8">
-                <TabsTrigger value="lineage" className="text-xs px-3">
+          <div className="space-y-3">
+            <CardTitle className="text-base font-semibold">Connect with your Upline</CardTitle>
+            <Tabs value={view} onValueChange={(v) => setView(v as "lineage" | "contributor")} className="w-full">
+              <TabsList className="h-8 w-full">
+                <TabsTrigger value="lineage" className="text-xs px-3 flex-1">
                   Lineage
                 </TabsTrigger>
-                <TabsTrigger value="contributor" className="text-xs px-3">
+                <TabsTrigger value="contributor" className="text-xs px-3 flex-1">
                   Contributor
                 </TabsTrigger>
               </TabsList>
