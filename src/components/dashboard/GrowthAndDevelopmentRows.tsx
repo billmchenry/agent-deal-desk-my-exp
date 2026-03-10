@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ArrowRight, TrendingUp, Play, Target, MessageCircleQuestion } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,12 +10,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -53,62 +47,36 @@ interface RowCard {
 }
 
 function CarouselRow({ title, cards }: { title: string; cards: RowCard[] }) {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    if (!api) return;
-    const onSelect = () => setCurrent(api.selectedScrollSnap());
-    onSelect();
-    api.on("select", onSelect);
-    return () => { api.off("select", onSelect); };
-  }, [api]);
-
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold text-section-title">{title}</h2>
-      <Carousel opts={{ loop: false, align: "start" }} setApi={setApi}>
-        <CarouselContent>
-          {cards.map((card) => {
-            const styles = themeStyles[card.theme];
-            const Icon = card.icon;
-            return (
-              <CarouselItem key={card.id} className="basis-[85%] md:basis-1/2">
-                <Card className={cn("h-full", styles.card)}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full", styles.icon)}>
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold mb-1">{card.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-3">{card.description}</p>
-                        <Button size="sm" className={cn("gap-2", styles.button)} onClick={card.onClick}>
-                          {card.buttonText}
-                          <ArrowRight className="h-4 w-4" />
-                        </Button>
-                      </div>
+      <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none">
+        {cards.map((card) => {
+          const styles = themeStyles[card.theme];
+          const Icon = card.icon;
+          return (
+            <div key={card.id} className="min-w-[80%] md:min-w-0 md:flex-1 snap-start">
+              <Card className={cn("h-full", styles.card)}>
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full", styles.icon)}>
+                      <Icon className="h-5 w-5" />
                     </div>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            );
-          })}
-        </CarouselContent>
-      </Carousel>
-      {cards.length > 1 && (
-        <div className="flex justify-center gap-1.5 md:hidden">
-          {cards.map((_, i) => (
-            <span
-              key={i}
-              className={cn(
-                "h-1.5 w-1.5 rounded-full transition-colors",
-                i === current ? "bg-primary" : "bg-muted-foreground/30"
-              )}
-            />
-          ))}
-        </div>
-      )}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold mb-1">{card.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">{card.description}</p>
+                      <Button size="sm" className={cn("gap-2", styles.button)} onClick={card.onClick}>
+                        {card.buttonText}
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
