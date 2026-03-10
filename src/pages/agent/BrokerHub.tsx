@@ -80,7 +80,7 @@ export default function BrokerHub() {
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <h1 className="text-page-title font-bold text-foreground">{t("broker.stateMentors")}</h1>
+              <h1 className="text-page-title font-bold text-foreground">{mentorLabel}</h1>
             </div>
 
             <DataTable
