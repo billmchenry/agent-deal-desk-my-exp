@@ -156,46 +156,67 @@ export default function TeamDashboard() {
           {t("team.myTeam")}: {teamOverview.name}
         </p>
 
-        {/* Overview Section */}
-        <Card className="mb-6">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-section-title font-medium">{t("team.overview")}</CardTitle>
-            <DateRangeFilter value={overviewDateRange} onChange={setOverviewDateRange} />
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
-                <p className="text-sm text-muted-foreground mb-1">{t("team.units")}</p>
-                <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatNumber(isCanada ? 13.25 : teamOverview.units.total)} <span className="text-body font-normal text-muted-foreground">{t("team.units")}</span>
-                </p>
-                {isCanada && (
-                  <p className="text-sm text-muted-foreground mt-1">{t("txn.firm")} : {formatNumber(4.75)} {t("team.units")}</p>
-                )}
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatNumber(isCanada ? 2.5 : teamOverview.units.pending)} {t("team.units")}</p>
+        {/* Overview Section - Hero Banner style */}
+        <Card className="relative overflow-hidden bg-gradient-to-r from-exp-frosted-blue via-exp-light-grey to-exp-frosted-blue p-4 sm:p-6 mb-6">
+          {/* Decorative background */}
+          <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
+            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-slate-blue" />
+            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-exp-moss-grey" />
+          </div>
+
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-4">
+              <Badge className="bg-exp-charcoal-blue/10 text-exp-charcoal-blue border-exp-charcoal-blue/20">
+                {t("team.overview")}
+              </Badge>
+              <DateRangeFilter value={overviewDateRange} onChange={setOverviewDateRange} />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+              <button
+                onClick={() => navigate("/team/reconciliation")}
+                className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+              >
+                <div className="rounded-full p-2 shrink-0 bg-exp-slate-blue/15 text-exp-slate-blue">
+                  <Home className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-section-title font-bold text-exp-dark-navy truncate">
+                    {formatNumber(isCanada ? 13.25 : teamOverview.units.total)}
+                  </p>
+                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("team.units")}</p>
+                </div>
               </button>
-              <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
-                <p className="text-sm text-muted-foreground mb-1">{t("team.volume")}</p>
-                <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.volume.total)} <span className="text-body font-normal text-muted-foreground">{isCanada ? "CAD" : "USD"}</span>
-                </p>
-                {isCanada && (
-                  <p className="text-sm text-muted-foreground mt-1">{t("txn.firm")} : {formatCurrency(850000)} {isCanada ? "CAD" : "USD"}</p>
-                )}
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.volume.pending)} {isCanada ? "CAD" : "USD"}</p>
+              <button
+                onClick={() => navigate("/team/reconciliation")}
+                className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+              >
+                <div className="rounded-full p-2 shrink-0 bg-exp-slate-blue/15 text-exp-slate-blue">
+                  <Building2 className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-section-title font-bold text-exp-dark-navy truncate">
+                    {formatCurrency(teamOverview.volume.total, { compact: true })}
+                  </p>
+                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("team.volume")}</p>
+                </div>
               </button>
-              <button onClick={() => navigate("/team/reconciliation")} className="bg-muted/30 rounded-lg p-4 text-start hover:bg-muted/50 transition-colors cursor-pointer">
-                <p className="text-sm text-muted-foreground mb-1">{t("team.teamLeadSplit")}</p>
-                <p className="text-stat-value font-bold text-foreground font-secondary tabular-nums">
-                  {formatCurrency(teamOverview.teamLeadSplit.total)} <span className="text-body font-normal text-muted-foreground">{isCanada ? "CAD" : "USD"}</span>
-                </p>
-                {isCanada && (
-                  <p className="text-sm text-muted-foreground mt-1">{t("txn.firm")} : {formatCurrency(12500)} {isCanada ? "CAD" : "USD"}</p>
-                )}
-                <p className="text-sm text-muted-foreground mt-1">{t("common.pending")} : {formatCurrency(teamOverview.teamLeadSplit.pending)} {isCanada ? "CAD" : "USD"}</p>
+              <button
+                onClick={() => navigate("/team/reconciliation")}
+                className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+              >
+                <div className="rounded-full p-2 shrink-0 bg-exp-green/15 text-exp-green">
+                  <DollarSign className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-section-title font-bold text-exp-dark-navy truncate">
+                    {formatCurrency(teamOverview.teamLeadSplit.total, { compact: true })}
+                  </p>
+                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("team.teamLeadSplit")}</p>
+                </div>
               </button>
             </div>
-          </CardContent>
+          </div>
         </Card>
 
         {/* Two Column Layout */}
