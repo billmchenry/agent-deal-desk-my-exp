@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { useDocumentTitle } from "@/hooks/use-document-title";
@@ -6,11 +7,12 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp, ChevronRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
 import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
+import { cn } from "@/lib/utils";
 
 // ── Types ──
 
@@ -34,6 +36,28 @@ interface PeriodicRow {
   monthly: string;
   batchNumber: number;
   currency: string;
+}
+
+interface PayNowTransaction {
+  id: string;
+  date: string;
+  initialAmount: number;
+  serviceFee: number;
+  finalAmount: number;
+  dealCount: number;
+}
+
+interface MonthlyBatchRow {
+  id: string;
+  month: string;
+  year: number;
+  totalDeals: number;
+  memberCount: number;
+  initialRevenue: number;
+  payNowDeduction: number;
+  adjustmentAmount: number;
+  finalPayout: number;
+  payNowTransactions: PayNowTransaction[];
 }
 
 // ── Mock Transaction Data per Agent ──
@@ -258,6 +282,60 @@ const periodicData: PeriodicRow[] = [
   { date: "03/31/2025", initialRevShare: 44878.87, adjustment: 10562.97, finalRevShare: 55441.84, transactionCount6Mo: 399, memberCount: 246, monthly: "Yes", batchNumber: 1606, currency: "USD" },
 ];
 
+// ── Monthly Batch Mock Data for Periodic Overview ──
+
+const monthlyBatches: MonthlyBatchRow[] = [
+  {
+    id: "batch-2026-03", month: "March", year: 2026, totalDeals: 14, memberCount: 3,
+    initialRevenue: 4358.36, payNowDeduction: 934.92, adjustmentAmount: 43.58, finalPayout: 3467.02,
+    payNowTransactions: [
+      { id: "pn-2026-03-1", date: "2026-03-05", initialAmount: 420.52, serviceFee: -12.62, finalAmount: 407.90, dealCount: 2 },
+      { id: "pn-2026-03-2", date: "2026-03-20", initialAmount: 514.40, serviceFee: -15.43, finalAmount: 498.97, dealCount: 4 },
+    ],
+  },
+  {
+    id: "batch-2026-02", month: "February", year: 2026, totalDeals: 13, memberCount: 3,
+    initialRevenue: 4439.01, payNowDeduction: 542.17, adjustmentAmount: 44.39, finalPayout: 3941.23,
+    payNowTransactions: [
+      { id: "pn-2026-02-1", date: "2026-02-10", initialAmount: 302.80, serviceFee: -9.08, finalAmount: 293.72, dealCount: 3 },
+      { id: "pn-2026-02-2", date: "2026-02-25", initialAmount: 239.37, serviceFee: -7.18, finalAmount: 232.19, dealCount: 2 },
+    ],
+  },
+  {
+    id: "batch-2026-01", month: "January", year: 2026, totalDeals: 19, memberCount: 3,
+    initialRevenue: 5433.46, payNowDeduction: 1496.26, adjustmentAmount: 54.33, finalPayout: 3991.53,
+    payNowTransactions: [
+      { id: "pn-2026-01-1", date: "2026-01-08", initialAmount: 612.30, serviceFee: -18.37, finalAmount: 593.93, dealCount: 5 },
+      { id: "pn-2026-01-2", date: "2026-01-18", initialAmount: 483.96, serviceFee: -14.52, finalAmount: 469.44, dealCount: 3 },
+      { id: "pn-2026-01-3", date: "2026-01-28", initialAmount: 400.00, serviceFee: -12.00, finalAmount: 388.00, dealCount: 2 },
+    ],
+  },
+  {
+    id: "batch-2025-12", month: "December", year: 2025, totalDeals: 11, memberCount: 3,
+    initialRevenue: 3493.48, payNowDeduction: 873.72, adjustmentAmount: 34.93, finalPayout: 2654.69,
+    payNowTransactions: [
+      { id: "pn-2025-12-1", date: "2025-12-12", initialAmount: 530.20, serviceFee: -15.91, finalAmount: 514.29, dealCount: 3 },
+      { id: "pn-2025-12-2", date: "2025-12-22", initialAmount: 343.52, serviceFee: -10.31, finalAmount: 333.21, dealCount: 2 },
+    ],
+  },
+  {
+    id: "batch-2025-11", month: "November", year: 2025, totalDeals: 9, memberCount: 3,
+    initialRevenue: 2810.15, payNowDeduction: 562.03, adjustmentAmount: 28.10, finalPayout: 2276.22,
+    payNowTransactions: [
+      { id: "pn-2025-11-1", date: "2025-11-15", initialAmount: 362.03, serviceFee: -10.86, finalAmount: 351.17, dealCount: 2 },
+      { id: "pn-2025-11-2", date: "2025-11-28", initialAmount: 200.00, serviceFee: -6.00, finalAmount: 194.00, dealCount: 1 },
+    ],
+  },
+  {
+    id: "batch-2025-10", month: "October", year: 2025, totalDeals: 16, memberCount: 3,
+    initialRevenue: 5120.90, payNowDeduction: 1024.18, adjustmentAmount: 51.21, finalPayout: 4147.93,
+    payNowTransactions: [
+      { id: "pn-2025-10-1", date: "2025-10-07", initialAmount: 489.50, serviceFee: -14.69, finalAmount: 474.81, dealCount: 4 },
+      { id: "pn-2025-10-2", date: "2025-10-21", initialAmount: 534.68, serviceFee: -16.04, finalAmount: 518.64, dealCount: 3 },
+    ],
+  },
+];
+
 const paymentDetails = {
   initialRevShare: 34829.59,
   adjustmentAmount: 6687.39,
@@ -270,8 +348,10 @@ const paymentDetails = {
 
 export default function Financials() {
   const { t } = useTranslation();
-  const { formatCurrency } = useFormatters();
+  const { formatCurrency, formatDate } = useFormatters();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const defaultTab = searchParams.get("tab") || "unpaid";
   useDocumentTitle(t("fin.title"));
 
   // Drill-down state
@@ -279,6 +359,12 @@ export default function Financials() {
   const [selectedTxn, setSelectedTxn] = useState<AgentTransaction | null>(null);
   const [txnSheetOpen, setTxnSheetOpen] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodicRow | null>(null);
+  const [expandedBatchId, setExpandedBatchId] = useState<string | null>(null);
+
+  // Periodic summary stats
+  const totalRevenue = monthlyBatches.reduce((sum, b) => sum + b.finalPayout, 0);
+  const totalTransactions = monthlyBatches.reduce((sum, b) => sum + b.totalDeals, 0);
+  const totalPayNow = monthlyBatches.reduce((sum, b) => sum + b.payNowDeduction, 0);
 
   const handleAgentClick = (row: AgentRevShareRow) => {
     setSelectedAgent(getAgentDetail(row));
@@ -467,7 +553,7 @@ export default function Financials() {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="unpaid" className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="bg-transparent border-b border-border rounded-none h-auto p-0 gap-6">
             <TabsTrigger value="unpaid" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-1 pb-2 text-sm">
               {t("fin.unpaid")}
@@ -544,14 +630,124 @@ export default function Financials() {
           </TabsContent>
 
           <TabsContent value="periodic" className="mt-4">
-            <DataTable
-              data={periodicData}
-              columns={periodicColumns}
-              csvFilename="periodic-revshare"
-              mobileCardRender={periodicMobileCard}
-              defaultPageSize={25}
-              onRowClick={handlePeriodClick}
-            />
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <Card className="p-5">
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalRevenue6Mo")}</p>
+                <p className="text-2xl font-semibold text-primary font-secondary">
+                  {formatCurrency(totalRevenue)} <span className="text-xs text-muted-foreground">USD</span>
+                </p>
+              </Card>
+              <Card className="p-5">
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalTransactions")}</p>
+                <p className="text-2xl font-semibold text-foreground font-secondary">{totalTransactions}</p>
+              </Card>
+              <Card className="p-5">
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalPayNowTransactions")}</p>
+                <p className="text-2xl font-semibold text-exp-green font-secondary">
+                  {formatCurrency(totalPayNow)} <span className="text-xs text-muted-foreground">USD</span>
+                </p>
+              </Card>
+            </div>
+
+            {/* Monthly Payment Batches */}
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-foreground">{t("fin.monthlyPaymentBatches")}</h2>
+              <Button variant="outline" size="sm">
+                <Download className="h-4 w-4 mr-2" />
+                {t("fin.downloadReport")}
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              {monthlyBatches.map((batch) => {
+                const isExpanded = expandedBatchId === batch.id;
+                const hasPayNow = batch.payNowTransactions.length > 0;
+                return (
+                  <div key={batch.id} className="border border-border rounded-lg overflow-hidden">
+                    {/* Batch header row */}
+                    <div
+                      className={cn(
+                        "flex flex-wrap md:flex-nowrap items-center justify-between p-4 bg-muted/30 transition-colors",
+                        hasPayNow && "cursor-pointer hover:bg-muted/50"
+                      )}
+                      onClick={() => hasPayNow && setExpandedBatchId(isExpanded ? null : batch.id)}
+                    >
+                      <div className="flex items-center gap-2">
+                        {hasPayNow && (
+                          isExpanded
+                            ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" />
+                            : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                        )}
+                        <div>
+                          <h3 className="font-medium text-foreground">
+                            {batch.month} {batch.year} Batch
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {batch.totalDeals} total deals · {batch.memberCount} members
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">{t("fin.initialRevenue")}</p>
+                          <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(batch.initialRevenue)}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
+                          <p className="text-sm font-medium font-secondary text-destructive">
+                            - {formatCurrency(batch.payNowDeduction)}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">{t("fin.adjustmentAmount")}</p>
+                          <p className="text-sm font-medium font-secondary text-exp-green">{formatCurrency(batch.adjustmentAmount)}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">{t("fin.finalPayout")}</p>
+                          <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Expanded PayNow Early Payouts */}
+                    {isExpanded && hasPayNow && (
+                      <div className="border-t border-border">
+                        <div className="p-4">
+                          <h4 className="font-medium text-sm text-exp-green mb-3">{t("fin.payNowEarlyPayouts")}</h4>
+
+                          {/* Table header */}
+                          <div className="hidden md:grid grid-cols-5 gap-4 px-3 py-2 bg-muted/50 rounded text-xs font-medium text-muted-foreground mb-1">
+                            <div>{t("fin.date")}</div>
+                            <div className="text-right">{t("fin.initialAmount")}</div>
+                            <div className="text-right">{t("fin.serviceFee")}</div>
+                            <div className="text-right">{t("fin.finalAmount")}</div>
+                            <div className="text-right">{t("fin.dealCount")}</div>
+                          </div>
+
+                          {batch.payNowTransactions.map((pn) => (
+                            <div
+                              key={pn.id}
+                              className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 px-3 py-3 border-b border-border/50 last:border-0 bg-accent/30 hover:bg-accent/50 transition-colors items-center"
+                            >
+                              <div className="text-sm text-foreground">{formatDate(pn.date)}</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.initialAmount)}</div>
+                              <div className="text-sm font-medium font-secondary text-destructive text-right">{formatCurrency(pn.serviceFee)}</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.finalAmount)}</div>
+                              <div className="flex items-center justify-between md:justify-end gap-2">
+                                <span className="text-sm text-foreground">{pn.dealCount} deals</span>
+                                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </TabsContent>
         </Tabs>
       </div>

@@ -492,7 +492,11 @@ export default function RevShareDashboard() {
                 <h2 className="text-sm font-semibold text-foreground">{t("revshare.currentPayoutStatus")}</h2>
                 <p className="text-xs text-muted-foreground">{t("revshare.payoutOverview")}</p>
               </div>
-              <button className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0" aria-label={t("revshare.viewPeriodicOverview")}>
+              <button
+                className="text-xs text-exp-blue hover:underline flex items-center gap-1 min-h-[44px] sm:min-h-0"
+                aria-label={t("revshare.viewPeriodicOverview")}
+                onClick={() => navigate("/revshare/financials?tab=periodic")}
+              >
                 {t("revshare.viewPeriodicOverview")} <ExternalLink className="h-3 w-3" />
               </button>
             </div>
