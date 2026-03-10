@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
 import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
+import { cn } from "@/lib/utils";
 
 // ── Types ──
 
