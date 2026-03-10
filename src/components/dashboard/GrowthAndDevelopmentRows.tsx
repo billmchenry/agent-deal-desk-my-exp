@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ArrowRight, TrendingUp, Play, Target, MessageCircleQuestion } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -47,40 +47,76 @@ interface RowCard {
 }
 
 function CarouselRow({ title, cards }: { title: string; cards: RowCard[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const scrollLeft = el.scrollLeft;
+      const cardWidth = el.scrollWidth / cards.length;
+      setCurrent(Math.round(scrollLeft / cardWidth));
+    };
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [cards.length]);
+
+  const scrollTo = (index: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / cards.length;
+    el.scrollTo({ left: cardWidth * index, behavior: "smooth" });
+  };
+
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold text-section-title">{title}</h2>
-      <div className="relative">
-        <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none">
-          {cards.map((card) => {
-            const styles = themeStyles[card.theme];
-            const Icon = card.icon;
-            return (
-              <div key={card.id} className="min-w-[80%] md:min-w-0 md:flex-1 snap-start">
-                <Card className={cn("h-full", styles.card)}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full", styles.icon)}>
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold mb-1">{card.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-3">{card.description}</p>
-                        <Button size="sm" className={cn("gap-2", styles.button)} onClick={card.onClick}>
-                          {card.buttonText}
-                          <ArrowRight className="h-4 w-4" />
-                        </Button>
-                      </div>
+      <div
+        ref={scrollRef}
+        className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none"
+      >
+        {cards.map((card) => {
+          const styles = themeStyles[card.theme];
+          const Icon = card.icon;
+          return (
+            <div key={card.id} className="min-w-[80%] md:min-w-0 md:flex-1 snap-start">
+              <Card className={cn("h-full", styles.card)}>
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full", styles.icon)}>
+                      <Icon className="h-5 w-5" />
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            );
-          })}
-        </div>
-        {/* Right fade hint – mobile only */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background to-transparent md:hidden" />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold mb-1">{card.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">{card.description}</p>
+                      <Button size="sm" className={cn("gap-2", styles.button)} onClick={card.onClick}>
+                        {card.buttonText}
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          );
+        })}
       </div>
+      {cards.length > 1 && (
+        <div className="flex justify-center gap-1.5 md:hidden">
+          {cards.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => scrollTo(i)}
+              className={cn(
+                "h-1.5 w-1.5 rounded-full transition-colors",
+                i === current ? "bg-primary" : "bg-muted-foreground/30"
+              )}
+              aria-label={`Go to card ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
