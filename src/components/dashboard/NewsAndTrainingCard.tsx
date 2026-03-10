@@ -19,9 +19,9 @@ export function NewsAndTrainingCard() {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="updates">
-          <TabsList className="w-full mb-4">
-            <TabsTrigger value="updates" className="flex-1">Updates</TabsTrigger>
-            <TabsTrigger value="training" className="flex-1">Training</TabsTrigger>
+          <TabsList className="w-full mb-4 bg-muted/60 backdrop-blur-sm border border-border/50 rounded-full h-10 p-1">
+            <TabsTrigger value="updates" className="flex-1 rounded-full px-3 py-1.5 text-xs data-[state=active]:bg-card data-[state=active]:shadow-sm data-[state=active]:text-primary data-[state=active]:font-bold">Updates</TabsTrigger>
+            <TabsTrigger value="training" className="flex-1 rounded-full px-3 py-1.5 text-xs data-[state=active]:bg-card data-[state=active]:shadow-sm data-[state=active]:text-primary data-[state=active]:font-bold">Training</TabsTrigger>
           </TabsList>
           
           <TabsContent value="updates" className="space-y-3 mt-0">
