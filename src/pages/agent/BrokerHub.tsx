@@ -6,6 +6,7 @@ import { ArrowLeft, Download, GraduationCap, ChevronRight } from "lucide-react";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { mockStateMentors, type StateMentor } from "@/data/mentorMockData";
 import { StateMentorProfileSheet } from "@/components/agent/StateMentorProfileSheet";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -13,6 +14,7 @@ type View = "tiles" | "list";
 
 export default function BrokerHub() {
   const { t } = useTranslation();
+  const { config } = useDemoConfig();
   useDocumentTitle(t("broker.title"));
   const [view, setView] = useState<View>("tiles");
   const [selectedMentor, setSelectedMentor] = useState<StateMentor | null>(null);
@@ -27,7 +29,7 @@ export default function BrokerHub() {
     { key: "secondaryEmail", header: t("broker.secondaryEmail"), type: "string", filterable: true },
     { key: "city", header: t("broker.city"), type: "string", sortable: true, filterable: true },
     { key: "state", header: t("broker.state"), type: "string", sortable: true, filterable: true },
-    { key: "postalCode", header: t("broker.postalCode"), type: "string", filterable: true },
+    { key: "postalCode", header: config.brokerHubMode === "us" ? "ZIP Code" : t("broker.postalCode"), type: "string", filterable: true },
   ];
 
   return (
