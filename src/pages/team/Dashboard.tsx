@@ -38,6 +38,7 @@ export default function TeamDashboard() {
   const [selectedOnboardingAgent, setSelectedOnboardingAgent] = useState<OnboardingAgent | null>(null);
   const [topAgentsSheetOpen, setTopAgentsSheetOpen] = useState(false);
   const [topAgentsDefaultTab, setTopAgentsDefaultTab] = useState<"units" | "volume" | "commission">("units");
+  const [agentDetailsSheetOpen, setAgentDetailsSheetOpen] = useState(false);
   const [overviewDateRange, setOverviewDateRange] = useState<DateRange>({
     from: new Date(2026, 0, 1),
     to: new Date(2026, 2, 5),
