@@ -108,18 +108,22 @@ export function CustomizableDashboard() {
                 }
 
                 mainWidgets.forEach((widget, index) => {
-                  // On mobile, skip promo-carousel here — it renders at the bottom
                   const isPromo = widget.type === "promo-carousel";
-                  elements.push(
+                  const widgetEl = (
                     <DraggableWidget
                       key={widget.id}
                       widget={widget}
                       isEditMode={isEditMode}
                       onRemove={removeWidget}
-                      className={isPromo ? "lg:block hidden" : undefined}
                     >
                       <WidgetRenderer widget={widget} />
                     </DraggableWidget>
+                  );
+                  // On mobile, hide promo-carousel here — it renders at the bottom
+                  elements.push(
+                    isPromo ? (
+                      <div key={widget.id + "-wrap"} className="hidden lg:block">{widgetEl}</div>
+                    ) : widgetEl
                   );
 
                   if (showMentorWidget && index === insertAfterIdx) {
