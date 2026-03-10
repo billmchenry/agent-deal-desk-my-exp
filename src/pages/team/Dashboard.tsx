@@ -381,7 +381,7 @@ export default function TeamDashboard() {
 
             <button
               className="text-primary hover:underline text-sm mt-6"
-              onClick={() => setView("agentDetails")}
+              onClick={() => setAgentDetailsSheetOpen(true)}
             >
               {t("team.viewDetails")}
             </button>
