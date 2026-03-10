@@ -284,7 +284,7 @@ export default function TeamDashboard() {
 
                 {(["units", "volume", "commission"] as const).map((tab) => (
                   <TabsContent key={tab} value={tab} className="mt-0">
-                    <div className="space-y-1">
+                    <div className="divide-y divide-border/50">
                       {[...topAgents]
                         .sort((a, b) =>
                           tab === "units" ? b.units - a.units :
