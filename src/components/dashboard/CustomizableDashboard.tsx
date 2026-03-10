@@ -18,6 +18,7 @@ import { useMiraChat } from "@/contexts/MiraChatContext";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
 import { DraggableWidget } from "./DraggableWidget";
 import { WidgetRenderer } from "./WidgetRenderer";
+import { GrowthAndDevelopmentRows } from "./GrowthAndDevelopmentRows";
 import { MentorProgramWidget } from "./MentorProgramWidget";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { Button } from "@/components/ui/button";
