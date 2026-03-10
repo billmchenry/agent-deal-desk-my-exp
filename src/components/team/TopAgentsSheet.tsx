@@ -88,7 +88,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-none sm:w-[55vw] flex flex-col p-0 gap-0">
+      <SheetContent side="right" className="w-full sm:max-w-none sm:w-[65vw] flex flex-col p-0 gap-0">
         {/* Header */}
         <SheetHeader className="px-6 py-4 border-b border-border shrink-0">
           <div className="flex items-center justify-between">
