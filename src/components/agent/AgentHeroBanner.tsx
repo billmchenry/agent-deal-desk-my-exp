@@ -166,8 +166,8 @@ export function AgentHeroBanner({
                   className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                   onClick={() => goToTransactions("withdrawn")}
                 >
-                  <p className="text-section-title font-bold text-white">{transactionsWithdrawn}</p>
-                  <p className="text-xs sm:text-[11px] text-white/70">{t("txn.withdrawn")}</p>
+                  <p className="text-section-title font-bold text-exp-dark-navy">{transactionsWithdrawn}</p>
+                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("txn.withdrawn")}</p>
                 </button>
               </div>
             </div>
