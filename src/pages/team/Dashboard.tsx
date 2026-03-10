@@ -108,43 +108,7 @@ export default function TeamDashboard() {
     );
   }
 
-  // --- Top Agents drill-down ---
-  if (view === "topAgents") {
-    return (
-      <DashboardLayout>
-        <div className="p-4 lg:p-6 space-y-4 pb-20">
-          <UniversalFilterBar
-            title={t("team.topAgents")}
-            titleExtra={
-              <Button variant="ghost" className="gap-1 -ms-2" onClick={() => setView("overview")}>
-                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-                {t("team.backToTeam")}
-              </Button>
-            }
-          />
-          <DataTable
-            data={topAgents}
-            columns={topAgentColumns}
-            csvFilename="top-agents"
-            searchableKeys={["name", "uuid"]}
-            defaultSort={{ key: "units", direction: "desc" }}
-            mobileCardRender={(row) => (
-              <div className="space-y-1">
-                <div className="flex justify-between gap-2">
-                  <span className="font-semibold text-sm truncate">{row.name}</span>
-                  <span className="text-sm font-bold tabular-nums font-secondary shrink-0">{isCanada ? (row.units + 0.25).toFixed(2) : row.units} units</span>
-                </div>
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span className="tabular-nums font-secondary">Vol: {formatCurrency(row.volume)}</span>
-                  <span className="tabular-nums font-secondary">GCI: {formatCurrency(row.commission)}</span>
-                </div>
-              </div>
-            )}
-          />
-        </div>
-      </DashboardLayout>
-    );
-  }
+
 
   // --- Overview ---
   return (
