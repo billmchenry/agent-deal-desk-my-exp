@@ -647,7 +647,7 @@ export const mockStateMentors: StateMentor[] = [
     state: "GA",
     postalCode: "30301",
     agentId: "310482",
-    primaryStateLicense: "GA-338102",
+    primaryStateLicense: "GA",
     bio: "I have been in the real estate industry for over 20 years and have mentored dozens of successful agents.",
     locationsServiced: ["Atlanta", "Decatur", "Marietta", "Alpharetta"],
     licenses: [{ state: "GA", number: "GA-338102" }],
