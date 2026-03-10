@@ -579,7 +579,7 @@ export const mockStateMentors: StateMentor[] = [
     state: "TX",
     postalCode: "77494",
     agentId: "48291",
-    primaryStateLicense: "TX-782341",
+    primaryStateLicense: "TX",
     bio: "With over 15 years of real estate experience across both residential and commercial markets, I am passionate about helping new agents find their footing.",
     locationsServiced: ["Houston", "Katy", "Sugar Land", "Richmond"],
     licenses: [{ state: "TX", number: "TX-782341" }],
