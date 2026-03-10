@@ -21,11 +21,14 @@ export type DistributionMode = "full" | "few_levels" | "few_countries" | "many_c
 
 export type CountryMode = "us" | "canada" | "global";
 
+export type CappingMode = "uncapped" | "capped";
+
 interface DemoConfig {
   mentorMode: MentorMode;
   flqaMode: FlqaMode;
   distributionMode: DistributionMode;
   countryMode: CountryMode;
+  cappingMode: CappingMode;
 }
 
 interface DemoConfigContextValue {
@@ -34,21 +37,29 @@ interface DemoConfigContextValue {
   setFlqaMode: (mode: FlqaMode) => void;
   setDistributionMode: (mode: DistributionMode) => void;
   setCountryMode: (mode: CountryMode) => void;
+  setCappingMode: (mode: CappingMode) => void;
 }
 
 const DemoConfigContext = createContext<DemoConfigContextValue | null>(null);
 
 const STORAGE_KEY = "demoConfig";
 
+const DEFAULT_CONFIG: DemoConfig = {
+  mentorMode: "none",
+  flqaMode: "low",
+  distributionMode: "full",
+  countryMode: "us",
+  cappingMode: "uncapped",
+};
+
 function loadConfig(): DemoConfig {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw);
-      return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, countryMode: "us" as const, ...parsed };
+      return { ...DEFAULT_CONFIG, ...JSON.parse(raw) };
     }
   } catch {}
-  return { mentorMode: "none", flqaMode: "low", distributionMode: "full" as const, countryMode: "us" as const };
+  return { ...DEFAULT_CONFIG };
 }
 
 function saveConfig(config: DemoConfig) {
@@ -58,40 +69,22 @@ function saveConfig(config: DemoConfig) {
 export function DemoConfigProvider({ children }: { children: React.ReactNode }) {
   const [config, setConfig] = useState<DemoConfig>(loadConfig);
 
-  const setMentorMode = useCallback((mode: MentorMode) => {
+  const update = useCallback(<K extends keyof DemoConfig>(key: K, value: DemoConfig[K]) => {
     setConfig((prev) => {
-      const next = { ...prev, mentorMode: mode };
+      const next = { ...prev, [key]: value };
       saveConfig(next);
       return next;
     });
   }, []);
 
-  const setFlqaMode = useCallback((mode: FlqaMode) => {
-    setConfig((prev) => {
-      const next = { ...prev, flqaMode: mode };
-      saveConfig(next);
-      return next;
-    });
-  }, []);
-
-  const setDistributionMode = useCallback((mode: DistributionMode) => {
-    setConfig((prev) => {
-      const next = { ...prev, distributionMode: mode };
-      saveConfig(next);
-      return next;
-    });
-  }, []);
-
-  const setCountryMode = useCallback((mode: CountryMode) => {
-    setConfig((prev) => {
-      const next = { ...prev, countryMode: mode };
-      saveConfig(next);
-      return next;
-    });
-  }, []);
+  const setMentorMode = useCallback((mode: MentorMode) => update("mentorMode", mode), [update]);
+  const setFlqaMode = useCallback((mode: FlqaMode) => update("flqaMode", mode), [update]);
+  const setDistributionMode = useCallback((mode: DistributionMode) => update("distributionMode", mode), [update]);
+  const setCountryMode = useCallback((mode: CountryMode) => update("countryMode", mode), [update]);
+  const setCappingMode = useCallback((mode: CappingMode) => update("cappingMode", mode), [update]);
 
   return (
-    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode }}>
+    <DemoConfigContext.Provider value={{ config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode }}>
       {children}
     </DemoConfigContext.Provider>
   );

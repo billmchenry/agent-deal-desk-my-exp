@@ -36,6 +36,11 @@ const distributionOptions: { value: DistributionMode; label: string; description
   { value: "many_countries", label: "Many Countries (10 countries)", description: "10 countries — global presence" },
 ];
 
+const cappingOptions: { value: CappingMode; label: string; description: string }[] = [
+  { value: "uncapped", label: "Uncapped", description: "Default — agent has not yet reached their $16k cap" },
+  { value: "capped", label: "Capped (Celebration)", description: "Agent has hit their cap — triggers confetti & modal" },
+];
+
 const countryOptions: { value: CountryMode; label: string; description: string }[] = [
   { value: "us", label: "United States", description: "Default US experience" },
   { value: "canada", label: "Canada", description: "Shows Firm status, fractional units, disclaimer banner" },
