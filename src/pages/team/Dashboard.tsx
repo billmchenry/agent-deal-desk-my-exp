@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { TopAgentsSheet } from "@/components/team/TopAgentsSheet";
+import { AgentDetailsSheet } from "@/components/team/AgentDetailsSheet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Home, Building2, DollarSign } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
