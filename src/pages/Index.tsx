@@ -1,12 +1,34 @@
+import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { CustomizableDashboard } from "@/components/dashboard/CustomizableDashboard";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { UniversalFilterBar } from "@/components/filters";
+import { CappingCelebrationModal } from "@/components/dashboard/CappingCelebrationModal";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
+
+const CELEBRATION_KEY = "cappingCelebrationDismissed_2026";
 
 const Index = () => {
   const { t } = useTranslation();
+  const { config } = useDemoConfig();
   useDocumentTitle(t("nav.home"));
+
+  const isCapped = config.cappingMode === "capped";
+  const [showCelebration, setShowCelebration] = useState(false);
+
+  useEffect(() => {
+    if (isCapped && !localStorage.getItem(CELEBRATION_KEY)) {
+      setShowCelebration(true);
+    } else if (!isCapped) {
+      setShowCelebration(false);
+    }
+  }, [isCapped]);
+
+  const handleDismiss = () => {
+    setShowCelebration(false);
+    localStorage.setItem(CELEBRATION_KEY, "true");
+  };
 
   return (
     <DashboardLayout>
@@ -16,6 +38,7 @@ const Index = () => {
       />
 
       <CustomizableDashboard />
+      <CappingCelebrationModal open={showCelebration} onDismiss={handleDismiss} />
     </DashboardLayout>
   );
 };

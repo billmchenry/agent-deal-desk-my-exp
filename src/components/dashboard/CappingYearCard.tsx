@@ -4,9 +4,14 @@ import { Progress } from "@/components/ui/progress";
 import { cappingData } from "@/data/mockData";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 export function CappingYearCard() {
-  const progressPercentage = (cappingData.current / cappingData.target) * 100;
+  const { config } = useDemoConfig();
+  const isCapped = config.cappingMode === "capped";
+  const current = isCapped ? cappingData.target : cappingData.current;
+  const status = isCapped ? "Capped" : cappingData.status;
+  const progressPercentage = (current / cappingData.target) * 100;
   const { formatCurrency } = useFormatters();
   const { t } = useTranslation();
 
@@ -17,9 +22,9 @@ export function CappingYearCard() {
           <CardTitle className="text-section-title font-semibold">{t("dashboard.cappingYear")}</CardTitle>
           <Badge 
             variant="secondary" 
-            className="bg-exp-green/10 text-exp-green border-exp-green/20 font-medium"
+            className={`font-medium ${isCapped ? "bg-[#2D2A6E]/10 text-[#2D2A6E] border-[#2D2A6E]/20" : "bg-exp-green/10 text-exp-green border-exp-green/20"}`}
           >
-            {cappingData.status}
+            {status}
           </Badge>
         </div>
       </CardHeader>
@@ -28,7 +33,7 @@ export function CappingYearCard() {
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t("team.progress")}</span>
             <span className="font-medium">
-              {formatCurrency(cappingData.current)} of {formatCurrency(cappingData.target, { compact: true })}
+              {formatCurrency(current)} of {formatCurrency(cappingData.target, { compact: true })}
             </span>
           </div>
           <Progress value={progressPercentage} className="h-2" />

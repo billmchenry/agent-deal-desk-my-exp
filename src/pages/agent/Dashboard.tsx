@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar, DateRange } from "@/components/filters";
@@ -6,8 +6,11 @@ import { AgentHeroBanner } from "@/components/agent/AgentHeroBanner";
 import { YearOverYearChart } from "@/components/agent/YearOverYearChart";
 import { CappingSection } from "@/components/agent/CappingSection";
 import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
+import { CappingCelebrationModal } from "@/components/dashboard/CappingCelebrationModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
+
+const CELEBRATION_KEY = "cappingCelebrationDismissed_2026";
 
 export default function AgentDashboard() {
   const { t } = useTranslation();
@@ -21,6 +24,25 @@ export default function AgentDashboard() {
 
   const isCanada = config.countryMode === "canada";
   const isGlobal = config.countryMode === "global";
+  const isCapped = config.cappingMode === "capped";
+
+  const capCurrent = isCapped ? 16000 : 481.9;
+  const capPercentage = isCapped ? 100 : 3;
+
+  const [showCelebration, setShowCelebration] = useState(false);
+
+  useEffect(() => {
+    if (isCapped && !localStorage.getItem(CELEBRATION_KEY)) {
+      setShowCelebration(true);
+    } else if (!isCapped) {
+      setShowCelebration(false);
+    }
+  }, [isCapped]);
+
+  const handleDismiss = () => {
+    setShowCelebration(false);
+    localStorage.setItem(CELEBRATION_KEY, "true");
+  };
 
   return (
     <DashboardLayout>
@@ -51,13 +73,14 @@ export default function AgentDashboard() {
         />
         <YearOverYearChart />
         <CappingSection
-          capCurrent={481.9}
+          capCurrent={capCurrent}
           capTarget={16000}
-          capPercentage={3}
+          capPercentage={capPercentage}
           dateRange={dateRange}
           hideHistory={isGlobal}
         />
       </div>
+      <CappingCelebrationModal open={showCelebration} onDismiss={handleDismiss} />
     </DashboardLayout>
   );
 }
