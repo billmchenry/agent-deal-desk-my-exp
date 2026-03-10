@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, SlidersHorizontal, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { topAgents, type TopAgent } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
@@ -38,6 +40,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
   // Reset sort when tab changes
   const handleTabChange = (tab: TabKey) => {
@@ -57,8 +60,14 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
     setPage(1);
   };
 
+  const filtered = useMemo(() => {
+    if (!search.trim()) return topAgents;
+    const q = search.toLowerCase();
+    return topAgents.filter((a) => a.name.toLowerCase().includes(q));
+  }, [search]);
+
   const sorted = useMemo(() => {
-    const arr = [...topAgents];
+    const arr = [...filtered];
     arr.sort((a, b) => {
       const aVal = a[sortKey];
       const bVal = b[sortKey];
@@ -68,7 +77,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
       return sortDir === "asc" ? (aVal as number) - (bVal as number) : (bVal as number) - (aVal as number);
     });
     return arr;
-  }, [sortKey, sortDir]);
+  }, [filtered, sortKey, sortDir]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / rowsPerPage));
   const pageData = sorted.slice((page - 1) * rowsPerPage, page * rowsPerPage);
@@ -93,20 +102,54 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
         <SheetHeader className="px-6 py-4 border-b border-border shrink-0">
           <div className="flex items-center justify-between">
             <SheetTitle className="text-lg font-semibold">{t("team.topAgentsFullList")}</SheetTitle>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
-              onClick={() => exportToCsv(sorted, csvColumns, "top-agents")}
-            >
-              <Download className="h-4 w-4" />
-              {t("team.downloadCsv")}
-            </Button>
           </div>
         </SheetHeader>
 
-
-        {/* Table */}
+        {/* Toolbar */}
+        <div className="px-6 py-3 border-b border-border flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-4">
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <SlidersHorizontal className="h-4 w-4" />
+                  Row Settings
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-48 p-3">
+                <p className="text-xs text-muted-foreground mb-2">{t("team.rowsPerPage")}</p>
+                <Select
+                  value={String(rowsPerPage)}
+                  onValueChange={(v) => { setRowsPerPage(Number(v)); setPage(1); }}
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="25">25</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                  </SelectContent>
+                </Select>
+              </PopoverContent>
+            </Popover>
+            <button
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => exportToCsv(sorted, csvColumns, "top-agents")}
+            >
+              <Download className="h-4 w-4" />
+              Download
+            </button>
+          </div>
+          <div className="relative w-56">
+            <Input
+              placeholder="Search Agents"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              className="h-9 pe-9"
+            />
+            <Search className="absolute end-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          </div>
+        </div>
         <div className="flex-1 overflow-auto px-6">
           <table className="w-full text-sm">
             <thead className="sticky top-0 bg-background z-10">
@@ -173,26 +216,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
         </div>
 
         {/* Footer / Pagination */}
-        <div className="px-6 py-3 border-t border-border flex items-center justify-between shrink-0 text-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">{t("team.rowsPerPage")}</span>
-            <Select
-              value={String(rowsPerPage)}
-              onValueChange={(v) => {
-                setRowsPerPage(Number(v));
-                setPage(1);
-              }}
-            >
-              <SelectTrigger className="h-8 w-[70px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="25">25</SelectItem>
-                <SelectItem value="50">50</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="px-6 py-3 border-t border-border flex items-center justify-end shrink-0 text-sm">
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">
               {t("team.pageOf").replace("{page}", String(page)).replace("{total}", String(totalPages))}
