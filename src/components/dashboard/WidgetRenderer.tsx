@@ -2,11 +2,9 @@ import { DashboardWidget } from "@/types/dashboard";
 import { HeroBannerCard } from "./HeroBannerCard";
 import { StatsRow } from "./StatsRow";
 import { ActionCenterCard } from "./ActionCenterCard";
-import { PromotionalCarousel } from "./PromotionalCarousel";
+import { GrowthAndDevelopmentRows } from "./GrowthAndDevelopmentRows";
 import { NewsAndTrainingCard } from "./NewsAndTrainingCard";
 import { ConnectUplineCard } from "./ConnectUplineCard";
-import { DiscAssessmentCard } from "./DiscAssessmentCard";
-import { NpsSurveyCard } from "./NpsSurveyCard";
 import { ForecastWidget } from "./widgets/ForecastWidget";
 import { VelocityWidget } from "./widgets/VelocityWidget";
 import { PipelineWidget } from "./widgets/PipelineWidget";
@@ -26,15 +24,11 @@ export function WidgetRenderer({ widget }: WidgetRendererProps) {
     case 'action-center':
       return <ActionCenterCard />;
     case 'promo-carousel':
-      return <PromotionalCarousel />;
+      return <GrowthAndDevelopmentRows />;
     case 'news-training':
       return <NewsAndTrainingCard />;
     case 'connect-upline':
       return <ConnectUplineCard />;
-    case 'disc-assessment':
-      return <DiscAssessmentCard />;
-    case 'nps-survey':
-      return <NpsSurveyCard />;
     case 'forecast':
       return (
         <Card>
