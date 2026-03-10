@@ -120,6 +120,7 @@ export const ar: Record<string, string> = {
   "team.topAgents": "أفضل الوكلاء",
   "team.noReports": "لا توجد تقارير متاحة.",
   "team.viewAll": "عرض الكل",
+  "team.showLess": "عرض أقل",
   "team.requalification": "إعادة التأهيل",
   "team.contactTeamServices": "الاتصال بخدمات الفريق",
   "team.requirements": "المتطلبات",

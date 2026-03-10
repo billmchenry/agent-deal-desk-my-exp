@@ -1,30 +1,83 @@
 
 
-## Inline Top Agents Expansion
+# Team Reconciliation Page
 
-### What changes
+A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
 
-Instead of clicking "View All" and navigating to a completely separate page, the Top Agents card will **expand in-place** to show the full DataTable directly within the dashboard.
+---
 
-### Visual behavior
+## Overview
 
-**Collapsed (default — what you see now):**
-- Top Agents card with tabs (Units / Volume / Commission)
-- Shows top 2 agents per tab
-- "View All" link at the bottom
+Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
 
-**Expanded (after clicking "View All"):**
-- Same card grows taller
-- The 2-agent preview is replaced by the full DataTable (sortable columns, filters, CSV export, pagination)
-- "View All" becomes **"Show Less"** to collapse back
-- Everything else on the dashboard stays visible — no page navigation
+---
 
-### Technical changes
+## New Files
 
-**File: `src/pages/team/Dashboard.tsx`**
-1. Remove `"topAgents"` from the `View` type (becomes `"overview" | "agentDetails"`)
-2. Delete the entire `if (view === "topAgents")` block (lines 111-146)
-3. Add a `showAllTopAgents` boolean state
-4. In the Top Agents card: when `showAllTopAgents` is true, render the `<DataTable>` inline instead of the 2-agent preview list
-5. Change "View All" button to toggle `showAllTopAgents` and show "Show Less" when expanded
+### 1. `src/pages/team/Reconciliation.tsx`
+
+The main page, closely mirroring the Agent Production Details pattern:
+
+- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
+- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
+- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
+- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
+- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
+- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
+- CSV export enabled
+- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
+- Back button at top linking to `/team/dashboard`
+
+### 2. `src/components/team/TeamBreakdownSheet.tsx`
+
+Side panel matching the reference screenshot's "Transaction Details" breakdown:
+
+- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
+- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
+- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
+- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
+  - Agent identifier row (ID + Name) with a colored percentage badge
+  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
+  - Tax, Commission After Co-agents (highlighted)
+  - Agent Split Before Expenses
+  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
+- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
+- **Fees I Paid for Others** -- collapsible
+- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
+
+### 3. `src/components/shared/BreakdownComponents.tsx`
+
+Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
+
+---
+
+## Modified Files
+
+### `src/components/agent/TransactionDetailsSheet.tsx`
+- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
+
+### `src/data/mockData.ts`
+- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
+- Update the `navItems` array similarly
+
+### `src/components/layout/Sidebar.tsx`
+- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
+
+### `src/App.tsx`
+- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
+
+### `src/i18n/*.ts` (all 7 language files)
+- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
+
+---
+
+## Implementation Order
+
+1. Extract shared breakdown components into `BreakdownComponents.tsx`
+2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
+3. Create mock team reconciliation data and the `Reconciliation.tsx` page
+4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
+5. Add route in `App.tsx`
+6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
+7. Add translation keys to all 7 language files
 
