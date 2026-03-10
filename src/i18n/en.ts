@@ -606,7 +606,7 @@ export const en = {
   "revshare.goalLabel": "Goal",
   "revshare.payoutOverview": "Overview of your revenue share payout status and history",
   "revshare.viewPeriodicOverview": "View Periodic Overview",
-  "revshare.payNowInfo": "Pay Now requests may take up to 2 business days to process. Payouts are subject to minimum thresholds.",
+  "revshare.payNowInfo": "Your Pay Now action may take some time to process. Information on your dashboard and tiles will update gradually to display the final values. Please be patient",
   "revshare.calculatedNotPaid": "Calculated but not paid out",
   "revshare.estimatedNextPayout": "Estimated next scheduled payout",
   "revshare.mostRecentPayout": "Most recent payout amount",
