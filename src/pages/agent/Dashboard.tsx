@@ -32,9 +32,10 @@ export default function AgentDashboard() {
   const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
-    if (isCapped && !localStorage.getItem(CELEBRATION_KEY)) {
+    if (isCapped) {
+      localStorage.removeItem(CELEBRATION_KEY);
       setShowCelebration(true);
-    } else if (!isCapped) {
+    } else {
       setShowCelebration(false);
     }
   }, [isCapped]);
