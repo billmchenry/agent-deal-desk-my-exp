@@ -358,6 +358,12 @@ export default function Financials() {
   const [selectedTxn, setSelectedTxn] = useState<AgentTransaction | null>(null);
   const [txnSheetOpen, setTxnSheetOpen] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodicRow | null>(null);
+  const [expandedBatchId, setExpandedBatchId] = useState<string | null>(null);
+
+  // Periodic summary stats
+  const totalRevenue = monthlyBatches.reduce((sum, b) => sum + b.finalPayout, 0);
+  const totalTransactions = monthlyBatches.reduce((sum, b) => sum + b.totalDeals, 0);
+  const totalPayNow = monthlyBatches.reduce((sum, b) => sum + b.payNowDeduction, 0);
 
   const handleAgentClick = (row: AgentRevShareRow) => {
     setSelectedAgent(getAgentDetail(row));
