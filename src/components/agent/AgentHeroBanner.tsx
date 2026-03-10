@@ -31,10 +31,10 @@ function MiniStatCard({
   onClick?: () => void;
 }) {
   const colorClasses = {
-    blue: "bg-white/15 text-white",
-    green: "bg-exp-green/20 text-exp-green-light",
-    gold: "bg-exp-gold/20 text-exp-gold-light",
-    purple: "bg-white/15 text-white",
+    blue: "bg-exp-slate-blue/15 text-exp-slate-blue",
+    green: "bg-exp-green/15 text-exp-green",
+    gold: "bg-exp-gold/15 text-exp-gold",
+    purple: "bg-exp-slate-blue/15 text-exp-slate-blue",
   };
 
   return (
