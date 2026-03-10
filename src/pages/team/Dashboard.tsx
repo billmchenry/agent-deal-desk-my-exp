@@ -159,19 +159,7 @@ export default function TeamDashboard() {
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-section-title font-medium">{t("team.overview")}</CardTitle>
-            <Select defaultValue="jan2026">
-              <SelectTrigger className="w-[220px]">
-                <div className="flex items-center gap-2">
-                  <Filter className="h-4 w-4" />
-                  <span>01/01/2026 - 03/05/2026</span>
-                </div>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="jan2026">01/01/2026 - 03/05/2026</SelectItem>
-                <SelectItem value="dec2025">12/01/2025 - 12/31/2025</SelectItem>
-                <SelectItem value="q42025">Q4 2025</SelectItem>
-              </SelectContent>
-            </Select>
+            <DateRangeFilter value={overviewDateRange} onChange={setOverviewDateRange} />
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
