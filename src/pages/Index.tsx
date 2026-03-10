@@ -18,9 +18,11 @@ const Index = () => {
   const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
-    if (isCapped && !localStorage.getItem(CELEBRATION_KEY)) {
+    if (isCapped) {
+      // Reset dismissed flag when toggling to capped so it shows again
+      localStorage.removeItem(CELEBRATION_KEY);
       setShowCelebration(true);
-    } else if (!isCapped) {
+    } else {
       setShowCelebration(false);
     }
   }, [isCapped]);
