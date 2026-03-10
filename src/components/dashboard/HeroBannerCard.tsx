@@ -136,7 +136,7 @@ export function HeroBannerCard() {
         </div>
 
         {/* CTA row – mobile only, rendered at bottom */}
-        <div className="flex sm:hidden flex-col items-center gap-3 pt-2">
+        <div className="flex sm:hidden flex-col items-center gap-4 pt-2">
           <div className="flex items-center gap-2 text-sm">
             <TrendingUp className="h-4 w-4 text-exp-green-light" />
             <span>
