@@ -48,7 +48,7 @@ const countryOptions: { value: CountryMode; label: string; description: string }
 ];
 
 export function DemoConfigSheet({ open, onOpenChange }: DemoConfigSheetProps) {
-  const { config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode } = useDemoConfig();
+  const { config, setMentorMode, setFlqaMode, setDistributionMode, setCountryMode, setCappingMode } = useDemoConfig();
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
