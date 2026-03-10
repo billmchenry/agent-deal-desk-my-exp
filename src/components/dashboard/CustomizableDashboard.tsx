@@ -189,6 +189,13 @@ export function CustomizableDashboard() {
           </div>
         </div>
       </DndContext>
+
+      {/* Growth & Development rows – bottom of page on mobile */}
+      {hasPromoWidget && (
+        <div className="lg:hidden">
+          <GrowthAndDevelopmentRows />
+        </div>
+      )}
     </div>
   );
 }
