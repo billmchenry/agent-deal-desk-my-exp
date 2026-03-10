@@ -33,7 +33,7 @@ export function CappingYearCard() {
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t("team.progress")}</span>
             <span className="font-medium">
-              {formatCurrency(cappingData.current)} of {formatCurrency(cappingData.target, { compact: true })}
+              {formatCurrency(current)} of {formatCurrency(cappingData.target, { compact: true })}
             </span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
