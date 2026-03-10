@@ -234,63 +234,93 @@ export default function TeamDashboard() {
               <CardTitle className="text-section-title font-medium">{t("team.topAgents")}</CardTitle>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="units" className="w-full">
-                <TabsList className="mb-4">
-                  <TabsTrigger value="units">
-                    {t("team.unitsClosed")}
-                  </TabsTrigger>
-                  <TabsTrigger value="volume">
-                    {t("team.highestVolume")}
-                  </TabsTrigger>
-                  <TabsTrigger value="commission">
-                    {t("team.commission")}
-                  </TabsTrigger>
-                </TabsList>
+              {showAllTopAgents ? (
+                <>
+                  <DataTable
+                    data={topAgents}
+                    columns={topAgentColumns}
+                    csvFilename="top-agents"
+                    searchableKeys={["name"]}
+                    defaultSort={{ key: "units", direction: "desc" }}
+                    mobileCardRender={(row) => (
+                      <div className="space-y-1">
+                        <div className="flex justify-between gap-2">
+                          <span className="font-semibold text-sm truncate">{row.name}</span>
+                          <span className="text-sm font-bold tabular-nums font-secondary shrink-0">{isCanada ? (row.units + 0.25).toFixed(2) : row.units} units</span>
+                        </div>
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span className="tabular-nums font-secondary">Vol: {formatCurrency(row.volume)}</span>
+                          <span className="tabular-nums font-secondary">GCI: {formatCurrency(row.commission)}</span>
+                        </div>
+                      </div>
+                    )}
+                  />
+                  <button
+                    className="w-full text-center text-primary hover:underline text-sm mt-4"
+                    onClick={() => setShowAllTopAgents(false)}
+                  >
+                    {t("team.showLess")}
+                  </button>
+                </>
+              ) : (
+                <Tabs defaultValue="units" className="w-full">
+                  <TabsList className="mb-4">
+                    <TabsTrigger value="units">
+                      {t("team.unitsClosed")}
+                    </TabsTrigger>
+                    <TabsTrigger value="volume">
+                      {t("team.highestVolume")}
+                    </TabsTrigger>
+                    <TabsTrigger value="commission">
+                      {t("team.commission")}
+                    </TabsTrigger>
+                  </TabsList>
 
-                {(["units", "volume", "commission"] as const).map((tab) => (
-                  <TabsContent key={tab} value={tab} className="mt-0">
-                    <div className="space-y-1">
-                      {[...topAgents]
-                        .sort((a, b) =>
-                          tab === "units" ? b.units - a.units :
-                          tab === "volume" ? b.volume - a.volume :
-                          b.commission - a.commission
-                        )
-                        .slice(0, 2)
-                        .map((agent, idx) => (
-                          <div
-                            key={agent.id}
-                            className="flex items-center justify-between py-2 cursor-pointer hover:bg-muted/50 rounded-lg px-2 -mx-2 min-h-[48px]"
-                          >
-                            <div className="flex items-center gap-3">
-                              <Avatar className="h-10 w-10 bg-primary">
-                                <AvatarFallback className="bg-primary text-primary-foreground">{agent.initials}</AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className="font-medium text-foreground text-body">{agent.name}</p>
-                                <p className="text-sm text-muted-foreground">{idx + 1} of {topAgents.length}</p>
+                  {(["units", "volume", "commission"] as const).map((tab) => (
+                    <TabsContent key={tab} value={tab} className="mt-0">
+                      <div className="space-y-1">
+                        {[...topAgents]
+                          .sort((a, b) =>
+                            tab === "units" ? b.units - a.units :
+                            tab === "volume" ? b.volume - a.volume :
+                            b.commission - a.commission
+                          )
+                          .slice(0, 2)
+                          .map((agent, idx) => (
+                            <div
+                              key={agent.id}
+                              className="flex items-center justify-between py-2 cursor-pointer hover:bg-muted/50 rounded-lg px-2 -mx-2 min-h-[48px]"
+                            >
+                              <div className="flex items-center gap-3">
+                                <Avatar className="h-10 w-10 bg-primary">
+                                  <AvatarFallback className="bg-primary text-primary-foreground">{agent.initials}</AvatarFallback>
+                                </Avatar>
+                                <div>
+                                  <p className="font-medium text-foreground text-body">{agent.name}</p>
+                                  <p className="text-sm text-muted-foreground">{idx + 1} of {topAgents.length}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium text-foreground text-body tabular-nums font-secondary">
+                                  {tab === "units" ? `${isCanada ? (agent.units + 0.25).toFixed(2) : agent.units} ${t("team.units")}` :
+                                   tab === "volume" ? formatCurrency(agent.volume) :
+                                   formatCurrency(agent.commission)}
+                                </span>
+                                <ChevronRight className="h-4 w-4 text-muted-foreground" />
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-foreground text-body tabular-nums font-secondary">
-                                {tab === "units" ? `${isCanada ? (agent.units + 0.25).toFixed(2) : agent.units} ${t("team.units")}` :
-                                 tab === "volume" ? formatCurrency(agent.volume) :
-                                 formatCurrency(agent.commission)}
-                              </span>
-                              <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                    <button
-                      className="w-full text-center text-primary hover:underline text-sm mt-4"
-                      onClick={() => setView("topAgents")}
-                    >
-                      {t("team.viewAll")}
-                    </button>
-                  </TabsContent>
-                ))}
-              </Tabs>
+                          ))}
+                      </div>
+                      <button
+                        className="w-full text-center text-primary hover:underline text-sm mt-4"
+                        onClick={() => setShowAllTopAgents(true)}
+                      >
+                        {t("team.viewAll")}
+                      </button>
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              )}
             </CardContent>
           </Card>
         </div>
