@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { MessageCircle, ChevronRight, ChevronLeft, Info, Phone, Mail, MapPin } from "lucide-react";
+import { MessageCircle, ChevronRight, ChevronLeft, Info, Phone, Mail, MapPin, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DateRangeFilter, type DateRange } from "@/components/filters/DateRangeFilter";
@@ -163,9 +163,10 @@ export default function TeamDashboard() {
           </div>
 
           <div className="relative z-10">
-            <div className="mb-4">
+            <div className="flex items-center gap-2 mb-4">
               <Badge className="bg-exp-charcoal-blue/10 text-exp-charcoal-blue border-exp-charcoal-blue/20">
-                {t("team.overview")}
+                <Target className="me-1 h-3 w-3" />
+                TEAM
               </Badge>
             </div>
 
