@@ -19,7 +19,8 @@ export default function BrokerHub() {
   const [view, setView] = useState<View>("tiles");
   const [selectedMentor, setSelectedMentor] = useState<StateMentor | null>(null);
 
-  const totalMentors = mockStateMentors.length;
+  const mentors = config.brokerHubMode === "us" ? mockStateMentors : mockCanadianStateMentors;
+  const totalMentors = mentors.length;
 
   const columns: ColumnDef<StateMentor>[] = [
     { key: "name", header: t("broker.name"), type: "string", sortable: true, filterable: true },
