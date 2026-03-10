@@ -167,11 +167,10 @@ export default function TeamDashboard() {
           </div>
 
           <div className="relative z-10">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4">
               <Badge className="bg-exp-charcoal-blue/10 text-exp-charcoal-blue border-exp-charcoal-blue/20">
                 {t("team.overview")}
               </Badge>
-              <DateRangeFilter value={overviewDateRange} onChange={setOverviewDateRange} />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
