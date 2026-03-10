@@ -492,6 +492,10 @@ export default function TeamDashboard() {
         onOpenChange={setTopAgentsSheetOpen}
         defaultTab={topAgentsDefaultTab}
       />
+      <AgentDetailsSheet
+        open={agentDetailsSheetOpen}
+        onOpenChange={setAgentDetailsSheetOpen}
+      />
     </DashboardLayout>
   );
 }
