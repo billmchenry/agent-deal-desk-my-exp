@@ -7,7 +7,7 @@ export function DiscAssessmentCard() {
     <Card className="bg-gradient-to-r from-exp-purple/10 to-exp-purple/5 border-exp-purple/20">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-exp-purple/20 text-exp-purple">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-exp-purple/20 text-exp-purple">
             <Target className="h-5 w-5" />
           </div>
           <div className="flex-1 min-w-0">
