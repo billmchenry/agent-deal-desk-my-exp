@@ -34,6 +34,7 @@ export default function TeamDashboard() {
 
   const [view, setView] = useState<View>("overview");
   const [selectedOnboardingAgent, setSelectedOnboardingAgent] = useState<OnboardingAgent | null>(null);
+  const [showAllTopAgents, setShowAllTopAgents] = useState(false);
   const [overviewDateRange, setOverviewDateRange] = useState<DateRange>({
     from: new Date(2026, 0, 1),
     to: new Date(2026, 2, 5),
