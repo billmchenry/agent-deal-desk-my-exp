@@ -549,6 +549,8 @@ export interface StateMentor {
   city: string;
   state: string;
   postalCode: string;
+  agentId: string;
+  primaryStateLicense: string;
   // Profile fields (reuse AvailableMentor shape)
   avatarUrl?: string;
   bio: string;
@@ -576,6 +578,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Katy",
     state: "TX",
     postalCode: "77494",
+    agentId: "EXP-204819",
+    primaryStateLicense: "TX-782341",
     bio: "With over 15 years of real estate experience across both residential and commercial markets, I am passionate about helping new agents find their footing.",
     locationsServiced: ["Houston", "Katy", "Sugar Land", "Richmond"],
     licenses: [{ state: "TX", number: "TX-782341" }],
@@ -598,6 +602,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Sacramento",
     state: "CA",
     postalCode: "95814",
+    agentId: "EXP-310482",
+    primaryStateLicense: "CA-019283",
     bio: "I specialize in guiding new agents through the Sacramento and Northern California markets. Having closed over 200 transactions in the past decade.",
     locationsServiced: ["Sacramento", "Elk Grove", "Roseville", "Folsom"],
     licenses: [{ state: "CA", number: "CA-019283" }],
@@ -618,6 +624,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Nashville",
     state: "TN",
     postalCode: "37201",
+    agentId: "EXP-118503",
+    primaryStateLicense: "TN-445901",
     bio: "As a top-producing agent in the Nashville metro area, I bring a deep understanding of market trends and client service excellence.",
     locationsServiced: ["Nashville", "Franklin", "Brentwood", "Murfreesboro"],
     licenses: [{ state: "TN", number: "TN-445901" }],
@@ -638,6 +646,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Atlanta",
     state: "GA",
     postalCode: "30301",
+    agentId: "EXP-429710",
+    primaryStateLicense: "GA-338102",
     bio: "I have been in the real estate industry for over 20 years and have mentored dozens of successful agents.",
     locationsServiced: ["Atlanta", "Decatur", "Marietta", "Alpharetta"],
     licenses: [{ state: "GA", number: "GA-338102" }],
@@ -659,6 +669,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Portland",
     state: "OR",
     postalCode: "97201",
+    agentId: "EXP-553291",
+    primaryStateLicense: "OR-220194",
     bio: "Focused on sustainable real estate practices and community-driven development in the Pacific Northwest.",
     locationsServiced: ["Portland", "Beaverton", "Lake Oswego"],
     licenses: [{ state: "OR", number: "OR-220194" }],
@@ -678,6 +690,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Miami",
     state: "FL",
     postalCode: "33101",
+    agentId: "EXP-672104",
+    primaryStateLicense: "FL-990832",
     bio: "Bilingual mentor specializing in South Florida luxury and international markets.",
     locationsServiced: ["Miami", "Fort Lauderdale", "Coral Gables"],
     licenses: [{ state: "FL", number: "FL-990832" }],
@@ -698,6 +712,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Las Vegas",
     state: "NV",
     postalCode: "89101",
+    agentId: "EXP-784920",
+    primaryStateLicense: "NV-112039",
     bio: "Helping new agents build their dream careers in the Las Vegas and Henderson real estate markets.",
     locationsServiced: ["Las Vegas", "Henderson", "Summerlin"],
     licenses: [{ state: "NV", number: "NV-112039" }],
@@ -717,6 +733,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Seattle",
     state: "WA",
     postalCode: "98101",
+    agentId: "EXP-891034",
+    primaryStateLicense: "WA-554012",
     bio: "Multilingual agent serving the diverse Seattle metro communities with cultural sensitivity and expertise.",
     locationsServiced: ["Seattle", "Bellevue", "Redmond", "Kirkland"],
     licenses: [{ state: "WA", number: "WA-554012" }],
@@ -737,6 +755,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Phoenix",
     state: "AZ",
     postalCode: "85001",
+    agentId: "EXP-145382",
+    primaryStateLicense: "AZ-882014",
     bio: "20+ year veteran of the Arizona real estate market. Ready to mentor the next generation of top producers.",
     locationsServiced: ["Phoenix", "Scottsdale", "Tempe", "Mesa"],
     licenses: [{ state: "AZ", number: "AZ-882014" }],
@@ -757,6 +777,8 @@ export const mockStateMentors: StateMentor[] = [
     city: "Dallas",
     state: "TX",
     postalCode: "75201",
+    agentId: "EXP-267401",
+    primaryStateLicense: "TX-443092",
     bio: "Passionate about diversity in real estate and committed to mentoring agents from all backgrounds.",
     locationsServiced: ["Dallas", "Fort Worth", "Plano", "Frisco"],
     licenses: [{ state: "TX", number: "TX-443092" }],
