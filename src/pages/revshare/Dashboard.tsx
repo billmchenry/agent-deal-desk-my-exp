@@ -679,14 +679,14 @@ export default function RevShareDashboard() {
                         tabIndex={0}
                         onKeyDown={(e) => e.key === "Enter" && navigate("/revshare/group")}
                       >
-                        <td className="py-2 pr-2">
-                          <div className="flex items-center gap-2">
-                            Total
-                            <ChevronRight className="h-3 w-3 text-muted-foreground ml-auto" />
-                          </div>
-                        </td>
+                        <td className="py-2 pr-2">Total</td>
                         <td className="py-2 px-2 text-right font-secondary">{formatNumber(totalCountryAgents)} <span className="font-normal text-muted-foreground">(100%)</span></td>
-                        <td className="py-2 pl-2 text-right font-secondary whitespace-nowrap">{formatCurrency(totalCountryRevShare)} <span className="text-muted-foreground text-xs">USD</span></td>
+                        <td className="py-2 pl-2 text-right font-secondary whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1 justify-end">
+                            {formatCurrency(totalCountryRevShare)} <span className="text-muted-foreground text-xs">USD</span>
+                            <ChevronRight className="h-3 w-3 text-muted-foreground" />
+                          </span>
+                        </td>
                       </tr>
                     </tfoot>
                   )}
