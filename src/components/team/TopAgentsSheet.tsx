@@ -132,13 +132,15 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
                 </Select>
               </PopoverContent>
             </Popover>
-            <button
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 rounded-full"
               onClick={() => exportToCsv(sorted, csvColumns, "top-agents")}
             >
               <Download className="h-4 w-4" />
-              Download
-            </button>
+              Download CSV
+            </Button>
           </div>
           <div className="relative w-56">
             <Input
