@@ -220,7 +220,7 @@ export function DataTable<T extends Record<string, any>>({
         return `${formatCurrency(Number(raw) || 0)} ${code}`;
       }
       case "number":
-        return formatNumber(Number(raw) || 0, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return formatNumber(Number(raw) || 0, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
       case "date": {
         const s = String(raw ?? "");
         return s === "-" ? "-" : formatDate(s);
