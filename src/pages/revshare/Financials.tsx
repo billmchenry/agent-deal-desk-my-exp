@@ -786,21 +786,21 @@ export default function Financials() {
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.initialRevenue")}</p>
-                          <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(batch.initialRevenue)}</p>
+                          <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(batch.initialRevenue)} USD</p>
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
-                          <p className="text-sm font-medium font-secondary text-destructive">
-                            - {formatCurrency(batch.payNowDeduction)}
+                          <p className={cn("text-sm font-medium font-secondary", batch.payNowDeduction > 0 ? "text-destructive" : "text-foreground")}>
+                            {batch.payNowDeduction > 0 ? "- " : ""}{formatCurrency(batch.payNowDeduction)} USD
                           </p>
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.adjustmentAmount")}</p>
-                          <p className="text-sm font-medium font-secondary text-exp-green">{formatCurrency(batch.adjustmentAmount)}</p>
+                          <p className="text-sm font-medium font-secondary text-exp-green">{formatCurrency(batch.adjustmentAmount)} USD</p>
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.finalPayout")}</p>
-                          <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)}</p>
+                          <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)} USD</p>
                         </div>
                       </div>
                     </div>
