@@ -456,7 +456,7 @@ export const en = {
   "fin.exponentialShare": "Revenue Share Dollar eXponential Share",
   "fin.revSharePercentage": "Revenue Share Dollar' Revenue Share Percentage",
   "fin.contactCard": "Contact Card",
-  "fin.totalRevenue6Mo": "Total Revenue (6 months)",
+  "fin.totalRevenue6Mo": "Total Revenue",
   "fin.totalTransactions": "Total Transactions",
   "fin.totalPayNowTransactions": "Total PayNow Transactions",
   "fin.monthlyPaymentBatches": "Monthly Payment Batches",
