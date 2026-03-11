@@ -764,17 +764,15 @@ export default function Financials() {
                     {/* Batch header row */}
                     <div
                       className={cn(
-                        "flex flex-wrap md:flex-nowrap items-center justify-between p-4 bg-muted/30 transition-colors",
-                        hasPayNow && "cursor-pointer hover:bg-muted/50"
+                        "flex flex-wrap md:flex-nowrap items-center justify-between p-4 bg-muted/30 transition-colors cursor-pointer hover:bg-muted/50"
                       )}
-                      onClick={() => hasPayNow && setExpandedBatchId(isExpanded ? null : batch.id)}
+                      onClick={() => setExpandedBatchId(isExpanded ? null : batch.id)}
                     >
                       <div className="flex items-center gap-2">
-                        {hasPayNow && (
-                          isExpanded
-                            ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" />
-                            : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
-                        )}
+                        {isExpanded
+                          ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" />
+                          : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                        }
                         <div>
                           <h3 className="font-medium text-foreground">
                             {batch.month} {batch.year} Batch
