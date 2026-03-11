@@ -106,7 +106,7 @@ export function DateRangeFilter({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="gap-2 text-sm rounded-full px-4 h-9 font-normal">
+        <Button variant="outline" className="gap-2 text-sm rounded-[51px] px-4 h-9 font-normal">
           <CalendarDays className="h-4 w-4 text-muted-foreground" />
           {value.from && value.to ? (
             <span className="text-foreground">
