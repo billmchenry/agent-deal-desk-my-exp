@@ -680,10 +680,21 @@ export default function Financials() {
               </Card>
             </div>
 
-            {/* Monthly Payment Batches */}
+            {/* Date Range Filter */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-foreground">{t("fin.monthlyPaymentBatches")}</h2>
-              <Button variant="outline" size="sm">
+              <div className="flex items-center gap-2">
+                <DateRangeFilter
+                  value={periodicDateRange}
+                  onChange={setPeriodicDateRange}
+                  presets={periodicPresets}
+                />
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  {t("fin.downloadReport")}
+                </Button>
+              </div>
+            </div>
                 <Download className="h-4 w-4 mr-2" />
                 {t("fin.downloadReport")}
               </Button>
