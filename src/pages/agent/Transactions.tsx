@@ -98,6 +98,20 @@ export default function Transactions() {
       ),
     },
     { key: "firstCap", header: "txn.amtTowardCap", type: "number", sortable: true },
+    {
+      key: "transactionId" as keyof Transaction,
+      header: "txn.viewDetails",
+      type: "string",
+      sortable: false,
+      render: (_val, row) => (
+        <button
+          onClick={(e) => { e.stopPropagation(); handleRowClick(row); }}
+          className="text-sm font-medium text-primary hover:underline"
+        >
+          {t("txn.viewDetails")}
+        </button>
+      ),
+    },
     // Hidden by default
     { key: "paymentSettledDate", header: "txn.paymentSettledDate", type: "date", sortable: true, defaultVisible: false },
     { key: "transactionType", header: "txn.transactionType", type: "string", sortable: true, filterable: true, defaultVisible: false },
