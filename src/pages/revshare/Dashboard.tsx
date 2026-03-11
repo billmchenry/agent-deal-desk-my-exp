@@ -519,7 +519,7 @@ export default function RevShareDashboard() {
                 <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
-                <button className="inline-flex items-center gap-1 rounded-md border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
+                <button className="inline-flex items-center gap-1 rounded-[51px] border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
                   {t("revshare.viewDetails")} <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
