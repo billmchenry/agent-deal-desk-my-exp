@@ -90,15 +90,15 @@ export default function IconProgram() {
         <h1 className="text-page-title font-semibold text-foreground">{t("icon.title")}</h1>
 
         {/* Compact Hero Banner */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-[hsl(var(--exp-navy))] via-[hsl(var(--exp-navy-light))] to-[hsl(var(--exp-blue))] p-4 sm:p-6 text-white">
+        <Card className="relative overflow-hidden bg-gradient-to-r from-[hsl(var(--exp-dark-navy))] via-[hsl(var(--exp-charcoal-blue))] to-[hsl(var(--exp-slate-blue))] dark:from-[hsl(var(--exp-dark-navy))] dark:via-[hsl(var(--exp-charcoal-blue))] dark:to-[hsl(var(--exp-slate-blue))] p-4 sm:p-6 text-white">
           {/* Decorative background */}
           <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
             <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-white" />
-            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-[hsl(var(--exp-gold))]" />
+            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-[hsl(var(--exp-frosted-blue))]" />
           </div>
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
-              <Badge className="bg-[hsl(var(--exp-gold))]/20 text-[hsl(var(--exp-gold-light))] border-[hsl(var(--exp-gold))]/30 hover:bg-[hsl(var(--exp-gold))]/30">
+              <Badge className="bg-[hsl(var(--exp-slate-blue))]/20 text-white/90 border-[hsl(var(--exp-slate-blue))]/30 hover:bg-[hsl(var(--exp-slate-blue))]/30">
                 <Target className="me-1 h-3 w-3" />
                 {t("icon.programBadge")}
               </Badge>
