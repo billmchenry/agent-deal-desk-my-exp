@@ -701,7 +701,7 @@ export default function Financials() {
             </div>
 
             <div className="space-y-3">
-              {monthlyBatches.map((batch) => {
+              {filteredBatches.map((batch) => {
                 const isExpanded = expandedBatchId === batch.id;
                 const hasPayNow = batch.payNowTransactions.length > 0;
                 return (
