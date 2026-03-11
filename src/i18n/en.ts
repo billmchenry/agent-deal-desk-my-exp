@@ -244,6 +244,7 @@ export const en = {
   "filter.lastWeek": "Last Week",
   "filter.lastMonth": "Last Month",
   "filter.lastYear": "Last Year",
+  "filter.last6Months": "Last 6 Months",
   "filter.custom": "Custom",
   "filter.selectDateRange": "Select date range",
   "filter.search": "Search",

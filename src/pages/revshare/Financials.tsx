@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
 import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
+import { DateRangeFilter, type DateRange } from "@/components/filters/DateRangeFilter";
+import { startOfYear, subMonths, subYears } from "date-fns";
 import { cn } from "@/lib/utils";
 
 // ── Types ──
@@ -361,10 +363,38 @@ export default function Financials() {
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodicRow | null>(null);
   const [expandedBatchId, setExpandedBatchId] = useState<string | null>(null);
 
-  // Periodic summary stats
-  const totalRevenue = monthlyBatches.reduce((sum, b) => sum + b.finalPayout, 0);
-  const totalTransactions = monthlyBatches.reduce((sum, b) => sum + b.totalDeals, 0);
-  const totalPayNow = monthlyBatches.reduce((sum, b) => sum + b.payNowDeduction, 0);
+  // Periodic date range filter
+  const periodicPresets = [
+    { labelKey: "filter.ytd", getRange: () => ({ from: startOfYear(new Date()), to: new Date() }) as DateRange },
+    { labelKey: "filter.lastYear", getRange: () => ({ from: startOfYear(subYears(new Date(), 1)), to: new Date(subYears(new Date(), 1).getFullYear(), 11, 31) }) as DateRange },
+    { labelKey: "filter.last6Months", getRange: () => ({ from: subMonths(new Date(), 6), to: new Date() }) as DateRange },
+  ];
+  const [periodicDateRange, setPeriodicDateRange] = useState<DateRange>({
+    from: startOfYear(new Date()),
+    to: new Date(),
+  });
+
+  // Helper to get a Date from batch month/year
+  const getBatchDate = (batch: MonthlyBatchRow) => {
+    const monthIndex = new Date(Date.parse(batch.month + " 1, " + batch.year)).getMonth();
+    return new Date(batch.year, monthIndex, 1);
+  };
+
+  // Filtered batches based on date range
+  const filteredBatches = useMemo(() => {
+    if (!periodicDateRange.from && !periodicDateRange.to) return monthlyBatches;
+    return monthlyBatches.filter((batch) => {
+      const batchDate = getBatchDate(batch);
+      if (periodicDateRange.from && batchDate < new Date(periodicDateRange.from.getFullYear(), periodicDateRange.from.getMonth(), 1)) return false;
+      if (periodicDateRange.to && batchDate > periodicDateRange.to) return false;
+      return true;
+    });
+  }, [periodicDateRange]);
+
+  // Periodic summary stats (use filtered batches)
+  const totalRevenue = filteredBatches.reduce((sum, b) => sum + b.finalPayout, 0);
+  const totalTransactions = filteredBatches.reduce((sum, b) => sum + b.totalDeals, 0);
+  const totalPayNow = filteredBatches.reduce((sum, b) => sum + b.payNowDeduction, 0);
 
   const handleAgentClick = (row: AgentRevShareRow) => {
     setSelectedAgent(getAgentDetail(row));
@@ -650,17 +680,24 @@ export default function Financials() {
               </Card>
             </div>
 
-            {/* Monthly Payment Batches */}
+            {/* Date Range Filter */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-foreground">{t("fin.monthlyPaymentBatches")}</h2>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                {t("fin.downloadReport")}
-              </Button>
+              <div className="flex items-center gap-2">
+                <DateRangeFilter
+                  value={periodicDateRange}
+                  onChange={setPeriodicDateRange}
+                  presets={periodicPresets}
+                />
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  {t("fin.downloadReport")}
+                </Button>
+              </div>
             </div>
 
             <div className="space-y-3">
-              {monthlyBatches.map((batch) => {
+              {filteredBatches.map((batch) => {
                 const isExpanded = expandedBatchId === batch.id;
                 const hasPayNow = batch.payNowTransactions.length > 0;
                 return (
