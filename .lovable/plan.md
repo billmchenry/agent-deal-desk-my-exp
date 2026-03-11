@@ -1,83 +1,47 @@
 
 
-# Team Reconciliation Page
+# Organization Tree Page Update
 
-A new "Team Reconciliation" report under the Team section, following the same DataTable template used by Agent Production Details. Includes a "View Breakdown" side panel showing per-agent commission details with collapsible fee sections.
+## Changes Required (Current → Reference)
 
----
+### 1. Add Hero Banner
+The reference shows a dark navy banner at the top containing:
+- Agent icon + name ("Michael Thompson")
+- Subtitle: "Level 0 • 10 FLAs"
+- Four stat tiles in a row: **TOTAL REV SHARE** (36,522.44), **DIRECT FLAS** (10), **TOTAL ORG** (20), **ICON AGENTS** (2, in green)
 
-## Overview
+Currently the page just has plain text "Michael Thompson - Level 0 / 10 FLAs". This needs to become a styled banner similar to other hero banners in the app.
 
-Based on the reference screenshots, this page shows team-level transaction data with columns: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission, and a "View Breakdown" action. Clicking "View Breakdown" opens a side sheet with multi-agent commission breakdowns (Buyer Commission Base, TeamView with per-agent splits, Fees Covered By Others, Fees I Paid for Others, Remaining Fees).
+### 2. Simplify Agent Card Stats Layout
+Current: "Contributed Rev Share" in a highlighted muted box, then "Individual Rev Share Contribution" and "Org Size" below.
 
----
+Reference: Three columns in a horizontal row with uppercase labels:
+- **REV SHARE** — value
+- **CONTRIBUTION** — value  
+- **ORG SIZE** — value
 
-## New Files
+No highlighted box — just a clean horizontal stat row with small uppercase labels.
 
-### 1. `src/pages/team/Reconciliation.tsx`
+### 3. Update Level Badges
+Current: "Level 1" spelled out in a badge.
+Reference: Compact "L1" badge (small, colored). ICON badge remains green.
 
-The main page, closely mirroring the Agent Production Details pattern:
+### 4. Change "View Org" to Link Style
+Current: Full-width outline button "View Org (5)".
+Reference: Text link style with users icon: "👥 View Org (5) >" — left-aligned, subtle.
 
-- Uses `DashboardLayout`, `UniversalFilterBar` (with DateRange + Search), and `DataTable`
-- Mock data for ~10 team transactions with fields: `number`, `agentName`, `uuid`, `address`, `actualCloseDate`, `paymentInitiatedDate`, `typeOfProperty`, `status`, `netCommission`
-- Column definitions with visible defaults: Number, Agent Name, UUID, Address, Actual Close Date, Payment Initiated Date, Type of Property, Status, Net Commission
-- Last column renders a "View Breakdown" link/button (not a standard column type -- uses `render` to output a styled link)
-- `onRowClick` and the "View Breakdown" link both open the breakdown sheet
-- `mobileCardRender` showing: Status badge, Agent Name, Address (truncated), Net Commission
-- CSV export enabled
-- Result count display (e.g., "1009 Results") and pagination (default page size 500 matching the reference, with 25/50/100/500 options)
-- Back button at top linking to `/team/dashboard`
+### 5. Remove "Contributed Rev Share" Highlighted Section
+Replace the muted background box with the flat 3-column stat row.
 
-### 2. `src/components/team/TeamBreakdownSheet.tsx`
+## Files to Modify
+- `src/pages/revshare/OrganizationTree.tsx` — All changes are in this single file:
+  - Add a hero banner component (dark navy card with stat tiles) replacing the plain text header
+  - Update `AgentCard` component: replace highlighted rev share box with 3-column stat row, shorten badge text to "L1", change View Org to link style
+  - Compute aggregate stats (total rev share, total org, icon agents count) for the banner
 
-Side panel matching the reference screenshot's "Transaction Details" breakdown:
-
-- Reuses the same `DetailRow`, `SectionHeader`, and `CollapsibleSection` sub-components from `TransactionDetailsSheet.tsx` (extract these into a shared file or duplicate -- plan uses shared extraction)
-- **Transaction Details** section at top: Property Address, Transaction ID, Actual Close Date, Buyer Agent, Status
-- **Buyer Commission Base** section: Sales Price, Commission Sale, Actual Commission
-- **TeamView** section (the key differentiator): Shows multiple agent entries, each with:
-  - Agent identifier row (ID + Name) with a colored percentage badge
-  - Agent Commission, Agent Commission with Bonuses & Concessions, Commission Amount (highlighted rows)
-  - Tax, Commission After Co-agents (highlighted)
-  - Agent Split Before Expenses
-  - Company Commission, Risk Management Fee, 100% Capped Transaction Fee, Transaction Review Fee
-- **Fees Covered By Others** -- collapsible, shows Commission Covered By, Currency, Commission Amount, Risk Management Amount, etc.
-- **Fees I Paid for Others** -- collapsible
-- **Remaining Fees** -- collapsible (default open): Remaining Commission, Remaining Risk, Capped Transaction Fee, Transaction Review Fee, Stock Comp, Total Deductions, Agent Net (highlighted)
-
-### 3. `src/components/shared/BreakdownComponents.tsx`
-
-Extract the reusable `DetailRow`, `SectionHeader`, and `CollapsibleSection` components currently in `TransactionDetailsSheet.tsx` into a shared file so both the agent and team breakdown sheets can use them.
-
----
-
-## Modified Files
-
-### `src/components/agent/TransactionDetailsSheet.tsx`
-- Import `DetailRow`, `SectionHeader`, `CollapsibleSection` from `@/components/shared/BreakdownComponents` instead of defining them inline.
-
-### `src/data/mockData.ts`
-- Add `submenu` to the Team nav item with: "Dashboard" (`/team/dashboard`) and "Team Reconciliation" (`/team/reconciliation`)
-- Update the `navItems` array similarly
-
-### `src/components/layout/Sidebar.tsx`
-- Add `"Team Reconciliation": "nav.teamReconciliation"` to `NAV_KEYS`
-
-### `src/App.tsx`
-- Add route: `/team/reconciliation` pointing to the new `Reconciliation` page component
-
-### `src/i18n/*.ts` (all 7 language files)
-- Add keys: `nav.teamReconciliation`, `team.reconciliation`, `team.number`, `team.agentName`, `team.uuid`, `team.typeOfProperty`, `team.netCommission`, `team.viewBreakdown`, `team.backToTeam`, `team.paymentInitiatedDate`, `team.buyerCommissionBase`, `team.commissionSale`, `team.teamView`, `team.remainingCommission`, `team.totalDeductions`, `team.agentNet`
-
----
-
-## Implementation Order
-
-1. Extract shared breakdown components into `BreakdownComponents.tsx`
-2. Refactor `TransactionDetailsSheet.tsx` to import from shared file
-3. Create mock team reconciliation data and the `Reconciliation.tsx` page
-4. Create `TeamBreakdownSheet.tsx` with multi-agent commission breakdown
-5. Add route in `App.tsx`
-6. Update sidebar navigation (mockData + Sidebar NAV_KEYS)
-7. Add translation keys to all 7 language files
+## Technical Approach
+- Hero banner: Use a Card with `bg-[#1a2332]` dark background (matching the app's dark navy theme), with 4 bordered stat tiles inside
+- Stats row in cards: Simple `grid grid-cols-3` with uppercase `text-[10px]` labels
+- View Org: Use a ghost button or anchor-style link with `Users` icon and chevron right
+- Badge: Change "Level 1" → "L1" using shorter format
 
