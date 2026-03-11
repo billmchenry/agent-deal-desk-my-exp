@@ -27,7 +27,17 @@ const themeStyles = {
   blue: {
     card: "bg-gradient-to-r from-exp-blue/10 to-exp-blue/5 border-exp-blue/20",
     icon: "bg-exp-blue/20 text-exp-blue",
-    button: "bg-exp-blue hover:bg-exp-blue/90",
+    button: "bg-exp-charcoal-blue hover:bg-exp-dark-navy text-white",
+  },
+  green: {
+    card: "bg-gradient-to-r from-exp-green/10 to-exp-green/5 border-exp-green/20",
+    icon: "bg-exp-green/20 text-exp-green",
+    button: "bg-exp-green hover:bg-exp-green/90 text-white",
+  },
+  slate: {
+    card: "border bg-muted/30",
+    icon: "bg-muted text-muted-foreground",
+    button: "bg-exp-charcoal-blue hover:bg-exp-dark-navy text-white",
   },
   primary: {
     card: "border",
@@ -167,7 +177,7 @@ export function GrowthAndDevelopmentRows() {
       title: "DISC Assessment",
       description: "Understand your communication style and improve client relationships.",
       buttonText: "Take Assessment",
-      theme: "blue",
+      theme: "slate",
     },
     {
       id: "nps",
@@ -175,7 +185,7 @@ export function GrowthAndDevelopmentRows() {
       title: "Your Feedback",
       description: "Fill out the agent eXp NPS survey today!",
       buttonText: "Take Survey",
-      theme: "primary",
+      theme: "green",
       onClick: handleOpen,
     },
   ];
