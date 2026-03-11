@@ -50,6 +50,8 @@ import { cn } from "@/lib/utils";
 
 export interface ColumnDef<T> {
   key: keyof T;
+  /** Optional unique id for UI identity (visibility, rendering keys). Use when multiple columns share the same data key. */
+  id?: string;
   header: string; // i18n key
   type: "string" | "number" | "currency" | "date" | "badge";
   sortable?: boolean;
