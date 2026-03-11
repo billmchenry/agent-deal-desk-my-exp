@@ -806,10 +806,12 @@ export default function Financials() {
                     </div>
 
                     {/* Expanded PayNow Early Payouts */}
-                    {isExpanded && hasPayNow && (
+                    {isExpanded && (
                       <div className="border-t border-border">
                         <div className="p-4">
-                          <h4 className="font-medium text-sm text-exp-green mb-3">{t("fin.payNowEarlyPayouts")}</h4>
+                          {hasPayNow ? (
+                            <>
+                              <h4 className="font-medium text-sm text-exp-green mb-3">{t("fin.payNowEarlyPayouts")}</h4>
 
                           {/* Table header */}
                           <div className="hidden md:grid grid-cols-5 gap-4 px-3 py-2 bg-muted/50 rounded text-xs font-medium text-muted-foreground mb-1">
