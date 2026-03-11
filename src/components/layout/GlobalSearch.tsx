@@ -271,7 +271,7 @@ export function GlobalSearch() {
   // Desktop
   return (
     <div ref={containerRef} className="relative hidden lg:block">
-      <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-1.5 w-72 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-1 transition-shadow">
+      <div className="flex items-center gap-2 rounded-[51px] border border-border bg-muted/50 px-3 py-1.5 w-72 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-1 transition-shadow">
         <Search className="h-4 w-4 text-muted-foreground shrink-0" />
         <input
           ref={inputRef}
