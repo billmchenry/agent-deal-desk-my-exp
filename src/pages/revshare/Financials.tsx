@@ -61,7 +61,7 @@ interface PayNowTransaction {
   serviceFee: number;
   finalAmount: number;
   dealCount: number;
-  deals: PayNowDeal[];
+  deals?: PayNowDeal[];
 }
 
 interface MonthlyBatchRow {
