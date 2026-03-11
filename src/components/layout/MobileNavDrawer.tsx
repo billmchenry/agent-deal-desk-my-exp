@@ -187,11 +187,9 @@ export function MobileNavDrawer({ isOpen, onClose }: MobileNavDrawerProps) {
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent side={isRTL ? "right" : "left"} className="w-full sm:max-w-sm p-0 bg-sidebar flex flex-col overflow-x-hidden">
-        <SheetHeader className="flex h-16 items-center justify-between border-b border-border px-5 bg-background">
-          <SheetTitle className="flex items-center gap-1">
-            <span className="text-xl font-bold text-foreground">MY</span>
-            <span className="text-xl text-muted-foreground">|</span>
-            <span className="text-xl font-bold text-exp-blue">eXp</span>
+        <SheetHeader className="flex h-16 items-center justify-between border-b border-sidebar-border px-5 bg-sidebar">
+          <SheetTitle>
+            <img src={expLogoWhite} alt="eXp Realty" className="h-8 w-auto" />
           </SheetTitle>
         </SheetHeader>
 
