@@ -160,16 +160,16 @@ export default function TeamDashboard() {
         <CanadianDisclaimer variant="teamLead" email="canada.support@exprealty.com" />
 
         {/* Overview Section - Hero Banner style */}
-        <Card className="relative overflow-hidden bg-gradient-to-r from-exp-frosted-blue via-exp-light-grey to-exp-frosted-blue p-4 sm:p-6 mb-6">
+        <Card className="relative overflow-hidden bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue text-white p-4 sm:p-6 mb-6">
           {/* Decorative background */}
           <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
-            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-slate-blue" />
-            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-exp-moss-grey" />
+            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-frosted-blue" />
+            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-white" />
           </div>
 
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-4">
-              <Badge className="bg-exp-charcoal-blue/10 text-exp-charcoal-blue border-exp-charcoal-blue/20">
+              <Badge className="bg-white/15 text-white border-white/20 hover:bg-white/20">
                 <Target className="me-1 h-3 w-3" />
                 TEAM
               </Badge>
@@ -178,44 +178,44 @@ export default function TeamDashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
               <button
                 onClick={() => navigate("/team/reconciliation")}
-                className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+                className="flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-white/15 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
               >
-                <div className="rounded-full p-2 shrink-0 bg-exp-slate-blue/15 text-exp-slate-blue">
+                <div className="rounded-full p-2 shrink-0 bg-white/15 text-white">
                   <Home className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-section-title font-bold text-exp-dark-navy truncate">
+                  <p className="text-section-title font-bold text-white truncate">
                     {formatNumber(isCanada ? 13.25 : teamOverview.units.total)}
                   </p>
-                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("team.units")}</p>
+                  <p className="text-xs sm:text-[11px] text-white/60">{t("team.units")}</p>
                 </div>
               </button>
               <button
                 onClick={() => navigate("/team/reconciliation")}
-                className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+                className="flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-white/15 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
               >
-                <div className="rounded-full p-2 shrink-0 bg-exp-slate-blue/15 text-exp-slate-blue">
+                <div className="rounded-full p-2 shrink-0 bg-white/15 text-white">
                   <Building2 className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-section-title font-bold text-exp-dark-navy truncate">
+                  <p className="text-section-title font-bold text-white truncate">
                     {formatCurrency(teamOverview.volume.total, { compact: true })}
                   </p>
-                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("team.volume")}</p>
+                  <p className="text-xs sm:text-[11px] text-white/60">{t("team.volume")}</p>
                 </div>
               </button>
               <button
                 onClick={() => navigate("/team/reconciliation")}
-                className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+                className="flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-white/15 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
               >
-                <div className="rounded-full p-2 shrink-0 bg-exp-green/15 text-exp-green">
+                <div className="rounded-full p-2 shrink-0 bg-white/15 text-white">
                   <DollarSign className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-section-title font-bold text-exp-dark-navy truncate">
+                  <p className="text-section-title font-bold text-white truncate">
                     {formatCurrency(teamOverview.teamLeadSplit.total, { compact: true })}
                   </p>
-                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("team.teamLeadSplit")}</p>
+                  <p className="text-xs sm:text-[11px] text-white/60">{t("team.teamLeadSplit")}</p>
                 </div>
               </button>
             </div>
