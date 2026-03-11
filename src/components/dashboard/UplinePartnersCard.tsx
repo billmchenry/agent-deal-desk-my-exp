@@ -26,7 +26,7 @@ export function UplinePartnersCard() {
         <div className="flex items-center justify-between">
           <CardTitle className="text-section-title font-semibold">Upline Partners</CardTitle>
           <Tabs value={view} onValueChange={(v) => setView(v as "lineage" | "contributor")}>
-            <TabsList className="h-8">
+            <TabsList>
               <TabsTrigger value="lineage" className="text-xs px-3">
                 Lineage
               </TabsTrigger>
