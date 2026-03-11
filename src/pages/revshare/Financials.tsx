@@ -932,6 +932,10 @@ export default function Financials() {
           <SheetHeader>
             <SheetTitle className="text-section-title">{t("fin.paymentDetails")}</SheetTitle>
           </SheetHeader>
+          <div className="mt-3 flex items-start gap-2 rounded-lg bg-primary/10 p-3">
+            <div className="h-2 w-2 rounded-full bg-primary mt-1.5 shrink-0" />
+            <p className="text-xs text-muted-foreground">This transaction was paid out early using PayNow with a service fee applied.</p>
+          </div>
           {selectedPayNow && (() => {
             const deals = selectedPayNow.txn.deals ?? generateDeals(selectedPayNow.txn.id, selectedPayNow.txn.dealCount, selectedPayNow.txn.finalAmount);
             return (
