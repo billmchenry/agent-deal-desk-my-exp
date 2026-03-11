@@ -181,16 +181,14 @@ export default function DocumentsPortal() {
                     <div className="flex gap-2 pt-1">
                       <Button
                         variant="ghost"
-                        size="sm"
-                        className="min-h-[44px] gap-2"
+                        className="gap-2"
                         aria-label={`${t("documents.view")} ${doc.title}`}
                       >
                         <Eye className="h-4 w-4" />
                         {t("documents.view")}
                       </Button>
                       <Button
-                        size="sm"
-                        className="min-h-[44px] gap-2"
+                        className="gap-2"
                         aria-label={`${t("documents.download")} ${doc.title}`}
                       >
                         <Download className="h-4 w-4" />
