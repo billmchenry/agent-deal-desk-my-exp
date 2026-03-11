@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Download, Search, X, Contact, Award } from "lucide-react";
+import { Download, Search, X, Contact, Award, Users, ChevronRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
@@ -148,6 +148,81 @@ const getLevelBadgeClass = (level: number) => {
   return classes[level] || "bg-muted text-muted-foreground border-border";
 };
 
+// Helper to count all agents recursively
+function countAllAgents(agents: OrgTreeAgent[]): number {
+  return agents.reduce((sum, a) => sum + 1 + (a.children ? countAllAgents(a.children) : 0), 0);
+}
+
+function countIconAgents(agents: OrgTreeAgent[]): number {
+  return agents.reduce((sum, a) => (a.icon ? 1 : 0) + sum + (a.children ? countIconAgents(a.children) : 0), 0);
+}
+
+function sumRevShare(agents: OrgTreeAgent[]): number {
+  return agents.reduce((sum, a) => sum + a.revShare + (a.children ? sumRevShare(a.children) : 0), 0);
+}
+
+// --- Hero Banner ---
+function HeroBanner({
+  name,
+  level,
+  flaCount,
+  agents,
+}: {
+  name: string;
+  level: number;
+  flaCount: number;
+  agents: OrgTreeAgent[];
+}) {
+  const { formatCurrency } = useFormatters();
+
+  const totalRevShare = useMemo(() => sumRevShare(agents), [agents]);
+  const totalOrg = useMemo(() => countAllAgents(agents), [agents]);
+  const iconCount = useMemo(() => countIconAgents(agents), [agents]);
+
+  const stats = [
+    { label: "TOTAL REV SHARE", value: formatCurrency(totalRevShare), highlight: false },
+    { label: "DIRECT FLAS", value: String(flaCount), highlight: false },
+    { label: "TOTAL ORG", value: String(totalOrg), highlight: false },
+    { label: "ICON AGENTS", value: String(iconCount), highlight: true },
+  ];
+
+  return (
+    <Card className="mb-6 overflow-hidden border-0 bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue">
+      <CardContent className="p-5 md:p-6">
+        <div className="flex flex-col gap-4">
+          {/* Agent info */}
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center">
+              <Users className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <p className="text-white font-semibold text-base">{name}</p>
+              <p className="text-white/60 text-sm">Level {level} • {flaCount} FLAs</p>
+            </div>
+          </div>
+
+          {/* Stat tiles */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-lg border border-white/20 bg-white/10 px-3 py-2.5"
+              >
+                <p className="text-[10px] font-semibold tracking-wider text-white/60 uppercase mb-1">
+                  {stat.label}
+                </p>
+                <p className={`text-lg font-bold font-secondary tabular-nums ${stat.highlight ? "text-exp-green" : "text-white"}`}>
+                  {stat.value}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // --- Agent Card Component ---
 function AgentCard({
   agent,
@@ -197,50 +272,57 @@ function AgentCard({
           )}
         </div>
 
-        {/* Level + ICON badges */}
+        {/* Level + ICON badges — compact "L1" format */}
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className={`text-xs font-medium px-2.5 py-0.5 ${getLevelBadgeClass(agent.level)}`}>
-            {t("orgTree.level")} {agent.level}
+          <Badge variant="outline" className={`text-[11px] font-semibold px-2 py-0.5 ${getLevelBadgeClass(agent.level)}`}>
+            L{agent.level}
           </Badge>
           {agent.icon && (
-            <Badge variant="outline" className="text-xs font-medium px-2.5 py-0.5 bg-green-100 text-green-700 border-green-200">
+            <Badge variant="outline" className="text-[11px] font-semibold px-2 py-0.5 bg-green-100 text-green-700 border-green-200">
               ICON
             </Badge>
           )}
         </div>
 
-        {/* Contributed Rev Share - highlighted section */}
-        <div className="bg-muted/60 rounded-lg px-3 py-2.5">
-          <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
-            {t("orgTree.contributedRevShare")}
-          </p>
-          <p className="text-xl font-bold text-foreground font-secondary tabular-nums">
-            {formatCurrency(agent.revShare)}
-          </p>
-        </div>
-
-        {/* Individual Contribution + Org Size */}
-        <div className="flex items-center justify-between text-xs">
+        {/* 3-column flat stats row */}
+        <div className="grid grid-cols-3 gap-2">
           <div>
-            <span className="text-muted-foreground">{t("orgTree.individualContribution")}</span>
-            <p className="font-medium text-foreground font-secondary tabular-nums">{formatCurrency(agent.contribution)}</p>
+            <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+              REV SHARE
+            </p>
+            <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
+              {formatCurrency(agent.revShare)}
+            </p>
           </div>
-          <div className="text-right">
-            <span className="text-muted-foreground">{t("orgTree.orgSize")}</span>
-            <p className="font-medium text-foreground font-secondary tabular-nums">{agent.orgSize}</p>
+          <div>
+            <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+              CONTRIBUTION
+            </p>
+            <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
+              {formatCurrency(agent.contribution)}
+            </p>
+          </div>
+          <div>
+            <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+              ORG SIZE
+            </p>
+            <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
+              {agent.orgSize}
+            </p>
           </div>
         </div>
 
-        {/* View Org button */}
+        {/* View Org link style */}
         {hasChildren && (
-          <Button
-            variant="outline"
-            className="w-full text-sm mt-1"
+          <button
             onClick={onClick}
+            className="flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 font-medium mt-1 transition-colors"
             aria-label={`${t("orgTree.viewOrg")} – ${agent.name}`}
           >
+            <Users className="h-3.5 w-3.5" />
             {t("orgTree.viewOrg")} ({agent.orgSize})
-          </Button>
+            <ChevronRight className="h-3.5 w-3.5" />
+          </button>
         )}
       </CardContent>
     </Card>
@@ -265,7 +347,7 @@ function SelectedAgentCard({
       {/* Breadcrumb trail: show parent avatars with dashed connector */}
       {breadcrumb.length > 1 && (
         <div className="flex items-center gap-0">
-          {breadcrumb.slice(0, -1).map((parent, i) => (
+          {breadcrumb.slice(0, -1).map((parent) => (
             <div key={parent.id} className="flex items-center">
               <Avatar className="h-10 w-10 border-2 border-dashed border-muted-foreground/40">
                 <AvatarImage src={parent.avatar} />
@@ -309,8 +391,8 @@ function SelectedAgentCard({
                   <X className="h-4 w-4" />
                 </button>
               </div>
-              <Badge variant="outline" className={`text-xs ${getLevelBadgeClass(agent.level)}`}>
-                {t("orgTree.level")} {agent.level}
+              <Badge variant="outline" className={`text-[11px] font-semibold px-2 py-0.5 ${getLevelBadgeClass(agent.level)}`}>
+                L{agent.level}
               </Badge>
               <div className="mt-2 space-y-1 text-xs">
                 <div>
@@ -380,6 +462,14 @@ export default function OrganizationTree() {
           titleExtra={<span className="text-primary hover:underline cursor-pointer text-sm">{t("orgTree.viewInBeta")}</span>}
         />
 
+        {/* Hero Banner */}
+        <HeroBanner
+          name={headerName}
+          level={headerLevel}
+          flaCount={flaCount}
+          agents={displayedAgents}
+        />
+
         {/* Selected agent header card when drilled in */}
         {currentAgent && (
           <SelectedAgentCard
@@ -415,14 +505,6 @@ export default function OrganizationTree() {
               className="ps-9 w-[350px]"
             />
           </div>
-        </div>
-
-        {/* Current level header */}
-        <div className="mb-6">
-          <p className="text-lg font-medium text-foreground mb-1">
-            {headerName} - {t("orgTree.level")} {headerLevel}
-          </p>
-          <p className="text-sm text-muted-foreground">{flaCount} {t("orgTree.flas")}</p>
         </div>
 
         {/* Agent grid */}
