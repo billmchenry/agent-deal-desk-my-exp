@@ -871,7 +871,7 @@ export default function Financials() {
                       </div>
                     </div>
 
-                    {/* Expanded PayNow Early Payouts */}
+                    {/* Expanded content */}
                     {isExpanded && (
                       <div className="border-t border-border">
                         <div className="p-4">
@@ -909,8 +909,21 @@ export default function Financials() {
                           ))}
                             </>
                           ) : (
-                            <p className="text-sm text-muted-foreground">No PayNow transactions this month.</p>
+                            <p className="text-sm text-muted-foreground mb-3">No PayNow transactions this month.</p>
                           )}
+
+                          {/* View Batch Details Button */}
+                          <div className="mt-4 pt-3 border-t border-border">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="gap-2"
+                              onClick={(e) => { e.stopPropagation(); setSelectedBatch(batch); setBatchSheetOpen(true); }}
+                            >
+                              <Info className="h-3.5 w-3.5" />
+                              View Batch Details
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     )}
