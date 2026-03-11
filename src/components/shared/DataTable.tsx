@@ -418,36 +418,108 @@ export function DataTable<T extends Record<string, any>>({
   return (
     <div>
       {toolbar}
-        <div className="border rounded-lg overflow-x-auto">
-          <table role="grid" className="w-full caption-bottom text-sm" style={{ minWidth: `${visibleCols.length * 130}px` }}>
-              <TableHeader>
-                <TableRow className="bg-muted/50" role="row">
-                  {visibleCols.map((col) => {
-                    const isSorted = sortKey === col.key;
-                    const ariaSort = isSorted
-                      ? sortDir === "asc" ? "ascending" : sortDir === "desc" ? "descending" : "none"
-                      : undefined;
-                    return (
-                      <TableHead
-                        key={getColumnId(col)}
-                        role="columnheader"
-                        aria-sort={ariaSort}
-                        className={cn(
-                          "font-semibold",
-                          (col.type === "number" || col.type === "currency") && "text-right",
-                          col.stickyRight && "sticky right-0 z-10 bg-muted/50 border-l border-border"
-...
-                          col.stickyRight && "sticky right-0 z-10 bg-background group-hover:bg-muted/50 border-l border-border"
-                        )}>
-                          {formatCell(col, row)}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </table>
-        </div>
+      <div className="border rounded-lg overflow-x-auto">
+        <table role="grid" className="w-full caption-bottom text-sm" style={{ minWidth: `${visibleCols.length * 130}px` }}>
+          <TableHeader>
+            <TableRow className="bg-muted/50" role="row">
+              {visibleCols.map((col) => {
+                const isSorted = sortKey === col.key;
+                const ariaSort = isSorted
+                  ? sortDir === "asc" ? "ascending" : sortDir === "desc" ? "descending" : "none"
+                  : undefined;
+                return (
+                  <TableHead
+                    key={getColumnId(col)}
+                    role="columnheader"
+                    aria-sort={ariaSort}
+                    className={cn(
+                      "font-semibold",
+                      (col.type === "number" || col.type === "currency") && "text-right",
+                      col.stickyRight && "sticky right-0 z-10 bg-muted/50 border-l border-border"
+                    )}
+                  >
+                    <div className={cn("flex items-center gap-1", (col.type === "number" || col.type === "currency") && "justify-end")}>
+                      {col.sortable ? (
+                        <button
+                          className="flex items-center gap-1 hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -ml-1"
+                          onClick={() => handleSort(col.key)}
+                          aria-label={`Sort by ${t(col.header)} ${isSorted && sortDir === "asc" ? "descending" : "ascending"}`}
+                        >
+                          {t(col.header)}
+                          {isSorted && sortDir === "asc" && <ChevronUp className="h-3.5 w-3.5" />}
+                          {isSorted && sortDir === "desc" && <ChevronDown className="h-3.5 w-3.5" />}
+                          {(!isSorted || !sortDir) && <ChevronsUpDown className="h-3.5 w-3.5 opacity-40" />}
+                        </button>
+                      ) : (
+                        <span>{t(col.header)}</span>
+                      )}
+                      {col.filterable && (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button
+                              className={cn(
+                                "p-1 rounded hover:bg-accent transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+                                (columnFilters[String(col.key)] || columnEnumFilters[String(col.key)]?.size) && "text-primary"
+                              )}
+                              aria-label={`Filter ${t(col.header)}`}
+                            >
+                              <Filter className="h-3 w-3" />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent align="start" className="w-auto p-0">
+                            {renderColumnFilter(col)}
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                    </div>
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {pageData.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={visibleCols.length} className="text-center py-8 text-muted-foreground">
+                  {t("txn.noResults")}
+                </TableCell>
+              </TableRow>
+            ) : (
+              pageData.map((row, i) => (
+                <TableRow
+                  key={i}
+                  role="row"
+                  tabIndex={onRowClick ? 0 : undefined}
+                  className={cn(
+                    onRowClick && "cursor-pointer group hover:bg-muted/50",
+                    "min-h-[44px] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                  )}
+                  onClick={() => onRowClick?.(row)}
+                  onKeyDown={(e) => {
+                    if (onRowClick && (e.key === "Enter" || e.key === " ")) {
+                      e.preventDefault();
+                      onRowClick(row);
+                    }
+                  }}
+                >
+                  {visibleCols.map((col) => (
+                    <TableCell
+                      key={`${getColumnId(col)}-${i}`}
+                      className={cn(
+                        col.type === "string" && "max-w-[200px] truncate",
+                        (col.type === "number" || col.type === "currency") && "text-right tabular-nums",
+                        col.stickyRight && "sticky right-0 z-10 bg-background group-hover:bg-muted/50 border-l border-border"
+                      )}
+                    >
+                      {formatCell(col, row)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </table>
+      </div>
       {pagination}
     </div>
   );
