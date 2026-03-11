@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 
 export function DiscAssessmentCard() {
   return (
-    <Card className="bg-gradient-to-r from-[hsl(265,60%,55%)]/10 to-[hsl(265,60%,55%)]/5 border-[hsl(265,60%,55%)]/20">
+    <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[hsl(265,60%,55%)]/20 text-[hsl(265,60%,55%)]">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
             <Target className="h-5 w-5" />
           </div>
           <div className="flex-1 min-w-0">
@@ -15,7 +15,7 @@ export function DiscAssessmentCard() {
             <p className="text-sm text-muted-foreground mb-3">
               Understand your communication style and improve client relationships.
             </p>
-            <Button size="sm" className="gap-2 bg-[hsl(265,60%,55%)] hover:bg-[hsl(265,60%,45%)] text-white rounded-full px-6">
+            <Button size="sm" className="gap-2 rounded-full px-6">
               Take Assessment
               <ArrowRight className="h-4 w-4" />
             </Button>
