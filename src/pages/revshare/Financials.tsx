@@ -931,74 +931,132 @@ export default function Financials() {
           <SheetHeader>
             <SheetTitle className="text-section-title">{t("fin.paymentDetails")}</SheetTitle>
           </SheetHeader>
-          {selectedPayNow && (
-            <div className="mt-6 space-y-5">
-              {/* Initial Revenue Share */}
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Initiated {formatDate(selectedPayNow.txn.date)}
-                  </p>
+          {selectedPayNow && (() => {
+            const deals = selectedPayNow.txn.deals ?? generateDeals(selectedPayNow.txn.id, selectedPayNow.txn.dealCount, selectedPayNow.txn.finalAmount);
+            return (
+              <div className="mt-6 space-y-5">
+                {/* Payment Details Card */}
+                <Card className="p-4 space-y-4">
+                  {/* Initial Revenue Share */}
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Initiated {formatDate(selectedPayNow.txn.date)}
+                      </p>
+                    </div>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
+                      {formatCurrency(selectedPayNow.txn.initialAmount)} USD
+                    </p>
+                  </div>
+
+                  {/* Adjustment Amount */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Adjustment Amount</p>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
+                      {formatCurrency(Math.abs(selectedPayNow.txn.serviceFee))} USD
+                    </p>
+                  </div>
+
+                  <div className="border-t border-border" />
+
+                  {/* Final Revenue Share */}
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{t("fin.finalRevShare")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Batch ID {selectedPayNow.batchId}
+                      </p>
+                    </div>
+                    <p className="text-sm font-bold font-secondary tabular-nums text-primary">
+                      {formatCurrency(selectedPayNow.txn.finalAmount)} USD
+                    </p>
+                  </div>
+                </Card>
+
+                {/* Results count + Download */}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{deals.length} Results</span>
+                  <Button variant="outline" size="sm" className="gap-2 text-xs">
+                    <Download className="h-3.5 w-3.5" />
+                    Download
+                  </Button>
                 </div>
-                <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
-                  {formatCurrency(selectedPayNow.txn.initialAmount)}
+
+                {/* Deal list */}
+                <div className="divide-y divide-border">
+                  {deals.map((deal) => (
+                    <div
+                      key={deal.id}
+                      className="flex items-center justify-between py-3 cursor-pointer hover:bg-accent/50 -mx-2 px-2 rounded-lg transition-colors"
+                      onClick={() => { setSelectedDeal(deal); setDealSheetOpen(true); }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedDeal(deal); setDealSheetOpen(true); } }}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-foreground">{deal.agentName}</p>
+                        <p className="text-xs text-muted-foreground truncate">{deal.address}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 ml-3">
+                        <span className="text-sm font-medium font-secondary tabular-nums text-foreground">
+                          {formatCurrency(deal.amount)} USD
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+        </SheetContent>
+      </Sheet>
+
+      {/* Deal Transaction Details Sheet */}
+      <Sheet open={dealSheetOpen} onOpenChange={setDealSheetOpen}>
+        <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+          <SheetHeader className="pb-2">
+            <SheetTitle className="text-base sr-only">{t("fin.revShareDetails")}</SheetTitle>
+          </SheetHeader>
+          {selectedDeal && (
+            <>
+              <div className="flex items-center justify-between py-3 border-b border-border mb-4">
+                <p className="text-sm font-medium text-foreground text-center flex-1">
+                  {selectedDeal.agentName}
                 </p>
               </div>
 
-              {/* Adjustment Amount (Service Fee) */}
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-muted-foreground">Adjustment Amount</p>
-                <p className="text-sm font-semibold font-secondary tabular-nums text-destructive">
-                  {formatCurrency(selectedPayNow.txn.serviceFee)}
-                </p>
-              </div>
-
-              <div className="border-t border-border" />
-
-              {/* Final Revenue Share */}
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{t("fin.finalRevShare")}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Batch ID: {selectedPayNow.batchId}
-                  </p>
+              <div className="space-y-4">
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.level")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{selectedDeal.level}</span>
                 </div>
-                <p className="text-lg font-bold font-secondary tabular-nums text-primary">
-                  {formatCurrency(selectedPayNow.txn.finalAmount)}
-                </p>
-              </div>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.transactionId")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{selectedDeal.transactionNumber}</span>
+                </div>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.address")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{selectedDeal.address}</span>
+                </div>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.closedDate")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{selectedDeal.closedDate}</span>
+                </div>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.salePrice")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{formatCurrency(selectedDeal.salePrice)} {selectedDeal.currency}</span>
+                </div>
 
-              <div className="border-t border-border" />
+                <Separator />
 
-              {/* Transaction Details */}
-              <div>
-                <p className="text-sm font-semibold text-foreground mb-3">Transaction Details</p>
-                <div className="grid grid-cols-2 gap-3">
-                  <Card className="p-3">
-                    <p className="text-xs text-muted-foreground">Deal Count</p>
-                    <p className="text-lg font-bold font-secondary tabular-nums text-foreground">{selectedPayNow.txn.dealCount}</p>
-                  </Card>
-                  <Card className="p-3">
-                    <p className="text-xs text-muted-foreground">Member Count</p>
-                    <p className="text-lg font-bold font-secondary tabular-nums text-foreground">2</p>
-                  </Card>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.revShareLabel")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{formatCurrency(selectedDeal.finalRevShare)} {selectedDeal.currency}</span>
                 </div>
               </div>
-
-              <div className="border-t border-border" />
-
-              {/* PayNow Early Payout info */}
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <Info className="h-4 w-4 text-primary" />
-                  <p className="text-sm font-semibold text-primary">PayNow Early Payout</p>
-                </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  This transaction was paid out early using PayNow with a service fee applied.
-                </p>
-              </div>
-            </div>
+            </>
           )}
         </SheetContent>
       </Sheet>
