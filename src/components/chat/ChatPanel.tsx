@@ -375,7 +375,7 @@ function ChatContent({
                 variant="ghost" 
                 size="icon" 
                 onClick={onToggleExpand} 
-                className="h-8 w-8 shrink-0"
+                className="h-8 w-8 shrink-0 text-white/70 hover:text-white hover:bg-white/10"
                 aria-label={isExpanded ? t("chat.exitFullScreen") : t("chat.fullScreen")}
               >
                 {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
@@ -386,7 +386,7 @@ function ChatContent({
                 variant="ghost" 
                 size="icon" 
                 onClick={() => setShowHistory(true)} 
-                className="h-8 w-8 shrink-0"
+                className="h-8 w-8 shrink-0 text-white/70 hover:text-white hover:bg-white/10"
                 aria-label={t("chat.history")}
               >
                 <History className="h-4 w-4" />
@@ -397,7 +397,7 @@ function ChatContent({
                 variant="ghost" 
                 size="icon" 
                 onClick={onClose} 
-                className="h-8 w-8 shrink-0"
+                className="h-8 w-8 shrink-0 text-white/70 hover:text-white hover:bg-white/10"
                 aria-label={t("chat.closeChatPanel")}
               >
                 <X className="h-4 w-4" />
