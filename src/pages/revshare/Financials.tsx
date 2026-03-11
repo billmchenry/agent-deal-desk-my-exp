@@ -786,21 +786,21 @@ export default function Financials() {
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.initialRevenue")}</p>
-                          <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(batch.initialRevenue)}</p>
+                          <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(batch.initialRevenue)} USD</p>
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
-                          <p className="text-sm font-medium font-secondary text-destructive">
-                            - {formatCurrency(batch.payNowDeduction)}
+                          <p className={cn("text-sm font-medium font-secondary", batch.payNowDeduction > 0 ? "text-destructive" : "text-foreground")}>
+                            {batch.payNowDeduction > 0 ? "- " : ""}{formatCurrency(batch.payNowDeduction)} USD
                           </p>
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.adjustmentAmount")}</p>
-                          <p className="text-sm font-medium font-secondary text-exp-green">{formatCurrency(batch.adjustmentAmount)}</p>
+                          <p className="text-sm font-medium font-secondary text-exp-green">{formatCurrency(batch.adjustmentAmount)} USD</p>
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.finalPayout")}</p>
-                          <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)}</p>
+                          <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)} USD</p>
                         </div>
                       </div>
                     </div>
@@ -828,9 +828,9 @@ export default function Financials() {
                               className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 px-3 py-3 border-b border-border/50 last:border-0 bg-accent/30 hover:bg-accent/50 transition-colors items-center"
                             >
                               <div className="text-sm text-foreground">{formatDate(pn.date)}</div>
-                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.initialAmount)}</div>
-                              <div className="text-sm font-medium font-secondary text-destructive text-right">{formatCurrency(pn.serviceFee)}</div>
-                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.finalAmount)}</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.initialAmount)} USD</div>
+                              <div className="text-sm font-medium font-secondary text-destructive text-right">{formatCurrency(pn.serviceFee)} USD</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.finalAmount)} USD</div>
                               <div className="flex items-center justify-between md:justify-end gap-2">
                                 <span className="text-sm text-foreground">{pn.dealCount} deals</span>
                                 <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
