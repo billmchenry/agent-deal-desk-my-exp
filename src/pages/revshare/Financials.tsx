@@ -363,10 +363,38 @@ export default function Financials() {
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodicRow | null>(null);
   const [expandedBatchId, setExpandedBatchId] = useState<string | null>(null);
 
-  // Periodic summary stats
-  const totalRevenue = monthlyBatches.reduce((sum, b) => sum + b.finalPayout, 0);
-  const totalTransactions = monthlyBatches.reduce((sum, b) => sum + b.totalDeals, 0);
-  const totalPayNow = monthlyBatches.reduce((sum, b) => sum + b.payNowDeduction, 0);
+  // Periodic date range filter
+  const periodicPresets = [
+    { labelKey: "filter.ytd", getRange: () => ({ from: startOfYear(new Date()), to: new Date() }) as DateRange },
+    { labelKey: "filter.lastYear", getRange: () => ({ from: startOfYear(subYears(new Date(), 1)), to: new Date(subYears(new Date(), 1).getFullYear(), 11, 31) }) as DateRange },
+    { labelKey: "filter.last6Months", getRange: () => ({ from: subMonths(new Date(), 6), to: new Date() }) as DateRange },
+  ];
+  const [periodicDateRange, setPeriodicDateRange] = useState<DateRange>({
+    from: startOfYear(new Date()),
+    to: new Date(),
+  });
+
+  // Helper to get a Date from batch month/year
+  const getBatchDate = (batch: MonthlyBatchRow) => {
+    const monthIndex = new Date(Date.parse(batch.month + " 1, " + batch.year)).getMonth();
+    return new Date(batch.year, monthIndex, 1);
+  };
+
+  // Filtered batches based on date range
+  const filteredBatches = useMemo(() => {
+    if (!periodicDateRange.from && !periodicDateRange.to) return monthlyBatches;
+    return monthlyBatches.filter((batch) => {
+      const batchDate = getBatchDate(batch);
+      if (periodicDateRange.from && batchDate < new Date(periodicDateRange.from.getFullYear(), periodicDateRange.from.getMonth(), 1)) return false;
+      if (periodicDateRange.to && batchDate > periodicDateRange.to) return false;
+      return true;
+    });
+  }, [periodicDateRange]);
+
+  // Periodic summary stats (use filtered batches)
+  const totalRevenue = filteredBatches.reduce((sum, b) => sum + b.finalPayout, 0);
+  const totalTransactions = filteredBatches.reduce((sum, b) => sum + b.totalDeals, 0);
+  const totalPayNow = filteredBatches.reduce((sum, b) => sum + b.payNowDeduction, 0);
 
   const handleAgentClick = (row: AgentRevShareRow) => {
     setSelectedAgent(getAgentDetail(row));
