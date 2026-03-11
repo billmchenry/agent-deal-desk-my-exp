@@ -77,6 +77,10 @@ export interface DataTableProps<T> {
 
 type SortDir = "asc" | "desc" | null;
 
+function getColumnId<T>(col: ColumnDef<T>): string {
+  return col.id ?? String(col.key);
+}
+
 // ---------- Helpers ----------
 
 function getStatusBadge(status: string) {
