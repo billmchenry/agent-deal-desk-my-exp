@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
 import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
+import { DateRangeFilter, type DateRange } from "@/components/filters/DateRangeFilter";
+import { startOfYear, subMonths, subYears } from "date-fns";
 import { cn } from "@/lib/utils";
 
 // ── Types ──
