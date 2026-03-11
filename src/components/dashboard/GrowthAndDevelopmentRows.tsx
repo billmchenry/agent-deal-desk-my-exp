@@ -177,7 +177,7 @@ export function GrowthAndDevelopmentRows() {
       title: "DISC Assessment",
       description: "Understand your communication style and improve client relationships.",
       buttonText: "Take Assessment",
-      theme: "blue",
+      theme: "slate",
     },
     {
       id: "nps",
@@ -185,7 +185,7 @@ export function GrowthAndDevelopmentRows() {
       title: "Your Feedback",
       description: "Fill out the agent eXp NPS survey today!",
       buttonText: "Take Survey",
-      theme: "primary",
+      theme: "green",
       onClick: handleOpen,
     },
   ];
