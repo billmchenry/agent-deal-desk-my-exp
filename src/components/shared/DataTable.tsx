@@ -419,9 +419,7 @@ export function DataTable<T extends Record<string, any>>({
     <div>
       {toolbar}
         <div className="border rounded-lg overflow-x-auto">
-          <div>
-          <div style={{ minWidth: `${visibleCols.length * 130}px` }}>
-            <Table role="grid">
+          <table role="grid" className="w-full caption-bottom text-sm" style={{ minWidth: `${visibleCols.length * 130}px` }}>
               <TableHeader>
                 <TableRow className="bg-muted/50" role="row">
                   {visibleCols.map((col) => {
