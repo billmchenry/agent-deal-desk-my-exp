@@ -435,7 +435,7 @@ export function DataTable<T extends Record<string, any>>({
                         className={cn(
                           "font-semibold",
                           (col.type === "number" || col.type === "currency") && "text-right",
-                          col.stickyRight && "sticky right-0 z-10 border-l border-border"
+                          col.stickyRight && "sticky right-0 z-10 bg-muted/50 border-l border-border"
                         )}
                       >
                         <div className={cn("flex items-center gap-1", (col.type === "number" || col.type === "currency") && "justify-end")}>
@@ -491,7 +491,7 @@ export function DataTable<T extends Record<string, any>>({
                       role="row"
                       tabIndex={onRowClick ? 0 : undefined}
                       className={cn(
-                        onRowClick && "cursor-pointer hover:bg-muted/50",
+                        onRowClick && "cursor-pointer group hover:bg-muted/50",
                         "min-h-[44px] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
                       )}
                       onClick={() => onRowClick?.(row)}
@@ -506,7 +506,7 @@ export function DataTable<T extends Record<string, any>>({
                         <TableCell key={`${getColumnId(col)}-${i}`} className={cn(
                           col.type === "string" && "max-w-[200px] truncate",
                           (col.type === "number" || col.type === "currency") && "text-right tabular-nums",
-                          col.stickyRight && "sticky right-0 z-10 border-l border-border"
+                          col.stickyRight && "sticky right-0 z-10 bg-background group-hover:bg-muted/50 border-l border-border"
                         )}>
                           {formatCell(col, row)}
                         </TableCell>
