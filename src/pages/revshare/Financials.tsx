@@ -955,11 +955,11 @@ export default function Financials() {
                     </p>
                   </div>
 
-                  {/* Adjustment Amount */}
+                  {/* Service Fee */}
                   <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Adjustment Amount</p>
-                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
-                      {formatCurrency(Math.abs(selectedPayNow.txn.serviceFee))} USD
+                    <p className="text-sm text-muted-foreground">{t("fin.serviceFee")}</p>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-destructive">
+                      {formatCurrency(selectedPayNow.txn.serviceFee)} USD
                     </p>
                   </div>
 
