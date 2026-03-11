@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import { CalendarDays } from "lucide-react";
-import { startOfYear, startOfMonth, subWeeks, subYears } from "date-fns";
+import { CalendarDays, RotateCcw } from "lucide-react";
+import { startOfYear, startOfMonth, subWeeks, subYears, format } from "date-fns";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
@@ -57,7 +57,8 @@ export function DateRangeFilter({
 }: DateRangeFilterProps) {
   const [open, setOpen] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
-  const [selectingField, setSelectingField] = useState<"from" | "to">("from");
+  const [customFrom, setCustomFrom] = useState<Date | undefined>(value.from);
+  const [customTo, setCustomTo] = useState<Date | undefined>(value.to);
   const { formatDate } = useFormatters();
   const { t } = useTranslation();
 
@@ -83,24 +84,23 @@ export function DateRangeFilter({
   const handlePreset = (preset: Preset) => {
     onChange(preset.getRange());
     setShowCustom(false);
+    setOpen(false);
   };
 
-  const handleDateSelect = (date: Date | undefined) => {
-    if (!date) return;
-    if (selectingField === "from") {
-      // If new from is after current to, clear to
-      const newTo = value.to && date > value.to ? undefined : value.to;
-      onChange({ from: date, to: newTo });
-      setSelectingField("to");
-    } else {
-      // If new to is before current from, set it as from instead
-      if (value.from && date < value.from) {
-        onChange({ from: date, to: value.from });
-      } else {
-        onChange({ from: value.from, to: date });
-      }
-      setSelectingField("from");
+  const handleApply = () => {
+    if (customFrom && customTo) {
+      onChange({ from: customFrom, to: customTo });
+      setOpen(false);
     }
+  };
+
+  const handleReset = () => {
+    const defaultRange = activePresets[0]?.getRange() ?? { from: startOfYear(new Date()), to: new Date() };
+    onChange(defaultRange);
+    setCustomFrom(undefined);
+    setCustomTo(undefined);
+    setShowCustom(false);
+    setOpen(false);
   };
 
   return (
@@ -123,7 +123,7 @@ export function DateRangeFilter({
           {activePresets.map((p) => (
             <Button
               key={p.labelKey}
-              variant={activePresetKey === p.labelKey ? "default" : "outline"}
+              variant={!showCustom && activePresetKey === p.labelKey ? "default" : "outline"}
               size="sm"
               className="text-xs h-7"
               onClick={() => handlePreset(p)}
@@ -141,48 +141,70 @@ export function DateRangeFilter({
           </Button>
         </div>
 
-        {/* Calendar for custom range */}
+        {/* Custom date pickers — same pattern as RevShare Dashboard */}
         {(showCustom || activePresetKey === "filter.custom") && (
-          <div>
-            <div className="flex gap-4 mb-3 text-xs">
-              <button
-                type="button"
-                onClick={() => setSelectingField("from")}
-                className={cn(
-                  "px-3 py-1.5 rounded-md border transition-colors",
-                  selectingField === "from"
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground hover:border-primary/50"
-                )}
-              >
-                {t("filter.from")}: <span className="text-foreground font-medium">{value.from ? formatDate(value.from) : "—"}</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectingField("to")}
-                className={cn(
-                  "px-3 py-1.5 rounded-md border transition-colors",
-                  selectingField === "to"
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground hover:border-primary/50"
-                )}
-              >
-                {t("filter.to")}: <span className="text-foreground font-medium">{value.to ? formatDate(value.to) : "—"}</span>
-              </button>
+          <div className="space-y-3 mb-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">{t("filter.from")}</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className={cn("w-full justify-start text-left text-xs h-8", !customFrom && "text-muted-foreground")}>
+                      <CalendarDays className="h-3.5 w-3.5 mr-1.5" />
+                      {customFrom ? format(customFrom, "MMM d, yyyy") : "Select"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={customFrom}
+                      onSelect={setCustomFrom}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-muted-foreground mb-1 block">{t("filter.to")}</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className={cn("w-full justify-start text-left text-xs h-8", !customTo && "text-muted-foreground")}>
+                      <CalendarDays className="h-3.5 w-3.5 mr-1.5" />
+                      {customTo ? format(customTo, "MMM d, yyyy") : "Select"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={customTo}
+                      onSelect={setCustomTo}
+                      disabled={(date) => customFrom ? date < customFrom : false}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
-            <Calendar
-              mode="single"
-              captionLayout="dropdown-buttons"
-              fromYear={2015}
-              toYear={new Date().getFullYear() + 1}
-              selected={selectingField === "from" ? value.from : value.to}
-              onSelect={handleDateSelect}
-              numberOfMonths={2}
-              className={cn("p-3 pointer-events-auto")}
-            />
-            <p className="text-[11px] text-muted-foreground mt-2">
-              Selecting: <span className="font-medium text-foreground">{selectingField === "from" ? t("filter.from") : t("filter.to")}</span> date. Use dropdowns to navigate months.
-            </p>
+          </div>
+        )}
+
+        {/* Apply / Reset buttons */}
+        {(showCustom || activePresetKey === "filter.custom") && (
+          <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+            <Button variant="ghost" size="sm" className="text-xs h-7 gap-1" onClick={handleReset}>
+              <RotateCcw className="h-3 w-3" />
+              Reset
+            </Button>
+            <Button
+              size="sm"
+              className="text-xs h-7"
+              onClick={handleApply}
+              disabled={!customFrom || !customTo}
+            >
+              Apply
+            </Button>
           </div>
         )}
       </PopoverContent>
