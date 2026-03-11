@@ -336,6 +336,62 @@ const monthlyBatches: MonthlyBatchRow[] = [
       { id: "pn-2025-10-2", date: "2025-10-21", initialAmount: 534.68, serviceFee: -16.04, finalAmount: 518.64, dealCount: 3 },
     ],
   },
+  {
+    id: "batch-2025-09", month: "September", year: 2025, totalDeals: 12, memberCount: 3,
+    initialRevenue: 3890.20, payNowDeduction: 778.04, adjustmentAmount: 38.90, finalPayout: 3151.06,
+    payNowTransactions: [],
+  },
+  {
+    id: "batch-2025-08", month: "August", year: 2025, totalDeals: 15, memberCount: 3,
+    initialRevenue: 4720.55, payNowDeduction: 944.11, adjustmentAmount: 47.21, finalPayout: 3823.65,
+    payNowTransactions: [
+      { id: "pn-2025-08-1", date: "2025-08-14", initialAmount: 450.30, serviceFee: -13.51, finalAmount: 436.79, dealCount: 3 },
+    ],
+  },
+  {
+    id: "batch-2025-07", month: "July", year: 2025, totalDeals: 18, memberCount: 3,
+    initialRevenue: 5640.80, payNowDeduction: 1128.16, adjustmentAmount: 56.41, finalPayout: 4569.05,
+    payNowTransactions: [
+      { id: "pn-2025-07-1", date: "2025-07-10", initialAmount: 580.00, serviceFee: -17.40, finalAmount: 562.60, dealCount: 4 },
+      { id: "pn-2025-07-2", date: "2025-07-25", initialAmount: 548.16, serviceFee: -16.44, finalAmount: 531.72, dealCount: 3 },
+    ],
+  },
+  {
+    id: "batch-2025-06", month: "June", year: 2025, totalDeals: 20, memberCount: 3,
+    initialRevenue: 6210.40, payNowDeduction: 1242.08, adjustmentAmount: 62.10, finalPayout: 5030.42,
+    payNowTransactions: [
+      { id: "pn-2025-06-1", date: "2025-06-08", initialAmount: 620.00, serviceFee: -18.60, finalAmount: 601.40, dealCount: 5 },
+    ],
+  },
+  {
+    id: "batch-2025-05", month: "May", year: 2025, totalDeals: 17, memberCount: 3,
+    initialRevenue: 5380.30, payNowDeduction: 1076.06, adjustmentAmount: 53.80, finalPayout: 4358.04,
+    payNowTransactions: [],
+  },
+  {
+    id: "batch-2025-04", month: "April", year: 2025, totalDeals: 14, memberCount: 3,
+    initialRevenue: 4150.75, payNowDeduction: 830.15, adjustmentAmount: 41.51, finalPayout: 3362.11,
+    payNowTransactions: [
+      { id: "pn-2025-04-1", date: "2025-04-18", initialAmount: 410.15, serviceFee: -12.30, finalAmount: 397.85, dealCount: 2 },
+    ],
+  },
+  {
+    id: "batch-2025-03", month: "March", year: 2025, totalDeals: 13, memberCount: 3,
+    initialRevenue: 3920.60, payNowDeduction: 784.12, adjustmentAmount: 39.21, finalPayout: 3175.69,
+    payNowTransactions: [],
+  },
+  {
+    id: "batch-2025-02", month: "February", year: 2025, totalDeals: 10, memberCount: 3,
+    initialRevenue: 3140.45, payNowDeduction: 628.09, adjustmentAmount: 31.40, finalPayout: 2543.76,
+    payNowTransactions: [
+      { id: "pn-2025-02-1", date: "2025-02-12", initialAmount: 328.09, serviceFee: -9.84, finalAmount: 318.25, dealCount: 2 },
+    ],
+  },
+  {
+    id: "batch-2025-01", month: "January", year: 2025, totalDeals: 11, memberCount: 3,
+    initialRevenue: 3560.90, payNowDeduction: 712.18, adjustmentAmount: 35.61, finalPayout: 2884.33,
+    payNowTransactions: [],
+  },
 ];
 
 const paymentDetails = {
