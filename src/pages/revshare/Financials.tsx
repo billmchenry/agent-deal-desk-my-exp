@@ -7,7 +7,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, ChevronDown, ChevronUp, ChevronRight, Download } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp, ChevronRight, Download, Info } from "lucide-react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
@@ -422,6 +423,8 @@ export default function Financials() {
   const [txnSheetOpen, setTxnSheetOpen] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodicRow | null>(null);
   const [expandedBatchId, setExpandedBatchId] = useState<string | null>(null);
+  const [selectedPayNow, setSelectedPayNow] = useState<{ txn: PayNowTransaction; batchId: string } | null>(null);
+  const [payNowSheetOpen, setPayNowSheetOpen] = useState(false);
 
   // Periodic date range filter
   const periodicPresets = [
@@ -829,12 +832,16 @@ export default function Financials() {
                           {batch.payNowTransactions.map((pn) => (
                             <div
                               key={pn.id}
-                              className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 px-3 py-3 border-b border-border/50 last:border-0 bg-accent/30 hover:bg-accent/50 transition-colors items-center"
+                              className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 px-3 py-3 border-b border-border/50 last:border-0 bg-accent/30 hover:bg-accent/50 transition-colors items-center cursor-pointer"
+                              onClick={() => { setSelectedPayNow({ txn: pn, batchId: batch.id }); setPayNowSheetOpen(true); }}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedPayNow({ txn: pn, batchId: batch.id }); setPayNowSheetOpen(true); } }}
                             >
                               <div className="text-sm text-foreground">{formatDate(pn.date)}</div>
-                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.initialAmount)} USD</div>
-                              <div className="text-sm font-medium font-secondary text-destructive text-right">{formatCurrency(pn.serviceFee)} USD</div>
-                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.finalAmount)} USD</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.initialAmount)}</div>
+                              <div className="text-sm font-medium font-secondary text-destructive text-right">{formatCurrency(pn.serviceFee)}</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.finalAmount)}</div>
                               <div className="flex items-center justify-between md:justify-end gap-2">
                                 <span className="text-sm text-foreground">{pn.dealCount} deals</span>
                                 <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
@@ -861,6 +868,84 @@ export default function Financials() {
         open={txnSheetOpen}
         onOpenChange={setTxnSheetOpen}
       />
+
+      {/* PayNow Payment Details Sheet */}
+      <Sheet open={payNowSheetOpen} onOpenChange={setPayNowSheetOpen}>
+        <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle className="text-section-title">{t("fin.paymentDetails")}</SheetTitle>
+          </SheetHeader>
+          {selectedPayNow && (
+            <div className="mt-6 space-y-5">
+              {/* Initial Revenue Share */}
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Initiated {formatDate(selectedPayNow.txn.date)}
+                  </p>
+                </div>
+                <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
+                  {formatCurrency(selectedPayNow.txn.initialAmount)}
+                </p>
+              </div>
+
+              {/* Adjustment Amount (Service Fee) */}
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">Adjustment Amount</p>
+                <p className="text-sm font-semibold font-secondary tabular-nums text-destructive">
+                  {formatCurrency(selectedPayNow.txn.serviceFee)}
+                </p>
+              </div>
+
+              <div className="border-t border-border" />
+
+              {/* Final Revenue Share */}
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{t("fin.finalRevShare")}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Batch ID: {selectedPayNow.batchId}
+                  </p>
+                </div>
+                <p className="text-lg font-bold font-secondary tabular-nums text-primary">
+                  {formatCurrency(selectedPayNow.txn.finalAmount)}
+                </p>
+              </div>
+
+              <div className="border-t border-border" />
+
+              {/* Transaction Details */}
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-3">Transaction Details</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <Card className="p-3">
+                    <p className="text-xs text-muted-foreground">Deal Count</p>
+                    <p className="text-lg font-bold font-secondary tabular-nums text-foreground">{selectedPayNow.txn.dealCount}</p>
+                  </Card>
+                  <Card className="p-3">
+                    <p className="text-xs text-muted-foreground">Member Count</p>
+                    <p className="text-lg font-bold font-secondary tabular-nums text-foreground">2</p>
+                  </Card>
+                </div>
+              </div>
+
+              <div className="border-t border-border" />
+
+              {/* PayNow Early Payout info */}
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Info className="h-4 w-4 text-primary" />
+                  <p className="text-sm font-semibold text-primary">PayNow Early Payout</p>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  This transaction was paid out early using PayNow with a service fee applied.
+                </p>
+              </div>
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
     </DashboardLayout>
   );
 }
