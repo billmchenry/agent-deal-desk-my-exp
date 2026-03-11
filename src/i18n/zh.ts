@@ -101,6 +101,7 @@ export const zh: Record<string, string> = {
   "txn.gci": "GCI",
   "txn.address": "地址",
   "txn.amtTowardCap": "上限金额",
+  "txn.viewDetails": "查看详情",
   "txn.transactionDetails": "交易详情",
   "txn.propertyAddress": "物业地址",
   "txn.scheduledCloseDate": "预定关闭日期",

@@ -110,6 +110,7 @@ export const en = {
   "txn.gci": "GCI",
   "txn.address": "Address",
   "txn.amtTowardCap": "Amt Toward Cap",
+  "txn.viewDetails": "View Details",
   "txn.transactionDetails": "Transaction Details",
   "txn.propertyAddress": "Property Address",
   "txn.scheduledCloseDate": "Scheduled Close Date",

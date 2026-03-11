@@ -100,6 +100,7 @@ export const ja: Record<string, string> = {
   "txn.gci": "GCI",
   "txn.address": "住所",
   "txn.amtTowardCap": "キャップへの金額",
+  "txn.viewDetails": "詳細を見る",
   "txn.transactionDetails": "取引詳細",
   "txn.propertyAddress": "物件住所",
   "txn.scheduledCloseDate": "予定完了日",
