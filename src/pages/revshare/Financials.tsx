@@ -375,6 +375,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     initialRevenue: 4150.75, payNowDeduction: 830.15, adjustmentAmount: 41.51, finalPayout: 3362.11,
     payNowTransactions: [
       { id: "pn-2025-04-1", date: "2025-04-18", initialAmount: 410.15, serviceFee: -12.30, finalAmount: 397.85, dealCount: 2 },
+      { id: "pn-2025-04-2", date: "2025-04-28", initialAmount: 420.00, serviceFee: -12.60, finalAmount: 407.40, dealCount: 2 },
     ],
   },
   {
