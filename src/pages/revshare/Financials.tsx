@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowLeft, ChevronDown, ChevronUp, ChevronRight, Download, Info } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
 import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
@@ -41,6 +42,19 @@ interface PeriodicRow {
   currency: string;
 }
 
+interface PayNowDeal {
+  id: string;
+  agentName: string;
+  address: string;
+  amount: number;
+  currency: string;
+  transactionNumber: string;
+  closedDate: string;
+  salePrice: number;
+  level: number;
+  finalRevShare: number;
+}
+
 interface PayNowTransaction {
   id: string;
   date: string;
@@ -48,6 +62,7 @@ interface PayNowTransaction {
   serviceFee: number;
   finalAmount: number;
   dealCount: number;
+  deals?: PayNowDeal[];
 }
 
 interface MonthlyBatchRow {
@@ -285,6 +300,46 @@ const periodicData: PeriodicRow[] = [
   { date: "03/31/2025", initialRevShare: 44878.87, adjustment: 10562.97, finalRevShare: 55441.84, transactionCount6Mo: 399, memberCount: 246, monthly: "Yes", batchNumber: 1606, currency: "USD" },
 ];
 
+const agentNames = [
+  "Denise Ahee", "Sarah A Lund", "Michael Torres", "Jessica Chen", "Robert Williams",
+  "Amanda Foster", "David Kim", "Lisa Martinez", "James Cooper", "Emily Watson",
+];
+const addresses = [
+  "304 3rd Ave, Brooklyn, NY 11215, US",
+  "2068, 2069, 2072, 2073 Imperial Ln, Green Bay, WI 54...",
+  "1520 Oak Street, Sacramento, CA 95814, US",
+  "892 Pine Road, Folsom, CA 95630, US",
+  "4401 Maple Drive, Lincoln, CA 95648, US",
+  "776 Elm Court, Roseville, CA 95678, US",
+  "2310 Cedar Blvd, Citrus Heights, CA 95621, US",
+  "511 Birch Lane, Elk Grove, CA 95624, US",
+  "1893 Willow Way, Rocklin, CA 95765, US",
+  "3045 Spruce Ave, Auburn, CA 95603, US",
+];
+
+function generateDeals(pnId: string, count: number, totalAmount: number): PayNowDeal[] {
+  const deals: PayNowDeal[] = [];
+  let remaining = totalAmount;
+  for (let i = 0; i < count; i++) {
+    const isLast = i === count - 1;
+    const amt = isLast ? remaining : Math.round((totalAmount / count + (Math.random() - 0.5) * 100) * 100) / 100;
+    remaining -= amt;
+    deals.push({
+      id: `${pnId}-deal-${i + 1}`,
+      agentName: agentNames[i % agentNames.length],
+      address: addresses[i % addresses.length],
+      amount: Math.round(amt * 100) / 100,
+      currency: "USD",
+      transactionNumber: `TXN-${Math.floor(100000 + Math.random() * 900000)}`,
+      closedDate: "02/15/2026",
+      salePrice: Math.floor(200000 + Math.random() * 600000),
+      level: Math.random() > 0.5 ? 1 : 2,
+      finalRevShare: Math.round(amt * 100) / 100,
+    });
+  }
+  return deals;
+}
+
 // ── Monthly Batch Mock Data for Periodic Overview ──
 
 const monthlyBatches: MonthlyBatchRow[] = [
@@ -425,6 +480,8 @@ export default function Financials() {
   const [expandedBatchId, setExpandedBatchId] = useState<string | null>(null);
   const [selectedPayNow, setSelectedPayNow] = useState<{ txn: PayNowTransaction; batchId: string } | null>(null);
   const [payNowSheetOpen, setPayNowSheetOpen] = useState(false);
+  const [selectedDeal, setSelectedDeal] = useState<PayNowDeal | null>(null);
+  const [dealSheetOpen, setDealSheetOpen] = useState(false);
 
   // Periodic date range filter
   const periodicPresets = [
@@ -875,74 +932,132 @@ export default function Financials() {
           <SheetHeader>
             <SheetTitle className="text-section-title">{t("fin.paymentDetails")}</SheetTitle>
           </SheetHeader>
-          {selectedPayNow && (
-            <div className="mt-6 space-y-5">
-              {/* Initial Revenue Share */}
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Initiated {formatDate(selectedPayNow.txn.date)}
-                  </p>
+          {selectedPayNow && (() => {
+            const deals = selectedPayNow.txn.deals ?? generateDeals(selectedPayNow.txn.id, selectedPayNow.txn.dealCount, selectedPayNow.txn.finalAmount);
+            return (
+              <div className="mt-6 space-y-5">
+                {/* Payment Details Card */}
+                <Card className="p-4 space-y-4">
+                  {/* Initial Revenue Share */}
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Initiated {formatDate(selectedPayNow.txn.date)}
+                      </p>
+                    </div>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
+                      {formatCurrency(selectedPayNow.txn.initialAmount)} USD
+                    </p>
+                  </div>
+
+                  {/* Adjustment Amount */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Adjustment Amount</p>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
+                      {formatCurrency(Math.abs(selectedPayNow.txn.serviceFee))} USD
+                    </p>
+                  </div>
+
+                  <div className="border-t border-border" />
+
+                  {/* Final Revenue Share */}
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{t("fin.finalRevShare")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Batch ID {selectedPayNow.batchId}
+                      </p>
+                    </div>
+                    <p className="text-sm font-bold font-secondary tabular-nums text-primary">
+                      {formatCurrency(selectedPayNow.txn.finalAmount)} USD
+                    </p>
+                  </div>
+                </Card>
+
+                {/* Results count + Download */}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{deals.length} Results</span>
+                  <Button variant="outline" size="sm" className="gap-2 text-xs">
+                    <Download className="h-3.5 w-3.5" />
+                    Download
+                  </Button>
                 </div>
-                <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
-                  {formatCurrency(selectedPayNow.txn.initialAmount)}
+
+                {/* Deal list */}
+                <div className="divide-y divide-border">
+                  {deals.map((deal) => (
+                    <div
+                      key={deal.id}
+                      className="flex items-center justify-between py-3 cursor-pointer hover:bg-accent/50 -mx-2 px-2 rounded-lg transition-colors"
+                      onClick={() => { setSelectedDeal(deal); setDealSheetOpen(true); }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedDeal(deal); setDealSheetOpen(true); } }}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-foreground">{deal.agentName}</p>
+                        <p className="text-xs text-muted-foreground truncate">{deal.address}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 ml-3">
+                        <span className="text-sm font-medium font-secondary tabular-nums text-foreground">
+                          {formatCurrency(deal.amount)} USD
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+        </SheetContent>
+      </Sheet>
+
+      {/* Deal Transaction Details Sheet */}
+      <Sheet open={dealSheetOpen} onOpenChange={setDealSheetOpen}>
+        <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+          <SheetHeader className="pb-2">
+            <SheetTitle className="text-base sr-only">{t("fin.revShareDetails")}</SheetTitle>
+          </SheetHeader>
+          {selectedDeal && (
+            <>
+              <div className="flex items-center justify-between py-3 border-b border-border mb-4">
+                <p className="text-sm font-medium text-foreground text-center flex-1">
+                  {selectedDeal.agentName}
                 </p>
               </div>
 
-              {/* Adjustment Amount (Service Fee) */}
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-muted-foreground">Adjustment Amount</p>
-                <p className="text-sm font-semibold font-secondary tabular-nums text-destructive">
-                  {formatCurrency(selectedPayNow.txn.serviceFee)}
-                </p>
-              </div>
-
-              <div className="border-t border-border" />
-
-              {/* Final Revenue Share */}
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{t("fin.finalRevShare")}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Batch ID: {selectedPayNow.batchId}
-                  </p>
+              <div className="space-y-4">
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.level")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{selectedDeal.level}</span>
                 </div>
-                <p className="text-lg font-bold font-secondary tabular-nums text-primary">
-                  {formatCurrency(selectedPayNow.txn.finalAmount)}
-                </p>
-              </div>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.transactionId")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{selectedDeal.transactionNumber}</span>
+                </div>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.address")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{selectedDeal.address}</span>
+                </div>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.closedDate")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{selectedDeal.closedDate}</span>
+                </div>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.salePrice")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{formatCurrency(selectedDeal.salePrice)} {selectedDeal.currency}</span>
+                </div>
 
-              <div className="border-t border-border" />
+                <Separator />
 
-              {/* Transaction Details */}
-              <div>
-                <p className="text-sm font-semibold text-foreground mb-3">Transaction Details</p>
-                <div className="grid grid-cols-2 gap-3">
-                  <Card className="p-3">
-                    <p className="text-xs text-muted-foreground">Deal Count</p>
-                    <p className="text-lg font-bold font-secondary tabular-nums text-foreground">{selectedPayNow.txn.dealCount}</p>
-                  </Card>
-                  <Card className="p-3">
-                    <p className="text-xs text-muted-foreground">Member Count</p>
-                    <p className="text-lg font-bold font-secondary tabular-nums text-foreground">2</p>
-                  </Card>
+                <div className="flex justify-between items-baseline gap-4">
+                  <span className="text-sm text-muted-foreground shrink-0">{t("fin.revShareLabel")}</span>
+                  <span className="text-sm font-medium text-foreground text-right">{formatCurrency(selectedDeal.finalRevShare)} {selectedDeal.currency}</span>
                 </div>
               </div>
-
-              <div className="border-t border-border" />
-
-              {/* PayNow Early Payout info */}
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <Info className="h-4 w-4 text-primary" />
-                  <p className="text-sm font-semibold text-primary">PayNow Early Payout</p>
-                </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  This transaction was paid out early using PayNow with a service fee applied.
-                </p>
-              </div>
-            </div>
+            </>
           )}
         </SheetContent>
       </Sheet>
