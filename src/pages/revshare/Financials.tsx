@@ -695,10 +695,6 @@ export default function Financials() {
                 </Button>
               </div>
             </div>
-                <Download className="h-4 w-4 mr-2" />
-                {t("fin.downloadReport")}
-              </Button>
-            </div>
 
             <div className="space-y-3">
               {filteredBatches.map((batch) => {
