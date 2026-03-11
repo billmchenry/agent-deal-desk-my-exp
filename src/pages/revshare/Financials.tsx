@@ -837,6 +837,10 @@ export default function Financials() {
                               </div>
                             </div>
                           ))}
+                            </>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">No PayNow transactions this month.</p>
+                          )}
                         </div>
                       </div>
                     )}
