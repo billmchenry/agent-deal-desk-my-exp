@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 
 export function DiscAssessmentCard() {
   return (
-    <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+    <Card className="bg-gradient-to-r from-exp-blue/10 to-exp-blue/5 border-exp-blue/20">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-exp-blue/20 text-exp-blue">
             <Target className="h-5 w-5" />
           </div>
           <div className="flex-1 min-w-0">
