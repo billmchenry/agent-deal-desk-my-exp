@@ -360,13 +360,13 @@ function ChatContent({
   // Chat main content
   const chatContent = (
     <div className="h-full flex flex-col min-h-0 relative">
-      <div className="px-3 sm:px-4 py-3 border-b shrink-0 bg-background relative z-10">
+      <div className="px-3 sm:px-4 py-3 border-b border-white/10 shrink-0 bg-[hsl(var(--exp-dark-navy))] text-white relative z-10">
         <div className={`flex items-center justify-between w-full ${isMobile ? "" : "pe-8"}`}>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary-foreground" />
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
-            <span className="font-semibold text-sm sm:text-base">Mira AI</span>
+            <span className="font-semibold text-sm sm:text-base text-white">Mira AI</span>
           </div>
           
           <div className="flex items-center gap-1 shrink-0">
