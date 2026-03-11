@@ -55,6 +55,8 @@ export interface ColumnDef<T> {
   sortable?: boolean;
   filterable?: boolean;
   defaultVisible?: boolean;
+  /** Freeze this column to the right edge of the table */
+  stickyRight?: boolean;
   /** For currency columns: key in data row that holds currency code (e.g. "USD") */
   currencyCodeKey?: keyof T;
   render?: (value: T[keyof T], row: T) => ReactNode;
@@ -423,7 +425,11 @@ export function DataTable<T extends Record<string, any>>({
                         key={String(col.key)}
                         role="columnheader"
                         aria-sort={ariaSort}
-                        className={cn("font-semibold", (col.type === "number" || col.type === "currency") && "text-right")}
+                        className={cn(
+                          "font-semibold",
+                          (col.type === "number" || col.type === "currency") && "text-right",
+                          col.stickyRight && "sticky right-0 z-10 bg-muted/95 backdrop-blur-sm shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]"
+                        )}
                       >
                         <div className={cn("flex items-center gap-1", (col.type === "number" || col.type === "currency") && "justify-end")}>
                           {col.sortable ? (
@@ -492,7 +498,8 @@ export function DataTable<T extends Record<string, any>>({
                       {visibleCols.map((col) => (
                         <TableCell key={String(col.key)} className={cn(
                           col.type === "string" && "max-w-[200px] truncate",
-                          (col.type === "number" || col.type === "currency") && "text-right tabular-nums"
+                          (col.type === "number" || col.type === "currency") && "text-right tabular-nums",
+                          col.stickyRight && "sticky right-0 z-10 bg-card/95 backdrop-blur-sm shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]"
                         )}>
                           {formatCell(col, row)}
                         </TableCell>

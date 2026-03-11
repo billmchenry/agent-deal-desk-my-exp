@@ -103,6 +103,7 @@ export default function Transactions() {
       header: "txn.viewDetails",
       type: "string",
       sortable: false,
+      stickyRight: true,
       render: (_val, row) => (
         <button
           onClick={(e) => { e.stopPropagation(); handleRowClick(row); }}
