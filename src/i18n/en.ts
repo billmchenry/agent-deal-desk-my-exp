@@ -463,7 +463,7 @@ export const en = {
   "fin.downloadReport": "Download Report",
   "fin.initialRevenue": "Total Earned",
   "fin.payNowDeduction": "Paid Early (PayNow)",
-  "fin.finalPayout": "Batch Payout",
+  "fin.finalPayout": "Final Batch Payout",
   "fin.payNowEarlyPayouts": "PayNow Early Payouts",
   "fin.initialAmount": "Initial Amount",
   "fin.serviceFee": "Service Fee",
