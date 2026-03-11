@@ -338,7 +338,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
   },
   {
     id: "batch-2025-09", month: "September", year: 2025, totalDeals: 12, memberCount: 3,
-    initialRevenue: 3890.20, payNowDeduction: 778.04, adjustmentAmount: 38.90, finalPayout: 3151.06,
+    initialRevenue: 3890.20, payNowDeduction: 0, adjustmentAmount: 38.90, finalPayout: 3929.10,
     payNowTransactions: [],
   },
   {
@@ -365,7 +365,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
   },
   {
     id: "batch-2025-05", month: "May", year: 2025, totalDeals: 17, memberCount: 3,
-    initialRevenue: 5380.30, payNowDeduction: 1076.06, adjustmentAmount: 53.80, finalPayout: 4358.04,
+    initialRevenue: 5380.30, payNowDeduction: 0, adjustmentAmount: 53.80, finalPayout: 5434.10,
     payNowTransactions: [],
   },
   {
@@ -377,7 +377,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
   },
   {
     id: "batch-2025-03", month: "March", year: 2025, totalDeals: 13, memberCount: 3,
-    initialRevenue: 3920.60, payNowDeduction: 784.12, adjustmentAmount: 39.21, finalPayout: 3175.69,
+    initialRevenue: 3920.60, payNowDeduction: 0, adjustmentAmount: 39.21, finalPayout: 3959.81,
     payNowTransactions: [],
   },
   {
@@ -389,7 +389,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
   },
   {
     id: "batch-2025-01", month: "January", year: 2025, totalDeals: 11, memberCount: 3,
-    initialRevenue: 3560.90, payNowDeduction: 712.18, adjustmentAmount: 35.61, finalPayout: 2884.33,
+    initialRevenue: 3560.90, payNowDeduction: 0, adjustmentAmount: 35.61, finalPayout: 3596.51,
     payNowTransactions: [],
   },
 ];
