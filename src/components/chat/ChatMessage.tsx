@@ -95,7 +95,7 @@ export function ChatMessage({ message, onFollowUp, onStreamingDone }: ChatMessag
       {/* Avatar */}
       <div className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
         isAI 
-          ? 'bg-primary text-primary-foreground' 
+          ? 'bg-[hsl(var(--exp-dark-navy))] text-white' 
           : 'bg-muted text-muted-foreground border border-border'
       }`}>
         {isAI ? (
