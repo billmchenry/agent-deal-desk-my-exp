@@ -475,7 +475,7 @@ export default function RevShareDashboard() {
                   </div>
                 </div>
 
-                <button className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLQA List">
+                <button className="mt-1 inline-flex items-center gap-1 rounded-[51px] bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLQA List">
                   View FLQA List <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
