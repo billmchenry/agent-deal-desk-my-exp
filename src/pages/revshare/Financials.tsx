@@ -790,7 +790,7 @@ export default function Financials() {
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
-                          <p className={cn("text-sm font-medium font-secondary", batch.payNowDeduction > 0 ? "text-destructive" : "text-foreground")}>
+                          <p className={cn("text-sm font-secondary text-destructive", batch.payNowDeduction > 0 ? "font-medium" : "font-normal")}>
                             {batch.payNowDeduction > 0 ? "- " : ""}{formatCurrency(batch.payNowDeduction)} USD
                           </p>
                         </div>
