@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
 import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
 import { DateRangeFilter, type DateRange } from "@/components/filters/DateRangeFilter";
-import { startOfYear, subMonths, subYears } from "date-fns";
+import { startOfYear, startOfMonth, endOfMonth, subMonths, subYears } from "date-fns";
 import { cn } from "@/lib/utils";
 
 // ── Types ──
