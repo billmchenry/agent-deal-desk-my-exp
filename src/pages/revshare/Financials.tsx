@@ -346,6 +346,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     initialRevenue: 4720.55, payNowDeduction: 944.11, adjustmentAmount: 47.21, finalPayout: 3823.65,
     payNowTransactions: [
       { id: "pn-2025-08-1", date: "2025-08-14", initialAmount: 450.30, serviceFee: -13.51, finalAmount: 436.79, dealCount: 3 },
+      { id: "pn-2025-08-2", date: "2025-08-26", initialAmount: 493.81, serviceFee: -14.81, finalAmount: 479.00, dealCount: 2 },
     ],
   },
   {
@@ -361,6 +362,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     initialRevenue: 6210.40, payNowDeduction: 1242.08, adjustmentAmount: 62.10, finalPayout: 5030.42,
     payNowTransactions: [
       { id: "pn-2025-06-1", date: "2025-06-08", initialAmount: 620.00, serviceFee: -18.60, finalAmount: 601.40, dealCount: 5 },
+      { id: "pn-2025-06-2", date: "2025-06-22", initialAmount: 622.08, serviceFee: -18.66, finalAmount: 603.42, dealCount: 3 },
     ],
   },
   {
@@ -373,6 +375,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     initialRevenue: 4150.75, payNowDeduction: 830.15, adjustmentAmount: 41.51, finalPayout: 3362.11,
     payNowTransactions: [
       { id: "pn-2025-04-1", date: "2025-04-18", initialAmount: 410.15, serviceFee: -12.30, finalAmount: 397.85, dealCount: 2 },
+      { id: "pn-2025-04-2", date: "2025-04-28", initialAmount: 420.00, serviceFee: -12.60, finalAmount: 407.40, dealCount: 2 },
     ],
   },
   {
@@ -385,6 +388,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     initialRevenue: 3140.45, payNowDeduction: 628.09, adjustmentAmount: 31.40, finalPayout: 2543.76,
     payNowTransactions: [
       { id: "pn-2025-02-1", date: "2025-02-12", initialAmount: 328.09, serviceFee: -9.84, finalAmount: 318.25, dealCount: 2 },
+      { id: "pn-2025-02-2", date: "2025-02-24", initialAmount: 300.00, serviceFee: -9.00, finalAmount: 291.00, dealCount: 1 },
     ],
   },
   {
