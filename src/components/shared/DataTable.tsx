@@ -123,7 +123,7 @@ export function DataTable<T extends Record<string, any>>({
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(() => {
     const initial = new Set<string>();
     columns.forEach((c) => {
-      if (c.defaultVisible !== false) initial.add(String(c.key));
+      if (c.defaultVisible !== false) initial.add(getColumnId(c));
     });
     return initial;
   });
