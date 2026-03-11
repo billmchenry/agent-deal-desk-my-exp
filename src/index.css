@@ -18,7 +18,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 0%;
 
-    --primary: 220 33% 49%;
+    --primary: 221 36% 49%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96%;
@@ -35,14 +35,14 @@
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 220 33% 49%;
+    --ring: 221 36% 49%;
 
     --radius: 0.5rem;
 
     /* eXp Brand Colors */
     --exp-navy: 0 0% 0%;
     --exp-navy-light: 0 0% 15%;
-    --exp-blue: 220 33% 49%;
+    --exp-blue: 221 36% 49%;
     --exp-blue-light: 220 33% 59%;
     --exp-gold: 45 93% 47%;
     --exp-gold-light: 45 100% 60%;
@@ -64,12 +64,12 @@
     /* Sidebar - Dark Navy */
     --sidebar-background: 230 50% 9%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 220 33% 49%;
+    --sidebar-primary: 221 36% 49%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 45% 28%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 220 45% 28%;
-    --sidebar-ring: 220 33% 49%;
+    --sidebar-ring: 221 36% 49%;
 
     /* Header */
     --header-background: 0 0% 100%;
@@ -87,7 +87,7 @@
     --popover: 222 47% 15%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 220 33% 49%;
+    --primary: 221 36% 49%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 217 33% 17%;
@@ -108,7 +108,7 @@
 
     --sidebar-background: 220 56% 12%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 220 33% 49%;
+    --sidebar-primary: 221 36% 49%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 45% 20%;
     --sidebar-accent-foreground: 0 0% 100%;
