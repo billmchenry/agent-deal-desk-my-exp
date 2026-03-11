@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowLeft, ChevronDown, ChevronUp, ChevronRight, Download, Info } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
 import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
