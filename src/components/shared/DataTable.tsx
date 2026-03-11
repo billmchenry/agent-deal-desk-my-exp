@@ -498,7 +498,8 @@ export function DataTable<T extends Record<string, any>>({
                       {visibleCols.map((col) => (
                         <TableCell key={String(col.key)} className={cn(
                           col.type === "string" && "max-w-[200px] truncate",
-                          (col.type === "number" || col.type === "currency") && "text-right tabular-nums"
+                          (col.type === "number" || col.type === "currency") && "text-right tabular-nums",
+                          col.stickyRight && "sticky right-0 z-10 bg-card/95 backdrop-blur-sm shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]"
                         )}>
                           {formatCell(col, row)}
                         </TableCell>
