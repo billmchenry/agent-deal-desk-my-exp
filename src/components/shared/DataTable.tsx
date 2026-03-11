@@ -437,7 +437,7 @@ export function DataTable<T extends Record<string, any>>({
                         className={cn(
                           "font-semibold",
                           (col.type === "number" || col.type === "currency") && "text-right",
-                          col.stickyRight && "sticky right-0 z-10 bg-muted/95 backdrop-blur-sm shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]"
+                          col.stickyRight && "sticky right-0 z-10 bg-muted/95 backdrop-blur-sm border-l border-border"
                         )}
                       >
                         <div className={cn("flex items-center gap-1", (col.type === "number" || col.type === "currency") && "justify-end")}>
