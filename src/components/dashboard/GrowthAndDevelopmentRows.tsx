@@ -27,7 +27,7 @@ const themeStyles = {
   blue: {
     card: "bg-gradient-to-r from-exp-blue/10 to-exp-blue/5 border-exp-blue/20",
     icon: "bg-exp-blue/20 text-exp-blue",
-    button: "bg-exp-charcoal-blue hover:bg-exp-dark-navy text-white",
+    button: "bg-exp-blue hover:bg-exp-blue/90 text-white",
   },
   green: {
     card: "bg-gradient-to-r from-exp-green/10 to-exp-green/5 border-exp-green/20",
