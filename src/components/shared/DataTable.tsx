@@ -50,6 +50,8 @@ import { cn } from "@/lib/utils";
 
 export interface ColumnDef<T> {
   key: keyof T;
+  /** Optional unique id for UI identity (visibility, rendering keys). Use when multiple columns share the same data key. */
+  id?: string;
   header: string; // i18n key
   type: "string" | "number" | "currency" | "date" | "badge";
   sortable?: boolean;
@@ -74,6 +76,10 @@ export interface DataTableProps<T> {
 }
 
 type SortDir = "asc" | "desc" | null;
+
+function getColumnId<T>(col: ColumnDef<T>): string {
+  return col.id ?? String(col.key);
+}
 
 // ---------- Helpers ----------
 
@@ -117,7 +123,7 @@ export function DataTable<T extends Record<string, any>>({
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(() => {
     const initial = new Set<string>();
     columns.forEach((c) => {
-      if (c.defaultVisible !== false) initial.add(String(c.key));
+      if (c.defaultVisible !== false) initial.add(getColumnId(c));
     });
     return initial;
   });
@@ -238,7 +244,7 @@ export function DataTable<T extends Record<string, any>>({
   const handleCsvExport = useCallback(() => {
     if (!csvFilename) return;
     const csvCols: CsvColumnDef<T>[] = columns
-      .filter((c) => visibleColumns.has(String(c.key)))
+      .filter((c) => visibleColumns.has(getColumnId(c)))
       .map((c) => ({ key: c.key, header: t(c.header), type: c.type }));
     exportToCsv(filteredSorted, csvCols, csvFilename);
   }, [csvFilename, columns, visibleColumns, filteredSorted, t]);
@@ -290,7 +296,7 @@ export function DataTable<T extends Record<string, any>>({
   };
 
   // --- Visible column defs ---
-  const visibleCols = columns.filter((c) => visibleColumns.has(String(c.key)));
+  const visibleCols = columns.filter((c) => visibleColumns.has(getColumnId(c)));
 
   // --- Toolbar ---
   const toolbar = (
@@ -304,22 +310,25 @@ export function DataTable<T extends Record<string, any>>({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="max-h-80 overflow-y-auto">
-            {columns.map((col) => (
-              <DropdownMenuCheckboxItem
-                key={String(col.key)}
-                checked={visibleColumns.has(String(col.key))}
-                onCheckedChange={(checked) => {
-                  setVisibleColumns((prev) => {
-                    const next = new Set(prev);
-                    if (checked) next.add(String(col.key));
-                    else next.delete(String(col.key));
-                    return next;
-                  });
-                }}
-              >
-                {t(col.header)}
-              </DropdownMenuCheckboxItem>
-            ))}
+            {columns.map((col) => {
+              const colId = getColumnId(col);
+              return (
+                <DropdownMenuCheckboxItem
+                  key={colId}
+                  checked={visibleColumns.has(colId)}
+                  onCheckedChange={(checked) => {
+                    setVisibleColumns((prev) => {
+                      const next = new Set(prev);
+                      if (checked) next.add(colId);
+                      else next.delete(colId);
+                      return next;
+                    });
+                  }}
+                >
+                  {t(col.header)}
+                </DropdownMenuCheckboxItem>
+              );
+            })}
           </DropdownMenuContent>
         </DropdownMenu>
       )}
@@ -422,13 +431,13 @@ export function DataTable<T extends Record<string, any>>({
                       : undefined;
                     return (
                       <TableHead
-                        key={String(col.key)}
+                        key={getColumnId(col)}
                         role="columnheader"
                         aria-sort={ariaSort}
                         className={cn(
                           "font-semibold",
                           (col.type === "number" || col.type === "currency") && "text-right",
-                          col.stickyRight && "sticky right-0 z-10 bg-muted/95 backdrop-blur-sm shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]"
+                          col.stickyRight && "sticky right-0 z-10 bg-muted/95 backdrop-blur-sm border-l border-border"
                         )}
                       >
                         <div className={cn("flex items-center gap-1", (col.type === "number" || col.type === "currency") && "justify-end")}>
@@ -496,10 +505,10 @@ export function DataTable<T extends Record<string, any>>({
                       }}
                     >
                       {visibleCols.map((col) => (
-                        <TableCell key={String(col.key)} className={cn(
+                        <TableCell key={`${getColumnId(col)}-${i}`} className={cn(
                           col.type === "string" && "max-w-[200px] truncate",
                           (col.type === "number" || col.type === "currency") && "text-right tabular-nums",
-                          col.stickyRight && "sticky right-0 z-10 bg-card/95 backdrop-blur-sm shadow-[-2px_0_4px_-2px_rgba(0,0,0,0.1)]"
+                          col.stickyRight && "sticky right-0 z-10 bg-card/95 backdrop-blur-sm border-l border-border"
                         )}>
                           {formatCell(col, row)}
                         </TableCell>

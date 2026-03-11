@@ -99,6 +99,7 @@ export default function Transactions() {
     },
     { key: "firstCap", header: "txn.amtTowardCap", type: "number", sortable: true },
     {
+      id: "viewDetails",
       key: "transactionId" as keyof Transaction,
       header: "txn.viewDetails",
       type: "string",
