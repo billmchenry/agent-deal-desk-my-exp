@@ -41,6 +41,19 @@ interface PeriodicRow {
   currency: string;
 }
 
+interface PayNowDeal {
+  id: string;
+  agentName: string;
+  address: string;
+  amount: number;
+  currency: string;
+  transactionNumber: string;
+  closedDate: string;
+  salePrice: number;
+  level: number;
+  finalRevShare: number;
+}
+
 interface PayNowTransaction {
   id: string;
   date: string;
@@ -48,6 +61,7 @@ interface PayNowTransaction {
   serviceFee: number;
   finalAmount: number;
   dealCount: number;
+  deals: PayNowDeal[];
 }
 
 interface MonthlyBatchRow {
