@@ -138,11 +138,14 @@ const orgTree: OrgTreeAgent[] = [
   },
 ];
 
-const getLevelColor = (level: number) => {
-  const colors: Record<number, string> = {
-    1: "bg-yellow-400", 2: "bg-green-400", 3: "bg-blue-400", 4: "bg-purple-400",
+const getLevelBadgeClass = (level: number) => {
+  const classes: Record<number, string> = {
+    1: "bg-blue-100 text-blue-700 border-blue-200",
+    2: "bg-green-100 text-green-700 border-green-200",
+    3: "bg-purple-100 text-purple-700 border-purple-200",
+    4: "bg-amber-100 text-amber-700 border-amber-200",
   };
-  return colors[level] || "bg-gray-400";
+  return classes[level] || "bg-muted text-muted-foreground border-border";
 };
 
 // --- Agent Card Component ---
@@ -161,78 +164,84 @@ function AgentCard({
 
   return (
     <Card className="overflow-hidden transition-shadow hover:shadow-md">
-      <CardContent className="p-4">
-        <div className="flex items-start gap-3 mb-3">
+      <CardContent className="p-4 flex flex-col gap-3">
+        {/* Top: Avatar + Name/Location + Contact icon */}
+        <div className="flex items-start gap-3">
           <div className="relative">
-            <Avatar className="h-12 w-12">
+            <Avatar className="h-14 w-14">
               <AvatarImage src={agent.avatar} />
               <AvatarFallback className="bg-muted">
                 {agent.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </AvatarFallback>
             </Avatar>
             {agent.icon && (
-              <div className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary flex items-center justify-center">
+              <div className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded-full bg-primary flex items-center justify-center ring-2 ring-card">
                 <Award className="h-3 w-3 text-primary-foreground" />
               </div>
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-foreground text-sm truncate">{agent.name}</p>
-            <p className="text-xs text-muted-foreground">{agent.location}</p>
+            <p className="font-semibold text-foreground text-sm leading-tight">{agent.name}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{agent.location}</p>
           </div>
           {onOpenContact && (
             <Button
               variant="ghost"
               size="icon"
               onClick={(e) => { e.stopPropagation(); onOpenContact(); }}
-              className="shrink-0 min-h-[48px] min-w-[48px] md:min-h-[44px] md:min-w-[44px]"
+              className="shrink-0 h-9 w-9 text-muted-foreground hover:text-foreground"
               aria-label={`${t("common.viewContact")} – ${agent.name}`}
             >
-              <Contact className="h-5 w-5 md:h-4 md:w-4" />
+              <Contact className="h-4 w-4" />
             </Button>
           )}
         </div>
 
-        <div className="flex items-center gap-2 mb-3">
-          <Badge className={`${getLevelColor(agent.level)} text-white text-xs`}>
+        {/* Level + ICON badges */}
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className={`text-xs font-medium px-2.5 py-0.5 ${getLevelBadgeClass(agent.level)}`}>
             {t("orgTree.level")} {agent.level}
           </Badge>
-        </div>
-
-        <div className="space-y-1 text-xs">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">{t("orgTree.contributedRevShare")}:</span>
-            <Badge className="bg-primary text-primary-foreground text-xs font-medium">{formatCurrency(agent.revShare)}</Badge>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">{t("orgTree.individualContribution")}:</span>
-            <span className="text-foreground">{formatCurrency(agent.contribution)}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">{t("orgTree.orgSize")}:</span>
-            <span className="text-foreground">{agent.orgSize}</span>
-            {agent.icon && (
-              <Badge variant="outline" className="text-xs text-primary border-primary ms-auto">
-                ICON
-              </Badge>
-            )}
-          </div>
-        </div>
-
-        {/* Keyboard-accessible action buttons */}
-        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
-          {hasChildren && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 text-xs"
-              onClick={onClick}
-              aria-label={`${t("orgTree.viewOrg")} – ${agent.name}`}
-            >
-              {t("orgTree.viewOrg")} ({agent.orgSize})
-            </Button>
+          {agent.icon && (
+            <Badge variant="outline" className="text-xs font-medium px-2.5 py-0.5 bg-green-100 text-green-700 border-green-200">
+              ICON
+            </Badge>
           )}
         </div>
+
+        {/* Contributed Rev Share - highlighted section */}
+        <div className="bg-muted/60 rounded-lg px-3 py-2.5">
+          <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
+            {t("orgTree.contributedRevShare")}
+          </p>
+          <p className="text-xl font-bold text-foreground font-secondary tabular-nums">
+            {formatCurrency(agent.revShare)}
+          </p>
+        </div>
+
+        {/* Individual Contribution + Org Size */}
+        <div className="flex items-center justify-between text-xs">
+          <div>
+            <span className="text-muted-foreground">{t("orgTree.individualContribution")}</span>
+            <p className="font-medium text-foreground font-secondary tabular-nums">{formatCurrency(agent.contribution)}</p>
+          </div>
+          <div className="text-right">
+            <span className="text-muted-foreground">{t("orgTree.orgSize")}</span>
+            <p className="font-medium text-foreground font-secondary tabular-nums">{agent.orgSize}</p>
+          </div>
+        </div>
+
+        {/* View Org button */}
+        {hasChildren && (
+          <Button
+            variant="outline"
+            className="w-full text-sm mt-1"
+            onClick={onClick}
+            aria-label={`${t("orgTree.viewOrg")} – ${agent.name}`}
+          >
+            {t("orgTree.viewOrg")} ({agent.orgSize})
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
