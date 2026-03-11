@@ -427,7 +427,7 @@ export default function Financials() {
   const periodicPresets = [
     { labelKey: "filter.ytd", getRange: () => ({ from: startOfYear(new Date()), to: new Date() }) as DateRange },
     { labelKey: "filter.lastYear", getRange: () => ({ from: startOfYear(subYears(new Date(), 1)), to: new Date(subYears(new Date(), 1).getFullYear(), 11, 31) }) as DateRange },
-    { labelKey: "filter.last6Months", getRange: () => ({ from: startOfMonth(subMonths(new Date(), 6)), to: endOfMonth(new Date()) }) as DateRange },
+    { labelKey: "filter.last6Months", getRange: () => ({ from: startOfMonth(subMonths(new Date(), 5)), to: endOfMonth(new Date()) }) as DateRange },
   ];
   const [periodicDateRange, setPeriodicDateRange] = useState<DateRange>({
     from: startOfYear(new Date()),
