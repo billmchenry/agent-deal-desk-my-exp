@@ -352,15 +352,15 @@ export default function RevShareDashboard() {
         </UniversalFilterBar>
 
         {/* ═══ Section 1: Hero Banner ═══ */}
-        <Card className="relative overflow-hidden bg-gradient-to-br from-exp-navy via-exp-navy-light to-exp-blue p-4 sm:p-6 text-white">
+        <Card className="relative overflow-hidden bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue p-4 sm:p-6 text-white">
           <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
-            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-white" />
-            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-exp-gold" />
+            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-frosted-blue" />
+            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-white" />
           </div>
 
           <div className="relative z-10">
             <div className="mb-4">
-              <Badge className="bg-exp-gold/20 text-exp-gold-light border-exp-gold/30 hover:bg-exp-gold/30">
+              <Badge className="bg-white/15 text-white border-white/20 hover:bg-white/20">
                 <Target className="me-1 h-3 w-3" />
                 {t("revshare.revenueShare").toUpperCase()}
               </Badge>
