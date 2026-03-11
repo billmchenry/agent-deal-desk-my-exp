@@ -167,7 +167,7 @@ export function GrowthAndDevelopmentRows() {
       title: "DISC Assessment",
       description: "Understand your communication style and improve client relationships.",
       buttonText: "Take Assessment",
-      theme: "purple",
+      theme: "blue",
     },
     {
       id: "nps",
