@@ -296,7 +296,7 @@ export function DataTable<T extends Record<string, any>>({
   };
 
   // --- Visible column defs ---
-  const visibleCols = columns.filter((c) => visibleColumns.has(String(c.key)));
+  const visibleCols = columns.filter((c) => visibleColumns.has(getColumnId(c)));
 
   // --- Toolbar ---
   const toolbar = (
