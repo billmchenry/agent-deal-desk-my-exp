@@ -660,6 +660,22 @@ export default function Financials() {
           </TabsContent>
 
           <TabsContent value="periodic" className="mt-4">
+            {/* Date Range Filter & Download */}
+            <div className="flex items-center justify-between mb-4">
+              <div />
+              <div className="flex items-center gap-2">
+                <DateRangeFilter
+                  value={periodicDateRange}
+                  onChange={setPeriodicDateRange}
+                  presets={periodicPresets}
+                />
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  {t("fin.downloadReport")}
+                </Button>
+              </div>
+            </div>
+
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <Card className="p-5">
@@ -680,21 +696,8 @@ export default function Financials() {
               </Card>
             </div>
 
-            {/* Date Range Filter */}
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-foreground">{t("fin.monthlyPaymentBatches")}</h2>
-              <div className="flex items-center gap-2">
-                <DateRangeFilter
-                  value={periodicDateRange}
-                  onChange={setPeriodicDateRange}
-                  presets={periodicPresets}
-                />
-                <Button variant="outline" size="sm">
-                  <Download className="h-4 w-4 mr-2" />
-                  {t("fin.downloadReport")}
-                </Button>
-              </div>
-            </div>
+            {/* Monthly Payment Batches heading */}
+            <h2 className="text-lg font-semibold text-foreground mb-4">{t("fin.monthlyPaymentBatches")}</h2>
 
             <div className="space-y-3">
               {filteredBatches.map((batch) => {
