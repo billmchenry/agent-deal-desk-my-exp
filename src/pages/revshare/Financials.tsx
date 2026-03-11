@@ -338,7 +338,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
   },
   {
     id: "batch-2025-09", month: "September", year: 2025, totalDeals: 12, memberCount: 3,
-    initialRevenue: 3890.20, payNowDeduction: 778.04, adjustmentAmount: 38.90, finalPayout: 3151.06,
+    initialRevenue: 3890.20, payNowDeduction: 0, adjustmentAmount: 38.90, finalPayout: 3929.10,
     payNowTransactions: [],
   },
   {
