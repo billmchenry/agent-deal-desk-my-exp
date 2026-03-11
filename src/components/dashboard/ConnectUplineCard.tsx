@@ -47,7 +47,7 @@ export function ConnectUplineCard() {
           <div className="space-y-3">
             <CardTitle className="text-base font-semibold">Connect with your Upline</CardTitle>
             <Tabs value={view} onValueChange={(v) => setView(v as "lineage" | "contributor")} className="w-full">
-              <TabsList className="h-8 w-full">
+              <TabsList className="w-full">
                 <TabsTrigger value="lineage" className="text-xs px-3 flex-1">
                   Lineage
                 </TabsTrigger>
