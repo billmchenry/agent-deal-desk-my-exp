@@ -55,14 +55,14 @@
 
     /* Capping Hero Light Mode Palette */
     --exp-charcoal-blue: 244 14% 22%;
-    --exp-dark-navy: 233 50% 10%;
+    --exp-dark-navy: 233 50% 9%;
     --exp-moss-grey: 250 6% 42%;
     --exp-light-grey: 0 0% 93%;
     --exp-slate-blue: 220 34% 49%;
     --exp-frosted-blue: 221 33% 87%;
 
     /* Sidebar - Dark Navy */
-    --sidebar-background: 233 50% 10%;
+    --sidebar-background: 233 50% 9%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 221 36% 49%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -106,7 +106,7 @@
     --input: 217 33% 17%;
     --ring: 212 27% 84%;
 
-    --sidebar-background: 220 56% 12%;
+    --sidebar-background: 233 50% 9%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 221 36% 49%;
     --sidebar-primary-foreground: 0 0% 100%;
