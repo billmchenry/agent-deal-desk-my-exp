@@ -84,7 +84,7 @@ function MenteeView() {
               <p className="text-sm font-semibold text-foreground">{t("mentor.trainingMaterials")}</p>
               <p className="text-sm text-muted-foreground mt-1">{t("mentor.trainingDescription")}</p>
             </div>
-            <Button variant="outline" size="icon" className="h-10 w-10 rounded-lg" onClick={() => toast.info(t("mentor.trainingNotAvailable"))} aria-label={t("mentor.openTraining")}>
+            <Button variant="outline" size="icon" className="h-10 w-10 rounded-[51px]" onClick={() => toast.info(t("mentor.trainingNotAvailable"))} aria-label={t("mentor.openTraining")}>
               <ExternalLink className="h-4 w-4" />
             </Button>
           </CardContent>
