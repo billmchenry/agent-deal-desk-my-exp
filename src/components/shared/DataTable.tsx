@@ -244,7 +244,7 @@ export function DataTable<T extends Record<string, any>>({
   const handleCsvExport = useCallback(() => {
     if (!csvFilename) return;
     const csvCols: CsvColumnDef<T>[] = columns
-      .filter((c) => visibleColumns.has(String(c.key)))
+      .filter((c) => visibleColumns.has(getColumnId(c)))
       .map((c) => ({ key: c.key, header: t(c.header), type: c.type }));
     exportToCsv(filteredSorted, csvCols, csvFilename);
   }, [csvFilename, columns, visibleColumns, filteredSorted, t]);
