@@ -135,11 +135,11 @@ export default function DocumentsPortal() {
 
         <Tabs defaultValue="my" className="w-full">
           <TabsList>
-            <TabsTrigger value="my" className="min-h-[44px] gap-2">
+            <TabsTrigger value="my" className="gap-2">
               <FileText className="h-4 w-4" />
               {t("documents.myDocuments")}
             </TabsTrigger>
-            <TabsTrigger value="team" className="min-h-[44px] gap-2">
+            <TabsTrigger value="team" className="gap-2">
               <Users className="h-4 w-4" />
               {t("documents.teamDocuments")}
             </TabsTrigger>
