@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { CalendarDays } from "lucide-react";
-import { startOfYear, startOfMonth, subWeeks, subYears } from "date-fns";
+import { startOfYear, startOfMonth, subWeeks, subYears, addMonths } from "date-fns";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
@@ -124,18 +124,30 @@ export function DateRangeFilter({
 
         {/* Calendar (always visible when custom or popover is open) */}
         {(showCustom || activePresetKey === "filter.custom") && (
-          <Calendar
-            mode="range"
-            captionLayout="dropdown-buttons"
-            fromYear={2015}
-            toYear={new Date().getFullYear() + 1}
-            selected={value}
-            onSelect={(range) =>
-              onChange({ from: range?.from, to: range?.to })
-            }
-            numberOfMonths={2}
-            className={cn("p-3 pointer-events-auto")}
-          />
+          <div>
+            <div className="flex gap-4 mb-3 text-xs text-muted-foreground">
+              <span>{t("filter.from")}: <span className="text-foreground font-medium">{value.from ? formatDate(value.from) : "—"}</span></span>
+              <span>{t("filter.to")}: <span className="text-foreground font-medium">{value.to ? formatDate(value.to) : "—"}</span></span>
+            </div>
+            <Calendar
+              mode="range"
+              captionLayout="dropdown-buttons"
+              fromYear={2015}
+              toYear={new Date().getFullYear() + 1}
+              selected={value}
+              onSelect={(range) =>
+                onChange({ from: range?.from, to: range?.to })
+              }
+              disabled={
+                value.from && !value.to
+                  ? { after: addMonths(value.from, 12) }
+                  : undefined
+              }
+              numberOfMonths={2}
+              className={cn("p-3 pointer-events-auto")}
+            />
+            <p className="text-[11px] text-muted-foreground mt-2">Select up to 12 months. Use dropdowns to navigate.</p>
+          </div>
         )}
       </PopoverContent>
     </Popover>
