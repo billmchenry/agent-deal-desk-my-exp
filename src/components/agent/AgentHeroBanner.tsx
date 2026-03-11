@@ -49,8 +49,8 @@ function MiniStatCard({
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-section-title font-bold text-exp-dark-navy truncate">{value}</p>
-        <p className="text-xs sm:text-[11px] text-exp-moss-grey">{label}</p>
+        <p className="text-section-title font-bold text-exp-dark-navy dark:text-white truncate">{value}</p>
+        <p className="text-xs sm:text-[11px] text-exp-moss-grey dark:text-white/60">{label}</p>
       </div>
     </button>
   );
