@@ -1080,6 +1080,99 @@ export default function Financials() {
           )}
         </SheetContent>
       </Sheet>
+
+      {/* Batch Payment Details Sheet */}
+      <Sheet open={batchSheetOpen} onOpenChange={setBatchSheetOpen}>
+        <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle className="text-section-title">{t("fin.paymentDetails")}</SheetTitle>
+          </SheetHeader>
+          {selectedBatch && (() => {
+            const totalServiceFee = selectedBatch.payNowTransactions.reduce((sum, pn) => sum + pn.serviceFee, 0);
+            const batchDeals = generateDeals(`batch-${selectedBatch.id}`, selectedBatch.totalDeals, selectedBatch.finalPayout);
+            return (
+              <div className="mt-6 space-y-5">
+                {/* Batch Summary Card */}
+                <Card className="p-4 space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t("fin.totalEarned")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {selectedBatch.month} {selectedBatch.year}
+                      </p>
+                    </div>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
+                      {formatCurrency(selectedBatch.initialRevenue)} USD
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">{t("fin.payNowDeduction")}</p>
+                    <p className={cn("text-sm font-semibold font-secondary tabular-nums", selectedBatch.payNowDeduction > 0 ? "text-destructive" : "text-foreground")}>
+                      {selectedBatch.payNowDeduction > 0 ? "-" : ""}{formatCurrency(selectedBatch.payNowDeduction)} USD
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">{t("fin.serviceFee")}</p>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-destructive">
+                      {formatCurrency(totalServiceFee)} USD
+                    </p>
+                  </div>
+
+                  <div className="border-t border-border" />
+
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{t("fin.finalPayout")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {selectedBatch.totalDeals} deals · {selectedBatch.memberCount} members
+                      </p>
+                    </div>
+                    <p className="text-sm font-bold font-secondary tabular-nums text-primary">
+                      {formatCurrency(selectedBatch.finalPayout)} USD
+                    </p>
+                  </div>
+                </Card>
+
+                {/* Results count + Download */}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{batchDeals.length} Results</span>
+                  <Button variant="outline" size="sm" className="gap-2 text-xs">
+                    <Download className="h-3.5 w-3.5" />
+                    Download
+                  </Button>
+                </div>
+
+                {/* Deal list */}
+                <div className="divide-y divide-border">
+                  {batchDeals.map((deal) => (
+                    <div
+                      key={deal.id}
+                      className="flex items-center justify-between py-3 cursor-pointer hover:bg-accent/50 -mx-2 px-2 rounded-lg transition-colors"
+                      onClick={() => { setSelectedDeal(deal); setDealSheetOpen(true); }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedDeal(deal); setDealSheetOpen(true); } }}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-foreground">{deal.agentName}</p>
+                        <p className="text-xs text-muted-foreground truncate">{deal.address}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 ml-3">
+                        <span className="text-sm font-medium font-secondary tabular-nums text-foreground">
+                          {formatCurrency(deal.amount)} USD
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+        </SheetContent>
+      </Sheet>
     </DashboardLayout>
   );
 }
