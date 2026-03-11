@@ -47,7 +47,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {!isChatOpen && (
         <Button
           onClick={openChat}
-          className="fixed bottom-6 end-6 h-14 w-14 rounded-full shadow-lg bg-[#506CAA] hover:bg-[#506CAA]/90 z-40 overflow-hidden group"
+          className="fixed bottom-6 end-6 h-14 w-14 rounded-full shadow-lg bg-[#0C0F24] hover:bg-[#0C0F24]/90 z-40 overflow-hidden group"
           size="icon"
           aria-label={t("common.openMiraChat")}
         >
