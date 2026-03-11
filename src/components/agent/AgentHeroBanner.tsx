@@ -140,8 +140,8 @@ export function AgentHeroBanner({
                   className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                   onClick={() => goToTransactions("paid")}
                 >
-                  <p className="text-section-title font-bold text-exp-dark-navy dark:text-white">{transactionsClosed}</p>
-                  <p className="text-xs sm:text-[11px] text-exp-moss-grey dark:text-white/60">{t("txn.paid")}</p>
+                   <p className="text-section-title font-bold text-white">{transactionsClosed}</p>
+                   <p className="text-xs sm:text-[11px] text-white/60">{t("txn.paid")}</p>
                 </button>
                 {transactionsFirm !== undefined && (
                   <button
