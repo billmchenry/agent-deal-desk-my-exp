@@ -127,11 +127,11 @@ export function AgentHeroBanner({
             />
           ) : (
             <div
-              className="flex items-center gap-2 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 dark:bg-white/5 dark:border-white/15 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 dark:hover:bg-white/10 transition-colors"
+              className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-white/15 transition-colors"
               role="link"
               aria-label="View transaction details"
             >
-              <div className="hidden sm:flex rounded-full p-2 shrink-0 bg-exp-gold/15 text-exp-gold">
+              <div className="hidden sm:flex rounded-full p-2 shrink-0 bg-white/15 text-white">
                 <FileText className="h-4 w-4" />
               </div>
                <div className="flex gap-2 sm:gap-3 min-w-0">
