@@ -418,10 +418,8 @@ export function DataTable<T extends Record<string, any>>({
   return (
     <div>
       {toolbar}
-      <div className="border rounded-lg overflow-hidden">
-        <ScrollArea className="w-full">
-          <div style={{ minWidth: `${visibleCols.length * 130}px` }}>
-            <Table role="grid">
+        <div className="border rounded-lg overflow-x-auto">
+          <table role="grid" className="w-full caption-bottom text-sm" style={{ minWidth: `${visibleCols.length * 130}px` }}>
               <TableHeader>
                 <TableRow className="bg-muted/50" role="row">
                   {visibleCols.map((col) => {
@@ -437,7 +435,7 @@ export function DataTable<T extends Record<string, any>>({
                         className={cn(
                           "font-semibold",
                           (col.type === "number" || col.type === "currency") && "text-right",
-                          col.stickyRight && "sticky right-0 z-10 bg-muted/95 backdrop-blur-sm border-l border-border"
+                          col.stickyRight && "sticky right-0 z-10 bg-muted border-l border-border"
                         )}
                       >
                         <div className={cn("flex items-center gap-1", (col.type === "number" || col.type === "currency") && "justify-end")}>
@@ -508,7 +506,7 @@ export function DataTable<T extends Record<string, any>>({
                         <TableCell key={`${getColumnId(col)}-${i}`} className={cn(
                           col.type === "string" && "max-w-[200px] truncate",
                           (col.type === "number" || col.type === "currency") && "text-right tabular-nums",
-                          col.stickyRight && "sticky right-0 z-10 bg-card/95 backdrop-blur-sm border-l border-border"
+                          col.stickyRight && "sticky right-0 z-10 bg-card border-l border-border"
                         )}>
                           {formatCell(col, row)}
                         </TableCell>
@@ -517,11 +515,8 @@ export function DataTable<T extends Record<string, any>>({
                   ))
                 )}
               </TableBody>
-            </Table>
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-      </div>
+            </table>
+        </div>
       {pagination}
     </div>
   );
