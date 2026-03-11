@@ -431,7 +431,7 @@ export function DataTable<T extends Record<string, any>>({
                       : undefined;
                     return (
                       <TableHead
-                        key={String(col.key)}
+                        key={getColumnId(col)}
                         role="columnheader"
                         aria-sort={ariaSort}
                         className={cn(
