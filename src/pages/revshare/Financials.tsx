@@ -482,6 +482,8 @@ export default function Financials() {
   const [payNowSheetOpen, setPayNowSheetOpen] = useState(false);
   const [selectedDeal, setSelectedDeal] = useState<PayNowDeal | null>(null);
   const [dealSheetOpen, setDealSheetOpen] = useState(false);
+  const [selectedBatch, setSelectedBatch] = useState<MonthlyBatchRow | null>(null);
+  const [batchSheetOpen, setBatchSheetOpen] = useState(false);
 
   // Periodic date range filter
   const periodicPresets = [
