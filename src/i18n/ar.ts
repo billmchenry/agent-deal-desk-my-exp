@@ -100,6 +100,7 @@ export const ar: Record<string, string> = {
   "txn.gci": "GCI",
   "txn.address": "العنوان",
   "txn.amtTowardCap": "المبلغ نحو الحد",
+  "txn.viewDetails": "عرض التفاصيل",
   "txn.transactionDetails": "تفاصيل المعاملة",
   "txn.propertyAddress": "عنوان العقار",
   "txn.scheduledCloseDate": "تاريخ الإغلاق المقرر",

@@ -114,6 +114,7 @@ export const frCA: Record<string, string> = {
   "txn.gci": "GCI",
   "txn.address": "Adresse",
   "txn.amtTowardCap": "Montant vers le plafond",
+  "txn.viewDetails": "Voir les détails",
   "txn.transactionDetails": "Détails de la transaction",
   "txn.propertyAddress": "Adresse de la propriété",
   "txn.scheduledCloseDate": "Date de clôture prévue",

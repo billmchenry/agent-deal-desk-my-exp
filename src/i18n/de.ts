@@ -111,6 +111,7 @@ export const de: Record<string, string> = {
   "txn.gci": "GCI",
   "txn.address": "Adresse",
   "txn.amtTowardCap": "Betrag zum Cap",
+  "txn.viewDetails": "Details anzeigen",
   "txn.transactionDetails": "Transaktionsdetails",
   "txn.propertyAddress": "Immobilienadresse",
   "txn.scheduledCloseDate": "Geplantes Abschlussdatum",
