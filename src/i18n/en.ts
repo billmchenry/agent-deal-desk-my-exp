@@ -255,6 +255,8 @@ export const en = {
   "filter.today": "Today",
   "filter.thisWeek": "This Week",
   "filter.thisMonth": "This Month",
+  "filter.from": "From",
+  "filter.to": "To",
 
   // Additional keys
   "dashboard.cappingYear": "Capping Year",
