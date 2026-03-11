@@ -138,11 +138,6 @@ export function DateRangeFilter({
               onSelect={(range) =>
                 onChange({ from: range?.from, to: range?.to })
               }
-              disabled={
-                value.from && !value.to
-                  ? { after: addMonths(value.from, 12) }
-                  : undefined
-              }
               numberOfMonths={2}
               className={cn("p-3 pointer-events-auto")}
             />
