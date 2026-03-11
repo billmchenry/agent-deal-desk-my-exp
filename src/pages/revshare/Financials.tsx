@@ -299,6 +299,46 @@ const periodicData: PeriodicRow[] = [
   { date: "03/31/2025", initialRevShare: 44878.87, adjustment: 10562.97, finalRevShare: 55441.84, transactionCount6Mo: 399, memberCount: 246, monthly: "Yes", batchNumber: 1606, currency: "USD" },
 ];
 
+const agentNames = [
+  "Denise Ahee", "Sarah A Lund", "Michael Torres", "Jessica Chen", "Robert Williams",
+  "Amanda Foster", "David Kim", "Lisa Martinez", "James Cooper", "Emily Watson",
+];
+const addresses = [
+  "304 3rd Ave, Brooklyn, NY 11215, US",
+  "2068, 2069, 2072, 2073 Imperial Ln, Green Bay, WI 54...",
+  "1520 Oak Street, Sacramento, CA 95814, US",
+  "892 Pine Road, Folsom, CA 95630, US",
+  "4401 Maple Drive, Lincoln, CA 95648, US",
+  "776 Elm Court, Roseville, CA 95678, US",
+  "2310 Cedar Blvd, Citrus Heights, CA 95621, US",
+  "511 Birch Lane, Elk Grove, CA 95624, US",
+  "1893 Willow Way, Rocklin, CA 95765, US",
+  "3045 Spruce Ave, Auburn, CA 95603, US",
+];
+
+function generateDeals(pnId: string, count: number, totalAmount: number): PayNowDeal[] {
+  const deals: PayNowDeal[] = [];
+  let remaining = totalAmount;
+  for (let i = 0; i < count; i++) {
+    const isLast = i === count - 1;
+    const amt = isLast ? remaining : Math.round((totalAmount / count + (Math.random() - 0.5) * 100) * 100) / 100;
+    remaining -= amt;
+    deals.push({
+      id: `${pnId}-deal-${i + 1}`,
+      agentName: agentNames[i % agentNames.length],
+      address: addresses[i % addresses.length],
+      amount: Math.round(amt * 100) / 100,
+      currency: "USD",
+      transactionNumber: `TXN-${Math.floor(100000 + Math.random() * 900000)}`,
+      closedDate: "02/15/2026",
+      salePrice: Math.floor(200000 + Math.random() * 600000),
+      level: Math.random() > 0.5 ? 1 : 2,
+      finalRevShare: Math.round(amt * 100) / 100,
+    });
+  }
+  return deals;
+}
+
 // ── Monthly Batch Mock Data for Periodic Overview ──
 
 const monthlyBatches: MonthlyBatchRow[] = [
