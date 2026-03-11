@@ -310,22 +310,25 @@ export function DataTable<T extends Record<string, any>>({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="max-h-80 overflow-y-auto">
-            {columns.map((col) => (
-              <DropdownMenuCheckboxItem
-                key={String(col.key)}
-                checked={visibleColumns.has(String(col.key))}
-                onCheckedChange={(checked) => {
-                  setVisibleColumns((prev) => {
-                    const next = new Set(prev);
-                    if (checked) next.add(String(col.key));
-                    else next.delete(String(col.key));
-                    return next;
-                  });
-                }}
-              >
-                {t(col.header)}
-              </DropdownMenuCheckboxItem>
-            ))}
+            {columns.map((col) => {
+              const colId = getColumnId(col);
+              return (
+                <DropdownMenuCheckboxItem
+                  key={colId}
+                  checked={visibleColumns.has(colId)}
+                  onCheckedChange={(checked) => {
+                    setVisibleColumns((prev) => {
+                      const next = new Set(prev);
+                      if (checked) next.add(colId);
+                      else next.delete(colId);
+                      return next;
+                    });
+                  }}
+                >
+                  {t(col.header)}
+                </DropdownMenuCheckboxItem>
+              );
+            })}
           </DropdownMenuContent>
         </DropdownMenu>
       )}
