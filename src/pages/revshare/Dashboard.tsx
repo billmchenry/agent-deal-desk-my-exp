@@ -407,7 +407,7 @@ export default function RevShareDashboard() {
                 <p className="text-stat-value font-bold font-secondary text-white leading-none">{formatNumber(24)}</p>
                 <p className="text-xs text-white/70">{t("revshare.actual")}</p>
                 <div className="flex-1" />
-                <button className="mt-2 inline-flex items-center gap-1 rounded-[51px] bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors self-start" aria-label={t("revshare.viewFLAList")}>
+                <button className="mt-2 inline-flex items-center gap-1 rounded-[51px] bg-white/15 hover:bg-white/25 px-3 py-1.5 min-h-[44px] sm:min-h-0 text-xs font-medium text-white transition-colors self-start" aria-label={t("revshare.viewFLAList")}>
                   {t("revshare.viewFLAList")} <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -475,7 +475,7 @@ export default function RevShareDashboard() {
                   </div>
                 </div>
 
-                <button className="mt-1 inline-flex items-center gap-1 rounded-[51px] bg-white/15 hover:bg-white/25 px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-white transition-colors" aria-label="View FLQA List">
+                <button className="mt-1 inline-flex items-center gap-1 rounded-[51px] bg-white/15 hover:bg-white/25 px-3 py-1.5 min-h-[44px] sm:min-h-0 text-xs font-medium text-white transition-colors" aria-label="View FLQA List">
                   View FLQA List <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -519,7 +519,7 @@ export default function RevShareDashboard() {
                 <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
-                <button className="inline-flex items-center gap-1 rounded-[51px] border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
+                <button className="inline-flex items-center gap-1 rounded-[51px] border border-border hover:bg-muted px-3 py-1.5 min-h-[44px] sm:min-h-0 text-xs font-medium text-foreground transition-colors">
                   {t("revshare.viewDetails")} <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
@@ -535,7 +535,7 @@ export default function RevShareDashboard() {
                   {formatCurrency(1869.20)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
-                  <button className="inline-flex items-center gap-1 rounded-[51px] border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
+                  <button className="inline-flex items-center gap-1 rounded-[51px] border border-border hover:bg-muted px-3 py-1.5 min-h-[44px] sm:min-h-0 text-xs font-medium text-foreground transition-colors">
                     {t("revshare.viewDetails")} <ChevronRight className="h-3 w-3" />
                   </button>
                   <Button size="sm" className="h-11 sm:h-7 text-xs px-3">{t("revshare.getPaidNow")}</Button>
@@ -552,7 +552,7 @@ export default function RevShareDashboard() {
                 <p className="text-section-title font-bold font-secondary text-foreground mb-2">
                   {formatCurrency(986.92)} <span className="text-xs font-medium text-muted-foreground">USD</span>
                 </p>
-                <button className="inline-flex items-center gap-1 rounded-[51px] border border-border hover:bg-muted px-3 py-2.5 min-h-[44px] sm:min-h-0 sm:py-1 text-xs font-medium text-foreground transition-colors">
+                <button className="inline-flex items-center gap-1 rounded-[51px] border border-border hover:bg-muted px-3 py-1.5 min-h-[44px] sm:min-h-0 text-xs font-medium text-foreground transition-colors">
                   {t("revshare.viewDetails")} <ChevronRight className="h-3 w-3" />
                 </button>
               </div>
