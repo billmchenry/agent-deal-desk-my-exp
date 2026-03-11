@@ -196,7 +196,7 @@ export default function IconProgram() {
                   {/* ICON Qualifying Fee */}
                   <div className="space-y-3">
                     <h4 className="text-sm font-medium text-foreground">{t("icon.qualifyingFee")}</h4>
-                    <Badge variant="destructive" className="mt-1">{t("icon.notPaid")}</Badge>
+                    <Badge className="mt-1 bg-[hsl(var(--exp-gold))]/20 text-[hsl(var(--exp-gold-light))] border border-[hsl(var(--exp-gold))]/30 hover:bg-[hsl(var(--exp-gold))]/30">{t("icon.notPaid")}</Badge>
                     <p className="text-xs text-muted-foreground">
                       {t("icon.qualifyingFeeNote")}
                     </p>
