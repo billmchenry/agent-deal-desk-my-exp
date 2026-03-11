@@ -1096,7 +1096,7 @@ export default function Financials() {
                 <Card className="p-4 space-y-4">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-sm text-muted-foreground">{t("fin.totalEarned")}</p>
+                      <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {selectedBatch.month} {selectedBatch.year}
                       </p>
