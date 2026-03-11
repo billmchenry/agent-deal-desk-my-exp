@@ -831,12 +831,16 @@ export default function Financials() {
                           {batch.payNowTransactions.map((pn) => (
                             <div
                               key={pn.id}
-                              className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 px-3 py-3 border-b border-border/50 last:border-0 bg-accent/30 hover:bg-accent/50 transition-colors items-center"
+                              className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 px-3 py-3 border-b border-border/50 last:border-0 bg-accent/30 hover:bg-accent/50 transition-colors items-center cursor-pointer"
+                              onClick={() => { setSelectedPayNow({ txn: pn, batchId: batch.id }); setPayNowSheetOpen(true); }}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedPayNow({ txn: pn, batchId: batch.id }); setPayNowSheetOpen(true); } }}
                             >
                               <div className="text-sm text-foreground">{formatDate(pn.date)}</div>
-                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.initialAmount)} USD</div>
-                              <div className="text-sm font-medium font-secondary text-destructive text-right">{formatCurrency(pn.serviceFee)} USD</div>
-                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.finalAmount)} USD</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.initialAmount)}</div>
+                              <div className="text-sm font-medium font-secondary text-destructive text-right">{formatCurrency(pn.serviceFee)}</div>
+                              <div className="text-sm font-medium font-secondary text-foreground text-right">{formatCurrency(pn.finalAmount)}</div>
                               <div className="flex items-center justify-between md:justify-end gap-2">
                                 <span className="text-sm text-foreground">{pn.dealCount} deals</span>
                                 <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
