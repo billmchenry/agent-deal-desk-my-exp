@@ -370,7 +370,7 @@ export default function TeamDashboard() {
                   </div>
                   <Progress
                     value={req.progress}
-                    className={`h-2 ${req.isWarning ? '[&>div]:bg-exp-gold bg-exp-gold/15' : req.progress === 100 ? '[&>div]:bg-exp-green' : ''}`}
+                    className={`h-2 ${req.isWarning ? '[&>div]:bg-yellow-500' : req.progress === 100 ? '[&>div]:bg-green-500' : ''}`}
                   />
                 </div>
               ))}
