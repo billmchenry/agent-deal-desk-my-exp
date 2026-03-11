@@ -479,6 +479,8 @@ export default function Financials() {
   const [expandedBatchId, setExpandedBatchId] = useState<string | null>(null);
   const [selectedPayNow, setSelectedPayNow] = useState<{ txn: PayNowTransaction; batchId: string } | null>(null);
   const [payNowSheetOpen, setPayNowSheetOpen] = useState(false);
+  const [selectedDeal, setSelectedDeal] = useState<PayNowDeal | null>(null);
+  const [dealSheetOpen, setDealSheetOpen] = useState(false);
 
   // Periodic date range filter
   const periodicPresets = [
