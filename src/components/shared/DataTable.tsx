@@ -55,6 +55,8 @@ export interface ColumnDef<T> {
   sortable?: boolean;
   filterable?: boolean;
   defaultVisible?: boolean;
+  /** Freeze this column to the right edge of the table */
+  stickyRight?: boolean;
   /** For currency columns: key in data row that holds currency code (e.g. "USD") */
   currencyCodeKey?: keyof T;
   render?: (value: T[keyof T], row: T) => ReactNode;
