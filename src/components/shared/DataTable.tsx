@@ -491,7 +491,7 @@ export function DataTable<T extends Record<string, any>>({
                       role="row"
                       tabIndex={onRowClick ? 0 : undefined}
                       className={cn(
-                        onRowClick && "cursor-pointer hover:bg-muted/50",
+                        onRowClick && "cursor-pointer group hover:bg-muted/50",
                         "min-h-[44px] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
                       )}
                       onClick={() => onRowClick?.(row)}
