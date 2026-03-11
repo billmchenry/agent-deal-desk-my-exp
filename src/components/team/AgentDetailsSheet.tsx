@@ -237,7 +237,7 @@ export function AgentDetailsSheet({ open, onOpenChange }: AgentDetailsSheetProps
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                       className={cn(
                         "py-3 px-4 text-body font-medium text-muted-foreground whitespace-nowrap overflow-hidden cursor-pointer select-none hover:text-foreground",
-                        col.id === "agentName" ? "text-start" : "text-end"
+                        (col.type === "number" || col.type === "currency" || col.type === "percent") ? "text-end" : "text-start"
                       )}
                       onClick={() => handleSort(col.id)}
                     >
