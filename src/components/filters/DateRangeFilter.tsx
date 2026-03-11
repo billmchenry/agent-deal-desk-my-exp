@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { CalendarDays } from "lucide-react";
-import { startOfYear, startOfMonth, subWeeks, subYears } from "date-fns";
+import { startOfYear, startOfMonth, subWeeks, subYears, addMonths } from "date-fns";
 import { useFormatters } from "@/hooks/useFormatters";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
