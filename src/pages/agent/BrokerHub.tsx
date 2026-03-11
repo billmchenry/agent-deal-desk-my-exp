@@ -34,7 +34,7 @@ export default function BrokerHub() {
     { key: "state", header: config.brokerHubMode === "us" ? t("broker.state") : "Province", type: "string", sortable: true, filterable: true },
     { key: "postalCode", header: config.brokerHubMode === "us" ? "ZIP Code" : t("broker.postalCode"), type: "string", filterable: true },
     { key: "agentId", header: "ID", type: "string", sortable: true, filterable: true },
-    { key: "primaryStateLicense", header: config.brokerHubMode === "us" ? "Primary State License" : "Primary Provincial License", type: "string", sortable: true, filterable: true },
+    { key: "primaryStateLicense", header: config.brokerHubMode === "us" ? "Primary State License" : "Primary Provincial Licenss", type: "string", sortable: true, filterable: true },
   ];
 
   return (
