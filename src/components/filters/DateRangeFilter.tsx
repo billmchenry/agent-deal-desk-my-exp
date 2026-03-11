@@ -57,6 +57,7 @@ export function DateRangeFilter({
 }: DateRangeFilterProps) {
   const [open, setOpen] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
+  const [selectingField, setSelectingField] = useState<"from" | "to">("from");
   const { formatDate } = useFormatters();
   const { t } = useTranslation();
 
@@ -82,6 +83,24 @@ export function DateRangeFilter({
   const handlePreset = (preset: Preset) => {
     onChange(preset.getRange());
     setShowCustom(false);
+  };
+
+  const handleDateSelect = (date: Date | undefined) => {
+    if (!date) return;
+    if (selectingField === "from") {
+      // If new from is after current to, clear to
+      const newTo = value.to && date > value.to ? undefined : value.to;
+      onChange({ from: date, to: newTo });
+      setSelectingField("to");
+    } else {
+      // If new to is before current from, set it as from instead
+      if (value.from && date < value.from) {
+        onChange({ from: date, to: value.from });
+      } else {
+        onChange({ from: value.from, to: date });
+      }
+      setSelectingField("from");
+    }
   };
 
   return (
@@ -122,26 +141,48 @@ export function DateRangeFilter({
           </Button>
         </div>
 
-        {/* Calendar (always visible when custom or popover is open) */}
+        {/* Calendar for custom range */}
         {(showCustom || activePresetKey === "filter.custom") && (
           <div>
-            <div className="flex gap-4 mb-3 text-xs text-muted-foreground">
-              <span>{t("filter.from")}: <span className="text-foreground font-medium">{value.from ? formatDate(value.from) : "—"}</span></span>
-              <span>{t("filter.to")}: <span className="text-foreground font-medium">{value.to ? formatDate(value.to) : "—"}</span></span>
+            <div className="flex gap-4 mb-3 text-xs">
+              <button
+                type="button"
+                onClick={() => setSelectingField("from")}
+                className={cn(
+                  "px-3 py-1.5 rounded-md border transition-colors",
+                  selectingField === "from"
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border text-muted-foreground hover:border-primary/50"
+                )}
+              >
+                {t("filter.from")}: <span className="text-foreground font-medium">{value.from ? formatDate(value.from) : "—"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectingField("to")}
+                className={cn(
+                  "px-3 py-1.5 rounded-md border transition-colors",
+                  selectingField === "to"
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border text-muted-foreground hover:border-primary/50"
+                )}
+              >
+                {t("filter.to")}: <span className="text-foreground font-medium">{value.to ? formatDate(value.to) : "—"}</span>
+              </button>
             </div>
             <Calendar
-              mode="range"
+              mode="single"
               captionLayout="dropdown-buttons"
               fromYear={2015}
               toYear={new Date().getFullYear() + 1}
-              selected={value}
-              onSelect={(range) =>
-                onChange({ from: range?.from, to: range?.to })
-              }
+              selected={selectingField === "from" ? value.from : value.to}
+              onSelect={handleDateSelect}
               numberOfMonths={2}
               className={cn("p-3 pointer-events-auto")}
             />
-            <p className="text-[11px] text-muted-foreground mt-2">Select up to 12 months. Use dropdowns to navigate.</p>
+            <p className="text-[11px] text-muted-foreground mt-2">
+              Selecting: <span className="font-medium text-foreground">{selectingField === "from" ? t("filter.from") : t("filter.to")}</span> date. Use dropdowns to navigate months.
+            </p>
           </div>
         )}
       </PopoverContent>
