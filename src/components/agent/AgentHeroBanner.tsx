@@ -41,7 +41,7 @@ function MiniStatCard({
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+      className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 dark:bg-white/5 dark:border-white/15 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 dark:hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
       role="link"
       aria-label={`${label}: ${value}. View details`}
     >
