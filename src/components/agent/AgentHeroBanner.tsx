@@ -76,7 +76,7 @@ export function AgentHeroBanner({
   };
 
   return (
-    <Card className="relative overflow-hidden bg-gradient-to-r from-exp-frosted-blue via-exp-light-grey to-exp-frosted-blue dark:from-exp-dark-navy dark:via-exp-charcoal-blue dark:to-exp-dark-navy p-4 sm:p-6">
+    <Card className="relative overflow-hidden bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue text-white p-4 sm:p-6">
       {/* Decorative background */}
       <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
         <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-slate-blue" />
