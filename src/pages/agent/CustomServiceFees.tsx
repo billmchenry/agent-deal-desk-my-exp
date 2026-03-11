@@ -135,7 +135,7 @@ export default function CustomServiceFees() {
           {selectedAgent && (
             <div className="mt-6 space-y-6">
               {/* Agent header */}
-              <div className="flex items-center justify-between rounded-lg border p-4">
+              <div className="flex items-center justify-between rounded-[51px] border p-4">
                 <span className="text-lg font-semibold">{selectedAgent.agentName}</span>
                 <ChevronRight className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
               </div>
