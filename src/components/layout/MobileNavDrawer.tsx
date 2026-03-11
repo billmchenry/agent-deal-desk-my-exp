@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import expLogoWhite from "@/assets/exp-realty-logo-white.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Home, LayoutDashboard, User, Users, DollarSign, FileText,
