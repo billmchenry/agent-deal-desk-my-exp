@@ -81,6 +81,7 @@ export default {
           "green-light": "hsl(var(--exp-green-light))",
           red: "hsl(var(--exp-red))",
           purple: "hsl(var(--exp-purple))",
+          navy: "hsl(var(--exp-navy))",
           gray: "hsl(var(--exp-gray))",
           "gray-dark": "hsl(var(--exp-gray-dark))",
           "charcoal-blue": "hsl(var(--exp-charcoal-blue))",

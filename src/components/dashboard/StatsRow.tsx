@@ -19,7 +19,7 @@ function StatCard({ icon, value, label, color, isLoading }: StatCardProps) {
   const colorClasses = {
     blue: { bg: "bg-exp-blue/10", icon: "text-exp-blue" },
     green: { bg: "bg-exp-green/10", icon: "text-exp-green" },
-    purple: { bg: "bg-exp-purple/10", icon: "text-exp-purple" },
+    purple: { bg: "bg-exp-navy/10", icon: "text-exp-navy" },
   };
   const colors = colorClasses[color];
 
