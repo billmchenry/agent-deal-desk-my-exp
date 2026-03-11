@@ -418,8 +418,8 @@ export function DataTable<T extends Record<string, any>>({
   return (
     <div>
       {toolbar}
-      <div className="border rounded-lg overflow-hidden">
-        <div className="overflow-x-auto scrollbar-hide">
+        <div className="border rounded-lg overflow-x-auto">
+          <div>
           <div style={{ minWidth: `${visibleCols.length * 130}px` }}>
             <Table role="grid">
               <TableHeader>
