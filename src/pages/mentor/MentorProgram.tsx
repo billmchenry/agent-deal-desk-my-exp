@@ -68,7 +68,7 @@ function MenteeView() {
               </Avatar>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="icon" className="h-10 w-10 rounded-lg" asChild>
+              <Button variant="outline" size="icon" className="h-10 w-10 rounded-[51px]" asChild>
                 <a href={`tel:${mentor.phone}`} aria-label={t("mentor.callMentor")}><Phone className="h-4 w-4" /></a>
               </Button>
               <Button variant="outline" size="icon" className="h-10 w-10 rounded-lg" asChild>
