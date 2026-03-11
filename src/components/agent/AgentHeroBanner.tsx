@@ -41,7 +41,7 @@ function MiniStatCard({
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
+      className="flex items-center gap-3 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 dark:bg-white/5 dark:border-white/15 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 dark:hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-ring text-left w-full"
       role="link"
       aria-label={`${label}: ${value}. View details`}
     >
@@ -49,8 +49,8 @@ function MiniStatCard({
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-section-title font-bold text-exp-dark-navy truncate">{value}</p>
-        <p className="text-xs sm:text-[11px] text-exp-moss-grey">{label}</p>
+        <p className="text-section-title font-bold text-exp-dark-navy dark:text-white truncate">{value}</p>
+        <p className="text-xs sm:text-[11px] text-exp-moss-grey dark:text-white/60">{label}</p>
       </div>
     </button>
   );
@@ -76,7 +76,7 @@ export function AgentHeroBanner({
   };
 
   return (
-    <Card className="relative overflow-hidden bg-gradient-to-r from-exp-frosted-blue via-exp-light-grey to-exp-frosted-blue p-4 sm:p-6">
+    <Card className="relative overflow-hidden bg-gradient-to-r from-exp-frosted-blue via-exp-light-grey to-exp-frosted-blue dark:from-exp-dark-navy dark:via-exp-charcoal-blue dark:to-exp-dark-navy p-4 sm:p-6">
       {/* Decorative background */}
       <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
         <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-slate-blue" />
@@ -87,7 +87,7 @@ export function AgentHeroBanner({
         {/* Header Row */}
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-1">
-              <Badge className="bg-exp-charcoal-blue/10 text-exp-charcoal-blue border-exp-charcoal-blue/20 hover:bg-exp-charcoal-blue/15">
+              <Badge className="bg-exp-charcoal-blue/10 text-exp-charcoal-blue border-exp-charcoal-blue/20 hover:bg-exp-charcoal-blue/15 dark:bg-white/10 dark:text-white dark:border-white/20 dark:hover:bg-white/15">
               <Target className="me-1 h-3 w-3" />
               PERFORMANCE
             </Badge>
@@ -127,7 +127,7 @@ export function AgentHeroBanner({
             />
           ) : (
             <div
-              className="flex items-center gap-2 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 transition-colors"
+              className="flex items-center gap-2 rounded-lg border border-exp-slate-blue/20 bg-exp-charcoal-blue/5 dark:bg-white/5 dark:border-white/15 backdrop-blur-sm px-3 py-2.5 min-w-0 cursor-pointer hover:bg-exp-charcoal-blue/10 dark:hover:bg-white/10 transition-colors"
               role="link"
               aria-label="View transaction details"
             >
@@ -140,8 +140,8 @@ export function AgentHeroBanner({
                   className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                   onClick={() => goToTransactions("paid")}
                 >
-                  <p className="text-section-title font-bold text-exp-dark-navy">{transactionsClosed}</p>
-                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("txn.paid")}</p>
+                  <p className="text-section-title font-bold text-exp-dark-navy dark:text-white">{transactionsClosed}</p>
+                  <p className="text-xs sm:text-[11px] text-exp-moss-grey dark:text-white/60">{t("txn.paid")}</p>
                 </button>
                 {transactionsFirm !== undefined && (
                   <button
@@ -149,8 +149,8 @@ export function AgentHeroBanner({
                     className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                     onClick={() => goToTransactions("firm")}
                   >
-                    <p className="text-section-title font-bold text-exp-dark-navy">{transactionsFirm}</p>
-                    <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("txn.firm")}</p>
+                    <p className="text-section-title font-bold text-exp-dark-navy dark:text-white">{transactionsFirm}</p>
+                    <p className="text-xs sm:text-[11px] text-exp-moss-grey dark:text-white/60">{t("txn.firm")}</p>
                   </button>
                 )}
                 <button
@@ -158,16 +158,16 @@ export function AgentHeroBanner({
                   className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                   onClick={() => goToTransactions("pending")}
                 >
-                  <p className="text-section-title font-bold text-exp-dark-navy">{transactionsPending}</p>
-                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("txn.pending")}</p>
+                  <p className="text-section-title font-bold text-exp-dark-navy dark:text-white">{transactionsPending}</p>
+                  <p className="text-xs sm:text-[11px] text-exp-moss-grey dark:text-white/60">{t("txn.pending")}</p>
                 </button>
                 <button
                   type="button"
                   className="text-center focus-visible:ring-2 focus-visible:ring-ring rounded px-1 min-h-[44px] flex flex-col items-center justify-center"
                   onClick={() => goToTransactions("withdrawn")}
                 >
-                  <p className="text-section-title font-bold text-exp-dark-navy">{transactionsWithdrawn}</p>
-                  <p className="text-xs sm:text-[11px] text-exp-moss-grey">{t("txn.withdrawn")}</p>
+                  <p className="text-section-title font-bold text-exp-dark-navy dark:text-white">{transactionsWithdrawn}</p>
+                  <p className="text-xs sm:text-[11px] text-exp-moss-grey dark:text-white/60">{t("txn.withdrawn")}</p>
                 </button>
               </div>
             </div>
