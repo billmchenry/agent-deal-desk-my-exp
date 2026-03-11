@@ -764,17 +764,15 @@ export default function Financials() {
                     {/* Batch header row */}
                     <div
                       className={cn(
-                        "flex flex-wrap md:flex-nowrap items-center justify-between p-4 bg-muted/30 transition-colors",
-                        hasPayNow && "cursor-pointer hover:bg-muted/50"
+                        "flex flex-wrap md:flex-nowrap items-center justify-between p-4 bg-muted/30 transition-colors cursor-pointer hover:bg-muted/50"
                       )}
-                      onClick={() => hasPayNow && setExpandedBatchId(isExpanded ? null : batch.id)}
+                      onClick={() => setExpandedBatchId(isExpanded ? null : batch.id)}
                     >
                       <div className="flex items-center gap-2">
-                        {hasPayNow && (
-                          isExpanded
-                            ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" />
-                            : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
-                        )}
+                        {isExpanded
+                          ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" />
+                          : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                        }
                         <div>
                           <h3 className="font-medium text-foreground">
                             {batch.month} {batch.year} Batch
@@ -808,10 +806,12 @@ export default function Financials() {
                     </div>
 
                     {/* Expanded PayNow Early Payouts */}
-                    {isExpanded && hasPayNow && (
+                    {isExpanded && (
                       <div className="border-t border-border">
                         <div className="p-4">
-                          <h4 className="font-medium text-sm text-exp-green mb-3">{t("fin.payNowEarlyPayouts")}</h4>
+                          {hasPayNow ? (
+                            <>
+                              <h4 className="font-medium text-sm text-exp-green mb-3">{t("fin.payNowEarlyPayouts")}</h4>
 
                           {/* Table header */}
                           <div className="hidden md:grid grid-cols-5 gap-4 px-3 py-2 bg-muted/50 rounded text-xs font-medium text-muted-foreground mb-1">
@@ -837,6 +837,10 @@ export default function Financials() {
                               </div>
                             </div>
                           ))}
+                            </>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">No PayNow transactions this month.</p>
+                          )}
                         </div>
                       </div>
                     )}
