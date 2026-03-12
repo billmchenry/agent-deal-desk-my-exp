@@ -813,9 +813,9 @@ export default function Financials() {
                 <p className="text-2xl font-semibold text-foreground font-secondary">{totalTransactions}</p>
               </Card>
               <Card className="p-5">
-                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalBatchPayout")}</p>
-                <p className="text-2xl font-semibold text-primary font-secondary">
-                  {formatCurrency(totalRevenue)} <span className="text-xs text-muted-foreground">USD</span>
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalPayNowPaidEarly")}</p>
+                <p className="text-2xl font-semibold text-exp-green font-secondary">
+                  {formatCurrency(totalPayNow)} <span className="text-xs text-muted-foreground">USD</span>
                 </p>
               </Card>
               <Card className="p-5">
@@ -825,9 +825,9 @@ export default function Financials() {
                 </p>
               </Card>
               <Card className="p-5">
-                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalPayNowTransactions")}</p>
-                <p className="text-2xl font-semibold text-exp-green font-secondary">
-                  {formatCurrency(totalPayNow)} <span className="text-xs text-muted-foreground">USD</span>
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalBatchPayout")}</p>
+                <p className="text-2xl font-semibold text-primary font-secondary">
+                  {formatCurrency(totalRevenue)} <span className="text-xs text-muted-foreground">USD</span>
                 </p>
               </Card>
             </div>
