@@ -514,8 +514,10 @@ export default function Financials() {
   }, [periodicDateRange]);
 
   // Periodic summary stats (use filtered batches)
+  const totalRevenueEarned = filteredBatches.reduce((sum, b) => sum + (b.initialRevenue || 0), 0);
   const totalRevenue = filteredBatches.reduce((sum, b) => sum + b.finalPayout, 0);
   const totalTransactions = filteredBatches.reduce((sum, b) => sum + b.totalDeals, 0);
+  const totalAdjustments = filteredBatches.reduce((sum, b) => sum + (b.adjustmentAmount || 0), 0);
   const totalPayNow = filteredBatches.reduce((sum, b) => sum + b.payNowDeduction, 0);
 
   const handleAgentClick = (row: AgentRevShareRow) => {
