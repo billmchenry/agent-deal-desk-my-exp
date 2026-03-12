@@ -377,7 +377,7 @@ function SelectedAgentCard({
                   <X className="h-4 w-4" />
                 </button>
               </div>
-              <Badge variant="outline" className={`text-[11px] font-semibold px-2 py-0.5 ${getLevelBadgeClass(agent.level)}`}>
+              <Badge variant="outline" className={`text-[11px] font-semibold px-2 py-0.5 ${getLevelBadgeStyle(agent.level)}`}>
                 L{agent.level}
               </Badge>
               <div className="mt-2 space-y-1 text-xs">
