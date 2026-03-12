@@ -495,10 +495,11 @@ export default function OrganizationTree() {
 
         {/* Agent grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {displayedAgents.map((agent) => (
+          {displayedAgents.map((agent, idx) => (
             <AgentCard
               key={agent.id}
               agent={agent}
+              index={idx}
               onClick={() => handleDrillDown(agent)}
               onOpenContact={agent.contactData ? () => handleOpenContact(agent) : undefined}
             />
