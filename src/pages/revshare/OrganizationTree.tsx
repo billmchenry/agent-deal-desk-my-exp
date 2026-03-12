@@ -102,14 +102,26 @@ const orgTree: OrgTreeAgent[] = [
   },
 ];
 
-const getLevelBadgeClass = (level: number) => {
-  const classes: Record<number, string> = {
-    1: "bg-blue-100 text-blue-700 border-blue-200",
-    2: "bg-green-100 text-green-700 border-green-200",
-    3: "bg-purple-100 text-purple-700 border-purple-200",
-    4: "bg-amber-100 text-amber-700 border-amber-200",
+const getLevelBorderColor = (level: number) => {
+  const colors: Record<number, string> = {
+    1: "border-l-exp-gold",
+    2: "border-l-exp-blue",
+    3: "border-l-exp-slate-blue",
+    4: "border-l-exp-moss-grey",
+    5: "border-l-exp-charcoal-blue",
   };
-  return classes[level] || "bg-muted text-muted-foreground border-border";
+  return colors[level] || "border-l-muted-foreground";
+};
+
+const getLevelBadgeStyle = (level: number) => {
+  const styles: Record<number, string> = {
+    1: "bg-exp-gold/15 text-exp-gold border-exp-gold/30",
+    2: "bg-exp-blue/15 text-exp-blue border-exp-blue/30",
+    3: "bg-exp-slate-blue/15 text-exp-slate-blue border-exp-slate-blue/30",
+    4: "bg-exp-moss-grey/15 text-exp-moss-grey border-exp-moss-grey/30",
+    5: "bg-exp-charcoal-blue/15 text-exp-charcoal-blue border-exp-charcoal-blue/30",
+  };
+  return styles[level] || "bg-muted text-muted-foreground border-border";
 };
 
 // Helper to count all agents recursively
