@@ -446,9 +446,9 @@ export function DataTable<T extends Record<string, any>>({
                         aria-label={`Sort by ${t(col.header)} ${isSorted && sortDir === "asc" ? "descending" : "ascending"}`}>
                         
                           {t(col.header)}
-                          {isSorted && sortDir === "asc" && <ChevronUp className="h-3.5 w-3.5" />}
-                          {isSorted && sortDir === "desc" && <ChevronDown className="h-3.5 w-3.5" />}
-                          {(!isSorted || !sortDir) && <ChevronsUpDown className="h-3.5 w-3.5 opacity-40" />}
+                          {isSorted && sortDir === "asc" && <ChevronUp className="h-3 w-3" />}
+                          {isSorted && sortDir === "desc" && <ChevronDown className="h-3 w-3" />}
+                          {(!isSorted || !sortDir) && <ChevronsUpDown className="h-3 w-3 opacity-40" />}
                         </button> :
 
                       <span>{t(col.header)}</span>
