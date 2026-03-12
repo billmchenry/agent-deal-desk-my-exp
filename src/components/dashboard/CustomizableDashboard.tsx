@@ -72,6 +72,85 @@ export function CustomizableDashboard() {
   const mainWidgetsFiltered = mainWidgets.filter((w) => w.type !== "promo-carousel");
   const hasPromoWidget = mainWidgets.some((w) => w.type === "promo-carousel");
 
+  // Group hero-banner + stats-row as a single draggable unit
+  const GROUPED_MAIN_TYPES = new Set(["hero-banner", "stats-row"]);
+  const heroBanner = mainWidgets.find(w => w.type === "hero-banner");
+  const statsRow = mainWidgets.find(w => w.type === "stats-row");
+  const hasGroup = heroBanner && statsRow;
+  const groupId = hasGroup ? `group-${heroBanner.id}` : null;
+
+  // Build sortable items: replace the two grouped widgets with one group ID
+  const mainSortableItems: string[] = [];
+  const mainRenderOrder: Array<{ type: 'single'; widget: typeof mainWidgets[0] } | { type: 'group'; id: string }> = [];
+  let groupAdded = false;
+
+  mainWidgets.forEach((widget) => {
+    if (hasGroup && GROUPED_MAIN_TYPES.has(widget.type)) {
+      if (!groupAdded) {
+        mainSortableItems.push(groupId!);
+        mainRenderOrder.push({ type: 'group', id: groupId! });
+        groupAdded = true;
+      }
+      // skip the second grouped widget — it's rendered inside the group
+    } else {
+      mainSortableItems.push(widget.id);
+      mainRenderOrder.push({ type: 'single', widget });
+    }
+  });
+
+  // Custom reorder that moves the group as one unit
+  const handleGroupAwareDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
+    // Work with sortable item list
+    const oldIndex = mainSortableItems.indexOf(activeId) !== -1
+      ? mainSortableItems.indexOf(activeId)
+      : sidebarWidgets.findIndex(w => w.id === activeId);
+    
+    // If it's a sidebar widget, use original handler
+    if (mainSortableItems.indexOf(activeId) === -1 || mainSortableItems.indexOf(overId) === -1) {
+      reorderWidgets(activeId, overId);
+      return;
+    }
+
+    // Reorder the sortable items
+    const newOrder = [...mainSortableItems];
+    const fromIdx = newOrder.indexOf(activeId);
+    const toIdx = newOrder.indexOf(overId);
+    if (fromIdx === -1 || toIdx === -1) return;
+    const [moved] = newOrder.splice(fromIdx, 1);
+    newOrder.splice(toIdx, 0, moved);
+
+    // Expand group back to individual widgets and rebuild full widget array
+    const expandedMainIds: string[] = [];
+    newOrder.forEach(id => {
+      if (id === groupId) {
+        expandedMainIds.push(heroBanner!.id, statsRow!.id);
+      } else {
+        expandedMainIds.push(id);
+      }
+    });
+
+    // Rebuild widgets array preserving sidebar order
+    const widgetMap = new Map(widgets.map(w => [w.id, w]));
+    const newWidgets = [
+      ...expandedMainIds.map(id => widgetMap.get(id)!).filter(Boolean),
+      ...sidebarWidgets,
+    ];
+    // Use raw setter via reorder trick: remove all then re-add
+    // We need direct access, so we'll call reorderWidgets in sequence
+    // Actually, let's just set it directly through a reset approach
+    resetToDefault(); // clear
+    // Better: directly manipulate by successive reorders isn't clean.
+    // Instead, let's just use the widgets setter if available.
+    // We'll handle this differently - just use original reorder for non-group
+    reorderWidgets(activeId === groupId ? heroBanner!.id : activeId, overId === groupId ? heroBanner!.id : overId);
+  };
+
   return (
     <div className="space-y-4 min-w-0 max-w-full">
       {/* Toolbar */}
@@ -88,17 +167,73 @@ export function CustomizableDashboard() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6 min-w-0 max-w-full">
             <SortableContext
-              items={mainWidgets.map((w) => w.id)}
+              items={mainSortableItems}
               strategy={verticalListSortingStrategy}
             >
               {(() => {
-                const heroBannerIdx = mainWidgets.findIndex(w => w.type === "hero-banner");
-                const insertAfterIdx = heroBannerIdx >= 0 ? heroBannerIdx : -1;
-
                 const elements: React.ReactNode[] = [];
+                let mentorInserted = false;
 
-                if (showMentorWidget && insertAfterIdx === -1) {
-                  elements.push(
+                mainRenderOrder.forEach((item) => {
+                  if (item.type === 'group') {
+                    // Render grouped widget
+                    const groupWidget: DashboardWidget = {
+                      id: groupId!,
+                      type: 'hero-banner',
+                      title: 'Capping & Stats',
+                      size: 'large',
+                      column: 'main',
+                    };
+                    elements.push(
+                      <DraggableWidget
+                        key={groupId}
+                        widget={groupWidget}
+                        isEditMode={isEditMode}
+                        onRemove={() => {
+                          removeWidget(heroBanner!.id);
+                          removeWidget(statsRow!.id);
+                        }}
+                      >
+                        <div className="space-y-4">
+                          <WidgetRenderer widget={heroBanner!} />
+                          <WidgetRenderer widget={statsRow!} />
+                        </div>
+                      </DraggableWidget>
+                    );
+
+                    if (showMentorWidget && !mentorInserted) {
+                      elements.push(
+                        <MentorProgramWidget
+                          key="mentor-widget"
+                          status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                          onStatusChange={setMentorMode}
+                        />
+                      );
+                      mentorInserted = true;
+                    }
+                  } else {
+                    const widget = item.widget;
+                    const isPromo = widget.type === "promo-carousel";
+                    const widgetEl = (
+                      <DraggableWidget
+                        key={widget.id}
+                        widget={widget}
+                        isEditMode={isEditMode}
+                        onRemove={removeWidget}
+                      >
+                        <WidgetRenderer widget={widget} />
+                      </DraggableWidget>
+                    );
+                    elements.push(
+                      isPromo ? (
+                        <div key={widget.id + "-wrap"} className="hidden lg:block">{widgetEl}</div>
+                      ) : widgetEl
+                    );
+                  }
+                });
+
+                if (showMentorWidget && !mentorInserted && !hasGroup) {
+                  elements.unshift(
                     <MentorProgramWidget
                       key="mentor-widget"
                       status={config.mentorMode as "needs_mentor" | "pairing_underway"}
@@ -106,36 +241,6 @@ export function CustomizableDashboard() {
                     />
                   );
                 }
-
-                mainWidgets.forEach((widget, index) => {
-                  const isPromo = widget.type === "promo-carousel";
-                  const widgetEl = (
-                    <DraggableWidget
-                      key={widget.id}
-                      widget={widget}
-                      isEditMode={isEditMode}
-                      onRemove={removeWidget}
-                    >
-                      <WidgetRenderer widget={widget} />
-                    </DraggableWidget>
-                  );
-                  // On mobile, hide promo-carousel here — it renders at the bottom
-                  elements.push(
-                    isPromo ? (
-                      <div key={widget.id + "-wrap"} className="hidden lg:block">{widgetEl}</div>
-                    ) : widgetEl
-                  );
-
-                  if (showMentorWidget && index === insertAfterIdx) {
-                    elements.push(
-                      <MentorProgramWidget
-                        key="mentor-widget"
-                        status={config.mentorMode as "needs_mentor" | "pairing_underway"}
-                        onStatusChange={setMentorMode}
-                      />
-                    );
-                  }
-                });
 
                 return elements;
               })()}
