@@ -582,7 +582,7 @@ export default function Financials() {
           month: b.month,
           year: b.year,
           batchId: b.batchId,
-          date: "",
+          date: b.batchDate,
           totalDeals: b.totalDeals,
           memberCount: b.memberCount,
           initialRevenue: b.initialRevenue,
