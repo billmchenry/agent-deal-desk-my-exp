@@ -146,6 +146,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const setWidgetOrder = useCallback((newWidgets: DashboardWidget[]) => {
+    setWidgets(newWidgets);
+  }, []);
+
   const isWidgetPinned = useCallback((type: WidgetType) => {
     return widgets.some(w => w.type === type);
   }, [widgets]);
