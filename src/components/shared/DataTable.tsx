@@ -2,8 +2,7 @@ import { useState, useMemo, useCallback, type ReactNode } from "react";
 import {
   ChevronUp,
   ChevronDown,
-  ChevronsUpDown,
-
+  ArrowUpDown,
   Download,
   Columns3,
   ChevronLeft,
