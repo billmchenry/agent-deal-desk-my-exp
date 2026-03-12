@@ -553,43 +553,83 @@ export default function Financials() {
       { key: "finalPayout", header: "Final Payout", type: "currency" },
       { key: "totalEarned", header: "Total Earned", type: "currency" },
     ];
-    const rows: PeriodicCsvRow[] = [];
+    // Group batches by month-year
+    const monthGroups = new Map<string, typeof filteredBatches>();
     filteredBatches.forEach(b => {
-      // Batch row
-      rows.push({
-        type: "Batch",
-        month: b.month,
-        year: b.year,
-        batchId: b.batchId,
-        date: "",
-        totalDeals: b.totalDeals,
-        memberCount: b.memberCount,
-        initialRevenue: b.initialRevenue,
-        serviceFee: "",
-        payNowDeduction: b.payNowDeduction,
-        adjustmentAmount: b.adjustmentAmount,
-        finalPayout: b.finalPayout,
-        totalEarned: b.finalPayout + b.adjustmentAmount + b.payNowDeduction,
-      });
-      // PayNow rows
-      b.payNowTransactions.forEach(pn => {
+      const key = `${b.month}-${b.year}`;
+      if (!monthGroups.has(key)) monthGroups.set(key, []);
+      monthGroups.get(key)!.push(b);
+    });
+
+    const rows: PeriodicCsvRow[] = [];
+    monthGroups.forEach((batches, _key) => {
+      let monthDeals = 0, monthMembers = 0, monthRevenue = 0, monthPayNow = 0, monthAdj = 0, monthPayout = 0, monthEarned = 0;
+
+      batches.forEach(b => {
+        const earned = b.finalPayout + b.adjustmentAmount + b.payNowDeduction;
+        monthDeals += b.totalDeals;
+        monthMembers += b.memberCount;
+        monthRevenue += b.initialRevenue;
+        monthPayNow += b.payNowDeduction;
+        monthAdj += b.adjustmentAmount;
+        monthPayout += b.finalPayout;
+        monthEarned += earned;
+
+        // Batch row
         rows.push({
-          type: "PayNow",
+          type: "Batch",
           month: b.month,
           year: b.year,
           batchId: b.batchId,
-          date: pn.date,
-          totalDeals: pn.dealCount,
-          memberCount: 0,
-          initialRevenue: pn.initialAmount,
-          serviceFee: pn.serviceFee,
-          payNowDeduction: 0,
-          adjustmentAmount: 0,
-          finalPayout: pn.finalAmount,
-          totalEarned: "",
+          date: "",
+          totalDeals: b.totalDeals,
+          memberCount: b.memberCount,
+          initialRevenue: b.initialRevenue,
+          serviceFee: "",
+          payNowDeduction: b.payNowDeduction,
+          adjustmentAmount: b.adjustmentAmount,
+          finalPayout: b.finalPayout,
+          totalEarned: earned,
+        });
+        // PayNow rows
+        b.payNowTransactions.forEach(pn => {
+          rows.push({
+            type: "PayNow",
+            month: b.month,
+            year: b.year,
+            batchId: b.batchId,
+            date: pn.date,
+            totalDeals: pn.dealCount,
+            memberCount: 0,
+            initialRevenue: pn.initialAmount,
+            serviceFee: pn.serviceFee,
+            payNowDeduction: 0,
+            adjustmentAmount: 0,
+            finalPayout: pn.finalAmount,
+            totalEarned: "",
+          });
         });
       });
+
+      // Monthly Total row
+      const firstBatch = batches[0];
+      rows.push({
+        type: "Monthly Total",
+        month: firstBatch.month,
+        year: firstBatch.year,
+        batchId: "",
+        date: "",
+        totalDeals: monthDeals,
+        memberCount: monthMembers,
+        initialRevenue: monthRevenue,
+        serviceFee: "",
+        payNowDeduction: monthPayNow,
+        adjustmentAmount: monthAdj,
+        finalPayout: monthPayout,
+        totalEarned: monthEarned,
+      });
     });
+
     exportToCsv(rows, csvColumns, "periodic-overview-report");
   }, [filteredBatches]);
 
