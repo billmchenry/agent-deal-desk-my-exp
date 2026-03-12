@@ -17,6 +17,7 @@ interface DashboardContextType {
   addWidget: (type: WidgetType, customTitle?: string, content?: string) => string;
   removeWidget: (id: string) => DashboardWidget | undefined;
   reorderWidgets: (activeId: string, overId: string) => void;
+  setWidgetOrder: (newWidgets: DashboardWidget[]) => void;
   isWidgetPinned: (type: WidgetType) => boolean;
   getWidgetById: (id: string) => DashboardWidget | undefined;
   
@@ -145,6 +146,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const setWidgetOrder = useCallback((newWidgets: DashboardWidget[]) => {
+    setWidgets(newWidgets);
+  }, []);
+
   const isWidgetPinned = useCallback((type: WidgetType) => {
     return widgets.some(w => w.type === type);
   }, [widgets]);
@@ -228,6 +233,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     addWidget,
     removeWidget,
     reorderWidgets,
+    setWidgetOrder,
     isWidgetPinned,
     getWidgetById,
     toggleEditMode,
@@ -246,6 +252,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     addWidget,
     removeWidget,
     reorderWidgets,
+    setWidgetOrder,
     isWidgetPinned,
     getWidgetById,
     toggleEditMode,

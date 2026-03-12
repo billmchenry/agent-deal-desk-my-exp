@@ -23,6 +23,7 @@ import { MentorProgramWidget } from "./MentorProgramWidget";
 import { DashboardToolbar } from "./DashboardToolbar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { DashboardWidget } from "@/types/dashboard";
 
 // Widget-specific removal messages
 const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
@@ -40,8 +41,12 @@ const WIDGET_REMOVAL_MESSAGES: Record<string, string> = {
   'ai-insight': "I've removed that insight. Want me to generate a new one?",
 };
 
+// Types that are grouped together as a single draggable unit
+const GROUPED_MAIN_TYPES = new Set(["hero-banner", "stats-row"]);
+const GROUP_ID_PREFIX = "group-capping-stats";
+
 export function CustomizableDashboard() {
-  const { widgets, isEditMode, removeWidget, reorderWidgets } = useDashboard();
+  const { widgets, isEditMode, removeWidget, reorderWidgets, setWidgetOrder } = useDashboard();
   const { openChat } = useMiraChat();
   const { config, setMentorMode } = useDemoConfig();
 
@@ -58,19 +63,76 @@ export function CustomizableDashboard() {
     })
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (over && active.id !== over.id) {
-      reorderWidgets(active.id as string, over.id as string);
-    }
-  };
-
   const mainWidgets = widgets.filter((w) => w.column === "main");
   const sidebarWidgets = widgets.filter((w) => w.column === "sidebar");
-  // On mobile, pull promo-carousel out of the grid so it renders at the very bottom
-  const mainWidgetsFiltered = mainWidgets.filter((w) => w.type !== "promo-carousel");
   const hasPromoWidget = mainWidgets.some((w) => w.type === "promo-carousel");
+
+  // Find grouped widgets
+  const heroBanner = mainWidgets.find(w => w.type === "hero-banner");
+  const statsRow = mainWidgets.find(w => w.type === "stats-row");
+  const hasGroup = !!(heroBanner && statsRow);
+
+  // Build sortable items list: group becomes one item
+  type RenderItem = { kind: 'single'; widget: DashboardWidget } | { kind: 'group'; id: string };
+  const mainSortableIds: string[] = [];
+  const mainRenderItems: RenderItem[] = [];
+  let groupInserted = false;
+
+  mainWidgets.forEach((widget) => {
+    if (hasGroup && GROUPED_MAIN_TYPES.has(widget.type)) {
+      if (!groupInserted) {
+        mainSortableIds.push(GROUP_ID_PREFIX);
+        mainRenderItems.push({ kind: 'group', id: GROUP_ID_PREFIX });
+        groupInserted = true;
+      }
+    } else {
+      mainSortableIds.push(widget.id);
+      mainRenderItems.push({ kind: 'single', widget });
+    }
+  });
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
+    // Check if this involves main sortable items with a group
+    const activeInMain = mainSortableIds.includes(activeId);
+    const overInMain = mainSortableIds.includes(overId);
+
+    if (hasGroup && activeInMain && overInMain) {
+      // Reorder the sortable IDs
+      const newOrder = [...mainSortableIds];
+      const fromIdx = newOrder.indexOf(activeId);
+      const toIdx = newOrder.indexOf(overId);
+      if (fromIdx === -1 || toIdx === -1) return;
+      const [moved] = newOrder.splice(fromIdx, 1);
+      newOrder.splice(toIdx, 0, moved);
+
+      // Expand group back to individual widget IDs
+      const expandedIds: string[] = [];
+      newOrder.forEach(id => {
+        if (id === GROUP_ID_PREFIX) {
+          expandedIds.push(heroBanner!.id, statsRow!.id);
+        } else {
+          expandedIds.push(id);
+        }
+      });
+
+      // Rebuild full widget array
+      const widgetMap = new Map(widgets.map(w => [w.id, w]));
+      const newWidgets = [
+        ...expandedIds.map(id => widgetMap.get(id)!).filter(Boolean),
+        ...sidebarWidgets,
+      ];
+      setWidgetOrder(newWidgets);
+    } else {
+      // Sidebar or non-grouped: use standard reorder
+      reorderWidgets(activeId, overId);
+    }
+  };
 
   return (
     <div className="space-y-4 min-w-0 max-w-full">
@@ -88,17 +150,73 @@ export function CustomizableDashboard() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6 min-w-0 max-w-full">
             <SortableContext
-              items={mainWidgets.map((w) => w.id)}
+              items={mainSortableIds}
               strategy={verticalListSortingStrategy}
             >
               {(() => {
-                const heroBannerIdx = mainWidgets.findIndex(w => w.type === "hero-banner");
-                const insertAfterIdx = heroBannerIdx >= 0 ? heroBannerIdx : -1;
-
                 const elements: React.ReactNode[] = [];
+                let mentorInserted = false;
 
-                if (showMentorWidget && insertAfterIdx === -1) {
-                  elements.push(
+                mainRenderItems.forEach((item) => {
+                  if (item.kind === 'group') {
+                    // Create a virtual widget for the DraggableWidget wrapper
+                    const groupWidget: DashboardWidget = {
+                      id: GROUP_ID_PREFIX,
+                      type: 'hero-banner',
+                      title: 'Capping & Stats',
+                      size: 'large',
+                      column: 'main',
+                    };
+                    elements.push(
+                      <DraggableWidget
+                        key={GROUP_ID_PREFIX}
+                        widget={groupWidget}
+                        isEditMode={isEditMode}
+                        onRemove={() => {
+                          removeWidget(heroBanner!.id);
+                          removeWidget(statsRow!.id);
+                        }}
+                      >
+                        <div className="space-y-4">
+                          <WidgetRenderer widget={heroBanner!} />
+                          <WidgetRenderer widget={statsRow!} />
+                        </div>
+                      </DraggableWidget>
+                    );
+
+                    if (showMentorWidget && !mentorInserted) {
+                      elements.push(
+                        <MentorProgramWidget
+                          key="mentor-widget"
+                          status={config.mentorMode as "needs_mentor" | "pairing_underway"}
+                          onStatusChange={setMentorMode}
+                        />
+                      );
+                      mentorInserted = true;
+                    }
+                  } else {
+                    const widget = item.widget;
+                    const isPromo = widget.type === "promo-carousel";
+                    const widgetEl = (
+                      <DraggableWidget
+                        key={widget.id}
+                        widget={widget}
+                        isEditMode={isEditMode}
+                        onRemove={removeWidget}
+                      >
+                        <WidgetRenderer widget={widget} />
+                      </DraggableWidget>
+                    );
+                    elements.push(
+                      isPromo ? (
+                        <div key={widget.id + "-wrap"} className="hidden lg:block">{widgetEl}</div>
+                      ) : widgetEl
+                    );
+                  }
+                });
+
+                if (showMentorWidget && !mentorInserted && !hasGroup) {
+                  elements.unshift(
                     <MentorProgramWidget
                       key="mentor-widget"
                       status={config.mentorMode as "needs_mentor" | "pairing_underway"}
@@ -106,36 +224,6 @@ export function CustomizableDashboard() {
                     />
                   );
                 }
-
-                mainWidgets.forEach((widget, index) => {
-                  const isPromo = widget.type === "promo-carousel";
-                  const widgetEl = (
-                    <DraggableWidget
-                      key={widget.id}
-                      widget={widget}
-                      isEditMode={isEditMode}
-                      onRemove={removeWidget}
-                    >
-                      <WidgetRenderer widget={widget} />
-                    </DraggableWidget>
-                  );
-                  // On mobile, hide promo-carousel here — it renders at the bottom
-                  elements.push(
-                    isPromo ? (
-                      <div key={widget.id + "-wrap"} className="hidden lg:block">{widgetEl}</div>
-                    ) : widgetEl
-                  );
-
-                  if (showMentorWidget && index === insertAfterIdx) {
-                    elements.push(
-                      <MentorProgramWidget
-                        key="mentor-widget"
-                        status={config.mentorMode as "needs_mentor" | "pairing_underway"}
-                        onStatusChange={setMentorMode}
-                      />
-                    );
-                  }
-                });
 
                 return elements;
               })()}
