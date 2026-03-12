@@ -108,10 +108,16 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
 
   const activeColumns = columns.filter((c) => visibleCols.has(c.id));
 
-  const SortIcon = ({ col }: { col: SortKey }) => {
-    if (sortKey !== col) return <ArrowUpDown className="h-4 w-4 text-muted-foreground opacity-50" />;
-    return sortDir === "asc" ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />;
-  };
+  const SortIcon = ({ col }: { col: SortKey }) => (
+    <span className="inline-flex w-5 justify-center shrink-0">
+      {sortKey !== col
+        ? <ArrowUpDown className="h-4 w-4 text-muted-foreground opacity-50" />
+        : sortDir === "asc"
+          ? <ChevronUp className="h-4 w-4 text-muted-foreground" />
+          : <ChevronDown className="h-4 w-4 text-muted-foreground" />
+      }
+    </span>
+  );
 
   const renderCell = (agent: TopAgent, colId: ColumnId) => {
     switch (colId) {
@@ -222,7 +228,17 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
 
         {/* Table */}
         <div className="flex-1 overflow-auto px-6">
-          <table className="w-full text-sm" style={{ tableLayout: "auto" }}>
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              {activeColumns.map((col) => (
+                <col
+                  key={col.id}
+                  style={{
+                    width: col.id === "name" ? "30%" : col.id === "units" ? "15%" : col.id === "volume" ? "20%" : col.id === "commission" ? "20%" : "15%",
+                  }}
+                />
+              ))}
+            </colgroup>
             <thead className="sticky top-0 z-10">
               <tr className="bg-muted/60 border-b border-border">
                 <AnimatePresence mode="popLayout">
@@ -230,9 +246,9 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
                     <motion.th
                       key={col.id}
                       layout
-                      initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "auto" }}
-                      exit={{ opacity: 0, width: 0 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                       className={cn(
                         "py-3 px-4 text-xs font-medium text-muted-foreground whitespace-nowrap overflow-hidden",
@@ -241,7 +257,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
                       )}
                       onClick={() => col.sortKey && handleSort(col.sortKey)}
                     >
-                      <span className="inline-flex items-center gap-1.5">
+                      <span className={cn("inline-flex items-center gap-2", col.id !== "name" && "justify-end")}>
                         {col.label}
                         {col.sortKey && <SortIcon col={col.sortKey} />}
                       </span>
