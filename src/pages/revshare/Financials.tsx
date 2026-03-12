@@ -1076,6 +1076,7 @@ export default function Financials() {
                           )}
 
                           {/* View Batch Details Button */}
+                          {!batch.batchPending && (
                           <div className="mt-4 pt-3 border-t border-border">
                             <Button
                               variant="outline"
@@ -1087,6 +1088,7 @@ export default function Financials() {
                               View Batch Details
                             </Button>
                           </div>
+                          )}
                         </div>
                       </div>
                     )}
