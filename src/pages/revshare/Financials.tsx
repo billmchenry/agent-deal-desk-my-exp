@@ -69,6 +69,7 @@ interface PayNowTransaction {
 interface MonthlyBatchRow {
   id: string;
   batchId: number;
+  batchDate: string;
   month: string;
   year: number;
   totalDeals: number;
@@ -346,7 +347,7 @@ function generateDeals(pnId: string, count: number, totalAmount: number): PayNow
 
 const monthlyBatches: MonthlyBatchRow[] = [
   {
-    id: "batch-2026-03", batchId: 1860, month: "March", year: 2026, totalDeals: 14, memberCount: 3,
+    id: "batch-2026-03", batchId: 1860, batchDate: "2026-03-28", month: "March", year: 2026, totalDeals: 14, memberCount: 3,
     initialRevenue: 4358.36, payNowDeduction: 934.92, adjustmentAmount: 43.58, finalPayout: 3467.02,
     payNowTransactions: [
       { id: "pn-2026-03-1", date: "2026-03-05", initialAmount: 420.52, serviceFee: -12.62, finalAmount: 407.90, dealCount: 2 },
@@ -354,7 +355,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2026-02", batchId: 1857, month: "February", year: 2026, totalDeals: 13, memberCount: 3,
+    id: "batch-2026-02", batchId: 1857, batchDate: "2026-02-28", month: "February", year: 2026, totalDeals: 13, memberCount: 3,
     initialRevenue: 4439.01, payNowDeduction: 542.17, adjustmentAmount: 44.39, finalPayout: 3941.23,
     payNowTransactions: [
       { id: "pn-2026-02-1", date: "2026-02-10", initialAmount: 302.80, serviceFee: -9.08, finalAmount: 293.72, dealCount: 3 },
@@ -362,7 +363,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2026-01", batchId: 1854, month: "January", year: 2026, totalDeals: 19, memberCount: 3,
+    id: "batch-2026-01", batchId: 1854, batchDate: "2026-01-30", month: "January", year: 2026, totalDeals: 19, memberCount: 3,
     initialRevenue: 5433.46, payNowDeduction: 1496.26, adjustmentAmount: 54.33, finalPayout: 3991.53,
     payNowTransactions: [
       { id: "pn-2026-01-1", date: "2026-01-08", initialAmount: 612.30, serviceFee: -18.37, finalAmount: 593.93, dealCount: 5 },
@@ -371,7 +372,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-12", batchId: 1851, month: "December", year: 2025, totalDeals: 11, memberCount: 3,
+    id: "batch-2025-12", batchId: 1851, batchDate: "2025-12-30", month: "December", year: 2025, totalDeals: 11, memberCount: 3,
     initialRevenue: 3493.48, payNowDeduction: 873.72, adjustmentAmount: 34.93, finalPayout: 2654.69,
     payNowTransactions: [
       { id: "pn-2025-12-1", date: "2025-12-12", initialAmount: 530.20, serviceFee: -15.91, finalAmount: 514.29, dealCount: 3 },
@@ -379,7 +380,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-11", batchId: 1848, month: "November", year: 2025, totalDeals: 9, memberCount: 3,
+    id: "batch-2025-11", batchId: 1848, batchDate: "2025-11-28", month: "November", year: 2025, totalDeals: 9, memberCount: 3,
     initialRevenue: 2810.15, payNowDeduction: 562.03, adjustmentAmount: 28.10, finalPayout: 2276.22,
     payNowTransactions: [
       { id: "pn-2025-11-1", date: "2025-11-15", initialAmount: 362.03, serviceFee: -10.86, finalAmount: 351.17, dealCount: 2 },
@@ -387,7 +388,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-10", batchId: 1845, month: "October", year: 2025, totalDeals: 16, memberCount: 3,
+    id: "batch-2025-10", batchId: 1845, batchDate: "2025-10-31", month: "October", year: 2025, totalDeals: 16, memberCount: 3,
     initialRevenue: 5120.90, payNowDeduction: 1024.18, adjustmentAmount: 51.21, finalPayout: 4147.93,
     payNowTransactions: [
       { id: "pn-2025-10-1", date: "2025-10-07", initialAmount: 489.50, serviceFee: -14.69, finalAmount: 474.81, dealCount: 4 },
@@ -395,12 +396,12 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-09", batchId: 1842, month: "September", year: 2025, totalDeals: 12, memberCount: 3,
+    id: "batch-2025-09", batchId: 1842, batchDate: "2025-09-30", month: "September", year: 2025, totalDeals: 12, memberCount: 3,
     initialRevenue: 3890.20, payNowDeduction: 0, adjustmentAmount: 38.90, finalPayout: 3929.10,
     payNowTransactions: [],
   },
   {
-    id: "batch-2025-08", batchId: 1839, month: "August", year: 2025, totalDeals: 15, memberCount: 3,
+    id: "batch-2025-08", batchId: 1839, batchDate: "2025-08-29", month: "August", year: 2025, totalDeals: 15, memberCount: 3,
     initialRevenue: 4720.55, payNowDeduction: 944.11, adjustmentAmount: 47.21, finalPayout: 3823.65,
     payNowTransactions: [
       { id: "pn-2025-08-1", date: "2025-08-14", initialAmount: 450.30, serviceFee: -13.51, finalAmount: 436.79, dealCount: 3 },
@@ -408,7 +409,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-07", batchId: 1836, month: "July", year: 2025, totalDeals: 18, memberCount: 3,
+    id: "batch-2025-07", batchId: 1836, batchDate: "2025-07-31", month: "July", year: 2025, totalDeals: 18, memberCount: 3,
     initialRevenue: 5640.80, payNowDeduction: 1128.16, adjustmentAmount: 56.41, finalPayout: 4569.05,
     payNowTransactions: [
       { id: "pn-2025-07-1", date: "2025-07-10", initialAmount: 580.00, serviceFee: -17.40, finalAmount: 562.60, dealCount: 4 },
@@ -416,7 +417,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-06", batchId: 1833, month: "June", year: 2025, totalDeals: 20, memberCount: 3,
+    id: "batch-2025-06", batchId: 1833, batchDate: "2025-06-30", month: "June", year: 2025, totalDeals: 20, memberCount: 3,
     initialRevenue: 6210.40, payNowDeduction: 1242.08, adjustmentAmount: 62.10, finalPayout: 5030.42,
     payNowTransactions: [
       { id: "pn-2025-06-1", date: "2025-06-08", initialAmount: 620.00, serviceFee: -18.60, finalAmount: 601.40, dealCount: 5 },
@@ -424,12 +425,12 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-05", batchId: 1830, month: "May", year: 2025, totalDeals: 17, memberCount: 3,
+    id: "batch-2025-05", batchId: 1830, batchDate: "2025-05-30", month: "May", year: 2025, totalDeals: 17, memberCount: 3,
     initialRevenue: 5380.30, payNowDeduction: 0, adjustmentAmount: 53.80, finalPayout: 5434.10,
     payNowTransactions: [],
   },
   {
-    id: "batch-2025-04", batchId: 1827, month: "April", year: 2025, totalDeals: 14, memberCount: 3,
+    id: "batch-2025-04", batchId: 1827, batchDate: "2025-04-30", month: "April", year: 2025, totalDeals: 14, memberCount: 3,
     initialRevenue: 4150.75, payNowDeduction: 830.15, adjustmentAmount: 41.51, finalPayout: 3362.11,
     payNowTransactions: [
       { id: "pn-2025-04-1", date: "2025-04-18", initialAmount: 410.15, serviceFee: -12.30, finalAmount: 397.85, dealCount: 2 },
@@ -437,12 +438,12 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-03", batchId: 1824, month: "March", year: 2025, totalDeals: 13, memberCount: 3,
+    id: "batch-2025-03", batchId: 1824, batchDate: "2025-03-31", month: "March", year: 2025, totalDeals: 13, memberCount: 3,
     initialRevenue: 3920.60, payNowDeduction: 0, adjustmentAmount: 39.21, finalPayout: 3959.81,
     payNowTransactions: [],
   },
   {
-    id: "batch-2025-02", batchId: 1821, month: "February", year: 2025, totalDeals: 10, memberCount: 3,
+    id: "batch-2025-02", batchId: 1821, batchDate: "2025-02-28", month: "February", year: 2025, totalDeals: 10, memberCount: 3,
     initialRevenue: 3140.45, payNowDeduction: 628.09, adjustmentAmount: 31.40, finalPayout: 2543.76,
     payNowTransactions: [
       { id: "pn-2025-02-1", date: "2025-02-12", initialAmount: 328.09, serviceFee: -9.84, finalAmount: 318.25, dealCount: 2 },
@@ -450,7 +451,7 @@ const monthlyBatches: MonthlyBatchRow[] = [
     ],
   },
   {
-    id: "batch-2025-01", batchId: 1818, month: "January", year: 2025, totalDeals: 11, memberCount: 3,
+    id: "batch-2025-01", batchId: 1818, batchDate: "2025-01-31", month: "January", year: 2025, totalDeals: 11, memberCount: 3,
     initialRevenue: 3560.90, payNowDeduction: 0, adjustmentAmount: 35.61, finalPayout: 3596.51,
     payNowTransactions: [],
   },
@@ -581,7 +582,7 @@ export default function Financials() {
           month: b.month,
           year: b.year,
           batchId: b.batchId,
-          date: "",
+          date: b.batchDate,
           totalDeals: b.totalDeals,
           memberCount: b.memberCount,
           initialRevenue: b.initialRevenue,
@@ -971,7 +972,7 @@ export default function Financials() {
                             {batch.month} {batch.year} Batch
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            {batch.totalDeals} total deals · {batch.memberCount} members
+                            Batch #{batch.batchId} · {formatDate(batch.batchDate)} · {batch.totalDeals} total deals · {batch.memberCount} members
                           </p>
                         </div>
                       </div>
