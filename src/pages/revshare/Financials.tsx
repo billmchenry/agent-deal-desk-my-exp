@@ -7,6 +7,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ChevronDown, ChevronUp, ChevronRight, Download, Info } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -68,8 +69,8 @@ interface PayNowTransaction {
 
 interface MonthlyBatchRow {
   id: string;
-  batchId: number;
-  batchDate: string;
+  batchId: number | null;
+  batchDate: string | null;
   month: string;
   year: number;
   totalDeals: number;
@@ -79,6 +80,7 @@ interface MonthlyBatchRow {
   adjustmentAmount: number;
   finalPayout: number;
   payNowTransactions: PayNowTransaction[];
+  batchPending?: boolean;
 }
 
 // ── Mock Transaction Data per Agent ──
@@ -346,6 +348,14 @@ function generateDeals(pnId: string, count: number, totalAmount: number): PayNow
 // ── Monthly Batch Mock Data for Periodic Overview ──
 
 const monthlyBatches: MonthlyBatchRow[] = [
+  {
+    id: "batch-2026-04", batchId: null, batchDate: null, month: "April", year: 2026, totalDeals: 0, memberCount: 2,
+    initialRevenue: 0, payNowDeduction: 682.45, adjustmentAmount: 0, finalPayout: 0, batchPending: true,
+    payNowTransactions: [
+      { id: "pn-2026-04-1", date: "2026-04-03", initialAmount: 312.80, serviceFee: -9.38, finalAmount: 303.42, dealCount: 2 },
+      { id: "pn-2026-04-2", date: "2026-04-10", initialAmount: 391.65, serviceFee: -11.75, finalAmount: 379.90, dealCount: 3 },
+    ],
+  },
   {
     id: "batch-2026-03", batchId: 1860, batchDate: "2026-03-28", month: "March", year: 2026, totalDeals: 14, memberCount: 3,
     initialRevenue: 4358.36, payNowDeduction: 934.92, adjustmentAmount: 43.58, finalPayout: 3467.02,
@@ -968,15 +978,39 @@ export default function Financials() {
                           : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
                         }
                         <div>
-                          <h3 className="font-medium text-foreground">
-                            {batch.month} {batch.year} Batch
-                          </h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-medium text-foreground">
+                              {batch.month} {batch.year} {batch.batchPending ? "" : "Batch"}
+                            </h3>
+                            {batch.batchPending && (
+                              <Badge variant="outline" className="text-xs border-amber-500/50 text-amber-600 dark:text-amber-400 bg-amber-500/10">
+                                Batch Pending
+                              </Badge>
+                            )}
+                          </div>
                           <p className="text-sm text-muted-foreground">
-                            {formatDate(batch.batchDate)} · {batch.totalDeals} deals · {batch.memberCount} members
+                            {batch.batchPending
+                              ? `${batch.payNowTransactions.length} PayNow transactions · ${batch.memberCount} members`
+                              : `${formatDate(batch.batchDate)} · ${batch.totalDeals} deals · ${batch.memberCount} members`
+                            }
                           </p>
                         </div>
                       </div>
 
+                      {batch.batchPending ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
+                          <div className="text-right">
+                            <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
+                            <p className="text-sm font-medium font-secondary text-exp-green">
+                              {formatCurrency(batch.payNowDeduction)} USD
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-muted-foreground">{t("fin.finalPayout")}</p>
+                            <p className="text-sm font-secondary text-muted-foreground italic">Pending</p>
+                          </div>
+                        </div>
+                      ) : (
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.initialRevenue")}</p>
@@ -997,6 +1031,7 @@ export default function Financials() {
                           <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)} USD</p>
                         </div>
                       </div>
+                      )}
                     </div>
 
                     {/* Expanded content */}
@@ -1041,6 +1076,7 @@ export default function Financials() {
                           )}
 
                           {/* View Batch Details Button */}
+                          {!batch.batchPending && (
                           <div className="mt-4 pt-3 border-t border-border">
                             <Button
                               variant="outline"
@@ -1052,6 +1088,7 @@ export default function Financials() {
                               View Batch Details
                             </Button>
                           </div>
+                          )}
                         </div>
                       </div>
                     )}
