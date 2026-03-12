@@ -108,10 +108,16 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
 
   const activeColumns = columns.filter((c) => visibleCols.has(c.id));
 
-  const SortIcon = ({ col }: { col: SortKey }) => {
-    if (sortKey !== col) return <ArrowUpDown className="h-4 w-4 text-muted-foreground opacity-50" />;
-    return sortDir === "asc" ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />;
-  };
+  const SortIcon = ({ col }: { col: SortKey }) => (
+    <span className="inline-flex w-5 justify-center shrink-0">
+      {sortKey !== col
+        ? <ArrowUpDown className="h-4 w-4 text-muted-foreground opacity-50" />
+        : sortDir === "asc"
+          ? <ChevronUp className="h-4 w-4 text-muted-foreground" />
+          : <ChevronDown className="h-4 w-4 text-muted-foreground" />
+      }
+    </span>
+  );
 
   const renderCell = (agent: TopAgent, colId: ColumnId) => {
     switch (colId) {
