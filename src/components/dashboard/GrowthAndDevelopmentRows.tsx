@@ -104,21 +104,6 @@ function CarouselRow({ title, cards }: { title: string; cards: RowCard[] }) {
           );
         })}
       </div>
-      {cards.length > 1 && (
-        <div className="flex justify-center gap-1.5 md:hidden">
-          {cards.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => scrollTo(i)}
-              className={cn(
-                "h-1.5 w-1.5 rounded-full transition-colors",
-                i === current ? "bg-primary" : "bg-muted-foreground/30"
-              )}
-              aria-label={`Go to card ${i + 1}`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }
