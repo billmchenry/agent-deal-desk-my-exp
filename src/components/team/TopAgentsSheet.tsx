@@ -235,7 +235,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
                       exit={{ opacity: 0, width: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                       className={cn(
-                        "py-3 px-4 text-body font-medium text-muted-foreground whitespace-nowrap overflow-hidden",
+                        "py-3 px-4 text-xs font-medium text-muted-foreground whitespace-nowrap overflow-hidden",
                         col.id === "name" ? "text-start" : "text-end",
                         col.sortKey && "cursor-pointer select-none hover:text-foreground"
                       )}
