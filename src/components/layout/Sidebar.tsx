@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import expLogo from "@/assets/exp-realty-logo-white.png";
+import expLogo from "@/assets/logo-white.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   User, Users, DollarSign, FileText, Calendar, GraduationCap,
