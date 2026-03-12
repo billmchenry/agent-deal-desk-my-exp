@@ -1111,7 +1111,42 @@ export default function Financials() {
             const batchDealCount = selectedBatch.totalDeals - payNowDealCount;
             const batchOnlyDeals = generateDeals(`batch-${selectedBatch.id}`, Math.max(batchDealCount, 0), selectedBatch.finalPayout).map(d => ({ ...d, paidVia: "batch" as const }));
             const allDeals = [...payNowDeals, ...batchOnlyDeals];
-...
+            return (
+              <div className="mt-6 space-y-5">
+                <Card className="p-4 space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{selectedBatch.month} {selectedBatch.year}</p>
+                    </div>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">{formatCurrency(selectedBatch.initialRevenue)} USD</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">{t("fin.payNowDeduction")}</p>
+                    <p className={cn("text-sm font-semibold font-secondary tabular-nums", selectedBatch.payNowDeduction > 0 ? "text-destructive" : "text-foreground")}>
+                      {selectedBatch.payNowDeduction > 0 ? "-" : ""}{formatCurrency(selectedBatch.payNowDeduction)} USD
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">{t("fin.adjustmentAmount")}</p>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-exp-green">{formatCurrency(batchAdjustment)} USD</p>
+                  </div>
+                  <div className="border-t border-border" />
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{t("fin.finalPayout")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{selectedBatch.totalDeals} deals · {selectedBatch.memberCount} members</p>
+                    </div>
+                    <p className="text-sm font-bold font-secondary tabular-nums text-primary">{formatCurrency(selectedBatch.finalPayout)} USD</p>
+                  </div>
+                </Card>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{allDeals.length} Results</span>
+                  <Button variant="outline" size="sm" className="gap-2 text-xs">
+                    <Download className="h-3.5 w-3.5" />
+                    Download
+                  </Button>
+                </div>
                 {/* Deal list */}
                 <div className="divide-y divide-border">
                   {allDeals.map((deal) => (
