@@ -68,8 +68,8 @@ interface PayNowTransaction {
 
 interface MonthlyBatchRow {
   id: string;
-  batchId: number;
-  batchDate: string;
+  batchId: number | null;
+  batchDate: string | null;
   month: string;
   year: number;
   totalDeals: number;
@@ -79,6 +79,7 @@ interface MonthlyBatchRow {
   adjustmentAmount: number;
   finalPayout: number;
   payNowTransactions: PayNowTransaction[];
+  batchPending?: boolean;
 }
 
 // ── Mock Transaction Data per Agent ──
