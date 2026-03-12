@@ -52,89 +52,52 @@ const makeContact = (name: string, avatar: string, overrides?: Partial<AgentCont
 
 const orgTree: OrgTreeAgent[] = [
   {
-    id: 1, name: "Samantha Rose Bennett", location: "Roseville, CA", level: 1,
-    revShare: 6487.88, contribution: 53.51, orgSize: 5, icon: true,
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Samantha Rose Bennett", "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face", { icon: "Yes", capPct: 88, groupSize: 5, totalRevenueShare: 6487.88 }),
+    id: 1, name: "Robert Alan Crawford", location: "San Francisco, CA", level: 1,
+    revShare: 48520.44, contribution: 0, orgSize: 22, icon: true,
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    contactData: makeContact("Robert Alan Crawford", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face", { icon: "Yes", city: "San Francisco", state: "CA", stateOfPrimaryLicense: "CA", capPct: 92, groupSize: 22, totalRevenueShare: 48520.44 }),
     children: [
       {
-        id: 101, name: "Kevin Park", location: "Roseville, CA", level: 2, revShare: 1245.00, contribution: 0, orgSize: 3,
-        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
-        contactData: makeContact("Kevin Park", "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Samantha Rose Bennett", groupSize: 3 }),
+        id: 101, name: "Karen Elizabeth Mitchell", location: "Oakland, CA", level: 2, revShare: 8450.00, contribution: 2100.00, orgSize: 5,
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
+        contactData: makeContact("Karen Elizabeth Mitchell", "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Oakland", groupSize: 5 }),
         children: [
-          { id: 1011, name: "Liam Chen", location: "Folsom, CA", level: 3, revShare: 420.00, contribution: 420.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Liam Chen", "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Kevin Park" }) },
-          { id: 1012, name: "Olivia Foster", location: "Sacramento, CA", level: 3, revShare: 380.00, contribution: 380.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Olivia Foster", "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Kevin Park" }) },
-          { id: 1013, name: "Noah Williams", location: "Elk Grove, CA", level: 3, revShare: 445.00, contribution: 445.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1507081323647-4d250478b919?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Noah Williams", "https://images.unsplash.com/photo-1507081323647-4d250478b919?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Kevin Park" }) },
+          { id: 1011, name: "Liam Chen", location: "Berkeley, CA", level: 3, revShare: 1420.00, contribution: 1420.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Liam Chen", "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Karen Elizabeth Mitchell", city: "Berkeley" }) },
+          { id: 1012, name: "Olivia Foster", location: "Walnut Creek, CA", level: 3, revShare: 1380.00, contribution: 1380.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Olivia Foster", "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Karen Elizabeth Mitchell", city: "Walnut Creek" }) },
+          { id: 1013, name: "Noah Williams", location: "Concord, CA", level: 3, revShare: 1245.00, contribution: 1245.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1507081323647-4d250478b919?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Noah Williams", "https://images.unsplash.com/photo-1507081323647-4d250478b919?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Karen Elizabeth Mitchell", city: "Concord" }) },
+          { id: 1014, name: "Sophia Patel", location: "Fremont, CA", level: 3, revShare: 980.00, contribution: 980.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Sophia Patel", "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Karen Elizabeth Mitchell", city: "Fremont" }) },
+          { id: 1015, name: "Ethan Brooks", location: "San Leandro, CA", level: 3, revShare: 1325.00, contribution: 1325.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Ethan Brooks", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Karen Elizabeth Mitchell", city: "San Leandro" }) },
         ],
       },
-      { id: 102, name: "Diana Reyes", location: "Sacramento, CA", level: 2, revShare: 987.50, contribution: 0, orgSize: 0, avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Diana Reyes", "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Samantha Rose Bennett" }) },
-      { id: 103, name: "Thomas Grant", location: "Lincoln, CA", level: 2, revShare: 2100.00, contribution: 0, orgSize: 0, avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Thomas Grant", "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Samantha Rose Bennett" }) },
-      { id: 104, name: "Priya Sharma", location: "Folsom, CA", level: 2, revShare: 1560.00, contribution: 0, orgSize: 0, icon: true, avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Priya Sharma", "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face", { icon: "Yes", agentSponsorName: "Samantha Rose Bennett" }) },
-      { id: 105, name: "Carlos Mendez", location: "Roseville, CA", level: 2, revShare: 595.38, contribution: 595.38, orgSize: 0, avatar: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Carlos Mendez", "https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Samantha Rose Bennett" }) },
+      {
+        id: 102, name: "Derek James Sullivan", location: "San Jose, CA", level: 2, revShare: 7820.00, contribution: 1500.00, orgSize: 4,
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
+        contactData: makeContact("Derek James Sullivan", "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "San Jose", groupSize: 4 }),
+        children: [
+          { id: 1021, name: "Rachel Kim", location: "Santa Clara, CA", level: 3, revShare: 2100.00, contribution: 2100.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Rachel Kim", "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Derek James Sullivan", city: "Santa Clara" }) },
+          { id: 1022, name: "Jason Ortiz", location: "Sunnyvale, CA", level: 3, revShare: 1800.00, contribution: 1800.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Jason Ortiz", "https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Derek James Sullivan", city: "Sunnyvale" }) },
+          { id: 1023, name: "Emily Watson", location: "Mountain View, CA", level: 3, revShare: 1220.00, contribution: 1220.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Emily Watson", "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Derek James Sullivan", city: "Mountain View" }) },
+          { id: 1024, name: "Marcus Pham", location: "Palo Alto, CA", level: 3, revShare: 1200.00, contribution: 1200.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Marcus Pham", "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Derek James Sullivan", city: "Palo Alto" }) },
+        ],
+      },
+      {
+        id: 103, name: "Natalie Grace Harper", location: "Daly City, CA", level: 2, revShare: 6200.00, contribution: 1800.00, orgSize: 3,
+        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+        contactData: makeContact("Natalie Grace Harper", "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Daly City", groupSize: 3 }),
+        children: [
+          { id: 1031, name: "Sophie Turner", location: "South San Francisco, CA", level: 3, revShare: 1600.00, contribution: 1600.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Sophie Turner", "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Natalie Grace Harper", city: "South San Francisco" }) },
+          { id: 1032, name: "David Nguyen", location: "San Mateo, CA", level: 3, revShare: 1400.00, contribution: 1400.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=150&h=150&fit=crop&crop=face", contactData: makeContact("David Nguyen", "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Natalie Grace Harper", city: "San Mateo" }) },
+          { id: 1033, name: "Amanda Reeves", location: "Redwood City, CA", level: 3, revShare: 1400.00, contribution: 1400.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Amanda Reeves", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Natalie Grace Harper", city: "Redwood City" }) },
+        ],
+      },
+      { id: 104, name: "Christopher Paul Mitchell", location: "Richmond, CA", level: 2, revShare: 4890.00, contribution: 4890.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Christopher Paul Mitchell", "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Richmond" }) },
+      { id: 105, name: "Victoria Lynn Patterson", location: "Hayward, CA", level: 2, revShare: 4320.00, contribution: 4320.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Victoria Lynn Patterson", "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Hayward" }) },
+      { id: 106, name: "Brandon Lee Cooper", location: "Pleasanton, CA", level: 2, revShare: 3980.00, contribution: 3980.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Brandon Lee Cooper", "https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Pleasanton" }) },
+      { id: 107, name: "Melissa Ann Richardson", location: "Livermore, CA", level: 2, revShare: 3540.00, contribution: 3540.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Melissa Ann Richardson", "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Livermore" }) },
+      { id: 108, name: "Tyler James Henderson", location: "Dublin, CA", level: 2, revShare: 3120.00, contribution: 3120.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Tyler James Henderson", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Dublin" }) },
+      { id: 109, name: "Priya Sharma", location: "Castro Valley, CA", level: 2, revShare: 2890.00, contribution: 2890.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Priya Sharma", "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Castro Valley" }) },
+      { id: 110, name: "Carlos Mendez", location: "Union City, CA", level: 2, revShare: 3310.44, contribution: 3310.44, orgSize: 0, avatar: "https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Carlos Mendez", "https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Robert Alan Crawford", city: "Union City" }) },
     ],
-  },
-  {
-    id: 2, name: "Derek James Sullivan", location: "Lincoln, CA", level: 1,
-    revShare: 8234.56, contribution: 0, orgSize: 3,
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Derek James Sullivan", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face", { city: "Lincoln", groupSize: 3, totalRevenueShare: 8234.56 }),
-    children: [
-      { id: 201, name: "Rachel Kim", location: "Lincoln, CA", level: 2, revShare: 3100.00, contribution: 0, orgSize: 0, avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Rachel Kim", "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Derek James Sullivan", city: "Lincoln" }) },
-      { id: 202, name: "Jason Ortiz", location: "Rocklin, CA", level: 2, revShare: 2800.00, contribution: 0, orgSize: 0, avatar: "https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Jason Ortiz", "https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Derek James Sullivan", city: "Rocklin" }) },
-      { id: 203, name: "Emily Watson", location: "Auburn, CA", level: 2, revShare: 2334.56, contribution: 2334.56, orgSize: 0, avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Emily Watson", "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Derek James Sullivan", city: "Auburn" }) },
-    ],
-  },
-  {
-    id: 3, name: "Natalie Grace Harper", location: "Roseville, CA", level: 1,
-    revShare: 4980.00, contribution: 0, orgSize: 0,
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Natalie Grace Harper", "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face", { totalRevenueShare: 4980 }),
-  },
-  {
-    id: 4, name: "Marcus Antonio Rivera", location: "Folsom, CA", level: 1,
-    revShare: 3890.00, contribution: 0, orgSize: 2,
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Marcus Antonio Rivera", "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face", { city: "Folsom", groupSize: 2, totalRevenueShare: 3890 }),
-    children: [
-      { id: 401, name: "Sophie Turner", location: "Folsom, CA", level: 2, revShare: 1940.00, contribution: 1940.00, orgSize: 0, avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face", contactData: makeContact("Sophie Turner", "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Marcus Antonio Rivera", city: "Folsom" }) },
-      { id: 402, name: "David Nguyen", location: "El Dorado Hills, CA", level: 2, revShare: 1950.00, contribution: 0, orgSize: 0, avatar: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=150&h=150&fit=crop&crop=face", contactData: makeContact("David Nguyen", "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=150&h=150&fit=crop&crop=face", { agentSponsorName: "Marcus Antonio Rivera", city: "El Dorado Hills" }) },
-    ],
-  },
-  {
-    id: 5, name: "Christopher Paul Mitchell", location: "Citrus Heights, CA", level: 1,
-    revShare: 2890.00, contribution: 0, orgSize: 0, icon: true,
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Christopher Paul Mitchell", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face", { icon: "Yes", city: "Citrus Heights", totalRevenueShare: 2890 }),
-  },
-  {
-    id: 6, name: "Victoria Lynn Patterson", location: "Orangevale, CA", level: 1,
-    revShare: 2420.00, contribution: 0, orgSize: 0,
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Victoria Lynn Patterson", "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face", { city: "Orangevale", totalRevenueShare: 2420 }),
-  },
-  {
-    id: 7, name: "Amanda Claire Foster", location: "Roseville, CA", level: 1,
-    revShare: 2215.00, contribution: 0, orgSize: 0,
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Amanda Claire Foster", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face", { totalRevenueShare: 2215 }),
-  },
-  {
-    id: 8, name: "Brandon Lee Cooper", location: "Elk Grove, CA", level: 1,
-    revShare: 2100.00, contribution: 0, orgSize: 0,
-    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Brandon Lee Cooper", "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face", { city: "Elk Grove", totalRevenueShare: 2100 }),
-  },
-  {
-    id: 9, name: "Melissa Ann Richardson", location: "Citrus Heights, CA", level: 1,
-    revShare: 1815.00, contribution: 1815.00, orgSize: 0,
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Melissa Ann Richardson", "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face", { city: "Citrus Heights", totalRevenueShare: 1815 }),
-  },
-  {
-    id: 10, name: "Tyler James Henderson", location: "Granite Bay, CA", level: 1,
-    revShare: 1490.00, contribution: 0, orgSize: 0,
-    avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face",
-    contactData: makeContact("Tyler James Henderson", "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face", { city: "Granite Bay", totalRevenueShare: 1490 }),
   },
 ];
 
@@ -238,7 +201,7 @@ function AgentCard({
   const hasChildren = agent.children && agent.children.length > 0;
 
   return (
-    <Card className="overflow-hidden transition-shadow hover:shadow-md">
+    <Card className="overflow-hidden transition-shadow hover:shadow-md border-l-4 border-l-amber-400">
       <CardContent className="p-4 flex flex-col gap-3">
         {/* Top: Avatar + Name/Location + Contact icon */}
         <div className="flex items-start gap-3">
