@@ -1102,7 +1102,7 @@ export default function Financials() {
             <SheetTitle className="text-section-title">{t("fin.paymentDetails")}</SheetTitle>
           </SheetHeader>
           {selectedBatch && (() => {
-            const totalServiceFee = selectedBatch.payNowTransactions.reduce((sum, pn) => sum + pn.serviceFee, 0);
+            const batchAdjustment = selectedBatch.adjustmentAmount;
             const batchDeals = generateDeals(`batch-${selectedBatch.id}`, selectedBatch.totalDeals, selectedBatch.finalPayout);
             return (
               <div className="mt-6 space-y-5">
