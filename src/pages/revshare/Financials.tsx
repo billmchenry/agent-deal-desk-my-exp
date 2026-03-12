@@ -67,6 +67,7 @@ interface PayNowTransaction {
 
 interface MonthlyBatchRow {
   id: string;
+  batchId: number;
   month: string;
   year: number;
   totalDeals: number;
