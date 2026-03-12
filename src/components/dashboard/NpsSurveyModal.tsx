@@ -39,7 +39,7 @@ export function NpsSurveyModal({ open, onOpenChange }: NpsSurveyModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
-      <DialogContent className="w-[90vw] !max-w-[90vw] sm:w-full sm:!max-w-lg p-5 overflow-hidden">
+      <DialogContent className="w-[90vw] !max-w-[90vw] sm:w-full sm:!max-w-lg p-5">
         <DialogHeader>
           <div className="flex items-center justify-between pr-8">
             <DialogTitle>Instant NPS Survey</DialogTitle>
