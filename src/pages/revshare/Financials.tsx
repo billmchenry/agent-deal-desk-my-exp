@@ -972,7 +972,7 @@ export default function Financials() {
                             {batch.month} {batch.year} Batch
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Batch #{batch.batchId} · {formatDate(batch.batchDate)} · {batch.totalDeals} total deals · {batch.memberCount} members
+                            {formatDate(batch.batchDate)} · {formatCurrency(batch.finalPayout + batch.adjustmentAmount + batch.payNowDeduction)} USD · {batch.totalDeals} deals · {batch.memberCount} members
                           </p>
                         </div>
                       </div>
