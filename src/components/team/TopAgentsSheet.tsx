@@ -228,7 +228,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
 
         {/* Table */}
         <div className="flex-1 overflow-auto px-6">
-          <table className="w-full text-sm" style={{ tableLayout: "auto" }}>
+          <table className="w-full text-sm table-fixed">
             <thead className="sticky top-0 z-10">
               <tr className="bg-muted/60 border-b border-border">
                 <AnimatePresence mode="popLayout">
