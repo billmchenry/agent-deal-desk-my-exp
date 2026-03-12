@@ -61,9 +61,9 @@ export function NpsSurveyCard() {
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
-            <div className="flex items-center justify-between pr-6">
+            <div className="flex items-center justify-between pr-8">
               <DialogTitle>Instant NPS Survey</DialogTitle>
               <span className="text-xs text-muted-foreground">
                 {step === 1 ? "0" : "1"} of 2 complete
@@ -76,23 +76,25 @@ export function NpsSurveyCard() {
               <p className="text-sm">
                 Based on your experience so far, how likely are you to recommend eXp to a friend or colleague?
               </p>
-              <div className="flex items-center gap-2 flex-nowrap">
-                <span className="text-xs text-muted-foreground whitespace-nowrap">Not Likely</span>
-                {Array.from({ length: 11 }, (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setScore(i)}
-                    className={cn(
-                      "h-9 w-9 shrink-0 rounded-md border text-sm font-medium transition-all",
-                      score === i
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-background border-border hover:border-blue-400 hover:bg-muted"
-                    )}
-                  >
-                    {i}
-                  </button>
-                ))}
-                <span className="text-xs text-muted-foreground whitespace-nowrap">Extremely Likely</span>
+              <div className="flex w-full items-center gap-4 flex-nowrap">
+                <span className="shrink-0 text-xs text-muted-foreground whitespace-nowrap">Not Likely</span>
+                <div className="flex grow items-center justify-center gap-2 flex-nowrap">
+                  {Array.from({ length: 11 }, (_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setScore(i)}
+                      className={cn(
+                        "h-9 w-9 shrink-0 rounded-md border text-sm font-medium transition-colors",
+                        score === i
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border bg-background hover:border-primary/45 hover:bg-muted"
+                      )}
+                    >
+                      {i}
+                    </button>
+                  ))}
+                </div>
+                <span className="shrink-0 text-xs text-muted-foreground whitespace-nowrap">Extremely Likely</span>
               </div>
             </div>
           ) : (
