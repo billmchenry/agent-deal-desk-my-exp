@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Columns3, Search, User, Hash, DollarSign, Landmark, Banknote } from "lucide-react";
+import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Columns3, Search, User, Hash, DollarSign, Landmark, Banknote, ArrowUpDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { topAgents, type TopAgent } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
