@@ -522,6 +522,46 @@ export default function Financials() {
   const totalAdjustments = filteredBatches.reduce((sum, b) => sum + (b.adjustmentAmount || 0), 0);
   const totalPayNow = filteredBatches.reduce((sum, b) => sum + b.payNowDeduction, 0);
 
+  const handleDownloadPeriodicReport = useCallback(() => {
+    interface PeriodicCsvRow {
+      month: string;
+      year: number;
+      batchId: number;
+      totalDeals: number;
+      memberCount: number;
+      initialRevenue: number;
+      payNowDeduction: number;
+      adjustmentAmount: number;
+      finalPayout: number;
+      totalEarned: number;
+    }
+    const csvColumns: CsvColumnDef<PeriodicCsvRow>[] = [
+      { key: "month", header: "Month", type: "string" },
+      { key: "year", header: "Year", type: "number" },
+      { key: "batchId", header: "Batch ID", type: "number" },
+      { key: "totalDeals", header: "Total Deals", type: "number" },
+      { key: "memberCount", header: "Member Count", type: "number" },
+      { key: "initialRevenue", header: "Initial Revenue", type: "currency" },
+      { key: "payNowDeduction", header: "PayNow Deduction", type: "currency" },
+      { key: "adjustmentAmount", header: "Adjustment Amount", type: "currency" },
+      { key: "finalPayout", header: "Final Batch Payout", type: "currency" },
+      { key: "totalEarned", header: "Total Earned", type: "currency" },
+    ];
+    const rows: PeriodicCsvRow[] = filteredBatches.map(b => ({
+      month: b.month,
+      year: b.year,
+      batchId: b.batchId,
+      totalDeals: b.totalDeals,
+      memberCount: b.memberCount,
+      initialRevenue: b.initialRevenue,
+      payNowDeduction: b.payNowDeduction,
+      adjustmentAmount: b.adjustmentAmount,
+      finalPayout: b.finalPayout,
+      totalEarned: b.finalPayout + b.adjustmentAmount + b.payNowDeduction,
+    }));
+    exportToCsv(rows, csvColumns, "periodic-overview-report");
+  }, [filteredBatches]);
+
   const handleAgentClick = (row: AgentRevShareRow) => {
     setSelectedAgent(getAgentDetail(row));
   };
