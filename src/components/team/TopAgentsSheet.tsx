@@ -109,8 +109,8 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
   const activeColumns = columns.filter((c) => visibleCols.has(c.id));
 
   const SortIcon = ({ col }: { col: SortKey }) => {
-    if (sortKey !== col) return <span className="text-[10px] opacity-40 leading-none">◇</span>;
-    return sortDir === "asc" ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />;
+    if (sortKey !== col) return <ArrowUpDown className="h-4 w-4 text-muted-foreground opacity-50" />;
+    return sortDir === "asc" ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />;
   };
 
   const renderCell = (agent: TopAgent, colId: ColumnId) => {
