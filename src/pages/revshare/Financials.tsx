@@ -1263,6 +1263,7 @@ export default function Financials() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm font-semibold text-foreground">{t("fin.finalPayout")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Payment Initiated {formatDate(selectedBatch.batchDate)}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">Batch ID {selectedBatch.batchId}</p>
                     </div>
                     <p className="text-sm font-bold font-secondary tabular-nums text-primary">{formatCurrency(selectedBatch.finalPayout)} USD</p>
