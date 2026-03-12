@@ -4,6 +4,7 @@ import {
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DetailRow, SectionHeader, CollapsibleSection } from "@/components/shared/BreakdownComponents";
+import { X } from "lucide-react";
 
 interface TransactionDetailsSheetProps {
   open: boolean;
@@ -70,8 +71,15 @@ export function TransactionDetailsSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-md p-0 flex flex-col">
         <ScrollArea className="flex-1">
-          <div className="sticky top-0 z-10">
-            <SectionHeader title="Transaction Details" />
+          <div className="sticky top-0 z-20 flex items-center justify-between bg-primary text-primary-foreground px-4 py-3">
+            <span className="font-semibold">Transaction Details</span>
+            <button
+              onClick={() => onOpenChange(false)}
+              className="rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </button>
           </div>
           <div className="p-4 space-y-3 border-b">
             <div>
