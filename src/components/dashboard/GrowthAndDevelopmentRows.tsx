@@ -125,11 +125,57 @@ function CarouselRow({ title, cards }: { title: string; cards: RowCard[] }) {
 
 export function GrowthAndDevelopmentRows() {
   const [open, setOpen] = useState(false);
-  const [step, setStep] = useState<1 | 2>(1);
-  const [score, setScore] = useState<number | null>(null);
-  const [reason, setReason] = useState("");
-  const [improvement, setImprovement] = useState("");
 
+  const growthCards: RowCard[] = [
+    {
+      id: "revshare",
+      icon: Play,
+      title: "Revenue Share Explained",
+      description: "Learn how to build passive income through eXp's revenue share program.",
+      buttonText: "Watch Video",
+      theme: "blue",
+    },
+    {
+      id: "stock",
+      icon: TrendingUp,
+      title: "Stock Purchase Program",
+      description: "Build wealth through eXp's employee stock purchase plan with company match.",
+      buttonText: "Enroll Now",
+      theme: "gold",
+    },
+  ];
+
+  const devCards: RowCard[] = [
+    {
+      id: "disc",
+      icon: Target,
+      title: "DISC Assessment",
+      description: "Understand your communication style and improve client relationships.",
+      buttonText: "Take Assessment",
+      theme: "slate",
+    },
+    {
+      id: "nps",
+      icon: MessageCircleQuestion,
+      title: "Your Feedback",
+      description: "Fill out the agent eXp NPS survey today!",
+      buttonText: "Take Survey",
+      theme: "green",
+      onClick: () => setOpen(true),
+    },
+  ];
+
+  return (
+    <>
+      <div className="space-y-4">
+        <CarouselRow title="Financial Growth" cards={growthCards} />
+        <CarouselRow title="Professional Development" cards={devCards} />
+      </div>
+
+      <NpsSurveyModal open={open} onOpenChange={setOpen} />
+    </>
+  );
+}
   const handleOpen = () => {
     setOpen(true);
     setStep(1);
