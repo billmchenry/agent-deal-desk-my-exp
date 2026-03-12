@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Columns3, Search, User, Calendar, CheckCircle, DollarSign, Percent, BarChart3 } from "lucide-react";
+import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Columns3, Search, User, Calendar, CheckCircle, DollarSign, Percent, BarChart3, ArrowUpDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { agentDetails, type AgentDetail } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -109,8 +109,8 @@ export function AgentDetailsSheet({ open, onOpenChange }: AgentDetailsSheetProps
   const activeColumns = columns.filter((c) => visibleCols.has(c.id));
 
   const SortIcon = ({ col }: { col: SortKey }) => {
-    if (sortKey !== col) return <span className="text-[10px] opacity-40 leading-none">◇</span>;
-    return sortDir === "asc" ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />;
+    if (sortKey !== col) return <ArrowUpDown className="h-4 w-4 text-muted-foreground opacity-50" />;
+    return sortDir === "asc" ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />;
   };
 
   const renderCell = (agent: AgentDetail, colId: ColumnId) => {
@@ -236,7 +236,7 @@ export function AgentDetailsSheet({ open, onOpenChange }: AgentDetailsSheetProps
                       exit={{ opacity: 0, width: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                       className={cn(
-                        "py-3 px-4 text-body font-medium text-muted-foreground whitespace-nowrap overflow-hidden cursor-pointer select-none hover:text-foreground",
+                        "py-3 px-4 text-xs font-medium text-muted-foreground whitespace-nowrap overflow-hidden cursor-pointer select-none hover:text-foreground",
                         (col.type === "number" || col.type === "currency" || col.type === "percent") ? "text-end" : "text-start"
                       )}
                       onClick={() => handleSort(col.id)}

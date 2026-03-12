@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Columns3, Search, User, Hash, DollarSign, Landmark, Banknote } from "lucide-react";
+import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Columns3, Search, User, Hash, DollarSign, Landmark, Banknote, ArrowUpDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { topAgents, type TopAgent } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -109,8 +109,8 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
   const activeColumns = columns.filter((c) => visibleCols.has(c.id));
 
   const SortIcon = ({ col }: { col: SortKey }) => {
-    if (sortKey !== col) return <span className="text-[10px] opacity-40 leading-none">◇</span>;
-    return sortDir === "asc" ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />;
+    if (sortKey !== col) return <ArrowUpDown className="h-4 w-4 text-muted-foreground opacity-50" />;
+    return sortDir === "asc" ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />;
   };
 
   const renderCell = (agent: TopAgent, colId: ColumnId) => {
@@ -235,7 +235,7 @@ export function TopAgentsSheet({ open, onOpenChange, defaultTab = "units" }: Top
                       exit={{ opacity: 0, width: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                       className={cn(
-                        "py-3 px-4 text-body font-medium text-muted-foreground whitespace-nowrap overflow-hidden",
+                        "py-3 px-4 text-xs font-medium text-muted-foreground whitespace-nowrap overflow-hidden",
                         col.id === "name" ? "text-start" : "text-end",
                         col.sortKey && "cursor-pointer select-none hover:text-foreground"
                       )}
