@@ -201,7 +201,7 @@ function AgentCard({
   const hasChildren = agent.children && agent.children.length > 0;
 
   return (
-    <Card className="overflow-hidden transition-shadow hover:shadow-md">
+    <Card className="overflow-hidden transition-shadow hover:shadow-md border-l-4 border-l-amber-400">
       <CardContent className="p-4 flex flex-col gap-3">
         {/* Top: Avatar + Name/Location + Contact icon */}
         <div className="flex items-start gap-3">
