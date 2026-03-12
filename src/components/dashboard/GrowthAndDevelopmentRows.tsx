@@ -76,13 +76,13 @@ function CarouselRow({ title, cards }: { title: string; cards: RowCard[] }) {
       <h2 className="text-sm font-semibold text-section-title">{title}</h2>
       <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none"
+        className="flex flex-col md:flex-row gap-3 md:overflow-x-auto md:pb-2 md:snap-x md:snap-mandatory md:scrollbar-none"
       >
         {cards.map((card) => {
           const styles = themeStyles[card.theme];
           const Icon = card.icon;
           return (
-            <div key={card.id} className="min-w-[80%] md:min-w-0 md:flex-1 snap-start">
+            <div key={card.id} className="w-full md:min-w-0 md:flex-1 md:snap-start">
               <Card className={cn("h-full", styles.card)}>
                 <CardContent className="p-4">
                   <div className="flex items-start gap-3">
