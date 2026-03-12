@@ -4,6 +4,7 @@ import {
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DetailRow, SectionHeader, CollapsibleSection } from "@/components/shared/BreakdownComponents";
+import { X } from "lucide-react";
 
 interface TransactionDetailsSheetProps {
   open: boolean;
