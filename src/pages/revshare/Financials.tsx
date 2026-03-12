@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import { AgentTransactionsView, type AgentDetail, type AgentTransaction } from "@/components/revshare/AgentTransactionsView";
+import { exportToCsv, type CsvColumnDef } from "@/lib/csv-export";
 import { TransactionRevShareSheet } from "@/components/revshare/TransactionRevShareSheet";
 import { DateRangeFilter, type DateRange } from "@/components/filters/DateRangeFilter";
 import { startOfYear, startOfMonth, endOfMonth, subMonths, subYears } from "date-fns";
