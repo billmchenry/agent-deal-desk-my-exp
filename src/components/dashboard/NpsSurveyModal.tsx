@@ -50,11 +50,11 @@ export function NpsSurveyModal({ open, onOpenChange }: NpsSurveyModalProps) {
         </DialogHeader>
 
         {step === 1 ? (
-          <div className="space-y-4 py-2">
+          <div className="space-y-4 py-2 min-w-0 overflow-hidden">
             <p className="text-sm whitespace-normal overflow-visible">
               Based on your experience so far, how likely are you to recommend eXp to a friend or colleague?
             </p>
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 min-w-0">
               <div className="flex items-center justify-between px-1">
                 <span className="text-xs text-muted-foreground">Not Likely</span>
                 <span className="text-xs text-muted-foreground">Extremely Likely</span>
