@@ -835,7 +835,7 @@ export default function Financials() {
                   onChange={setPeriodicDateRange}
                   presets={periodicPresets}
                 />
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleDownloadPeriodicReport}>
                   <Download className="h-4 w-4 mr-2" />
                   {t("fin.downloadReport")}
                 </Button>
