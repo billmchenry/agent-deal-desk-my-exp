@@ -432,22 +432,22 @@ export function DataTable<T extends Record<string, any>>({
                     role="columnheader"
                     aria-sort={ariaSort}
                     className={cn(
-                      "font-semibold",
+                      "font-medium text-xs text-muted-foreground px-4 whitespace-nowrap",
                       (col.type === "number" || col.type === "currency") && "text-right",
                       col.stickyRight && "sticky right-0 z-20 bg-background shadow-[inset_2px_0_0_0_hsl(var(--border))]"
                     )}>
                     
-                    <div className={cn("flex items-center gap-1", (col.type === "number" || col.type === "currency") && "justify-end")}>
+                    <div className={cn("flex items-center", (col.type === "number" || col.type === "currency") && "justify-end")}>
                       {col.sortable ?
                       <button
-                        className="flex items-center gap-1 hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -ml-1"
+                        className="flex items-center hover:text-foreground transition-colors focus-visible:ring-2 focus-visible:ring-ring rounded px-1 -ml-1"
                         onClick={() => handleSort(col.key)}
                         aria-label={`Sort by ${t(col.header)} ${isSorted && sortDir === "asc" ? "descending" : "ascending"}`}>
                         
                           {t(col.header)}
-                          {isSorted && sortDir === "asc" && <ChevronUp className="h-3 w-3" />}
-                          {isSorted && sortDir === "desc" && <ChevronDown className="h-3 w-3" />}
-                          {(!isSorted || !sortDir) && <ChevronsUpDown className="h-3 w-3 opacity-40" />}
+                          {isSorted && sortDir === "asc" && <ChevronUp className="h-4 w-4 ml-2 text-muted-foreground" />}
+                          {isSorted && sortDir === "desc" && <ChevronDown className="h-4 w-4 ml-2 text-muted-foreground" />}
+                          {(!isSorted || !sortDir) && <ArrowUpDown className="h-4 w-4 ml-2 text-muted-foreground opacity-50" />}
                         </button> :
 
                       <span>{t(col.header)}</span>
