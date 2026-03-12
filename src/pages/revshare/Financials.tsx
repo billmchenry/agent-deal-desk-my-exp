@@ -1103,64 +1103,53 @@ export default function Financials() {
           </SheetHeader>
           {selectedBatch && (() => {
             const batchAdjustment = selectedBatch.adjustmentAmount;
-            const batchDeals = generateDeals(`batch-${selectedBatch.id}`, selectedBatch.totalDeals, selectedBatch.finalPayout);
+            // Generate PayNow deals from payNowTransactions
+            const payNowDealCount = selectedBatch.payNowTransactions.reduce((sum, pn) => sum + pn.dealCount, 0);
+            const payNowTotalAmount = selectedBatch.payNowTransactions.reduce((sum, pn) => sum + pn.finalAmount, 0);
+            const payNowDeals = generateDeals(`batch-pn-${selectedBatch.id}`, payNowDealCount, payNowTotalAmount).map(d => ({ ...d, paidVia: "paynow" as const }));
+            // Remaining deals paid via batch
+            const batchDealCount = selectedBatch.totalDeals - payNowDealCount;
+            const batchOnlyDeals = generateDeals(`batch-${selectedBatch.id}`, Math.max(batchDealCount, 0), selectedBatch.finalPayout).map(d => ({ ...d, paidVia: "batch" as const }));
+            const allDeals = [...payNowDeals, ...batchOnlyDeals];
             return (
               <div className="mt-6 space-y-5">
-                {/* Batch Summary Card */}
                 <Card className="p-4 space-y-4">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {selectedBatch.month} {selectedBatch.year}
-                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{selectedBatch.month} {selectedBatch.year}</p>
                     </div>
-                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
-                      {formatCurrency(selectedBatch.initialRevenue)} USD
-                    </p>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">{formatCurrency(selectedBatch.initialRevenue)} USD</p>
                   </div>
-
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">{t("fin.payNowDeduction")}</p>
                     <p className={cn("text-sm font-semibold font-secondary tabular-nums", selectedBatch.payNowDeduction > 0 ? "text-destructive" : "text-foreground")}>
                       {selectedBatch.payNowDeduction > 0 ? "-" : ""}{formatCurrency(selectedBatch.payNowDeduction)} USD
                     </p>
                   </div>
-
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">{t("fin.adjustmentAmount")}</p>
-                    <p className="text-sm font-semibold font-secondary tabular-nums text-exp-green">
-                      {formatCurrency(batchAdjustment)} USD
-                    </p>
+                    <p className="text-sm font-semibold font-secondary tabular-nums text-exp-green">{formatCurrency(batchAdjustment)} USD</p>
                   </div>
-
                   <div className="border-t border-border" />
-
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm font-semibold text-foreground">{t("fin.finalPayout")}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {selectedBatch.totalDeals} deals · {selectedBatch.memberCount} members
-                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{selectedBatch.totalDeals} deals · {selectedBatch.memberCount} members</p>
                     </div>
-                    <p className="text-sm font-bold font-secondary tabular-nums text-primary">
-                      {formatCurrency(selectedBatch.finalPayout)} USD
-                    </p>
+                    <p className="text-sm font-bold font-secondary tabular-nums text-primary">{formatCurrency(selectedBatch.finalPayout)} USD</p>
                   </div>
                 </Card>
-
-                {/* Results count + Download */}
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">{batchDeals.length} Results</span>
+                  <span className="text-sm text-muted-foreground">{allDeals.length} Results</span>
                   <Button variant="outline" size="sm" className="gap-2 text-xs">
                     <Download className="h-3.5 w-3.5" />
                     Download
                   </Button>
                 </div>
-
                 {/* Deal list */}
                 <div className="divide-y divide-border">
-                  {batchDeals.map((deal) => (
+                  {allDeals.map((deal) => (
                     <div
                       key={deal.id}
                       className="flex items-center justify-between py-3 cursor-pointer hover:bg-accent/50 -mx-2 px-2 rounded-lg transition-colors"
@@ -1170,7 +1159,18 @@ export default function Financials() {
                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedDeal(deal); setDealSheetOpen(true); } }}
                     >
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-foreground">{deal.agentName}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-medium text-foreground">{deal.agentName}</p>
+                          {deal.paidVia === "paynow" ? (
+                            <span className="inline-flex items-center rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-400 ring-1 ring-inset ring-amber-500/25">
+                              PayNow
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary ring-1 ring-inset ring-primary/25">
+                              Batch
+                            </span>
+                          )}
+                        </div>
                         <p className="text-xs text-muted-foreground truncate">{deal.address}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0 ml-3">
