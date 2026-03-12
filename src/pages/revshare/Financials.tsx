@@ -972,7 +972,7 @@ export default function Financials() {
                             {batch.month} {batch.year} Batch
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Batch #{batch.batchId} · {formatDate(batch.batchDate)} · {batch.totalDeals} total deals · {batch.memberCount} members
+                            {formatDate(batch.batchDate)} · {formatCurrency(batch.finalPayout + batch.adjustmentAmount + batch.payNowDeduction)} USD · {batch.totalDeals} deals · {batch.memberCount} members
                           </p>
                         </div>
                       </div>
@@ -1246,7 +1246,7 @@ export default function Financials() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{selectedBatch.month} {selectedBatch.year}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Payment Initiated {formatDate(selectedBatch.batchDate)}</p>
                     </div>
                     <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">{formatCurrency(selectedBatch.initialRevenue)} USD</p>
                   </div>
