@@ -202,24 +202,24 @@ function AgentCard({
 
   return (
     <Card className="overflow-hidden transition-shadow hover:shadow-md border-l-4 border-l-amber-400">
-      <CardContent className="p-4 flex flex-col gap-3">
+      <CardContent className="p-5 flex flex-col gap-3">
         {/* Top: Avatar + Name/Location + Contact icon */}
         <div className="flex items-start gap-3">
           <div className="relative">
-            <Avatar className="h-14 w-14">
+            <Avatar className="h-16 w-16">
               <AvatarImage src={agent.avatar} />
               <AvatarFallback className="bg-muted">
                 {agent.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </AvatarFallback>
             </Avatar>
             {agent.icon && (
-              <div className="absolute -bottom-0.5 -right-0.5 h-5 w-5 rounded-full bg-primary flex items-center justify-center ring-2 ring-card">
-                <Award className="h-3 w-3 text-primary-foreground" />
+              <div className="absolute -bottom-0.5 -right-0.5 h-6 w-6 rounded-full bg-primary flex items-center justify-center ring-2 ring-card">
+                <Award className="h-3.5 w-3.5 text-primary-foreground" />
               </div>
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-foreground text-sm leading-tight">{agent.name}</p>
+            <p className="font-semibold text-foreground text-[15px] leading-tight">{agent.name}</p>
             <p className="text-xs text-muted-foreground mt-0.5">{agent.location}</p>
           </div>
           {onOpenContact && (
@@ -235,57 +235,61 @@ function AgentCard({
           )}
         </div>
 
-        {/* Level + ICON badges — compact "L1" format */}
+        {/* Level + ICON badges */}
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className={`text-[11px] font-semibold px-2 py-0.5 ${getLevelBadgeClass(agent.level)}`}>
+          <Badge variant="outline" className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${getLevelBadgeClass(agent.level)}`}>
             L{agent.level}
           </Badge>
           {agent.icon && (
-            <Badge variant="outline" className="text-[11px] font-semibold px-2 py-0.5 bg-green-100 text-green-700 border-green-200">
+            <Badge variant="outline" className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 border-green-200">
               ICON
             </Badge>
           )}
         </div>
 
-        {/* 3-column flat stats row */}
-        <div className="grid grid-cols-3 gap-2">
-          <div>
-            <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
-              REV SHARE
-            </p>
-            <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
-              {formatCurrency(agent.revShare)}
-            </p>
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
-              CONTRIBUTION
-            </p>
-            <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
-              {formatCurrency(agent.contribution)}
-            </p>
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
-              ORG SIZE
-            </p>
-            <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
-              {agent.orgSize}
-            </p>
+        {/* 3-column stats with vertical dividers */}
+        <div className="border-t border-border pt-3">
+          <div className="grid grid-cols-3 divide-x divide-border">
+            <div className="text-center px-2">
+              <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
+                REV SHARE
+              </p>
+              <p className="text-base font-bold text-foreground font-secondary tabular-nums">
+                {formatCurrency(agent.revShare)}
+              </p>
+            </div>
+            <div className="text-center px-2">
+              <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
+                CONTRIBUTION
+              </p>
+              <p className="text-base font-bold text-foreground font-secondary tabular-nums">
+                {formatCurrency(agent.contribution)}
+              </p>
+            </div>
+            <div className="text-center px-2">
+              <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
+                ORG SIZE
+              </p>
+              <p className="text-base font-bold text-foreground font-secondary tabular-nums">
+                {agent.orgSize}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* View Org link style */}
+        {/* View Org link — centered */}
         {hasChildren && (
-          <button
-            onClick={onClick}
-            className="flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 font-medium mt-1 transition-colors"
-            aria-label={`${t("orgTree.viewOrg")} – ${agent.name}`}
-          >
-            <Users className="h-3.5 w-3.5" />
-            {t("orgTree.viewOrg")} ({agent.orgSize})
-            <ChevronRight className="h-3.5 w-3.5" />
-          </button>
+          <div className="border-t border-border pt-3">
+            <button
+              onClick={onClick}
+              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground font-medium transition-colors w-full justify-center"
+              aria-label={`${t("orgTree.viewOrg")} – ${agent.name}`}
+            >
+              <Users className="h-4 w-4" />
+              {t("orgTree.viewOrg")} ({agent.orgSize})
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
         )}
       </CardContent>
     </Card>
