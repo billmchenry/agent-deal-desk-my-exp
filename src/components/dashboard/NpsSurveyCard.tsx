@@ -61,9 +61,9 @@ export function NpsSurveyCard() {
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pr-6">
               <DialogTitle>Instant NPS Survey</DialogTitle>
               <span className="text-xs text-muted-foreground">
                 {step === 1 ? "0" : "1"} of 2 complete
@@ -76,23 +76,23 @@ export function NpsSurveyCard() {
               <p className="text-sm">
                 Based on your experience so far, how likely are you to recommend eXp to a friend or colleague?
               </p>
-              <div className="flex items-center gap-2 justify-center flex-wrap">
-                <span className="text-xs text-muted-foreground mr-1">Not Likely</span>
+              <div className="flex items-center gap-2 flex-nowrap">
+                <span className="text-xs text-muted-foreground whitespace-nowrap">Not Likely</span>
                 {Array.from({ length: 11 }, (_, i) => (
                   <button
                     key={i}
                     onClick={() => setScore(i)}
                     className={cn(
-                      "h-9 w-9 rounded-md border text-sm font-medium transition-colors",
+                      "h-9 w-9 shrink-0 rounded-md border text-sm font-medium transition-all",
                       score === i
                         ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-background hover:bg-muted border-border"
+                        : "bg-background border-border hover:border-blue-400 hover:bg-muted"
                     )}
                   >
                     {i}
                   </button>
                 ))}
-                <span className="text-xs text-muted-foreground ml-1">Extremely Likely</span>
+                <span className="text-xs text-muted-foreground whitespace-nowrap">Extremely Likely</span>
               </div>
             </div>
           ) : (
