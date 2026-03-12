@@ -1009,6 +1009,21 @@ export default function Financials() {
                   </div>
                 </Card>
 
+                {/* Transaction Details grid */}
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-2">Transaction Details</p>
+                  <div className="grid grid-cols-2 gap-px border border-border rounded-lg overflow-hidden bg-border">
+                    <div className="bg-card p-3">
+                      <p className="text-xs text-muted-foreground">Deal Count</p>
+                      <p className="text-sm font-semibold text-foreground mt-0.5">{selectedPayNow.txn.dealCount}</p>
+                    </div>
+                    <div className="bg-card p-3">
+                      <p className="text-xs text-muted-foreground">Member Count</p>
+                      <p className="text-sm font-semibold text-foreground mt-0.5">{new Set(deals.map(d => d.agentName)).size}</p>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Results count + Download */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{deals.length} Results</span>
