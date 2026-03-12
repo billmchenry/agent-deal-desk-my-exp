@@ -39,7 +39,7 @@ export function NpsSurveyModal({ open, onOpenChange }: NpsSurveyModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpen}>
-      <DialogContent className="p-6 sm:max-w-3xl">
+      <DialogContent className="w-[90vw] !max-w-[90vw] sm:w-full sm:!max-w-lg p-5">
         <DialogHeader>
           <div className="flex items-center justify-between pr-8">
             <DialogTitle>Instant NPS Survey</DialogTitle>
@@ -50,22 +50,22 @@ export function NpsSurveyModal({ open, onOpenChange }: NpsSurveyModalProps) {
         </DialogHeader>
 
         {step === 1 ? (
-          <div className="space-y-4 py-2">
-            <p className="text-sm whitespace-normal">
+          <div className="space-y-4 py-2 min-w-0 overflow-hidden">
+            <p className="text-sm whitespace-normal overflow-visible">
               Based on your experience so far, how likely are you to recommend eXp to a friend or colleague?
             </p>
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 min-w-0">
               <div className="flex items-center justify-between px-1">
                 <span className="text-xs text-muted-foreground">Not Likely</span>
                 <span className="text-xs text-muted-foreground">Extremely Likely</span>
               </div>
-              <div className="flex gap-2 flex-nowrap overflow-x-auto pb-1 scrollbar-none">
+              <div className="flex gap-2 flex-nowrap overflow-x-auto pb-2 scrollbar-none">
                 {Array.from({ length: 11 }, (_, i) => (
                   <button
                     key={i}
                     onClick={() => setScore(i)}
                     className={cn(
-                      "h-9 w-9 shrink-0 rounded-md border text-sm font-medium transition-all",
+                      "h-10 w-10 shrink-0 rounded-md border text-sm font-medium transition-all",
                       score === i
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-background hover:border-primary/45 hover:bg-muted"
@@ -116,28 +116,28 @@ export function NpsSurveyModal({ open, onOpenChange }: NpsSurveyModalProps) {
           </div>
         )}
 
-        <DialogFooter className="gap-2 sm:gap-0">
-          <Button
-            variant="outline"
-            className="h-12 sm:h-10"
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
+        <div className="flex flex-col gap-2 w-full">
           {step === 1 ? (
             <Button
-              className="h-12 sm:h-10"
+              className="h-11 w-full"
               onClick={() => { if (score !== null) setStep(2); }}
               disabled={score === null}
             >
               Continue
             </Button>
           ) : (
-            <Button className="h-12 sm:h-10" onClick={handleSubmit}>
+            <Button className="h-11 w-full" onClick={handleSubmit}>
               Submit
             </Button>
           )}
-        </DialogFooter>
+          <Button
+            variant="outline"
+            className="h-11 w-full"
+            onClick={() => onOpenChange(false)}
+          >
+            Cancel
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
