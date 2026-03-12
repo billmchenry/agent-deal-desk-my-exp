@@ -801,16 +801,28 @@ export default function Financials() {
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
               <Card className="p-5">
-                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalRevenue6Mo")}</p>
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalRevenueEarned")}</p>
                 <p className="text-2xl font-semibold text-primary font-secondary">
-                  {formatCurrency(totalRevenue)} <span className="text-xs text-muted-foreground">USD</span>
+                  {formatCurrency(totalRevenueEarned)} <span className="text-xs text-muted-foreground">USD</span>
                 </p>
               </Card>
               <Card className="p-5">
                 <p className="text-sm text-muted-foreground mb-1">{t("fin.totalTransactions")}</p>
                 <p className="text-2xl font-semibold text-foreground font-secondary">{totalTransactions}</p>
+              </Card>
+              <Card className="p-5">
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalBatchPayout")}</p>
+                <p className="text-2xl font-semibold text-primary font-secondary">
+                  {formatCurrency(totalRevenue)} <span className="text-xs text-muted-foreground">USD</span>
+                </p>
+              </Card>
+              <Card className="p-5">
+                <p className="text-sm text-muted-foreground mb-1">{t("fin.totalAdjustments")}</p>
+                <p className="text-2xl font-semibold text-exp-green font-secondary">
+                  {formatCurrency(totalAdjustments)} <span className="text-xs text-muted-foreground">USD</span>
+                </p>
               </Card>
               <Card className="p-5">
                 <p className="text-sm text-muted-foreground mb-1">{t("fin.totalPayNowTransactions")}</p>
