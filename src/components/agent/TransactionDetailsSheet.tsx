@@ -70,7 +70,7 @@ export function TransactionDetailsSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-md p-0 flex flex-col">
         <ScrollArea className="flex-1">
-          <div className="sticky top-0 z-10">
+          <div className="sticky top-0 z-20">
             <SectionHeader title="Transaction Details" />
           </div>
           <div className="p-4 space-y-3 border-b">
