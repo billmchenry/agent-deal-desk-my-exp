@@ -1246,7 +1246,7 @@ export default function Financials() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{selectedBatch.month} {selectedBatch.year}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Payment Initiated {formatDate(selectedBatch.batchDate)}</p>
                     </div>
                     <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">{formatCurrency(selectedBatch.initialRevenue)} USD</p>
                   </div>
