@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
