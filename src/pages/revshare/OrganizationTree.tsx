@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -101,14 +102,26 @@ const orgTree: OrgTreeAgent[] = [
   },
 ];
 
-const getLevelBadgeClass = (level: number) => {
-  const classes: Record<number, string> = {
-    1: "bg-blue-100 text-blue-700 border-blue-200",
-    2: "bg-green-100 text-green-700 border-green-200",
-    3: "bg-purple-100 text-purple-700 border-purple-200",
-    4: "bg-amber-100 text-amber-700 border-amber-200",
+const getLevelBorderColor = (level: number) => {
+  const colors: Record<number, string> = {
+    1: "border-l-exp-gold",
+    2: "border-l-exp-blue",
+    3: "border-l-exp-slate-blue",
+    4: "border-l-exp-moss-grey",
+    5: "border-l-exp-charcoal-blue",
   };
-  return classes[level] || "bg-muted text-muted-foreground border-border";
+  return colors[level] || "border-l-muted-foreground";
+};
+
+const getLevelBadgeStyle = (level: number) => {
+  const styles: Record<number, string> = {
+    1: "bg-exp-gold/15 text-exp-gold border-exp-gold/30",
+    2: "bg-exp-blue/15 text-exp-blue border-exp-blue/30",
+    3: "bg-exp-slate-blue/15 text-exp-slate-blue border-exp-slate-blue/30",
+    4: "bg-exp-moss-grey/15 text-exp-moss-grey border-exp-moss-grey/30",
+    5: "bg-exp-charcoal-blue/15 text-exp-charcoal-blue border-exp-charcoal-blue/30",
+  };
+  return styles[level] || "bg-muted text-muted-foreground border-border";
 };
 
 // Helper to count all agents recursively
@@ -189,10 +202,12 @@ function HeroBanner({
 // --- Agent Card Component ---
 function AgentCard({
   agent,
+  index = 0,
   onClick,
   onOpenContact,
 }: {
   agent: OrgTreeAgent;
+  index?: number;
   onClick?: () => void;
   onOpenContact?: () => void;
 }) {
@@ -201,98 +216,102 @@ function AgentCard({
   const hasChildren = agent.children && agent.children.length > 0;
 
   return (
-    <Card className="overflow-hidden transition-shadow hover:shadow-md border-l-4 border-l-amber-400">
-      <CardContent className="p-5 flex flex-col gap-3">
-        {/* Top: Avatar + Name/Location + Contact icon */}
-        <div className="flex items-start gap-3">
-          <div className="relative">
-            <Avatar className="h-16 w-16">
-              <AvatarImage src={agent.avatar} />
-              <AvatarFallback className="bg-muted">
-                {agent.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-              </AvatarFallback>
-            </Avatar>
-            {agent.icon && (
-              <div className="absolute -bottom-0.5 -right-0.5 h-6 w-6 rounded-full bg-primary flex items-center justify-center ring-2 ring-card">
-                <Award className="h-3.5 w-3.5 text-primary-foreground" />
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, delay: index * 0.04 }}
+    >
+      <Card className={`overflow-hidden transition-shadow hover:shadow-md border-l-4 ${getLevelBorderColor(agent.level)}`}>
+        <CardContent className="p-5 flex flex-col gap-3">
+          {/* Top: Avatar + Name/Location + Contact icon */}
+          <div className="flex items-start gap-3">
+            <div className="relative">
+              <Avatar className="h-14 w-14">
+                <AvatarImage src={agent.avatar} />
+                <AvatarFallback className="bg-muted">
+                  {agent.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+              {agent.icon && (
+                <div className="absolute -bottom-0.5 -right-0.5 h-5.5 w-5.5 rounded-full bg-primary flex items-center justify-center ring-2 ring-card">
+                  <Award className="h-3 w-3 text-primary-foreground" />
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-foreground text-[15px] leading-tight">{agent.name}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{agent.location}</p>
+              <div className="flex items-center gap-1.5 mt-1.5">
+                <Badge variant="outline" className={`text-[10px] font-semibold px-2 py-0 rounded-full ${getLevelBadgeStyle(agent.level)}`}>
+                  L{agent.level}
+                </Badge>
+                {agent.icon && (
+                  <Badge variant="outline" className="text-[10px] font-semibold px-2 py-0 rounded-full bg-exp-green/15 text-exp-green border-exp-green/30">
+                    ICON
+                  </Badge>
+                )}
               </div>
+            </div>
+            {onOpenContact && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => { e.stopPropagation(); onOpenContact(); }}
+                className="shrink-0 h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-accent"
+                aria-label={`${t("common.viewContact")} – ${agent.name}`}
+              >
+                <Contact className="h-4 w-4" />
+              </Button>
             )}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-semibold text-foreground text-[15px] leading-tight">{agent.name}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">{agent.location}</p>
-          </div>
-          {onOpenContact && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={(e) => { e.stopPropagation(); onOpenContact(); }}
-              className="shrink-0 h-9 w-9 text-muted-foreground hover:text-foreground"
-              aria-label={`${t("common.viewContact")} – ${agent.name}`}
-            >
-              <Contact className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
 
-        {/* Level + ICON badges */}
-        <div className="flex items-center gap-2">
-          <Badge variant="outline" className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${getLevelBadgeClass(agent.level)}`}>
-            L{agent.level}
-          </Badge>
-          {agent.icon && (
-            <Badge variant="outline" className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 border-green-200">
-              ICON
-            </Badge>
-          )}
-        </div>
-
-        {/* 3-column stats with vertical dividers */}
-        <div className="border-t border-border pt-3">
-          <div className="grid grid-cols-3 divide-x divide-border">
-            <div className="text-center px-2">
-              <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
-                REV SHARE
-              </p>
-              <p className="text-base font-bold text-foreground font-secondary tabular-nums">
-                {formatCurrency(agent.revShare)}
-              </p>
-            </div>
-            <div className="text-center px-2">
-              <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
-                CONTRIBUTION
-              </p>
-              <p className="text-base font-bold text-foreground font-secondary tabular-nums">
-                {formatCurrency(agent.contribution)}
-              </p>
-            </div>
-            <div className="text-center px-2">
-              <p className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase mb-1">
-                ORG SIZE
-              </p>
-              <p className="text-base font-bold text-foreground font-secondary tabular-nums">
-                {agent.orgSize}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* View Org link — centered */}
-        {hasChildren && (
+          {/* 3-column stats with vertical dividers */}
           <div className="border-t border-border pt-3">
-            <button
-              onClick={onClick}
-              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground font-medium transition-colors w-full justify-center"
-              aria-label={`${t("orgTree.viewOrg")} – ${agent.name}`}
-            >
-              <Users className="h-4 w-4" />
-              {t("orgTree.viewOrg")} ({agent.orgSize})
-              <ChevronRight className="h-4 w-4" />
-            </button>
+            <div className="grid grid-cols-3 divide-x divide-border">
+              <div className="text-center px-2">
+                <p className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase mb-0.5">
+                  Rev Share
+                </p>
+                <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
+                  {formatCurrency(agent.revShare)}
+                </p>
+              </div>
+              <div className="text-center px-2">
+                <p className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase mb-0.5">
+                  Contribution
+                </p>
+                <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
+                  {formatCurrency(agent.contribution)}
+                </p>
+              </div>
+              <div className="text-center px-2">
+                <p className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase mb-0.5">
+                  Org Size
+                </p>
+                <p className="text-sm font-bold text-foreground font-secondary tabular-nums">
+                  {agent.orgSize}
+                </p>
+              </div>
+            </div>
           </div>
-        )}
-      </CardContent>
-    </Card>
+
+          {/* View Org button */}
+          {hasChildren && (
+            <div className="border-t border-border pt-3">
+              <button
+                onClick={(e) => { e.stopPropagation(); onClick?.(); }}
+                className="w-full flex items-center justify-center gap-2 text-xs font-medium text-primary hover:text-primary/80 transition-colors py-1"
+                aria-label={`${t("orgTree.viewOrg")} – ${agent.name}`}
+              >
+                <Users className="h-3.5 w-3.5" />
+                View Org ({agent.orgSize})
+                <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 
@@ -358,7 +377,7 @@ function SelectedAgentCard({
                   <X className="h-4 w-4" />
                 </button>
               </div>
-              <Badge variant="outline" className={`text-[11px] font-semibold px-2 py-0.5 ${getLevelBadgeClass(agent.level)}`}>
+              <Badge variant="outline" className={`text-[11px] font-semibold px-2 py-0.5 ${getLevelBadgeStyle(agent.level)}`}>
                 L{agent.level}
               </Badge>
               <div className="mt-2 space-y-1 text-xs">
@@ -476,10 +495,11 @@ export default function OrganizationTree() {
 
         {/* Agent grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {displayedAgents.map((agent) => (
+          {displayedAgents.map((agent, idx) => (
             <AgentCard
               key={agent.id}
               agent={agent}
+              index={idx}
               onClick={() => handleDrillDown(agent)}
               onOpenContact={agent.contactData ? () => handleOpenContact(agent) : undefined}
             />
