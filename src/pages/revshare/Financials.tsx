@@ -1089,9 +1089,6 @@ export default function Financials() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">{t("fin.initialRevenue")}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        Initiated {formatDate(selectedPayNow.txn.date)}
-                      </p>
                     </div>
                     <p className="text-sm font-semibold font-secondary tabular-nums text-foreground">
                       {formatCurrency(selectedPayNow.txn.initialAmount)} USD
@@ -1112,6 +1109,9 @@ export default function Financials() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm font-semibold text-foreground">{t("fin.finalRevShare")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Payment Initiated {formatDate(selectedPayNow.txn.date)}
+                      </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         Batch ID {selectedPayNow.batchId}
                       </p>
