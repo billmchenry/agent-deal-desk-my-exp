@@ -1160,6 +1160,22 @@ export default function Financials() {
                     <p className="text-sm font-bold font-secondary tabular-nums text-primary">{formatCurrency(selectedBatch.finalPayout)} USD</p>
                   </div>
                 </Card>
+
+                {/* Transaction Details grid */}
+                <div>
+                  <p className="text-sm font-medium text-foreground mb-2">Transaction Details</p>
+                  <div className="grid grid-cols-2 gap-px border border-border rounded-lg overflow-hidden bg-border">
+                    <div className="bg-card p-3">
+                      <p className="text-xs text-muted-foreground">Deal Count</p>
+                      <p className="text-sm font-semibold text-foreground mt-0.5">{selectedBatch.totalDeals}</p>
+                    </div>
+                    <div className="bg-card p-3">
+                      <p className="text-xs text-muted-foreground">Member Count</p>
+                      <p className="text-sm font-semibold text-foreground mt-0.5">{selectedBatch.memberCount}</p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{allDeals.length} Results</span>
                   <Button variant="outline" size="sm" className="gap-2 text-xs">
