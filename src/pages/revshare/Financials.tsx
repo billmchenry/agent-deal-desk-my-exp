@@ -1133,6 +1133,10 @@ export default function Financials() {
                     <p className="text-sm font-semibold font-secondary tabular-nums text-exp-green">{formatCurrency(batchAdjustment)} USD</p>
                   </div>
                   <div className="border-t border-border" />
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">{t("fin.batchId")}</p>
+                    <p className="text-sm font-medium tabular-nums text-foreground">{selectedBatch.batchId}</p>
+                  </div>
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm font-semibold text-foreground">{t("fin.finalPayout")}</p>
