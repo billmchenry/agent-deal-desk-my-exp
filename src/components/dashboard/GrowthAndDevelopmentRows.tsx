@@ -175,8 +175,6 @@ export function GrowthAndDevelopmentRows() {
       <NpsSurveyModal open={open} onOpenChange={setOpen} />
     </>
   );
-}
-  const handleOpen = () => {
     setOpen(true);
     setStep(1);
     setScore(null);
