@@ -17,6 +17,7 @@ interface DashboardContextType {
   addWidget: (type: WidgetType, customTitle?: string, content?: string) => string;
   removeWidget: (id: string) => DashboardWidget | undefined;
   reorderWidgets: (activeId: string, overId: string) => void;
+  setWidgetOrder: (newWidgets: DashboardWidget[]) => void;
   isWidgetPinned: (type: WidgetType) => boolean;
   getWidgetById: (id: string) => DashboardWidget | undefined;
   
