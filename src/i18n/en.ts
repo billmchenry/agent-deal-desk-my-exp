@@ -464,6 +464,7 @@ export const en = {
   "fin.totalTransactions": "Total Transactions",
   "fin.totalAdjustments": "Total Adjustments",
   "fin.totalPayNowTransactions": "Total PayNow Transactions",
+  "fin.totalPayNowPaidEarly": "Total PayNow (Paid Early)",
   "fin.monthlyPaymentBatches": "Monthly Payment Batches",
   "fin.downloadReport": "Download Report",
   "fin.initialRevenue": "Total Earned",
