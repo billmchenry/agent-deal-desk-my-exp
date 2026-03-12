@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Columns3, Search, User, Calendar, CheckCircle, DollarSign, Percent, BarChart3 } from "lucide-react";
+import { Download, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Columns3, Search, User, Calendar, CheckCircle, DollarSign, Percent, BarChart3, ArrowUpDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { agentDetails, type AgentDetail } from "@/data/mockData";
 import { useTranslation } from "@/hooks/useTranslation";
