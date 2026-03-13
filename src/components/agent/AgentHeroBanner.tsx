@@ -178,9 +178,9 @@ export function AgentHeroBanner({
                   onClick={() => goToTransactions("withdrawn")}
                 >
                   <p className="text-2xl sm:text-section-title font-bold text-white">{transactionsWithdrawn}</p>
-                  <p className="text-xs text-white/60 flex items-center gap-1">
-                    <StatusDot color="red" />
-                    {t("txn.withdrawn")}
+                   <p className="text-xs text-white/60">
+                     {t("txn.withdrawn")}
+                   </p>
                   </p>
                 </button>
               </div>
