@@ -162,7 +162,6 @@ export function AgentHeroBanner({
                      <p className="text-xs text-white/60">
                        {t("txn.pending")}
                      </p>
-                    </p>
                   </button>
                 )}
 
