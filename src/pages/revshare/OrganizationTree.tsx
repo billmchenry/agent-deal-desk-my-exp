@@ -444,6 +444,38 @@ export default function OrganizationTree() {
         </CardContent>
       </Card>
 
+      {/* ── Performance Snapshot ── */}
+      <div className="mb-6">
+        <p className="text-section-title font-semibold text-foreground mb-3">Performance Snapshot</p>
+        <div className="rounded-xl bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue p-4 shadow-inner relative overflow-hidden">
+          {/* Decorative circles */}
+          <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/5 blur-xl" />
+          <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-white/5 blur-lg" />
+
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { icon: Users, value: totalOrg, label: "Total Organization Size" },
+              { icon: UserPlus, value: flaCount, label: "Agents who have joined the organization (year-to-date)" },
+              { icon: Trophy, value: iconCount, label: "Agents with ICON status" },
+              { icon: ShieldCheck, value: 2, label: "Count of Team Leaders" },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/5 backdrop-blur-md px-4 py-3.5"
+              >
+                <div className="shrink-0 h-9 w-9 rounded-full bg-white/10 flex items-center justify-center mt-0.5">
+                  <stat.icon className="h-4 w-4 text-white/70" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-stat-value font-bold text-white font-secondary tabular-nums">{stat.value}</p>
+                  <p className="text-xs text-white/50 leading-snug mt-0.5">{stat.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ── Path Ribbon (appears when drilled in) ── */}
       <AnimatePresence>
         {navStack.length > 0 && (
