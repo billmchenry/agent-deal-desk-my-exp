@@ -161,9 +161,9 @@ export function AgentHeroBanner({
                     onClick={() => goToTransactions("pending")}
                   >
                     <p className="text-2xl sm:text-section-title font-bold text-white">{transactionsPending}</p>
-                    <p className="text-xs text-white/60 flex items-center gap-1">
-                      <StatusDot color="yellow" />
-                      {t("txn.pending")}
+                     <p className="text-xs text-white/60">
+                       {t("txn.pending")}
+                     </p>
                     </p>
                   </button>
                 )}
