@@ -49,15 +49,6 @@ function MiniStatCard({
   );
 }
 
-function StatusDot({ color }: { color: "green" | "yellow" | "red" }) {
-  const dotColors = {
-    green: "bg-exp-green",
-    yellow: "bg-exp-gold",
-    red: "bg-exp-red",
-  };
-  return <span className={cn("inline-block w-2 h-2 rounded-full", dotColors[color])} />;
-}
-
 export function AgentHeroBanner({
   units,
   volume,
@@ -141,10 +132,9 @@ export function AgentHeroBanner({
                   onClick={() => goToTransactions("paid")}
                 >
                   <p className="text-2xl sm:text-section-title font-bold text-white">{transactionsClosed}</p>
-                  <p className="text-xs text-white/60 flex items-center gap-1">
-                    <StatusDot color="green" />
-                    {t("txn.paid")}
-                  </p>
+                   <p className="text-xs text-white/60">
+                     {t("txn.paid")}
+                   </p>
                 </button>
 
                 {/* Divider */}
@@ -158,10 +148,9 @@ export function AgentHeroBanner({
                     onClick={() => goToTransactions("firm")}
                   >
                     <p className="text-2xl sm:text-section-title font-bold text-white">{transactionsFirm}</p>
-                    <p className="text-xs text-white/60 flex items-center gap-1">
-                      <StatusDot color="yellow" />
-                      {t("txn.firm")}
-                    </p>
+                     <p className="text-xs text-white/60">
+                       {t("txn.firm")}
+                     </p>
                   </button>
                 ) : (
                   <button
@@ -170,10 +159,9 @@ export function AgentHeroBanner({
                     onClick={() => goToTransactions("pending")}
                   >
                     <p className="text-2xl sm:text-section-title font-bold text-white">{transactionsPending}</p>
-                    <p className="text-xs text-white/60 flex items-center gap-1">
-                      <StatusDot color="yellow" />
-                      {t("txn.pending")}
-                    </p>
+                     <p className="text-xs text-white/60">
+                       {t("txn.pending")}
+                     </p>
                   </button>
                 )}
 
@@ -187,10 +175,9 @@ export function AgentHeroBanner({
                   onClick={() => goToTransactions("withdrawn")}
                 >
                   <p className="text-2xl sm:text-section-title font-bold text-white">{transactionsWithdrawn}</p>
-                  <p className="text-xs text-white/60 flex items-center gap-1">
-                    <StatusDot color="red" />
-                    {t("txn.withdrawn")}
-                  </p>
+                   <p className="text-xs text-white/60">
+                     {t("txn.withdrawn")}
+                   </p>
                 </button>
               </div>
             </div>
