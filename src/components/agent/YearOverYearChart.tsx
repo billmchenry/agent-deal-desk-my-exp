@@ -121,14 +121,14 @@ export function YearOverYearChart() {
     <Card className="border shadow-sm">
       <CardHeader className="pb-2 pt-4 px-4 sm:px-6">
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <CardTitle className="text-sm font-semibold">
+          <CardTitle className="text-sm font-bold">
             Year-over-Year Comparison
           </CardTitle>
           <Tabs value={chartTab} onValueChange={(v) => { setChartTab(v); setSelectedMonth(null); }}>
-            <TabsList>
-              <TabsTrigger value="units" className="text-xs px-3">Units</TabsTrigger>
-              <TabsTrigger value="volume" className="text-xs px-3">Volume</TabsTrigger>
-              <TabsTrigger value="commission" className="text-xs h-7 px-3">Commission</TabsTrigger>
+            <TabsList className="bg-muted/60">
+              <TabsTrigger value="units" className="text-xs px-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Units</TabsTrigger>
+              <TabsTrigger value="volume" className="text-xs px-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Volume</TabsTrigger>
+              <TabsTrigger value="commission" className="text-xs px-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Commission</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
