@@ -49,15 +49,6 @@ function MiniStatCard({
   );
 }
 
-function StatusDot({ color }: { color: "green" | "yellow" | "red" }) {
-  const dotColors = {
-    green: "bg-exp-green",
-    yellow: "bg-exp-gold",
-    red: "bg-exp-red",
-  };
-  return <span className={cn("inline-block w-2 h-2 rounded-full", dotColors[color])} />;
-}
-
 export function AgentHeroBanner({
   units,
   volume,
