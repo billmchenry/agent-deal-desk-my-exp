@@ -132,9 +132,9 @@ export function AgentHeroBanner({
                   onClick={() => goToTransactions("paid")}
                 >
                   <p className="text-2xl sm:text-section-title font-bold text-white">{transactionsClosed}</p>
-                  <p className="text-xs text-white/60 flex items-center gap-1">
-                    <StatusDot color="green" />
-                    {t("txn.paid")}
+                   <p className="text-xs text-white/60">
+                     {t("txn.paid")}
+                   </p>
                   </p>
                 </button>
 
