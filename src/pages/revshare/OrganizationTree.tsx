@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Download, Search, Contact, Award, Users, UserPlus, Trophy, ShieldCheck, ChevronRight, ArrowLeft, TrendingUp, DollarSign, Network, ArrowUpDown, Info } from "lucide-react";
+import { Download, Search, Contact, Award, Users, ChevronRight, ArrowLeft, TrendingUp, DollarSign, Network, ArrowUpDown } from "lucide-react";
 
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
@@ -443,34 +443,6 @@ export default function OrganizationTree() {
           </div>
         </CardContent>
       </Card>
-
-      {/* ── Performance Snapshot ── */}
-      <div className="mb-6">
-        <p className="text-section-title font-semibold text-foreground mb-3">Performance Snapshot</p>
-        <div className="rounded-xl bg-gradient-to-r from-[hsl(233,50%,9%)] via-[hsl(244,14%,22%)] to-[hsl(220,34%,49%)] p-4 shadow-inner relative overflow-hidden">
-          {/* Decorative blurred circles */}
-          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-exp-blue/10 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-exp-frosted-blue/5 blur-2xl pointer-events-none" />
-          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { value: totalOrg, label: "Total Organization Size", icon: Users },
-              { value: flaCount, label: "Agents who have joined the organization (year-to-date)", icon: UserPlus },
-              { value: iconCount, label: "Agents with ICON status", icon: Trophy },
-              { value: 2, label: "Count of Team Leaders", icon: ShieldCheck },
-            ].map((stat) => (
-              <div key={stat.label} className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/5 backdrop-blur-md px-4 py-3.5">
-                <div className="shrink-0 h-9 w-9 rounded-full bg-white/10 flex items-center justify-center mt-0.5">
-                  <stat.icon className="h-4 w-4 text-white/70" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-stat-value font-bold text-white font-secondary tabular-nums">{stat.value}</p>
-                  <p className="text-xs text-white/50 leading-snug mt-0.5">{stat.label}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* ── Path Ribbon (appears when drilled in) ── */}
       <AnimatePresence>
