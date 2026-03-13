@@ -178,7 +178,6 @@ export function AgentHeroBanner({
                    <p className="text-xs text-white/60">
                      {t("txn.withdrawn")}
                    </p>
-                  </p>
                 </button>
               </div>
             </div>
