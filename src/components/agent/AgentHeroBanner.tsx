@@ -149,9 +149,9 @@ export function AgentHeroBanner({
                     onClick={() => goToTransactions("firm")}
                   >
                     <p className="text-2xl sm:text-section-title font-bold text-white">{transactionsFirm}</p>
-                    <p className="text-xs text-white/60 flex items-center gap-1">
-                      <StatusDot color="yellow" />
-                      {t("txn.firm")}
+                     <p className="text-xs text-white/60">
+                       {t("txn.firm")}
+                     </p>
                     </p>
                   </button>
                 ) : (
