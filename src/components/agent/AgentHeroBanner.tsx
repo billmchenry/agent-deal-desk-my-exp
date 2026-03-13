@@ -151,7 +151,6 @@ export function AgentHeroBanner({
                      <p className="text-xs text-white/60">
                        {t("txn.firm")}
                      </p>
-                    </p>
                   </button>
                 ) : (
                   <button
