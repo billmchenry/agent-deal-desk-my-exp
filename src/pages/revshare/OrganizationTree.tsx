@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Download, Search, Contact, Award, Users, UserPlus, Trophy, ShieldCheck, ChevronRight, ArrowLeft, TrendingUp, DollarSign, Network, ArrowUpDown } from "lucide-react";
+import { Download, Search, Contact, Award, Users, UserPlus, Trophy, ShieldCheck, ChevronRight, ArrowLeft, TrendingUp, DollarSign, Network, ArrowUpDown, Info } from "lucide-react";
 
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
