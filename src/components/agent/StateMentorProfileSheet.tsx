@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Phone, Mail, MapPin, Facebook, Linkedin, Globe, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Linkedin, Instagram, Globe, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import type { StateMentor, Mentee } from "@/data/mentorMockData";
 import { mockMentees } from "@/data/mentorMockData";
 import { MenteeContactSheet } from "@/components/mentor/MenteeContactSheet";
@@ -82,46 +82,37 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
 
               {/* Contact */}
               <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground">{t("broker.contact")}</p>
-                <div className="flex gap-2">
-                  <Button variant="outline" className="flex-1" asChild>
+                <p className="text-xs font-semibold text-foreground">{t("broker.contact")}</p>
+                <div className="flex gap-3">
+                  <Button variant="default" className="flex-1 w-full" asChild>
                     <a href={`tel:${mentor.phone}`}>
                       <Phone className="h-4 w-4 mr-1.5" aria-hidden="true" />
                       {t("broker.call")}
                     </a>
                   </Button>
-                  <Button variant="outline" className="flex-1" asChild>
+                  <Button variant="outline" className="flex-1 w-full" asChild>
                     <a href={`mailto:${mentor.primaryEmail}`}>
                       <Mail className="h-4 w-4 mr-1.5" aria-hidden="true" />
                       {t("broker.email")}
                     </a>
                   </Button>
                 </div>
-                {(mentor.facebook || mentor.linkedin || mentor.website) && (
-                  <div className="flex gap-2">
-                    {mentor.facebook && (
-                      <Button variant="ghost" size="icon" asChild>
-                        <a href={mentor.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                          <Facebook className="h-4 w-4" />
-                        </a>
-                      </Button>
-                    )}
-                    {mentor.linkedin && (
-                      <Button variant="ghost" size="icon" asChild>
-                        <a href={mentor.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                          <Linkedin className="h-4 w-4" />
-                        </a>
-                      </Button>
-                    )}
-                    {mentor.website && (
-                      <Button variant="ghost" size="icon" asChild>
-                        <a href={mentor.website} target="_blank" rel="noopener noreferrer" aria-label="Website">
-                          <Globe className="h-4 w-4" />
-                        </a>
-                      </Button>
-                    )}
-                  </div>
-                )}
+                <div className="flex items-center justify-start gap-2">
+                  {mentor.facebook && (
+                    <a href={mentor.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                      className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors">
+                      <Facebook className="h-4 w-4" />
+                    </a>
+                  )}
+                  <a href={mentor.linkedin || "#"} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors">
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                  <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors">
+                    <Instagram className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
 
               <Separator />
