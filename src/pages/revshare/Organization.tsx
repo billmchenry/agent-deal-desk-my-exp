@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
@@ -66,49 +67,50 @@ export default function OrganizationReporting() {
           </Select>
         </UniversalFilterBar>
 
-            <h2 className="text-section-title font-semibold text-foreground mb-4">{t("org.performanceSnapshot")}</h2>
+        {/* Performance Snapshot — Frosted Hero Banner */}
+        <Card className="relative overflow-hidden bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue text-white p-4 sm:p-6 mb-6">
+          {/* Decorative background */}
+          <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
+            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-frosted-blue" />
+            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-white" />
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-stat-value font-bold text-foreground">{formatNumber(233)}</span>
-                    <Info className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">{t("org.totalOrgSize")}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-stat-value font-bold text-foreground">{formatNumber(5)}</span>
-                    <Info className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">{t("org.agentsJoined")}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-stat-value font-bold text-foreground">{formatNumber(1)}</span>
-                    <Info className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">{t("org.agentsWithIcon")}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-stat-value font-bold text-foreground">{formatNumber(2)}</span>
-                    <Info className="h-4 w-4 text-muted-foreground" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">{t("org.countTeamLeaders")}</p>
-                </CardContent>
-              </Card>
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-4">
+              <Badge className="bg-white/15 text-white border-white/20 hover:bg-white/20">
+                <Info className="me-1 h-3 w-3" />
+                {t("org.performanceSnapshot")}
+              </Badge>
             </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+              <div className="flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="min-w-0">
+                  <p className="text-section-title font-bold text-white truncate">{formatNumber(233)}</p>
+                  <p className="text-xs sm:text-[11px] text-white/60">{t("org.totalOrgSize")}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="min-w-0">
+                  <p className="text-section-title font-bold text-white truncate">{formatNumber(5)}</p>
+                  <p className="text-xs sm:text-[11px] text-white/60">{t("org.agentsJoined")}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="min-w-0">
+                  <p className="text-section-title font-bold text-white truncate">{formatNumber(1)}</p>
+                  <p className="text-xs sm:text-[11px] text-white/60">{t("org.agentsWithIcon")}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                <div className="min-w-0">
+                  <p className="text-section-title font-bold text-white truncate">{formatNumber(2)}</p>
+                  <p className="text-xs sm:text-[11px] text-white/60">{t("org.countTeamLeaders")}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
 
             {/* Country Production Grid — Last 12 Months */}
             <Card className="mb-6">
