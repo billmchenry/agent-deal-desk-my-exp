@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Phone, Mail, MapPin, Facebook, Linkedin, Globe, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Linkedin, Instagram, Globe, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import type { StateMentor, Mentee } from "@/data/mentorMockData";
 import { mockMentees } from "@/data/mentorMockData";
 import { MenteeContactSheet } from "@/components/mentor/MenteeContactSheet";
