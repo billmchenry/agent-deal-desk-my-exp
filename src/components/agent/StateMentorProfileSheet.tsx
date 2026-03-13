@@ -104,14 +104,6 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
                       <Facebook className="h-4 w-4" />
                     </a>
                   )}
-                  <a href={mentor.linkedin || "#"} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
-                    className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors">
-                    <Linkedin className="h-4 w-4" />
-                  </a>
-                  <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
-                    className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors">
-                    <Instagram className="h-4 w-4" />
-                  </a>
                 </div>
               </div>
 
