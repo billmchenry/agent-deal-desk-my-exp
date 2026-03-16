@@ -109,6 +109,7 @@ export default function CustomServiceFees() {
         <DataTable
           data={mockServiceFeeAgents}
           columns={columns}
+          defaultPageSize={5}
           onRowClick={(agent) => setSelectedAgent(agent)}
           mobileCardRender={(agent) => (
             <div className="flex items-center justify-between gap-3">
