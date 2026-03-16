@@ -349,7 +349,7 @@ function generateDeals(pnId: string, count: number, totalAmount: number): PayNow
 
 const monthlyBatches: MonthlyBatchRow[] = [
   {
-    id: "batch-2026-04", batchId: null, batchDate: null, month: "April", year: 2026, totalDeals: 0, memberCount: 2,
+    id: "batch-2026-04", batchId: null, batchDate: null, month: "April", year: 2026, totalDeals: 5, memberCount: 2,
     initialRevenue: 0, payNowDeduction: 682.45, adjustmentAmount: 0, finalPayout: 0, batchPending: true,
     payNowTransactions: [
       { id: "pn-2026-04-1", date: "2026-04-03", initialAmount: 312.80, serviceFee: -9.38, finalAmount: 303.42, dealCount: 2 },
@@ -993,7 +993,7 @@ export default function Financials() {
                           </div>
                           <p className="text-sm text-muted-foreground">
                             {batch.batchPending
-                              ? `${batch.payNowTransactions.length} PayNow trx · ${batch.memberCount} members`
+                              ? `${batch.totalDeals} ${t("fin.transactions")} · ${batch.memberCount} ${t("fin.members")}`
                               : `${formatDate(batch.batchDate)} · ${batch.totalDeals} deals · ${batch.memberCount} members`
                             }
                           </p>
@@ -1002,11 +1002,11 @@ export default function Financials() {
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
                         <div className="text-right">
-                          <p className="text-xs text-muted-foreground">{batch.batchPending ? t("fin.totalRevenueEarned") : t("fin.initialRevenue")}</p>
+                          <p className="text-xs text-muted-foreground">{t("fin.initialRevenue")}</p>
                           <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(getBatchTotalEarned(batch))} USD</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs text-muted-foreground">{batch.batchPending ? t("fin.totalPayNowPaidEarly") : t("fin.payNowDeduction")}</p>
+                          <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
                           <p className={cn("text-sm font-secondary", batch.payNowDeduction > 0 ? "font-medium text-destructive" : "font-normal text-foreground")}>
                             {batch.payNowDeduction > 0 && !batch.batchPending ? "- " : ""}{formatCurrency(batch.payNowDeduction)} USD
                           </p>
