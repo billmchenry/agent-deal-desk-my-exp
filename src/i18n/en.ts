@@ -102,6 +102,7 @@ export const en = {
   "txn.firm": "Firm",
   "txn.searchTransactions": "Search transactions...",
   "txn.results": "Results",
+  "txn.loadMore": "Load More",
   "txn.status": "Status",
   "txn.transactionId": "Transaction ID",
   "txn.transactionNumber": "Transaction Number",
