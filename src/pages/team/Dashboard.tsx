@@ -275,21 +275,30 @@ export default function TeamDashboard() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="units" className="w-full">
-                <div className="relative mb-4">
-                  <div className="flex w-full flex-nowrap overflow-x-auto scrollbar-hide">
-                    <TabsList className="flex w-max min-w-max flex-nowrap">
-                      <TabsTrigger value="units" className="flex-shrink-0 whitespace-nowrap">
-                        {t("team.unitsClosed")}
-                      </TabsTrigger>
-                      <TabsTrigger value="volume" className="flex-shrink-0 whitespace-nowrap">
-                        {t("team.highestVolume")}
-                      </TabsTrigger>
-                      <TabsTrigger value="commission" className="flex-shrink-0 whitespace-nowrap pr-10">
-                        {t("team.commission")}
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                  <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-card to-transparent sm:hidden" />
+                <div
+                  className="mb-4 flex w-full flex-row flex-nowrap overflow-x-auto scrollbar-hide"
+                  style={{ WebkitOverflowScrolling: "touch" }}
+                >
+                  <TabsList className="flex w-max min-w-max flex-nowrap">
+                    <TabsTrigger
+                      value="units"
+                      className="flex-shrink-0 whitespace-nowrap px-6 text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-foreground"
+                    >
+                      Units Closed
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="volume"
+                      className="flex-shrink-0 whitespace-nowrap px-6 text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-foreground"
+                    >
+                      Highest Volume
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="commission"
+                      className="flex-shrink-0 whitespace-nowrap px-6 text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-foreground"
+                    >
+                      Commission
+                    </TabsTrigger>
+                  </TabsList>
                 </div>
 
                 {(["units", "volume", "commission"] as const).map((tab) => (
