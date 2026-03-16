@@ -435,14 +435,14 @@ export default function YearEnd() {
   // ── Summary View ──
   return (
     <DashboardLayout>
-      <div className="space-y-4 pb-20">
-        <h1 className="text-page-title font-bold text-foreground">{t("nav.yearEnd")}</h1>
+      <div className="space-y-4 pb-20 px-5 sm:px-0">
+        <h1 className="text-page-title font-bold text-foreground mb-6">{t("nav.yearEnd")}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Income breakdown */}
           <div className="lg:col-span-2 space-y-4">
-            <h2 className="text-section-title font-semibold">{t("ye.my1099Income")}</h2>
-            <div className="flex items-center gap-3">
+            <h2 className="text-section-title font-semibold mb-4">{t("ye.my1099Income")}</h2>
+            <div className="flex items-center gap-4">
               <Select value={companyFilter} onValueChange={setCompanyFilter}>
                 <SelectTrigger className="w-40" aria-label={t("ye.companyFilter")}>
                   <SelectValue />
@@ -478,7 +478,7 @@ export default function YearEnd() {
             {/* Donut + breakdown */}
             <div className="flex flex-col md:flex-row gap-6">
               {/* Donut */}
-              <div className="w-full md:w-64 shrink-0">
+              <div className="w-full md:w-64 shrink-0 py-8">
                 <ResponsiveContainer width="100%" height={220}>
                   <PieChart>
                     <Pie
@@ -496,7 +496,7 @@ export default function YearEnd() {
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer>
-                <p className="text-center text-stat-value font-bold tabular-nums font-secondary -mt-4">
+                <p className="text-center text-stat-value font-bold tabular-nums font-secondary mt-8">
                   {formatCurrency(grandTotal)}
                 </p>
               </div>
@@ -509,14 +509,14 @@ export default function YearEnd() {
                     <div key={cg.company} className="space-y-2">
                       <h4 className="font-semibold border-b pb-1">{cg.company}</h4>
                       {cg.entities.map((eg) => (
-                        <div key={eg.entity} className="space-y-1 ml-1">
+                        <div key={eg.entity} className="space-y-1 ml-1 mt-6">
                           <Badge variant="secondary" className="text-xs font-normal">
                             Entity - {eg.entity}
                           </Badge>
                           {eg.lines.map((line) => (
                             <button
                               key={line.id}
-                              className="flex items-center justify-between w-full py-1 px-1 rounded hover:bg-muted/40 transition-colors group text-start"
+                              className="flex items-center justify-between w-full py-3 px-1 rounded hover:bg-muted/40 transition-colors group text-start"
                               onClick={() => handleDrilldown(line)}
                               aria-label={`${line.type} ${formatCurrency(line.amount)}`}
                             >
@@ -544,7 +544,7 @@ export default function YearEnd() {
                   ))}
 
                 {/* Total */}
-                <div className="flex items-center justify-between pt-2 border-t">
+                <div className="flex items-center justify-between pt-2 border-t border-b border-border pb-4 mb-4">
                   <span className="font-semibold">{t("ye.total")}</span>
                   <button
                     className="flex items-center gap-1 font-bold tabular-nums font-secondary hover:text-primary transition-colors"
@@ -560,7 +560,7 @@ export default function YearEnd() {
 
           {/* Right: Files panel */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-section-title font-semibold">{t("ye.files")}</h2>
               <Select value={year} onValueChange={setYear}>
                 <SelectTrigger className="w-24" aria-label={t("ye.yearSelect")}>
@@ -580,25 +580,27 @@ export default function YearEnd() {
                 return acc;
               }, {})
             ).map(([company, files]) => (
-              <div key={company} className="space-y-2">
-                <h4 className="text-sm font-semibold">{company}</h4>
-                {files.map((file, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-3 rounded-lg border p-3 hover:bg-muted/30 transition-colors"
-                  >
-                    <FileText className="h-5 w-5 text-muted-foreground shrink-0" aria-hidden="true" />
-                    <span className="text-sm truncate flex-1">{file.filename}</span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 shrink-0"
-                      aria-label={t("ye.copyFilename")}
+              <div key={company} className="mb-6">
+                <h4 className="text-sm font-semibold mb-4">{company}</h4>
+                <div className="space-y-4">
+                  {files.map((file, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-3 rounded-lg border py-3 px-3 hover:bg-muted/30 transition-colors"
                     >
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
+                      <FileText className="h-5 w-5 text-muted-foreground shrink-0" aria-hidden="true" />
+                      <span className="text-sm truncate flex-1">{file.filename}</span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 shrink-0"
+                        aria-label={t("ye.copyFilename")}
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
