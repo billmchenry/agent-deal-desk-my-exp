@@ -269,23 +269,28 @@ export default function TeamDashboard() {
           </Card>
 
           {/* Top Agents */}
-          <Card>
+          <Card className="w-full overflow-hidden">
             <CardHeader>
               <CardTitle className="text-section-title font-medium">{t("team.topAgents")}</CardTitle>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="units" className="w-full">
-                <TabsList className="mb-4">
-                  <TabsTrigger value="units">
-                    {t("team.unitsClosed")}
-                  </TabsTrigger>
-                  <TabsTrigger value="volume">
-                    {t("team.highestVolume")}
-                  </TabsTrigger>
-                  <TabsTrigger value="commission">
-                    {t("team.commission")}
-                  </TabsTrigger>
-                </TabsList>
+                <div className="relative mb-4">
+                  <div className="overflow-x-auto scrollbar-hide">
+                    <TabsList className="flex flex-nowrap w-max sm:w-auto">
+                      <TabsTrigger value="units" className="whitespace-nowrap">
+                        {t("team.unitsClosed")}
+                      </TabsTrigger>
+                      <TabsTrigger value="volume" className="whitespace-nowrap">
+                        {t("team.highestVolume")}
+                      </TabsTrigger>
+                      <TabsTrigger value="commission" className="whitespace-nowrap">
+                        {t("team.commission")}
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                  <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-card to-transparent sm:hidden" />
+                </div>
 
                 {(["units", "volume", "commission"] as const).map((tab) => (
                   <TabsContent key={tab} value={tab} className="mt-0">
