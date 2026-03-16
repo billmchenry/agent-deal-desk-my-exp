@@ -349,7 +349,7 @@ function generateDeals(pnId: string, count: number, totalAmount: number): PayNow
 
 const monthlyBatches: MonthlyBatchRow[] = [
   {
-    id: "batch-2026-04", batchId: null, batchDate: null, month: "April", year: 2026, totalDeals: 0, memberCount: 2,
+    id: "batch-2026-04", batchId: null, batchDate: null, month: "April", year: 2026, totalDeals: 5, memberCount: 2,
     initialRevenue: 0, payNowDeduction: 682.45, adjustmentAmount: 0, finalPayout: 0, batchPending: true,
     payNowTransactions: [
       { id: "pn-2026-04-1", date: "2026-04-03", initialAmount: 312.80, serviceFee: -9.38, finalAmount: 303.42, dealCount: 2 },
