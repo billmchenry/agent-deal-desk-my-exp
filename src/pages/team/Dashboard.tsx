@@ -276,15 +276,15 @@ export default function TeamDashboard() {
             <CardContent>
               <Tabs defaultValue="units" className="w-full">
                 <div className="relative mb-4">
-                  <div className="overflow-x-auto scrollbar-hide">
-                    <TabsList className="flex flex-nowrap w-max sm:w-auto">
-                      <TabsTrigger value="units" className="whitespace-nowrap">
+                  <div className="flex w-full flex-nowrap overflow-x-auto scrollbar-hide">
+                    <TabsList className="flex w-max min-w-max flex-nowrap">
+                      <TabsTrigger value="units" className="flex-shrink-0 whitespace-nowrap">
                         {t("team.unitsClosed")}
                       </TabsTrigger>
-                      <TabsTrigger value="volume" className="whitespace-nowrap">
+                      <TabsTrigger value="volume" className="flex-shrink-0 whitespace-nowrap">
                         {t("team.highestVolume")}
                       </TabsTrigger>
-                      <TabsTrigger value="commission" className="whitespace-nowrap">
+                      <TabsTrigger value="commission" className="flex-shrink-0 whitespace-nowrap pr-10">
                         {t("team.commission")}
                       </TabsTrigger>
                     </TabsList>
