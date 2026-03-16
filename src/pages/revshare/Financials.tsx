@@ -993,36 +993,22 @@ export default function Financials() {
                           </div>
                           <p className="text-sm text-muted-foreground">
                             {batch.batchPending
-                              ? `${batch.payNowTransactions.length} PayNow transactions · ${batch.memberCount} members`
+                              ? `${batch.payNowTransactions.length} PayNow trx · ${batch.memberCount} members`
                               : `${formatDate(batch.batchDate)} · ${batch.totalDeals} deals · ${batch.memberCount} members`
                             }
                           </p>
                         </div>
                       </div>
 
-                      {batch.batchPending ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
-                          <div className="text-right">
-                            <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
-                            <p className="text-sm font-medium font-secondary text-exp-green">
-                              {formatCurrency(batch.payNowDeduction)} USD
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-xs text-muted-foreground">{t("fin.finalPayout")}</p>
-                            <p className="text-sm font-secondary text-muted-foreground italic">Pending</p>
-                          </div>
-                        </div>
-                      ) : (
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
                         <div className="text-right">
-                          <p className="text-xs text-muted-foreground">{t("fin.initialRevenue")}</p>
-                          <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(batch.finalPayout + batch.adjustmentAmount + batch.payNowDeduction)} USD</p>
+                          <p className="text-xs text-muted-foreground">{batch.batchPending ? t("fin.totalRevenueEarned") : t("fin.initialRevenue")}</p>
+                          <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(getBatchTotalEarned(batch))} USD</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
+                          <p className="text-xs text-muted-foreground">{batch.batchPending ? t("fin.totalPayNowPaidEarly") : t("fin.payNowDeduction")}</p>
                           <p className={cn("text-sm font-secondary", batch.payNowDeduction > 0 ? "font-medium text-destructive" : "font-normal text-foreground")}>
-                            {batch.payNowDeduction > 0 ? "- " : ""}{formatCurrency(batch.payNowDeduction)} USD
+                            {batch.payNowDeduction > 0 && !batch.batchPending ? "- " : ""}{formatCurrency(batch.payNowDeduction)} USD
                           </p>
                         </div>
                         <div className="text-right">
@@ -1031,10 +1017,13 @@ export default function Financials() {
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">{t("fin.finalPayout")}</p>
-                          <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)} USD</p>
+                          {batch.batchPending ? (
+                            <p className="text-sm font-secondary text-muted-foreground italic">Pending</p>
+                          ) : (
+                            <p className="text-sm font-semibold font-secondary text-primary">{formatCurrency(batch.finalPayout)} USD</p>
+                          )}
                         </div>
                       </div>
-                      )}
                     </div>
 
                     {/* Expanded content */}
