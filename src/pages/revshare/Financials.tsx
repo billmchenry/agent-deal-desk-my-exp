@@ -993,7 +993,7 @@ export default function Financials() {
                           </div>
                           <p className="text-sm text-muted-foreground">
                             {batch.batchPending
-                              ? `${batch.payNowTransactions.length} PayNow trx · ${batch.memberCount} members`
+                              ? `${batch.totalDeals} ${t("fin.transactions")} · ${batch.memberCount} ${t("fin.members")}`
                               : `${formatDate(batch.batchDate)} · ${batch.totalDeals} deals · ${batch.memberCount} members`
                             }
                           </p>
@@ -1002,11 +1002,11 @@ export default function Financials() {
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-3 md:mt-0 w-full md:w-auto">
                         <div className="text-right">
-                          <p className="text-xs text-muted-foreground">{batch.batchPending ? t("fin.totalRevenueEarned") : t("fin.initialRevenue")}</p>
+                          <p className="text-xs text-muted-foreground">{t("fin.initialRevenue")}</p>
                           <p className="text-sm font-medium font-secondary text-foreground">{formatCurrency(getBatchTotalEarned(batch))} USD</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs text-muted-foreground">{batch.batchPending ? t("fin.totalPayNowPaidEarly") : t("fin.payNowDeduction")}</p>
+                          <p className="text-xs text-muted-foreground">{t("fin.payNowDeduction")}</p>
                           <p className={cn("text-sm font-secondary", batch.payNowDeduction > 0 ? "font-medium text-destructive" : "font-normal text-foreground")}>
                             {batch.payNowDeduction > 0 && !batch.batchPending ? "- " : ""}{formatCurrency(batch.payNowDeduction)} USD
                           </p>
