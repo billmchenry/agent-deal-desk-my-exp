@@ -387,28 +387,50 @@ export function DataTable<T extends Record<string, any>>({
     </div>;
 
 
+  // --- Mobile: how many items to show (load-more pattern) ---
+  const [mobileVisibleCount, setMobileVisibleCount] = useState(defaultPageSize);
+  const mobileData = filteredSorted.slice(0, mobileVisibleCount);
+  const hasMoreMobile = mobileVisibleCount < filteredSorted.length;
+
   // --- Mobile card view ---
   if (isMobile && mobileCardRender) {
     return (
       <div>
-        {toolbar}
-        {pageData.length === 0 ?
+        <div className="sticky top-0 z-10 bg-background pb-1">
+          {toolbar}
+        </div>
+        {mobileData.length === 0 ?
         <p className="text-center text-muted-foreground py-8">{t("txn.noResults")}</p> :
 
-        <div className="space-y-2">
-            {pageData.map((row, i) =>
-          <button
-            key={i}
-            type="button"
-            className="w-full text-left rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
-            onClick={() => onRowClick?.(row)}>
-            
-                {mobileCardRender(row)}
-              </button>
-          )}
+        <div className="relative">
+            <div className="space-y-2">
+              {mobileData.map((row, i) =>
+            <button
+              key={i}
+              type="button"
+              className="w-full text-left rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+              onClick={() => onRowClick?.(row)}>
+              
+                  {mobileCardRender(row)}
+                </button>
+            )}
+            </div>
+            {hasMoreMobile && (
+              <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
+            )}
           </div>
         }
-        {pagination}
+        {hasMoreMobile && (
+          <div className="mt-4 px-1">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => setMobileVisibleCount((prev) => prev + defaultPageSize)}
+            >
+              {t("txn.loadMore") || "Load More"}
+            </Button>
+          </div>
+        )}
       </div>);
 
   }
