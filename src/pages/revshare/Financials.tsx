@@ -545,12 +545,12 @@ export default function Financials() {
       date: string;
       totalDeals: number;
       memberCount: number;
-      initialRevenue: number;
-      serviceFee: number | string;
+      totalEarned: number | string;
       payNowDeduction: number;
       adjustmentAmount: number;
       finalPayout: number;
-      totalEarned: number | string;
+      initialRevenue: number;
+      serviceFee: number | string;
     }
     const csvColumns: CsvColumnDef<PeriodicCsvRow>[] = [
       { key: "type", header: "Type", type: "string" },
@@ -558,14 +558,14 @@ export default function Financials() {
       { key: "year", header: "Year", type: "number" },
       { key: "batchId", header: "Batch ID", type: "string" },
       { key: "date", header: "Date", type: "date" },
-      { key: "totalDeals", header: "Total Deals", type: "number" },
+      { key: "totalDeals", header: "Transactions", type: "number" },
       { key: "memberCount", header: "Member Count", type: "number" },
-      { key: "initialRevenue", header: "Initial Amount", type: "currency" },
-      { key: "serviceFee", header: "Service Fee", type: "currency" },
+      { key: "totalEarned", header: "Total Earned", type: "currency" },
       { key: "payNowDeduction", header: "PayNow Deduction", type: "currency" },
       { key: "adjustmentAmount", header: "Adjustment Amount", type: "currency" },
       { key: "finalPayout", header: "Final Payout", type: "currency" },
-      { key: "totalEarned", header: "Total Earned", type: "currency" },
+      { key: "initialRevenue", header: "Initial Amount", type: "currency" },
+      { key: "serviceFee", header: "Service Fee", type: "currency" },
     ];
     // Group batches by month-year
     const monthGroups = new Map<string, typeof filteredBatches>();
