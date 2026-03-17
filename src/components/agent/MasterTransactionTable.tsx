@@ -25,6 +25,8 @@ export type Transaction = {
   mentorFee: number;
   mentorProgramFee: number;
   statusComp: string;
+  commissionPercentage: string;
+  endUnits: number;
 };
 
 export const transactionsData: Transaction[] = [
@@ -39,6 +41,7 @@ export const transactionsData: Transaction[] = [
     companyCommission: 286.87, netPayment: 0.03, capPayment: 0.0,
     firstCap: "1.38", brokerReviewFee: 0, transactionCoordinatorFee: 0,
     mentorFee: 0.02, mentorProgramFee: 0.02, statusComp: "19.96",
+    commissionPercentage: "80.00%", endUnits: 1,
   },
   {
     id: "20130815", status: "Withdrawn", transactionId: "20130815",
@@ -51,6 +54,7 @@ export const transactionsData: Transaction[] = [
     companyCommission: 0.01, netPayment: 0, capPayment: 0,
     firstCap: "0.00", brokerReviewFee: 0, transactionCoordinatorFee: 0,
     mentorFee: 0, mentorProgramFee: 0, statusComp: "0.00",
+    commissionPercentage: "80.00%", endUnits: 0.75,
   },
   {
     id: "33221081", status: "Withdrawn", transactionId: "33221081",
@@ -63,6 +67,7 @@ export const transactionsData: Transaction[] = [
     companyCommission: 0.01, netPayment: 0, capPayment: 0,
     firstCap: "0.00", brokerReviewFee: 0, transactionCoordinatorFee: 0,
     mentorFee: 0, mentorProgramFee: 0, statusComp: "0.00",
+    commissionPercentage: "80.00%", endUnits: 0.50,
   },
   {
     id: "34618903", status: "Withdrawn", transactionId: "34618903",
@@ -75,6 +80,7 @@ export const transactionsData: Transaction[] = [
     companyCommission: 13085.26, netPayment: 3480.01, capPayment: 0,
     firstCap: "26.80", brokerReviewFee: 508.84, transactionCoordinatorFee: 0,
     mentorFee: 0, mentorProgramFee: 0, statusComp: "18.14",
+    commissionPercentage: "100.00%", endUnits: 1,
   },
   {
     id: "36254774", status: "Pending", transactionId: "36254774",
@@ -87,5 +93,6 @@ export const transactionsData: Transaction[] = [
     companyCommission: 0.01, netPayment: 0, capPayment: 0,
     firstCap: "0.00", brokerReviewFee: 0, transactionCoordinatorFee: 0,
     mentorFee: 0, mentorProgramFee: 0, statusComp: "0.00",
+    commissionPercentage: "80.00%", endUnits: 0.50,
   },
 ];

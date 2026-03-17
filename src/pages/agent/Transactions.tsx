@@ -75,6 +75,17 @@ export default function Transactions() {
     { key: "status", header: "txn.status", type: "badge", sortable: true, filterable: true },
     { key: "transactionId", header: "txn.transactionId", type: "string", sortable: true },
     {
+      key: "propertyAddress",
+      header: "txn.address",
+      type: "string",
+      sortable: true,
+      render: (val) => (
+        <span className="max-w-[200px] truncate block" title={String(val)}>
+          {String(val)}
+        </span>
+      ),
+    },
+    {
       key: "actualCloseDate",
       header: "txn.closeDate",
       type: "date",
@@ -86,18 +97,8 @@ export default function Transactions() {
     },
     { key: "salesPrice", header: "txn.salePrice", type: "currency", sortable: true, currencyCodeKey: "currency" },
     { key: "gciSum", header: "txn.gci", type: "currency", sortable: true, currencyCodeKey: "currency" },
-    {
-      key: "propertyAddress",
-      header: "txn.address",
-      type: "string",
-      sortable: true,
-      render: (val) => (
-        <span className="max-w-[200px] truncate block" title={String(val)}>
-          {String(val)}
-        </span>
-      ),
-    },
-    { key: "firstCap", header: "txn.amtTowardCap", type: "number", sortable: true },
+    { key: "commissionPercentage", header: "txn.commissionPct", type: "string", sortable: true },
+    ...(isCanada ? [{ key: "endUnits" as keyof Transaction, header: "txn.endUnits", type: "number" as const, sortable: true }] : []),
     {
       id: "viewDetails",
       key: "transactionId" as keyof Transaction,
