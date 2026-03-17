@@ -80,6 +80,7 @@ export const transactionsData: Transaction[] = [
     companyCommission: 13085.26, netPayment: 3480.01, capPayment: 0,
     firstCap: "26.80", brokerReviewFee: 508.84, transactionCoordinatorFee: 0,
     mentorFee: 0, mentorProgramFee: 0, statusComp: "18.14",
+    commissionPercentage: "100.00%", endUnits: 1,
   },
   {
     id: "36254774", status: "Pending", transactionId: "36254774",
