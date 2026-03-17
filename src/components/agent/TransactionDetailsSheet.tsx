@@ -75,7 +75,7 @@ export function TransactionDetailsSheet({
             <span className="font-semibold">Transaction Details</span>
             <button
               onClick={() => onOpenChange(false)}
-              className="rounded-full border border-primary-foreground/40 p-1 opacity-70 hover:opacity-100 hover:bg-primary-foreground/10 transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              className="rounded-full border border-primary-foreground/40 p-1 opacity-70 hover:opacity-100 hover:bg-primary-foreground/10 transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 sm:rounded-sm sm:border-0 sm:p-0 sm:hover:bg-transparent"
             >
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
