@@ -41,6 +41,7 @@ export const transactionsData: Transaction[] = [
     companyCommission: 286.87, netPayment: 0.03, capPayment: 0.0,
     firstCap: "1.38", brokerReviewFee: 0, transactionCoordinatorFee: 0,
     mentorFee: 0.02, mentorProgramFee: 0.02, statusComp: "19.96",
+    commissionPercentage: "80.00%", endUnits: 1,
   },
   {
     id: "20130815", status: "Withdrawn", transactionId: "20130815",
