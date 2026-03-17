@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Phone, Mail, MapPin, Facebook, Linkedin, Instagram, Globe, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, ChevronLeft, ChevronRight, Calendar, X } from "lucide-react";
 import type { StateMentor, Mentee } from "@/data/mentorMockData";
 import { mockMentees } from "@/data/mentorMockData";
 import { MenteeContactSheet } from "@/components/mentor/MenteeContactSheet";
@@ -23,6 +22,16 @@ function getInitials(name: string) {
 export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMentorProfileSheetProps) {
   const { t } = useTranslation();
   const [selectedMentee, setSelectedMentee] = useState<Mentee | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handler = () => setIsScrolled(el.scrollTop > 0);
+    el.addEventListener("scroll", handler, { passive: true });
+    return () => el.removeEventListener("scroll", handler);
+  }, [open]);
 
   if (!mentor) return null;
 
@@ -32,19 +41,37 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
   return (
     <>
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent className="w-full sm:max-w-lg p-0">
-          <ScrollArea className="h-full">
-            <div className="p-6 space-y-5">
-              <SheetHeader className="pb-0">
-                <button
-                  type="button"
-                  className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors -ml-1 mb-3"
-                  onClick={() => onOpenChange(false)}
-                  aria-label={t("broker.back")}
-                >
-                  <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-                  {t("broker.back")}
-                </button>
+        <SheetContent className="w-full sm:max-w-lg p-0 [&>button]:hidden">
+          <div className="h-full flex flex-col">
+            {/* Sticky header */}
+            <div
+              className={`sticky top-0 z-50 bg-background px-5 py-4 flex items-center justify-between transition-shadow ${
+                isScrolled ? "shadow-sm border-b border-border/50" : ""
+              }`}
+            >
+              <button
+                type="button"
+                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors -ml-1"
+                onClick={() => onOpenChange(false)}
+                aria-label={t("broker.back")}
+              >
+                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                {t("broker.back")}
+              </button>
+              <button
+                type="button"
+                onClick={() => onOpenChange(false)}
+                className="text-muted-foreground/60 hover:text-foreground transition-colors"
+                aria-label="Close"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Scrollable content */}
+            <div ref={scrollRef} className="flex-1 overflow-y-auto">
+              <div className="px-5 pb-6 space-y-5">
+                {/* Profile header */}
                 <div className="flex items-start gap-4">
                   <Avatar className="h-16 w-16 border-2 border-border">
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-lg">
@@ -59,96 +86,96 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
                     </p>
                   </div>
                 </div>
-              </SheetHeader>
 
-              {/* Bio */}
-              <div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{mentor.bio}</p>
-              </div>
-
-              <Separator />
-
-              {/* Details Grid */}
-              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                <DetailSection title={t("broker.locationsServiced")} items={mentor.locationsServiced} />
-                <DetailSection title={t("broker.licenses")} items={mentor.licenses.map((l) => `${l.state} — ${l.number}`)} />
-                <DetailSection title={t("broker.languages")} items={mentor.languages} />
-                <DetailSection title={t("broker.mls")} items={mentor.mls} />
-                <DetailSection title={t("broker.specializations")} items={mentor.specializations} />
-                <DetailSection title={t("broker.certifications")} items={mentor.certifications} />
-              </div>
-
-              <Separator />
-
-              {/* Contact */}
-              <div className="space-y-3">
-                <p className="text-xs font-semibold text-foreground">{t("broker.contact")}</p>
-                <div className="flex gap-3">
-                  <Button variant="default" className="flex-1 w-full" asChild>
-                    <a href={`tel:${mentor.phone}`}>
-                      <Phone className="h-4 w-4 mr-1.5" aria-hidden="true" />
-                      {t("broker.call")}
-                    </a>
-                  </Button>
-                  <Button variant="outline" className="flex-1 w-full" asChild>
-                    <a href={`mailto:${mentor.primaryEmail}`}>
-                      <Mail className="h-4 w-4 mr-1.5" aria-hidden="true" />
-                      {t("broker.email")}
-                    </a>
-                  </Button>
+                {/* Bio */}
+                <div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{mentor.bio}</p>
                 </div>
-                <div className="flex items-center justify-start gap-2">
-                  {mentor.facebook && (
-                    <a href={mentor.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-                      className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors">
-                      <Facebook className="h-4 w-4" />
-                    </a>
+
+                <Separator />
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                  <DetailSection title={t("broker.locationsServiced")} items={mentor.locationsServiced} />
+                  <DetailSection title={t("broker.licenses")} items={mentor.licenses.map((l) => `${l.state} — ${l.number}`)} />
+                  <DetailSection title={t("broker.languages")} items={mentor.languages} />
+                  <DetailSection title={t("broker.mls")} items={mentor.mls} />
+                  <DetailSection title={t("broker.specializations")} items={mentor.specializations} />
+                  <DetailSection title={t("broker.certifications")} items={mentor.certifications} />
+                </div>
+
+                <Separator />
+
+                {/* Contact */}
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold text-foreground">{t("broker.contact")}</p>
+                  <div className="flex gap-3">
+                    <Button variant="default" className="flex-1 w-full" asChild>
+                      <a href={`tel:${mentor.phone}`}>
+                        <Phone className="h-4 w-4 mr-1.5" aria-hidden="true" />
+                        {t("broker.call")}
+                      </a>
+                    </Button>
+                    <Button variant="outline" className="flex-1 w-full" asChild>
+                      <a href={`mailto:${mentor.primaryEmail}`}>
+                        <Mail className="h-4 w-4 mr-1.5" aria-hidden="true" />
+                        {t("broker.email")}
+                      </a>
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-start gap-2">
+                    {mentor.facebook && (
+                      <a href={mentor.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                        className="flex items-center justify-center w-10 h-10 rounded-full bg-muted text-muted-foreground hover:text-foreground transition-colors">
+                        <Facebook className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Active Mentees */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
+                    {t("broker.activeMentees")} ({mentees.length})
+                  </h3>
+                  {mentees.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">{t("broker.noActiveMentees")}</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {mentees.map((mentee) => (
+                        <button
+                          key={mentee.id}
+                          type="button"
+                          className="w-full flex items-center gap-3 rounded-lg border p-3 hover:bg-accent/50 transition-colors text-left cursor-pointer"
+                          onClick={() => setSelectedMentee(mentee)}
+                          aria-label={`${mentee.agentName} — ${mentee.transactionsRemaining} ${t("broker.txnsRemaining")}`}
+                        >
+                          <Avatar className="h-10 w-10">
+                            <AvatarFallback className="bg-muted text-muted-foreground text-xs">
+                              {getInitials(mentee.agentName)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground">{mentee.agentName}</p>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
+                              <span>{mentee.transactionsRemaining} {t("broker.txnsRemaining")}</span>
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" aria-hidden="true" />
+                                {t("broker.joined")} {mentee.joinDate}
+                              </span>
+                            </div>
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" aria-hidden="true" />
+                        </button>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>
-
-              <Separator />
-
-              {/* Active Mentees */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                  {t("broker.activeMentees")} ({mentees.length})
-                </h3>
-                {mentees.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">{t("broker.noActiveMentees")}</p>
-                ) : (
-                  <div className="space-y-2">
-                    {mentees.map((mentee) => (
-                      <button
-                        key={mentee.id}
-                        type="button"
-                        className="w-full flex items-center gap-3 rounded-lg border p-3 hover:bg-accent/50 transition-colors text-left cursor-pointer"
-                        onClick={() => setSelectedMentee(mentee)}
-                        aria-label={`${mentee.agentName} — ${mentee.transactionsRemaining} ${t("broker.txnsRemaining")}`}
-                      >
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-muted text-muted-foreground text-xs">
-                            {getInitials(mentee.agentName)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground">{mentee.agentName}</p>
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
-                            <span>{mentee.transactionsRemaining} {t("broker.txnsRemaining")}</span>
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" aria-hidden="true" />
-                              {t("broker.joined")} {mentee.joinDate}
-                            </span>
-                          </div>
-                        </div>
-                        <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" aria-hidden="true" />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
             </div>
-          </ScrollArea>
+          </div>
         </SheetContent>
       </Sheet>
 
@@ -160,7 +187,6 @@ export function StateMentorProfileSheet({ mentor, open, onOpenChange }: StateMen
     </>
   );
 }
-
 function DetailSection({ title, items }: { title: string; items: string[] }) {
   if (!items.length) return null;
   return (
