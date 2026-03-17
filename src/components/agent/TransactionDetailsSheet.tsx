@@ -69,13 +69,13 @@ export function TransactionDetailsSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-md p-0 flex flex-col">
+      <SheetContent className="w-full sm:max-w-md p-0 flex flex-col [&>button]:hidden">
         <ScrollArea className="flex-1">
           <div className="sticky top-0 z-20 flex items-center justify-between bg-primary text-primary-foreground px-4 py-3">
             <span className="font-semibold">Transaction Details</span>
             <button
               onClick={() => onOpenChange(false)}
-              className="rounded-full border border-primary-foreground/30 p-1 text-primary-foreground/50 hover:text-primary-foreground hover:border-primary-foreground transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 sm:rounded-sm sm:border-0 sm:p-0 sm:text-primary-foreground/70 sm:hover:text-primary-foreground"
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-primary-foreground/50 text-primary-foreground/50 hover:text-primary-foreground hover:border-primary-foreground transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 sm:h-auto sm:w-auto sm:rounded-sm sm:border-0 sm:p-0 sm:text-primary-foreground/70 sm:hover:text-primary-foreground"
             >
               <X className="h-4 w-4" />
               <span className="sr-only">Close</span>
