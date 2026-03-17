@@ -240,6 +240,8 @@ export const en = {
   "txn.brokerReviewFee": "Broker Review Fee",
   "txn.tcFee": "TC Fee",
   "txn.mentorFee": "Mentor Fee",
+  "txn.commissionPct": "Commission %",
+  "txn.endUnits": "End Units",
 
   "filter.ytd": "YTD",
   "filter.mtd": "MTD",
