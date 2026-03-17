@@ -25,6 +25,8 @@ export type Transaction = {
   mentorFee: number;
   mentorProgramFee: number;
   statusComp: string;
+  commissionPercentage: string;
+  endUnits: number;
 };
 
 export const transactionsData: Transaction[] = [
