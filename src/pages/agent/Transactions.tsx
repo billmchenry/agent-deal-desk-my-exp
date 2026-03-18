@@ -152,7 +152,7 @@ export default function Transactions() {
             <span>GCI: {formatCurrency(row.gciSum)}</span>
           </div>
         </div>
-        <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-1" />
+        <Eye className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-1" />
       </div>
     );
   };
