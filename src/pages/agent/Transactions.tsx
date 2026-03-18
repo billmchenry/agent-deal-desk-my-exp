@@ -9,6 +9,7 @@ import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Badge } from "@/components/ui/badge";
+import { ChevronRight } from "lucide-react";
 import { DropdownFilter } from "@/components/filters/DropdownFilter";
 import { SearchFilter } from "@/components/filters/SearchFilter";
 import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
@@ -138,17 +139,20 @@ export default function Transactions() {
   const mobileCardRender = (row: Transaction) => {
     const closeDate = row.actualCloseDate !== "-" ? row.actualCloseDate : row.scheduledCloseDate;
     return (
-      <div className="space-y-1.5">
-        <div className="flex items-center justify-between gap-2">
-          {getStatusBadge(row.status)}
-          <span className="text-xs text-muted-foreground font-mono">{row.transactionId}</span>
+      <div className="flex items-start gap-2">
+        <div className="flex-1 space-y-1.5">
+          <div className="flex items-center justify-between gap-2">
+            {getStatusBadge(row.status)}
+            <span className="text-xs text-muted-foreground font-mono">{row.transactionId}</span>
+          </div>
+          <p className="text-sm text-foreground">{row.propertyAddress}</p>
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <span>{formatDate(closeDate)}</span>
+            <span className="font-semibold text-foreground">{formatCurrency(row.salesPrice)}</span>
+            <span>GCI: {formatCurrency(row.gciSum)}</span>
+          </div>
         </div>
-        <p className="text-sm text-foreground">{row.propertyAddress}</p>
-        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-          <span>{formatDate(closeDate)}</span>
-          <span className="font-semibold text-foreground">{formatCurrency(row.salesPrice)}</span>
-          <span>GCI: {formatCurrency(row.gciSum)}</span>
-        </div>
+        <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-1" />
       </div>
     );
   };
