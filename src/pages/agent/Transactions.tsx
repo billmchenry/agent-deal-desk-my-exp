@@ -9,7 +9,7 @@ import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight } from "lucide-react";
+import { Eye } from "lucide-react";
 import { DropdownFilter } from "@/components/filters/DropdownFilter";
 import { SearchFilter } from "@/components/filters/SearchFilter";
 import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
@@ -152,7 +152,7 @@ export default function Transactions() {
             <span>GCI: {formatCurrency(row.gciSum)}</span>
           </div>
         </div>
-        <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-1" />
+        <Eye className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-1" />
       </div>
     );
   };
