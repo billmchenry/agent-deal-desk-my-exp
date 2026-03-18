@@ -9,7 +9,7 @@ import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight } from "lucide-react";
+import { Eye } from "lucide-react";
 import { DropdownFilter } from "@/components/filters/DropdownFilter";
 import { SearchFilter } from "@/components/filters/SearchFilter";
 import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
