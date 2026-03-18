@@ -165,23 +165,26 @@ export function YearOverYearChart() {
           </ResponsiveContainer>
         )}
 
-        {/* Mobile: tap-to-select detail strip */}
+        {/* Mobile: tap-to-select detail strip + scroll hint */}
         {isMobile && (
-          <div className="mt-3 rounded-lg bg-muted/50 px-3 py-2.5 text-center min-h-[44px] flex items-center justify-center">
-            {selectedData ? (
-              <div className="flex items-center gap-4">
-                <span className="font-semibold text-sm text-foreground">{selectedData.month}</span>
-                <span className="text-xs text-exp-blue">
-                  Current: <span className="font-semibold">{formatValue(selectedData.currentYear)}</span>
-                </span>
-                <span className="text-xs text-exp-navy">
-                  Previous: <span className="font-semibold">{formatValue(selectedData.previousYear)}</span>
-                </span>
-              </div>
-            ) : (
-              <span className="text-xs text-muted-foreground">Tap a bar to see details</span>
-            )}
-          </div>
+          <>
+            <div className="mt-3 rounded-lg bg-muted/50 px-3 py-2.5 text-center min-h-[44px] flex items-center justify-center">
+              {selectedData ? (
+                <div className="flex items-center gap-4">
+                  <span className="font-semibold text-sm text-foreground">{selectedData.month}</span>
+                  <span className="text-xs text-exp-blue">
+                    Current: <span className="font-semibold">{formatValue(selectedData.currentYear)}</span>
+                  </span>
+                  <span className="text-xs text-exp-navy">
+                    Previous: <span className="font-semibold">{formatValue(selectedData.previousYear)}</span>
+                  </span>
+                </div>
+              ) : (
+                <span className="text-xs text-muted-foreground">Tap a bar to see details</span>
+              )}
+            </div>
+            <p className="text-[11px] text-muted-foreground text-center mt-1.5">← Swipe to see all months →</p>
+          </>
         )}
       </CardContent>
     </Card>
