@@ -128,29 +128,40 @@ export function YearOverYearChart() {
       </CardHeader>
       <CardContent className="px-2 sm:px-4 pb-6">
         {isMobile ? (
-          <div className="overflow-x-auto -mx-2 px-2 scrollbar-hide">
-            <div className="min-w-[700px] h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} barCategoryGap="20%" barGap={4} onClick={handleBarClick}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} width={chartTab === "units" ? 30 : 50} tickFormatter={(v) => formatValue(v)} />
-                  <Tooltip content={() => null} cursor={{ fill: 'hsl(var(--muted))' }} />
-                  <Legend />
-                  <Bar dataKey="currentYear" name="Current Year" fill="hsl(var(--exp-blue))" radius={[4, 4, 0, 0]}>
-                    {chartData.map((entry) => (
-                      <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-blue-light))" : "hsl(var(--exp-blue))"} stroke={selectedMonth === entry.month ? "hsl(var(--exp-blue))" : "none"} strokeWidth={selectedMonth === entry.month ? 2 : 0} />
-                    ))}
-                  </Bar>
-                  <Bar dataKey="previousYear" name="Previous Year" fill="hsl(var(--exp-navy-light))" radius={[4, 4, 0, 0]}>
-                    {chartData.map((entry) => (
-                      <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-navy))" : "hsl(var(--exp-navy-light))"} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+          <>
+            <div className="flex items-center gap-4 mb-2 px-1">
+              <div className="flex items-center gap-1.5">
+                <span className="inline-block h-3 w-3 rounded-sm bg-[hsl(var(--exp-blue))]" />
+                <span className="text-xs text-muted-foreground">Current Year</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-block h-3 w-3 rounded-sm bg-[hsl(var(--exp-navy-light))]" />
+                <span className="text-xs text-muted-foreground">Previous Year</span>
+              </div>
             </div>
-          </div>
+            <div className="overflow-x-auto -mx-2 px-2 scrollbar-hide">
+              <div className="min-w-[700px] h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} barCategoryGap="20%" barGap={4} onClick={handleBarClick}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} width={chartTab === "units" ? 30 : 50} tickFormatter={(v) => formatValue(v)} />
+                    <Tooltip content={() => null} cursor={{ fill: 'hsl(var(--muted))' }} />
+                    <Bar dataKey="currentYear" name="Current Year" fill="hsl(var(--exp-blue))" radius={[4, 4, 0, 0]}>
+                      {chartData.map((entry) => (
+                        <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-blue-light))" : "hsl(var(--exp-blue))"} stroke={selectedMonth === entry.month ? "hsl(var(--exp-blue))" : "none"} strokeWidth={selectedMonth === entry.month ? 2 : 0} />
+                      ))}
+                    </Bar>
+                    <Bar dataKey="previousYear" name="Previous Year" fill="hsl(var(--exp-navy-light))" radius={[4, 4, 0, 0]}>
+                      {chartData.map((entry) => (
+                        <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-navy))" : "hsl(var(--exp-navy-light))"} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </>
         ) : (
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={chartData} barCategoryGap="20%" barGap={4}>
