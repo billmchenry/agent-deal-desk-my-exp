@@ -139,26 +139,40 @@ export function YearOverYearChart() {
                 <span className="text-xs text-muted-foreground">Previous Year</span>
               </div>
             </div>
-            <div className="overflow-x-auto -mx-2 px-2 scrollbar-hide">
-              <div className="min-w-[700px] h-[300px]">
+            <div className="flex h-[300px]">
+              {/* Fixed Y-axis */}
+              <div className="flex-shrink-0" style={{ width: chartTab === "units" ? 38 : 54 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData} barCategoryGap="20%" barGap={4} onClick={handleBarClick}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                  <BarChart data={chartData} barCategoryGap="20%" barGap={4} margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
                     <YAxis tick={{ fontSize: 12 }} width={chartTab === "units" ? 30 : 50} tickFormatter={(v) => formatValue(v)} />
-                    <Tooltip content={() => null} cursor={{ fill: 'hsl(var(--muted))' }} />
-                    <Bar dataKey="currentYear" name="Current Year" fill="hsl(var(--exp-blue))" radius={[4, 4, 0, 0]}>
-                      {chartData.map((entry) => (
-                        <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-blue-light))" : "hsl(var(--exp-blue))"} stroke={selectedMonth === entry.month ? "hsl(var(--exp-blue))" : "none"} strokeWidth={selectedMonth === entry.month ? 2 : 0} />
-                      ))}
-                    </Bar>
-                    <Bar dataKey="previousYear" name="Previous Year" fill="hsl(var(--exp-navy-light))" radius={[4, 4, 0, 0]}>
-                      {chartData.map((entry) => (
-                        <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-navy))" : "hsl(var(--exp-navy-light))"} />
-                      ))}
-                    </Bar>
+                    <XAxis dataKey="month" tick={false} axisLine={false} tickLine={false} />
+                    <Bar dataKey="currentYear" fill="transparent" />
+                    <Bar dataKey="previousYear" fill="transparent" />
                   </BarChart>
                 </ResponsiveContainer>
+              </div>
+              {/* Scrollable bars */}
+              <div className="flex-1 overflow-x-auto scrollbar-hide">
+                <div className="min-w-[650px] h-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={chartData} barCategoryGap="20%" barGap={4} onClick={handleBarClick} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                      <YAxis hide />
+                      <Tooltip content={() => null} cursor={{ fill: 'hsl(var(--muted))' }} />
+                      <Bar dataKey="currentYear" name="Current Year" fill="hsl(var(--exp-blue))" radius={[4, 4, 0, 0]}>
+                        {chartData.map((entry) => (
+                          <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-blue-light))" : "hsl(var(--exp-blue))"} stroke={selectedMonth === entry.month ? "hsl(var(--exp-blue))" : "none"} strokeWidth={selectedMonth === entry.month ? 2 : 0} />
+                        ))}
+                      </Bar>
+                      <Bar dataKey="previousYear" name="Previous Year" fill="hsl(var(--exp-navy-light))" radius={[4, 4, 0, 0]}>
+                        {chartData.map((entry) => (
+                          <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-navy))" : "hsl(var(--exp-navy-light))"} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
           </>
