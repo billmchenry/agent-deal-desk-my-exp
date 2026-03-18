@@ -127,61 +127,43 @@ export function YearOverYearChart() {
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:px-4 pb-6">
-        <ResponsiveContainer width="100%" height={320}>
-          <BarChart
-            data={chartData}
-            barCategoryGap="20%"
-            barGap={4}
-            onClick={handleBarClick}
-          >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} width={chartTab === "units" ? 30 : 50} tickFormatter={(v) => formatValue(v)} />
-            {!isMobile && (
+        {isMobile ? (
+          <div className="overflow-x-auto -mx-2 px-2 scrollbar-hide">
+            <div className="min-w-[700px] h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} barCategoryGap="20%" barGap={4} onClick={handleBarClick}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} width={chartTab === "units" ? 30 : 50} tickFormatter={(v) => formatValue(v)} />
+                  <Tooltip content={() => null} cursor={{ fill: 'hsl(var(--muted))' }} />
+                  <Legend />
+                  <Bar dataKey="currentYear" name="Current Year" fill="hsl(var(--exp-blue))" radius={[4, 4, 0, 0]}>
+                    {chartData.map((entry) => (
+                      <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-blue-light))" : "hsl(var(--exp-blue))"} stroke={selectedMonth === entry.month ? "hsl(var(--exp-blue))" : "none"} strokeWidth={selectedMonth === entry.month ? 2 : 0} />
+                    ))}
+                  </Bar>
+                  <Bar dataKey="previousYear" name="Previous Year" fill="hsl(var(--exp-navy-light))" radius={[4, 4, 0, 0]}>
+                    {chartData.map((entry) => (
+                      <Cell key={entry.month} fill={selectedMonth === entry.month ? "hsl(var(--exp-navy))" : "hsl(var(--exp-navy-light))"} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={320}>
+            <BarChart data={chartData} barCategoryGap="20%" barGap={4}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} width={chartTab === "units" ? 30 : 50} tickFormatter={(v) => formatValue(v)} />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))' }} />
-            )}
-            {isMobile && (
-              <Tooltip content={() => null} cursor={{ fill: 'hsl(var(--muted))' }} />
-            )}
-            <Legend />
-            <Bar
-              dataKey="currentYear"
-              name="Current Year"
-              fill="hsl(var(--exp-blue))"
-              radius={[4, 4, 0, 0]}
-            >
-              {chartData.map((entry) => (
-                <Cell
-                  key={entry.month}
-                  fill={
-                    selectedMonth === entry.month
-                      ? "hsl(var(--exp-blue-light))"
-                      : "hsl(var(--exp-blue))"
-                  }
-                  stroke={selectedMonth === entry.month ? "hsl(var(--exp-blue))" : "none"}
-                  strokeWidth={selectedMonth === entry.month ? 2 : 0}
-                />
-              ))}
-            </Bar>
-            <Bar
-              dataKey="previousYear"
-              name="Previous Year"
-              fill="hsl(var(--exp-navy-light))"
-              radius={[4, 4, 0, 0]}
-            >
-              {chartData.map((entry) => (
-                <Cell
-                  key={entry.month}
-                  fill={
-                    selectedMonth === entry.month
-                      ? "hsl(var(--exp-navy))"
-                      : "hsl(var(--exp-navy-light))"
-                  }
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+              <Legend />
+              <Bar dataKey="currentYear" name="Current Year" fill="hsl(var(--exp-blue))" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="previousYear" name="Previous Year" fill="hsl(var(--exp-navy-light))" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
 
         {/* Mobile: tap-to-select detail strip */}
         {isMobile && (
