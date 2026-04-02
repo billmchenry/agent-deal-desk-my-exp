@@ -105,15 +105,6 @@ export default function Transactions() {
     return true;
   }).map((r) => isCanada ? { ...r, currency: "CAD" } : r);
 
-  const statusOptions = isGlobal
-    ? [{ value: "paid", label: t("txn.paid") }]
-    : [
-        { value: "all", label: t("txn.allStatuses") },
-        { value: "paid", label: t("txn.paid") },
-        { value: "pending", label: t("txn.pending") },
-        { value: "withdrawn", label: t("txn.withdrawn") },
-        ...(isCanada ? [{ value: "firm", label: t("txn.firm") }] : []),
-      ];
 
   const columns: ColumnDef<Transaction>[] = [
     { key: "status", header: "txn.status", type: "badge", sortable: true, filterable: true },
