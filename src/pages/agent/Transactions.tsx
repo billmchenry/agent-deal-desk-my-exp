@@ -52,9 +52,46 @@ export default function Transactions() {
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
+  const handleStatusToggle = (value: string) => {
+    if (value === "all") {
+      setStatusFilter(["all"]);
+      return;
+    }
+    setStatusFilter((prev) => {
+      const withoutAll = prev.filter((v) => v !== "all");
+      if (withoutAll.includes(value)) {
+        const next = withoutAll.filter((v) => v !== value);
+        return next.length === 0 ? ["all"] : next;
+      }
+      return [...withoutAll, value];
+    });
+  };
+
+  const allStatuses = [
+    { value: "initiated", label: "Initiated" },
+    { value: "compreview", label: "CompReview" },
+    { value: "preda", label: "PreDA" },
+    { value: "initialdasent", label: "InitialDASent" },
+    { value: "settlement", label: "Settlement" },
+    { value: "paid", label: "Paid" },
+    { value: "incorrection", label: "InCorrection" },
+    { value: "withdrawn", label: "Withdrawn" },
+    { value: "cancelled", label: "Cancelled" },
+    { value: "withdrawpendingreview", label: "WithdrawPendingReview" },
+    { value: "changes_pending_review", label: "Changes_Pending_Review" },
+  ];
+
+  const isAllSelected = statusFilter.includes("all");
+
+  const statusLabel = isAllSelected
+    ? t("txn.allStatuses")
+    : statusFilter.length === 1
+      ? allStatuses.find((s) => s.value === statusFilter[0])?.label ?? statusFilter[0]
+      : `${statusFilter.length} selected`;
+
   const filteredData = transactionsData.filter((r) => {
     if (isGlobal && r.status.toLowerCase() !== "paid") return false;
-    if (statusFilter !== "all" && r.status.toLowerCase() !== statusFilter) return false;
+    if (!isAllSelected && !statusFilter.includes(r.status.toLowerCase())) return false;
     if (search) {
       const q = search.toLowerCase();
       return (
