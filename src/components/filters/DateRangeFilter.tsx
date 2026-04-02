@@ -56,6 +56,7 @@ export function DateRangeFilter({
   value,
   onChange,
   presets,
+  extraContent,
 }: DateRangeFilterProps) {
   const [open, setOpen] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
