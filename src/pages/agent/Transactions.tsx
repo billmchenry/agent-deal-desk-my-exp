@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { UniversalFilterBar } from "@/components/filters";
+import { UniversalFilterBar, DateRange } from "@/components/filters";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { TransactionDetailsSheet } from "@/components/agent/TransactionDetailsSheet";
 import { type Transaction, transactionsData } from "@/components/agent/MasterTransactionTable";
@@ -43,6 +43,11 @@ export default function Transactions() {
 
   const [statusFilter, setStatusFilter] = useState(initialStatus);
   const [search, setSearch] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: new Date(2026, 0, 1),
+    to: new Date(2026, 1, 6),
+  });
+  const [includePipeline, setIncludePipeline] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -168,6 +173,17 @@ export default function Transactions() {
             value={statusFilter}
             onChange={setStatusFilter}
           />
+          <UniversalFilterBar.DateRange
+            value={dateRange}
+            onChange={setDateRange}
+          />
+          {!isGlobal && (
+            <UniversalFilterBar.Toggle
+              label={t("common.pending")}
+              checked={includePipeline}
+              onChange={setIncludePipeline}
+            />
+          )}
           <SearchFilter
             value={search}
             onChange={setSearch}
