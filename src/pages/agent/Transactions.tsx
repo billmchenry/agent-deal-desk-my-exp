@@ -9,8 +9,9 @@ import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Badge } from "@/components/ui/badge";
-import { Eye } from "lucide-react";
-import { DropdownFilter } from "@/components/filters/DropdownFilter";
+import { Eye, ChevronDown, Check } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 import { SearchFilter } from "@/components/filters/SearchFilter";
 import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
@@ -41,7 +42,7 @@ export default function Transactions() {
   const [searchParams] = useSearchParams();
   const initialStatus = isGlobal ? "paid" : (searchParams.get("status") || "all");
 
-  const [statusFilter, setStatusFilter] = useState(initialStatus);
+  const [statusFilter, setStatusFilter] = useState<string[]>(initialStatus === "all" ? ["all"] : [initialStatus]);
   const [search, setSearch] = useState("");
   const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(2026, 0, 1),
@@ -51,9 +52,46 @@ export default function Transactions() {
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
+  const handleStatusToggle = (value: string) => {
+    if (value === "all") {
+      setStatusFilter(["all"]);
+      return;
+    }
+    setStatusFilter((prev) => {
+      const withoutAll = prev.filter((v) => v !== "all");
+      if (withoutAll.includes(value)) {
+        const next = withoutAll.filter((v) => v !== value);
+        return next.length === 0 ? ["all"] : next;
+      }
+      return [...withoutAll, value];
+    });
+  };
+
+  const allStatuses = [
+    { value: "initiated", label: "Initiated" },
+    { value: "compreview", label: "CompReview" },
+    { value: "preda", label: "PreDA" },
+    { value: "initialdasent", label: "InitialDASent" },
+    { value: "settlement", label: "Settlement" },
+    { value: "paid", label: "Paid" },
+    { value: "incorrection", label: "InCorrection" },
+    { value: "withdrawn", label: "Withdrawn" },
+    { value: "cancelled", label: "Cancelled" },
+    { value: "withdrawpendingreview", label: "WithdrawPendingReview" },
+    { value: "changes_pending_review", label: "Changes_Pending_Review" },
+  ];
+
+  const isAllSelected = statusFilter.includes("all");
+
+  const statusLabel = isAllSelected
+    ? t("txn.allStatuses")
+    : statusFilter.length === 1
+      ? allStatuses.find((s) => s.value === statusFilter[0])?.label ?? statusFilter[0]
+      : `${statusFilter.length} selected`;
+
   const filteredData = transactionsData.filter((r) => {
     if (isGlobal && r.status.toLowerCase() !== "paid") return false;
-    if (statusFilter !== "all" && r.status.toLowerCase() !== statusFilter) return false;
+    if (!isAllSelected && !statusFilter.includes(r.status.toLowerCase())) return false;
     if (search) {
       const q = search.toLowerCase();
       return (
@@ -67,15 +105,6 @@ export default function Transactions() {
     return true;
   }).map((r) => isCanada ? { ...r, currency: "CAD" } : r);
 
-  const statusOptions = isGlobal
-    ? [{ value: "paid", label: t("txn.paid") }]
-    : [
-        { value: "all", label: t("txn.allStatuses") },
-        { value: "paid", label: t("txn.paid") },
-        { value: "pending", label: t("txn.pending") },
-        { value: "withdrawn", label: t("txn.withdrawn") },
-        ...(isCanada ? [{ value: "firm", label: t("txn.firm") }] : []),
-      ];
 
   const columns: ColumnDef<Transaction>[] = [
     { key: "status", header: "txn.status", type: "badge", sortable: true, filterable: true },
@@ -167,12 +196,38 @@ export default function Transactions() {
       <div className="space-y-4">
         <CanadianDisclaimer variant="agent" email="canada.support@exprealty.com" />
         <UniversalFilterBar title={t("txn.agentProductionDetails")}>
-          <DropdownFilter
-            label={t("txn.status")}
-            options={statusOptions}
-            value={statusFilter}
-            onChange={setStatusFilter}
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 h-9 text-sm hover:bg-muted transition-colors">
+                {statusLabel}
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent align="start" className="w-56 p-1">
+              <div
+                className="flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-muted text-sm"
+                onClick={() => handleStatusToggle("all")}
+              >
+                <Checkbox checked={isAllSelected} className="pointer-events-none" />
+                <span className="font-medium">{t("txn.allStatuses")}</span>
+              </div>
+              <div className="h-px bg-border my-1" />
+              {allStatuses.map((opt) => (
+                <div
+                  key={opt.value}
+                  className="flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-muted text-sm"
+                  onClick={() => handleStatusToggle(opt.value)}
+                >
+                  <Checkbox
+                    checked={statusFilter.includes(opt.value)}
+                    disabled={isAllSelected}
+                    className="pointer-events-none"
+                  />
+                  <span>{opt.label}</span>
+                </div>
+              ))}
+            </PopoverContent>
+          </Popover>
           <UniversalFilterBar.DateRange
             value={dateRange}
             onChange={setDateRange}
