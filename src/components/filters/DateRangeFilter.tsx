@@ -26,6 +26,8 @@ interface DateRangeFilterProps {
   value: DateRange;
   onChange: (range: DateRange) => void;
   presets?: Preset[];
+  /** Extra content rendered at the bottom of the popover (e.g. a checkbox) */
+  extraContent?: React.ReactNode;
 }
 
 const defaultPresets: Preset[] = [
@@ -54,6 +56,7 @@ export function DateRangeFilter({
   value,
   onChange,
   presets,
+  extraContent,
 }: DateRangeFilterProps) {
   const [open, setOpen] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
@@ -205,6 +208,12 @@ export function DateRangeFilter({
             >
               Apply
             </Button>
+          </div>
+        )}
+
+        {extraContent && (
+          <div className="pt-3 mt-3 border-t border-border">
+            {extraContent}
           </div>
         )}
       </PopoverContent>

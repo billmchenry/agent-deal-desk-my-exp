@@ -231,14 +231,16 @@ export default function Transactions() {
           <UniversalFilterBar.DateRange
             value={dateRange}
             onChange={setDateRange}
+            extraContent={!isGlobal ? (
+              <label className="flex items-center gap-2 cursor-pointer">
+                <Checkbox
+                  checked={includePipeline}
+                  onCheckedChange={(checked) => setIncludePipeline(checked === true)}
+                />
+                <span className="text-sm text-foreground">Include All Pipeline</span>
+              </label>
+            ) : undefined}
           />
-          {!isGlobal && (
-            <UniversalFilterBar.Toggle
-              label={t("common.pending")}
-              checked={includePipeline}
-              onChange={setIncludePipeline}
-            />
-          )}
           <SearchFilter
             value={search}
             onChange={setSearch}
