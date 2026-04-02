@@ -196,12 +196,38 @@ export default function Transactions() {
       <div className="space-y-4">
         <CanadianDisclaimer variant="agent" email="canada.support@exprealty.com" />
         <UniversalFilterBar title={t("txn.agentProductionDetails")}>
-          <DropdownFilter
-            label={t("txn.status")}
-            options={statusOptions}
-            value={statusFilter}
-            onChange={setStatusFilter}
-          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 h-9 text-sm hover:bg-muted transition-colors">
+                {statusLabel}
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent align="start" className="w-56 p-1">
+              <div
+                className="flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-muted text-sm"
+                onClick={() => handleStatusToggle("all")}
+              >
+                <Checkbox checked={isAllSelected} className="pointer-events-none" />
+                <span className="font-medium">{t("txn.allStatuses")}</span>
+              </div>
+              <div className="h-px bg-border my-1" />
+              {allStatuses.map((opt) => (
+                <div
+                  key={opt.value}
+                  className="flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-muted text-sm"
+                  onClick={() => handleStatusToggle(opt.value)}
+                >
+                  <Checkbox
+                    checked={statusFilter.includes(opt.value)}
+                    disabled={isAllSelected}
+                    className="pointer-events-none"
+                  />
+                  <span>{opt.label}</span>
+                </div>
+              ))}
+            </PopoverContent>
+          </Popover>
           <UniversalFilterBar.DateRange
             value={dateRange}
             onChange={setDateRange}
