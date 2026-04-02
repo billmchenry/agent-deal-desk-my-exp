@@ -193,6 +193,12 @@ export function DateRangeFilter({
           </div>
         )}
 
+        {extraContent && (
+          <div className="pt-3 mt-3 border-t border-border">
+            {extraContent}
+          </div>
+        )}
+
         {/* Apply / Reset buttons */}
         {(showCustom || activePresetKey === "filter.custom") && (
           <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
@@ -208,12 +214,6 @@ export function DateRangeFilter({
             >
               Apply
             </Button>
-          </div>
-        )}
-
-        {extraContent && (
-          <div className="pt-3 mt-3 border-t border-border">
-            {extraContent}
           </div>
         )}
       </PopoverContent>
