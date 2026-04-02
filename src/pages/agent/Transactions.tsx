@@ -173,6 +173,17 @@ export default function Transactions() {
             value={statusFilter}
             onChange={setStatusFilter}
           />
+          <UniversalFilterBar.DateRange
+            value={dateRange}
+            onChange={setDateRange}
+          />
+          {!isGlobal && (
+            <UniversalFilterBar.Toggle
+              label={t("common.pending")}
+              checked={includePipeline}
+              onChange={setIncludePipeline}
+            />
+          )}
           <SearchFilter
             value={search}
             onChange={setSearch}
