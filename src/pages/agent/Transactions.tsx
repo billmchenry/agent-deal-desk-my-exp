@@ -42,7 +42,7 @@ export default function Transactions() {
   const [searchParams] = useSearchParams();
   const initialStatus = isGlobal ? "paid" : (searchParams.get("status") || "all");
 
-  const [statusFilter, setStatusFilter] = useState(initialStatus);
+  const [statusFilter, setStatusFilter] = useState<string[]>(initialStatus === "all" ? ["all"] : [initialStatus]);
   const [search, setSearch] = useState("");
   const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(2026, 0, 1),
