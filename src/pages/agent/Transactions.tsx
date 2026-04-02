@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { UniversalFilterBar } from "@/components/filters";
+import { UniversalFilterBar, DateRange } from "@/components/filters";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { TransactionDetailsSheet } from "@/components/agent/TransactionDetailsSheet";
 import { type Transaction, transactionsData } from "@/components/agent/MasterTransactionTable";
