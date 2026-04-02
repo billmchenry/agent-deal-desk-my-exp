@@ -43,7 +43,13 @@ export default function Transactions() {
 
   const [statusFilter, setStatusFilter] = useState(initialStatus);
   const [search, setSearch] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: new Date(2026, 0, 1),
+    to: new Date(2026, 1, 6),
+  });
+  const [includePipeline, setIncludePipeline] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const filteredData = transactionsData.filter((r) => {
