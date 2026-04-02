@@ -26,6 +26,8 @@ interface DateRangeFilterProps {
   value: DateRange;
   onChange: (range: DateRange) => void;
   presets?: Preset[];
+  /** Extra content rendered at the bottom of the popover (e.g. a checkbox) */
+  extraContent?: React.ReactNode;
 }
 
 const defaultPresets: Preset[] = [
