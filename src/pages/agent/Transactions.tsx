@@ -50,7 +50,6 @@ export default function Transactions() {
   const [includePipeline, setIncludePipeline] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [sheetOpen, setSheetOpen] = useState(false);
 
   const filteredData = transactionsData.filter((r) => {
     if (isGlobal && r.status.toLowerCase() !== "paid") return false;
