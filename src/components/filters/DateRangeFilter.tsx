@@ -210,6 +210,12 @@ export function DateRangeFilter({
             </Button>
           </div>
         )}
+
+        {extraContent && (
+          <div className="pt-3 mt-3 border-t border-border">
+            {extraContent}
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );
