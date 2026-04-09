@@ -4,7 +4,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar, DateRange } from "@/components/filters";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { TransactionDetailsSheet } from "@/components/agent/TransactionDetailsSheet";
-import { type Transaction, transactionsData } from "@/components/agent/MasterTransactionTable";
+import { type Transaction, transactionsData, canadianTransactionsData } from "@/components/agent/MasterTransactionTable";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
