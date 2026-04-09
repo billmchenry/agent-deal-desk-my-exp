@@ -55,6 +55,19 @@ const teamTransactionsCA: TeamTransaction[] = [
   { number: 10, agentName: "Amanda Chen-Rodriguez", uuid: "1048581.1", address: "445 Victoria Ave, Kelowna, BC V1Y 5M9", actualCloseDate: "2025-04-10", paymentInitiatedDate: "2025-04-15", typeOfProperty: "Residential", status: "Paid", netCommission: 7950, currency: "CAD" },
 ];
 
+function getStatusBadge(status: string) {
+  switch (status.toLowerCase()) {
+    case "paid":
+      return <Badge className="bg-exp-green/10 text-exp-green border-exp-green/20 hover:bg-exp-green/10">Paid</Badge>;
+    case "pending":
+      return <Badge className="bg-exp-gold/10 text-exp-gold border-exp-gold/20 hover:bg-exp-gold/10">Pending</Badge>;
+    case "withdrawn":
+      return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Withdrawn</Badge>;
+    default:
+      return <Badge variant="outline">{status}</Badge>;
+  }
+}
+
 export default function Reconciliation() {
   const { t } = useTranslation();
   const { formatCurrency, formatDate } = useFormatters();
