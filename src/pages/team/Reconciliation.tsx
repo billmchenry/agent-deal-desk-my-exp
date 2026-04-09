@@ -55,6 +55,14 @@ const teamTransactionsCA: TeamTransaction[] = [
   { number: 10, agentName: "Amanda Chen-Rodriguez", uuid: "1048581.1", address: "445 Victoria Ave, Kelowna, BC V1Y 5M9", actualCloseDate: "2025-04-10", paymentInitiatedDate: "2025-04-15", typeOfProperty: "Residential", status: "Paid", netCommission: 7950, currency: "CAD" },
 ];
 
+export default function Reconciliation() {
+  const { t } = useTranslation();
+  const { formatCurrency, formatDate } = useFormatters();
+  const navigate = useNavigate();
+  const { config } = useDemoConfig();
+  const isCanada = config.countryMode === "canada";
+  useDocumentTitle(t("team.reconciliation"));
+
   const teamTransactionsData = isCanada ? teamTransactionsCA : teamTransactionsUS;
 
   const filteredData = teamTransactionsData.filter((r) => {
