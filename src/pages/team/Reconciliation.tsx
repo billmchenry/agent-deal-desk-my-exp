@@ -71,6 +71,14 @@ export default function Reconciliation() {
 
   const teamTransactionsData = isCanada ? teamTransactionsCA : teamTransactionsUS;
 
+  const statusOptions = [
+    { value: "all", label: t("txn.allStatuses") },
+    { value: "paid", label: t("txn.paid") },
+    { value: "pending", label: t("txn.pending") },
+    { value: "withdrawn", label: t("txn.withdrawn") },
+    ...(isCanada ? [{ value: "firm", label: t("txn.firm") }] : []),
+  ];
+
   const filteredData = teamTransactionsData.filter((r) => {
     // Status filter
     if (statusFilter !== "all" && r.status.toLowerCase() !== statusFilter) return false;
