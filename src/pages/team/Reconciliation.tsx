@@ -63,6 +63,12 @@ export default function Reconciliation() {
   const isCanada = config.countryMode === "canada";
   useDocumentTitle(t("team.reconciliation"));
 
+  const [search, setSearch] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedTransaction, setSelectedTransaction] = useState<TeamTransaction | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
   const teamTransactionsData = isCanada ? teamTransactionsCA : teamTransactionsUS;
 
   const filteredData = teamTransactionsData.filter((r) => {
