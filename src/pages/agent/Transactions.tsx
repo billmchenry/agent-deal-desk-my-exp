@@ -89,7 +89,9 @@ export default function Transactions() {
       ? allStatuses.find((s) => s.value === statusFilter[0])?.label ?? statusFilter[0]
       : `${statusFilter.length} selected`;
 
-  const filteredData = transactionsData.filter((r) => {
+  const sourceData = isCanada ? canadianTransactionsData : transactionsData;
+
+  const filteredData = sourceData.filter((r) => {
     if (isGlobal && r.status.toLowerCase() !== "paid") return false;
     if (!isAllSelected && !statusFilter.includes(r.status.toLowerCase())) return false;
     if (search) {
@@ -103,7 +105,7 @@ export default function Transactions() {
       );
     }
     return true;
-  }).map((r) => isCanada ? { ...r, currency: "CAD" } : r);
+  });
 
 
   const columns: ColumnDef<Transaction>[] = [
