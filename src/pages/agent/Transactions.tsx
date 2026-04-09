@@ -4,7 +4,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar, DateRange } from "@/components/filters";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
 import { TransactionDetailsSheet } from "@/components/agent/TransactionDetailsSheet";
-import { type Transaction, transactionsData } from "@/components/agent/MasterTransactionTable";
+import { type Transaction, transactionsData, canadianTransactionsData } from "@/components/agent/MasterTransactionTable";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
@@ -89,7 +89,9 @@ export default function Transactions() {
       ? allStatuses.find((s) => s.value === statusFilter[0])?.label ?? statusFilter[0]
       : `${statusFilter.length} selected`;
 
-  const filteredData = transactionsData.filter((r) => {
+  const sourceData = isCanada ? canadianTransactionsData : transactionsData;
+
+  const filteredData = sourceData.filter((r) => {
     if (isGlobal && r.status.toLowerCase() !== "paid") return false;
     if (!isAllSelected && !statusFilter.includes(r.status.toLowerCase())) return false;
     if (search) {
@@ -103,7 +105,7 @@ export default function Transactions() {
       );
     }
     return true;
-  }).map((r) => isCanada ? { ...r, currency: "CAD" } : r);
+  });
 
 
   const columns: ColumnDef<Transaction>[] = [
