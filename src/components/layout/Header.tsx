@@ -17,7 +17,6 @@ import { currentUser, userProfile } from "@/data/mockData";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { NotificationsSheet } from "./NotificationsSheet";
 import { AccountSheet } from "./AccountSheet";
-import { GlobalSearch } from "./GlobalSearch";
 import { useTranslation } from "@/hooks/useTranslation";
 import { DemoConfigSheet } from "./DemoConfigSheet";
 
@@ -57,9 +56,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           </Button>
         </div>
 
-        <div className="hidden lg:block">
-          <GlobalSearch />
-        </div>
+        <div className="hidden lg:block" />
 
         <div className="flex items-center gap-1 sm:gap-2">
           <Button
@@ -71,10 +68,6 @@ export function Header({ onMenuClick }: HeaderProps) {
             <FlaskConical className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Demo Config</span>
           </Button>
-          <div className="lg:hidden">
-            <GlobalSearch />
-          </div>
-
           <Button variant="ghost" size="icon" onClick={cycleTheme} aria-label={themeLabel}>
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
