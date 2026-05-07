@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Settings, LogOut } from "lucide-react";
+import { User, Settings, LogOut, Sun, Moon, FlaskConical } from "lucide-react";
+import { useTheme } from "next-themes";
+import { DemoConfigSheet } from "./DemoConfigSheet";
 import {
   Sheet,
   SheetContent,
@@ -20,7 +23,15 @@ interface AccountSheetProps {
 export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  
+  const { theme, setTheme } = useTheme();
+  const [demoConfigOpen, setDemoConfigOpen] = useState(false);
+
+  const cycleTheme = () => {
+    if (theme === "light") setTheme("dark");
+    else if (theme === "dark") setTheme("system");
+    else setTheme("light");
+  };
+  const themeLabel = theme === "light" ? t("header.switchDark") : theme === "dark" ? t("header.switchSystem") : t("header.switchLight");
   const initials = currentUser.name
     .split(" ")
     .map((n) => n[0])
@@ -70,6 +81,22 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
               <Settings className="h-5 w-5 text-muted-foreground" />
               <span className="text-sm font-medium">{t("header.settings")}</span>
             </button>
+
+            <button
+              onClick={cycleTheme}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors"
+            >
+              {theme === "dark" ? <Sun className="h-5 w-5 text-muted-foreground" /> : <Moon className="h-5 w-5 text-muted-foreground" />}
+              <span className="text-sm font-medium">{themeLabel}</span>
+            </button>
+
+            <button
+              onClick={() => { setDemoConfigOpen(true); onClose(); }}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors"
+            >
+              <FlaskConical className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm font-medium">Demo Config</span>
+            </button>
           </div>
 
           <Separator />
@@ -86,6 +113,7 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
           </div>
         </div>
       </SheetContent>
+      <DemoConfigSheet open={demoConfigOpen} onOpenChange={setDemoConfigOpen} />
     </Sheet>
   );
 }
