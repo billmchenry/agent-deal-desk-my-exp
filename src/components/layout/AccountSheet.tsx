@@ -113,6 +113,7 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
           </div>
         </div>
       </SheetContent>
+      <DemoConfigSheet open={demoConfigOpen} onOpenChange={setDemoConfigOpen} />
     </Sheet>
   );
 }
