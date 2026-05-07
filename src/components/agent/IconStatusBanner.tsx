@@ -13,10 +13,10 @@ const pillars = [
     key: "production",
     labelKey: "icon.production",
     icon: TrendingUp,
-    status: "3%",
-    detail: "$481.90 / $16K",
+    status: "50%",
+    detail: "$8,000 / $16K",
     complete: false,
-    progress: 3.01,
+    progress: 50,
   },
   {
     key: "cultural",

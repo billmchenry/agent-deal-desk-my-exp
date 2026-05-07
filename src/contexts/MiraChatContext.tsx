@@ -126,11 +126,11 @@ const MOCK_CONVERSATIONS: Conversation[] = [
     messages: [
       { id: 'welcome', sender: 'ai', content: '', timestamp: new Date(Date.now() - 259200000) },
       { id: 'u4', sender: 'user', content: 'Am I on track to hit my cap?', timestamp: new Date(Date.now() - 259100000) },
-      { id: 'a4', sender: 'ai', content: 'You\'re 3% toward your $16K cap with $482 contributed so far. At your current pace, you\'ll cap in approximately 8 months.', timestamp: new Date(Date.now() - 259000000) },
+      { id: 'a4', sender: 'ai', content: 'You\'re 50% toward your $16K cap with $8,000 contributed so far. At your current pace, you\'ll cap in approximately 6 months.', timestamp: new Date(Date.now() - 259000000) },
     ],
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 259000000),
-    preview: 'You\'re 3% toward your $16K cap with $482 contributed so far. At your current pace, you\'ll cap in...',
+    preview: 'You\'re 50% toward your $16K cap with $8,000 contributed so far. At your current pace, you\'ll cap in...',
   },
   {
     id: 'conv-mock-5',

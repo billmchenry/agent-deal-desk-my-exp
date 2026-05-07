@@ -83,11 +83,11 @@ export const uplinePartners: UplinePartner[] = [
 
 export const cappingData = {
   status: "Uncapped",
-  current: 482,
+  current: 8000,
   target: 16000,
-  units: 5,
-  gci: 2670,
-  volume: 1780000,
+  units: 15,
+  gci: 26700,
+  volume: 5340000,
 };
 
 export const influencerTiers = [
