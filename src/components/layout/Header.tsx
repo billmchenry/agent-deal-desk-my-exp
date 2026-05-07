@@ -135,6 +135,15 @@ export function Header({ onMenuClick }: HeaderProps) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={cycleTheme} className="cursor-pointer">
+                  {theme === "dark" ? <Sun className="h-4 w-4 me-2" /> : <Moon className="h-4 w-4 me-2" />}
+                  {themeLabel}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDemoConfigOpen(true)} className="cursor-pointer">
+                  <FlaskConical className="h-4 w-4 me-2" />
+                  Demo Config
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-destructive">{t("header.signOut")}</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <div className="px-2 py-1.5">
