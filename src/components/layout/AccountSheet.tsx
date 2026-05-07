@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Settings, LogOut } from "lucide-react";
+import { User, Settings, LogOut, Sun, Moon, FlaskConical } from "lucide-react";
+import { useTheme } from "next-themes";
+import { DemoConfigSheet } from "./DemoConfigSheet";
 import {
   Sheet,
   SheetContent,
