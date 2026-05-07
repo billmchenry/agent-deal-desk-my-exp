@@ -170,8 +170,8 @@ const mockTransactions: TransactionRow[] = Array.from({ length: 8 }, (_, i) => (
   estimatedNum: `EST-${7000 + i}`,
   expUnits: i < 3 ? 1 : 0.5,
   location: i === 0
-    ? "#LEASE# DEC - 6089 Avenida Alteras, Rancho Santa Fe, CA 92067, US"
-    : `${10000 + i * 111} Main St, San Diego, CA 92101, US`,
+    ? "#LEASE# DEC - 6089 Avenida Alteras, Rancho Santa Fe, CA 55555, US"
+    : `${10000 + i * 111} Main St, San Diego, CA 55555, US`,
   grossRevenue: i === 0 ? 1212.50 : 800 + Math.round(Math.random() * 2000 * 100) / 100,
   prideFee: 0,
   grossRevenueNet: i === 0 ? 1212.50 : 800 + Math.round(Math.random() * 2000 * 100) / 100,
@@ -210,8 +210,8 @@ const mockTransactions: TransactionRow[] = Array.from({ length: 8 }, (_, i) => (
   reportingDate: "01/01/2026",
   transactionId: `3652668.${i + 1}`,
   address: i === 0
-    ? "#LEASE# DEC - 6089 Avenida Alteras, Rancho Santa Fe, CA 92067, US"
-    : `${10000 + i * 111} Main St, San Diego, CA 92101, US`,
+    ? "#LEASE# DEC - 6089 Avenida Alteras, Rancho Santa Fe, CA 55555, US"
+    : `${10000 + i * 111} Main St, San Diego, CA 55555, US`,
   netPayment: i === 0 ? 1200.00 : 800 + Math.round(Math.random() * 1800 * 100) / 100,
 }));
 
