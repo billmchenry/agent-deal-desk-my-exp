@@ -35,8 +35,12 @@ const Index = () => {
   return (
     <DashboardLayout>
       <UniversalFilterBar
-        title={t("dashboard.welcomeToExp")}
-        subtitle={t("dashboard.hiUser")}
+        titleExtra={
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{t("dashboard.welcomeToExp")}</h1>
+            <p className="text-sm text-muted-foreground">{t("dashboard.hiUser")}</p>
+          </div>
+        }
       />
 
       <CustomizableDashboard />
