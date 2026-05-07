@@ -59,19 +59,6 @@ export function Header({ onMenuClick }: HeaderProps) {
         <div className="hidden lg:block" />
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-1.5 text-xs h-8 border-dashed"
-            onClick={() => setDemoConfigOpen(true)}
-          >
-            <FlaskConical className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Demo Config</span>
-          </Button>
-          <Button variant="ghost" size="icon" onClick={cycleTheme} aria-label={themeLabel}>
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
-
           <Button variant="ghost" size="icon" className="sm:hidden" aria-label={t("header.getHelp")}>
             <HelpCircle className="h-5 w-5" />
           </Button>
