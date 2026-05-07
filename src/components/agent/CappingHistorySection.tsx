@@ -10,7 +10,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const cappingHistoryData = [
-  { startDate: "01/01/2026", endDate: "12/31/2026", capReached: "-", capPercentage: "3.01%" },
+  { startDate: "01/01/2026", endDate: "12/31/2026", capReached: "-", capPercentage: "50%" },
   { startDate: "01/01/2025", endDate: "12/31/2025", capReached: "05/14/2025", capPercentage: "100%" },
   { startDate: "01/01/2024", endDate: "12/31/2024", capReached: "03/15/2024", capPercentage: "100%" },
   { startDate: "01/01/2023", endDate: "12/31/2023", capReached: "07/26/2023", capPercentage: "100%" },
