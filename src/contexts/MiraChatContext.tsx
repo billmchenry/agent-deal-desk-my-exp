@@ -130,7 +130,7 @@ const MOCK_CONVERSATIONS: Conversation[] = [
     ],
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 259000000),
-    preview: 'You\'re 3% toward your $16K cap with $482 contributed so far. At your current pace, you\'ll cap in...',
+    preview: 'You\'re 50% toward your $16K cap with $8,000 contributed so far. At your current pace, you\'ll cap in...',
   },
   {
     id: 'conv-mock-5',
