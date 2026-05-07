@@ -81,6 +81,22 @@ export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
               <Settings className="h-5 w-5 text-muted-foreground" />
               <span className="text-sm font-medium">{t("header.settings")}</span>
             </button>
+
+            <button
+              onClick={cycleTheme}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors"
+            >
+              {theme === "dark" ? <Sun className="h-5 w-5 text-muted-foreground" /> : <Moon className="h-5 w-5 text-muted-foreground" />}
+              <span className="text-sm font-medium">{themeLabel}</span>
+            </button>
+
+            <button
+              onClick={() => { setDemoConfigOpen(true); onClose(); }}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors"
+            >
+              <FlaskConical className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm font-medium">Demo Config</span>
+            </button>
           </div>
 
           <Separator />
