@@ -23,7 +23,15 @@ interface AccountSheetProps {
 export function AccountSheet({ isOpen, onClose }: AccountSheetProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  
+  const { theme, setTheme } = useTheme();
+  const [demoConfigOpen, setDemoConfigOpen] = useState(false);
+
+  const cycleTheme = () => {
+    if (theme === "light") setTheme("dark");
+    else if (theme === "dark") setTheme("system");
+    else setTheme("light");
+  };
+  const themeLabel = theme === "light" ? t("header.switchDark") : theme === "dark" ? t("header.switchSystem") : t("header.switchLight");
   const initials = currentUser.name
     .split(" ")
     .map((n) => n[0])
