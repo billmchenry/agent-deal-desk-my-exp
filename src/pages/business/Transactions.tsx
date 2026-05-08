@@ -368,7 +368,7 @@ export default function BusinessTransactions() {
                 key={key}
                 variant={statusFilter === key ? "default" : "outline"}
                 onClick={() => setStatusFilter(key)}
-                className={`rounded-[51px] min-h-[44px] px-4 ${statusFilter === key ? "bg-exp-purple hover:bg-exp-purple/90 text-white" : ""}`}
+                className={`rounded-[51px] min-h-[44px] px-4 ${statusFilter === key ? "bg-primary hover:bg-primary/90 text-primary-foreground" : ""}`}
               >
                 {t(`transactions.filter.${key}`)}
               </Button>
