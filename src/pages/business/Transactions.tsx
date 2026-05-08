@@ -390,11 +390,16 @@ export default function BusinessTransactions() {
         </div>
 
         {/* Table */}
-        {/* Table */}
         <DataTable<ListingRow>
           data={filteredListings}
           columns={columns}
           defaultPageSize={25}
+          onRowClick={(row) => setSelectedListing(row)}
+        />
+
+        <ListingDetailSheet
+          listing={selectedListing}
+          onClose={() => setSelectedListing(null)}
         />
       </div>
     </DashboardLayout>
