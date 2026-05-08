@@ -18,6 +18,8 @@ export const zh: Record<string, string> = {
   "nav.organizationTree": "组织树",
   "nav.myRevshareTrends": "我的收入分享趋势",
   "nav.mentorProgram": "导师计划",
+  "nav.transactions": "交易",
+  "transactions.placeholder": "即将推出 — 添加截图以定义此视图。",
   "nav.reportMarketplace": "报告市场",
   "nav.tools": "工具",
   "nav.knowledgeBase": "知识库",

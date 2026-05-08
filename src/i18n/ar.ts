@@ -17,6 +17,8 @@ export const ar: Record<string, string> = {
   "nav.organizationTree": "شجرة المنظمة",
   "nav.myRevshareTrends": "اتجاهات مشاركتي",
   "nav.mentorProgram": "برنامج الإرشاد",
+  "nav.transactions": "المعاملات",
+  "transactions.placeholder": "قريبًا — أضف لقطات شاشة لتحديد هذا العرض.",
   "nav.reportMarketplace": "سوق التقارير",
   "nav.tools": "الأدوات",
   "nav.knowledgeBase": "قاعدة المعرفة",

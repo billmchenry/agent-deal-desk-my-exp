@@ -19,6 +19,7 @@ import CustomServiceFees from "./pages/agent/CustomServiceFees";
 import AgentTransactions from "./pages/agent/Transactions";
 import TeamDashboard from "./pages/team/Dashboard";
 import TeamReconciliation from "./pages/team/Reconciliation";
+import BusinessTransactions from "./pages/business/Transactions";
 import RevShareDashboard from "./pages/revshare/Dashboard";
 import OrganizationReporting from "./pages/revshare/Organization";
 import OrganizationTree from "./pages/revshare/OrganizationTree";
@@ -64,6 +65,7 @@ const App = () => (
                 <Route path="/agent/custom-service-fees" element={<CustomServiceFees />} />
                 <Route path="/team/dashboard" element={<TeamDashboard />} />
                 <Route path="/team/reconciliation" element={<TeamReconciliation />} />
+                <Route path="/business/transactions" element={<BusinessTransactions />} />
                 <Route path="/revshare/dashboard" element={<RevShareDashboard />} />
                 <Route path="/revshare/organization" element={<OrganizationReporting />} />
                 <Route path="/revshare/organization-tree" element={<OrganizationTree />} />

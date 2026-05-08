@@ -18,6 +18,8 @@ export const es: Record<string, string> = {
   "nav.organizationTree": "Árbol organizacional",
   "nav.myRevshareTrends": "Mis tendencias RevShare",
   "nav.mentorProgram": "Programa de mentoría",
+  "nav.transactions": "Transacciones",
+  "transactions.placeholder": "Próximamente: añade capturas para definir esta vista.",
   "nav.reportMarketplace": "Mercado de informes",
   "nav.tools": "Herramientas",
   "nav.knowledgeBase": "Base de conocimiento",
