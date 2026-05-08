@@ -73,17 +73,32 @@ export default function BusinessTransactions() {
 
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* Donut with center total */}
-              <div className="relative w-40 h-40 sm:w-44 sm:h-44 shrink-0">
+              <div className="relative w-44 h-44 sm:w-48 sm:h-48 shrink-0 drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
+                    {/* Subtle base track for depth */}
+                    <Pie
+                      data={[{ value: 1 }]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius="64%"
+                      outerRadius="100%"
+                      dataKey="value"
+                      stroke="none"
+                      fill="hsl(var(--exp-dark-navy))"
+                      isAnimationActive={false}
+                    />
                     <Pie
                       data={chartData}
                       cx="50%"
                       cy="50%"
-                      innerRadius="68%"
+                      innerRadius="66%"
                       outerRadius="100%"
                       dataKey="value"
-                      stroke="none"
+                      stroke="hsl(var(--exp-dark-navy))"
+                      strokeWidth={3}
+                      paddingAngle={total > 1 ? 3 : 0}
+                      cornerRadius={6}
                       startAngle={90}
                       endAngle={-270}
                     >
