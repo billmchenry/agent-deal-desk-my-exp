@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar } from "@/components/filters";
 import { useDocumentTitle } from "@/hooks/use-document-title";
@@ -6,9 +6,47 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Briefcase } from "lucide-react";
+import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+interface ListingRow {
+  id: string;
+  mlsNumber: string;
+  propertyAddress: string;
+  propertyCity: string;
+  status: "Active" | "Expired" | "Incomplete" | "Canceled/Pend";
+  listingAgent: string;
+  office: string;
+  expirationDate: string;
+  listingPrice: number;
+  stage: string;
+  stageVariant: "default" | "warning" | "danger";
+}
+
+const LISTINGS: ListingRow[] = [
+  { id: "1", mlsNumber: "MLS-2024-001", propertyAddress: "1234 Oak Street", propertyCity: "Austin, TX 78701",  status: "Expired",       listingAgent: "John & Mary Smith",        office: "Main Office",  expirationDate: "2024-07-14", listingPrice: 485000,  stage: "Active",            stageVariant: "default" },
+  { id: "2", mlsNumber: "MLS-2024-002", propertyAddress: "567 Riverside Dr", propertyCity: "Round Rock, TX 78664", status: "Expired",    listingAgent: "Robert Davis",             office: "Main Office",  expirationDate: "2024-07-31", listingPrice: 325000,  stage: "Pending Review",    stageVariant: "warning" },
+  { id: "3", mlsNumber: "N/A",          propertyAddress: "890 Summit View",  propertyCity: "Cedar Park, TX 78613", status: "Expired",    listingAgent: "Amanda Wilson",            office: "Main Office",  expirationDate: "2024-08-09", listingPrice: 575000,  stage: "Missing Signatures",stageVariant: "warning" },
+  { id: "4", mlsNumber: "MLS-2024-004", propertyAddress: "2100 Lakefront Blvd", propertyCity: "Lakeway, TX 78734", status: "Expired",    listingAgent: "Michael & Jennifer Brown", office: "Main Office",  expirationDate: "2024-07-19", listingPrice: 1250000, stage: "Active",            stageVariant: "default" },
+  { id: "5", mlsNumber: "MLS-001",      propertyAddress: "1234 Oak Street",  propertyCity: "Austin, TX 78701",     status: "Active",     listingAgent: "John Smith",               office: "Main Office",  expirationDate: "2025-06-29", listingPrice: 485000,  stage: "Active",            stageVariant: "default" },
+  { id: "6", mlsNumber: "MLS-002",      propertyAddress: "567 Riverside Dr", propertyCity: "Round Rock, TX 78664", status: "Incomplete", listingAgent: "Sarah Johnson",            office: "North Office", expirationDate: "2025-05-14", listingPrice: 325000,  stage: "Missing Documents", stageVariant: "danger" },
+  { id: "7", mlsNumber: "MLS-003",      propertyAddress: "890 Summit View",  propertyCity: "Cedar Park, TX 78613", status: "Canceled/Pend", listingAgent: "Michael Brown",         office: "Main Office",  expirationDate: "2025-04-19", listingPrice: 575000,  stage: "Awaiting Approval", stageVariant: "default" },
+  { id: "8", mlsNumber: "MLS-004",      propertyAddress: "2100 Lakefront Blvd", propertyCity: "Lakeway, TX 78734", status: "Active",     listingAgent: "Jennifer Brown",           office: "Main Office",  expirationDate: "2025-08-22", listingPrice: 1250000, stage: "Active",            stageVariant: "default" },
+  { id: "9", mlsNumber: "MLS-005",      propertyAddress: "455 Maple Ave",    propertyCity: "Austin, TX 78704",     status: "Active",     listingAgent: "Carlos Reyes",             office: "South Office", expirationDate: "2025-09-30", listingPrice: 695000,  stage: "Active",            stageVariant: "default" },
+];
+
+type StatusFilter = "all" | "active" | "pending" | "closed";
+type SourceTab = "listings" | "transactions";
+
 
 type Period = "monthly" | "quarterly" | "yearly";
 
