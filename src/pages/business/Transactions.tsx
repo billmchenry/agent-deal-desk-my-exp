@@ -178,7 +178,20 @@ export default function BusinessTransactions() {
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        <UniversalFilterBar title={t("nav.transactions")} />
+        <UniversalFilterBar title={t("nav.transactions")} subtitle={t("transactions.subtitle")}>
+          <Button
+            variant="outline"
+            className="rounded-[51px] gap-2 min-h-[44px]"
+            onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
+          >
+            <ExternalLink className="h-4 w-4" />
+            SkySlope
+          </Button>
+          <Button className="rounded-[51px] gap-2 min-h-[44px] bg-exp-purple hover:bg-exp-purple/90 text-white">
+            <Plus className="h-4 w-4" />
+            {t("transactions.create")}
+          </Button>
+        </UniversalFilterBar>
 
         {/* Active Pipeline Hero — donut + legend */}
         <Card className="relative overflow-hidden bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue p-4 sm:p-6 text-white">
@@ -339,9 +352,55 @@ export default function BusinessTransactions() {
           </div>
         </Card>
 
-        <div className="flex min-h-[40vh] items-center justify-center rounded-2xl border border-dashed border-border bg-card text-sm text-muted-foreground">
-          {t("transactions.placeholder")}
+        {/* Filters: search + status pills */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={t("transactions.searchProperties")}
+            className="h-11 w-full sm:max-w-md rounded-[51px] border border-input bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            aria-label={t("transactions.searchProperties")}
+          />
+          <div className="flex flex-wrap items-center gap-2">
+            {(["all", "active", "pending", "closed"] as StatusFilter[]).map((key) => (
+              <Button
+                key={key}
+                variant={statusFilter === key ? "default" : "outline"}
+                onClick={() => setStatusFilter(key)}
+                className={`rounded-[51px] min-h-[44px] px-4 ${statusFilter === key ? "bg-exp-purple hover:bg-exp-purple/90 text-white" : ""}`}
+              >
+                {t(`transactions.filter.${key}`)}
+              </Button>
+            ))}
+          </div>
         </div>
+
+        {/* Source tabs: Listings / Transactions */}
+        <Tabs value={sourceTab} onValueChange={(v) => setSourceTab(v as SourceTab)}>
+          <TabsList className="h-10 p-1">
+            <TabsTrigger value="listings" className="rounded-[51px] px-3 py-1.5 gap-2">
+              <HomeIcon className="h-4 w-4" />
+              {t("transactions.tabListings")}
+              <Badge variant="secondary" className="ms-1 px-2">{LISTINGS.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="transactions" className="rounded-[51px] px-3 py-1.5 gap-2">
+              <DollarIcon className="h-4 w-4" />
+              {t("transactions.tabTransactions")}
+              <Badge variant="secondary" className="ms-1 px-2">{total}</Badge>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
+        {/* Table */}
+        <DataTable<ListingRow>
+          data={filteredListings}
+          columns={columns}
+          getRowId={(r) => r.id}
+          searchable={false}
+          showColumnVisibility={false}
+          enableExport={false}
+        />
       </div>
     </DashboardLayout>
   );
