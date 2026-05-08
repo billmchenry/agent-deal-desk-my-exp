@@ -9,10 +9,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
-import { Briefcase, ExternalLink, Plus, Home as HomeIcon, DollarSign as DollarIcon } from "lucide-react";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ListingDetailSheet } from "./components/ListingDetailSheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface ListingRow {
   id: string;
@@ -64,7 +68,6 @@ export default function BusinessTransactions() {
   const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [search, setSearch] = useState("");
-  const [selectedListing, setSelectedListing] = useState<ListingRow | null>(null);
 
   const filteredListings = useMemo(() => {
     return LISTINGS.filter((row) => {
@@ -139,25 +142,24 @@ export default function BusinessTransactions() {
       sortable: false,
       stickyRight: true,
       render: (_v, row) => (
-        <TooltipProvider delayDuration={200}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9"
-                aria-label={t("transactions.openInSkySlope")}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer");
-                }}
-              >
-                <ExternalLink className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>{t("transactions.openInSkySlope")}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9"
+              aria-label={`Open actions for ${row.mlsNumber}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>{t("transactions.viewDetails")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("transactions.editListing")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("transactions.openInSkySlope")}</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       ),
     },
   ];
@@ -390,16 +392,11 @@ export default function BusinessTransactions() {
         </div>
 
         {/* Table */}
+        {/* Table */}
         <DataTable<ListingRow>
           data={filteredListings}
           columns={columns}
           defaultPageSize={25}
-          onRowClick={(row) => setSelectedListing(row)}
-        />
-
-        <ListingDetailSheet
-          listing={selectedListing}
-          onClose={() => setSelectedListing(null)}
         />
       </div>
     </DashboardLayout>
