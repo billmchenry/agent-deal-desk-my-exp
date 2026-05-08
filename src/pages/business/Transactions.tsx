@@ -138,24 +138,25 @@ export default function BusinessTransactions() {
       sortable: false,
       stickyRight: true,
       render: (_v, row) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9"
-              aria-label={`Open actions for ${row.mlsNumber}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <MoreVertical className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>{t("transactions.viewDetails")}</DropdownMenuItem>
-            <DropdownMenuItem>{t("transactions.editListing")}</DropdownMenuItem>
-            <DropdownMenuItem>{t("transactions.openInSkySlope")}</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <TooltipProvider delayDuration={200}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9"
+                aria-label={t("transactions.openInSkySlope")}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer");
+                }}
+              >
+                <ExternalLink className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{t("transactions.openInSkySlope")}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       ),
     },
   ];
