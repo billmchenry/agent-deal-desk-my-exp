@@ -73,9 +73,45 @@ export default function BusinessTransactions() {
 
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* Donut with center total */}
-              <div className="relative w-44 h-44 sm:w-48 sm:h-48 shrink-0 drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
+              <div className="relative w-44 h-44 sm:w-48 sm:h-48 shrink-0">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
+                    <defs>
+                      {chartData.map((s, i) => (
+                        <radialGradient
+                          key={`grad-${s.key}`}
+                          id={`donutGrad-${s.key}-${i}`}
+                          cx="50%"
+                          cy="50%"
+                          r="65%"
+                          fx="50%"
+                          fy="50%"
+                        >
+                          <stop offset="55%" stopColor={s.color} stopOpacity={1} />
+                          <stop offset="100%" stopColor={s.color} stopOpacity={0.55} />
+                        </radialGradient>
+                      ))}
+                      <filter id="donutShadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                        <feOffset dx="0" dy="4" result="offsetblur" />
+                        <feComponentTransfer>
+                          <feFuncA type="linear" slope="0.55" />
+                        </feComponentTransfer>
+                        <feMerge>
+                          <feMergeNode />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                      <radialGradient id="donutInnerShade" cx="50%" cy="50%" r="50%">
+                        <stop offset="60%" stopColor="hsl(var(--exp-dark-navy))" stopOpacity={0} />
+                        <stop offset="100%" stopColor="#000" stopOpacity={0.45} />
+                      </radialGradient>
+                      <radialGradient id="donutHighlight" cx="50%" cy="35%" r="55%">
+                        <stop offset="0%" stopColor="#fff" stopOpacity={0.18} />
+                        <stop offset="70%" stopColor="#fff" stopOpacity={0} />
+                      </radialGradient>
+                    </defs>
+
                     {/* Subtle base track for depth */}
                     <Pie
                       data={[{ value: 1 }]}
@@ -88,6 +124,7 @@ export default function BusinessTransactions() {
                       fill="hsl(var(--exp-dark-navy))"
                       isAnimationActive={false}
                     />
+                    {/* Main colored ring with radial gradients + shadow */}
                     <Pie
                       data={chartData}
                       cx="50%"
@@ -101,11 +138,36 @@ export default function BusinessTransactions() {
                       cornerRadius={6}
                       startAngle={90}
                       endAngle={-270}
+                      filter="url(#donutShadow)"
                     >
-                      {chartData.map((s) => (
-                        <Cell key={s.key} fill={s.color} />
+                      {chartData.map((s, i) => (
+                        <Cell key={s.key} fill={`url(#donutGrad-${s.key}-${i})`} />
                       ))}
                     </Pie>
+                    {/* Inner edge shading for bevel illusion */}
+                    <Pie
+                      data={[{ value: 1 }]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius="66%"
+                      outerRadius="100%"
+                      dataKey="value"
+                      stroke="none"
+                      fill="url(#donutInnerShade)"
+                      isAnimationActive={false}
+                    />
+                    {/* Top-light highlight */}
+                    <Pie
+                      data={[{ value: 1 }]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius="66%"
+                      outerRadius="100%"
+                      dataKey="value"
+                      stroke="none"
+                      fill="url(#donutHighlight)"
+                      isAnimationActive={false}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
