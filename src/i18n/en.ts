@@ -18,7 +18,6 @@ export const en = {
   "nav.organizationTree": "Organization Tree",
   "nav.myRevshareTrends": "My RevShare Trends",
   "nav.mentorProgram": "Mentor Program",
-  "nav.transactions": "Transactions",
   "transactions.placeholder": "Coming soon — add screenshots to define this view.",
   "transactions.activePipeline": "Active Pipeline",
   "transactions.totalDeals": "Total Deals",

@@ -18,7 +18,6 @@ export const frCA: Record<string, string> = {
   "nav.organizationTree": "Arbre organisationnel",
   "nav.myRevshareTrends": "Mes tendances RevShare",
   "nav.mentorProgram": "Programme de mentorat",
-  "nav.transactions": "Transactions",
   "transactions.placeholder": "À venir — ajoutez des captures d'écran pour définir cette vue.",
   "transactions.activePipeline": "Pipeline actif",
   "transactions.totalDeals": "Transactions totales",
