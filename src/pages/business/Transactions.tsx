@@ -64,6 +64,7 @@ export default function BusinessTransactions() {
   const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [search, setSearch] = useState("");
+  const [selectedListing, setSelectedListing] = useState<ListingRow | null>(null);
 
   const filteredListings = useMemo(() => {
     return LISTINGS.filter((row) => {
