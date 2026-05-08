@@ -65,6 +65,105 @@ export default function BusinessTransactions() {
   const d = PIPELINE_BY_PERIOD[period];
   const total = d.inProgress + d.closed + d.paid + d.canceled;
 
+  const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [search, setSearch] = useState("");
+
+  const filteredListings = useMemo(() => {
+    return LISTINGS.filter((row) => {
+      if (statusFilter !== "all") {
+        const s = row.status.toLowerCase();
+        if (statusFilter === "active" && s !== "active") return false;
+        if (statusFilter === "pending" && !["incomplete", "canceled/pend"].includes(s)) return false;
+        if (statusFilter === "closed" && s !== "expired") return false;
+      }
+      if (search) {
+        const q = search.toLowerCase();
+        return (
+          row.mlsNumber.toLowerCase().includes(q) ||
+          row.propertyAddress.toLowerCase().includes(q) ||
+          row.propertyCity.toLowerCase().includes(q) ||
+          row.listingAgent.toLowerCase().includes(q) ||
+          row.office.toLowerCase().includes(q)
+        );
+      }
+      return true;
+    });
+  }, [statusFilter, search]);
+
+  const listingStatusBadge = (status: ListingRow["status"]) => {
+    switch (status) {
+      case "Active":
+        return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Active</Badge>;
+      case "Expired":
+        return <Badge className="bg-exp-red/10 text-exp-red border-exp-red/20 hover:bg-exp-red/10">Expired</Badge>;
+      case "Incomplete":
+        return <Badge className="bg-exp-purple/10 text-exp-purple border-exp-purple/20 hover:bg-exp-purple/10">Incomplete</Badge>;
+      case "Canceled/Pend":
+        return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Canceled/Pend</Badge>;
+    }
+  };
+
+  const stageBadge = (stage: string, variant: ListingRow["stageVariant"]) => {
+    if (variant === "warning") {
+      return <Badge className="bg-exp-gold/10 text-exp-gold border-exp-gold/20 hover:bg-exp-gold/10">{stage}</Badge>;
+    }
+    if (variant === "danger") {
+      return <Badge className="bg-exp-red/10 text-exp-red border-exp-red/20 hover:bg-exp-red/10">{stage}</Badge>;
+    }
+    return <span className="text-sm text-muted-foreground">{stage}</span>;
+  };
+
+  const columns: ColumnDef<ListingRow>[] = [
+    { key: "mlsNumber", header: "transactions.mlsNumber", type: "string", sortable: true },
+    {
+      key: "propertyAddress",
+      header: "transactions.propertyAddress",
+      type: "string",
+      sortable: true,
+      render: (_v, row) => (
+        <div className="min-w-0">
+          <p className="text-sm text-foreground truncate">{row.propertyAddress}</p>
+          <p className="text-xs text-muted-foreground truncate">{row.propertyCity}</p>
+        </div>
+      ),
+    },
+    { key: "status", header: "transactions.statusCol", type: "badge", sortable: true, render: (_v, row) => listingStatusBadge(row.status) },
+    { key: "listingAgent", header: "transactions.listingAgent", type: "string", sortable: true },
+    { key: "office", header: "transactions.office", type: "string", sortable: true },
+    { key: "expirationDate", header: "transactions.expirationDate", type: "date", sortable: true },
+    { key: "listingPrice", header: "transactions.listingPrice", type: "currency", sortable: true },
+    { key: "stage", header: "transactions.stage", type: "string", sortable: true, render: (_v, row) => stageBadge(row.stage, row.stageVariant) },
+    {
+      id: "actions",
+      key: "id" as keyof ListingRow,
+      header: "transactions.actions",
+      type: "string",
+      sortable: false,
+      stickyRight: true,
+      render: (_v, row) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9"
+              aria-label={`Open actions for ${row.mlsNumber}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>{t("transactions.viewDetails")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("transactions.editListing")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("transactions.openInSkySlope")}</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ];
+
   const segments = [
     { key: "inProgress", label: t("transactions.inProgress"), value: d.inProgress, color: "hsl(var(--exp-purple))" },
     { key: "closed",     label: t("transactions.closed"),     value: d.closed,     color: "hsl(var(--exp-green))" },
