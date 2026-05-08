@@ -393,13 +393,11 @@ export default function BusinessTransactions() {
         </Tabs>
 
         {/* Table */}
+        {/* Table */}
         <DataTable<ListingRow>
           data={filteredListings}
           columns={columns}
-          getRowId={(r) => r.id}
-          searchable={false}
-          showColumnVisibility={false}
-          enableExport={false}
+          defaultPageSize={25}
         />
       </div>
     </DashboardLayout>
