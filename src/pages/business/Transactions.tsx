@@ -92,10 +92,10 @@ export default function BusinessTransactions() {
                         </radialGradient>
                       ))}
                       <filter id="donutShadow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-                        <feOffset dx="0" dy="4" result="offsetblur" />
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" />
+                        <feOffset dx="0" dy="2" result="offsetblur" />
                         <feComponentTransfer>
-                          <feFuncA type="linear" slope="0.55" />
+                          <feFuncA type="linear" slope="0.25" />
                         </feComponentTransfer>
                         <feMerge>
                           <feMergeNode />
@@ -104,7 +104,7 @@ export default function BusinessTransactions() {
                       </filter>
                       <radialGradient id="donutInnerShade" cx="50%" cy="50%" r="50%">
                         <stop offset="60%" stopColor="hsl(var(--exp-dark-navy))" stopOpacity={0} />
-                        <stop offset="100%" stopColor="#000" stopOpacity={0.45} />
+                        <stop offset="100%" stopColor="#000" stopOpacity={0.2} />
                       </radialGradient>
                       <radialGradient id="donutHighlight" cx="50%" cy="35%" r="55%">
                         <stop offset="0%" stopColor="#fff" stopOpacity={0.18} />
