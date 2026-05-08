@@ -7,14 +7,15 @@ import { useFormatters } from "@/hooks/useFormatters";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Briefcase, Clock, CheckCircle2, DollarSign, XCircle } from "lucide-react";
+import { Briefcase } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 type Period = "monthly" | "quarterly" | "yearly";
 
-const PIPELINE_BY_PERIOD: Record<Period, { total: number; inProgress: number; closed: number; paid: number; canceled: number }> = {
-  monthly:   { total: 3, inProgress: 1, closed: 1, paid: 1, canceled: 0 },
-  quarterly: { total: 8, inProgress: 1, closed: 1, paid: 1, canceled: 0 },
-  yearly:    { total: 22, inProgress: 4, closed: 9, paid: 8, canceled: 1 },
+const PIPELINE_BY_PERIOD: Record<Period, { inProgress: number; closed: number; paid: number; canceled: number }> = {
+  monthly:   { inProgress: 1, closed: 1, paid: 1, canceled: 0 },
+  quarterly: { inProgress: 1, closed: 1, paid: 1, canceled: 0 },
+  yearly:    { inProgress: 4, closed: 9, paid: 8, canceled: 1 },
 };
 
 export default function BusinessTransactions() {
@@ -23,14 +24,26 @@ export default function BusinessTransactions() {
   useDocumentTitle(t("nav.transactions"));
 
   const [period, setPeriod] = useState<Period>("quarterly");
-  const data = PIPELINE_BY_PERIOD[period];
+  const d = PIPELINE_BY_PERIOD[period];
+  const total = d.inProgress + d.closed + d.paid + d.canceled;
+
+  const segments = [
+    { key: "inProgress", label: t("transactions.inProgress"), value: d.inProgress, color: "#F5B638" },
+    { key: "closed",     label: t("transactions.closed"),     value: d.closed,     color: "#5BC489" },
+    { key: "paid",       label: t("transactions.paid"),       value: d.paid,       color: "#7B9DD9" },
+    { key: "canceled",   label: t("transactions.canceled"),   value: d.canceled,   color: "rgba(255,255,255,0.35)" },
+  ];
+
+  const chartData = total === 0
+    ? [{ key: "empty", value: 1, color: "rgba(255,255,255,0.15)" }]
+    : segments.filter((s) => s.value > 0);
 
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
         <UniversalFilterBar title={t("nav.transactions")} />
 
-        {/* Active Pipeline Hero */}
+        {/* Active Pipeline Hero — donut + legend */}
         <Card className="relative overflow-hidden bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue p-4 sm:p-6 text-white">
           <div className="absolute right-0 top-0 h-full w-1/3 opacity-10 pointer-events-none">
             <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-frosted-blue" />
@@ -58,70 +71,55 @@ export default function BusinessTransactions() {
               </Tabs>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-              {/* Total Deals */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0 col-span-2 sm:col-span-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="rounded-md p-1.5 shrink-0 bg-white/15 text-white">
-                    <Briefcase className="h-3.5 w-3.5" />
-                  </div>
-                  <span className="text-xs font-semibold text-white">{t("transactions.totalDeals")}</span>
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              {/* Donut with center total */}
+              <div className="relative w-40 h-40 sm:w-44 sm:h-44 shrink-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={chartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius="68%"
+                      outerRadius="100%"
+                      dataKey="value"
+                      stroke="none"
+                      startAngle={90}
+                      endAngle={-270}
+                    >
+                      {chartData.map((s) => (
+                        <Cell key={s.key} fill={s.color} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                  <p className="font-secondary font-bold text-4xl sm:text-5xl text-white leading-none tabular-nums">
+                    {formatNumber(total)}
+                  </p>
+                  <p className="text-xs text-white/70 mt-1">{t("transactions.totalDeals")}</p>
                 </div>
-                <p className="text-stat-value font-bold font-secondary text-white leading-none">
-                  {formatNumber(data.total)}
-                </p>
               </div>
 
-              {/* In Progress */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="rounded-md p-1.5 shrink-0 bg-exp-gold/20 text-exp-gold-light">
-                    <Clock className="h-3.5 w-3.5" />
-                  </div>
-                  <span className="text-xs font-semibold text-white">{t("transactions.inProgress")}</span>
-                </div>
-                <p className="text-stat-value font-bold font-secondary text-exp-gold-light leading-none">
-                  {formatNumber(data.inProgress)}
-                </p>
-              </div>
-
-              {/* Closed */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="rounded-md p-1.5 shrink-0 bg-exp-green/20 text-exp-green-light">
-                    <CheckCircle2 className="h-3.5 w-3.5" />
-                  </div>
-                  <span className="text-xs font-semibold text-white">{t("transactions.closed")}</span>
-                </div>
-                <p className="text-stat-value font-bold font-secondary text-exp-green-light leading-none">
-                  {formatNumber(data.closed)}
-                </p>
-              </div>
-
-              {/* Paid */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="rounded-md p-1.5 shrink-0 bg-exp-frosted-blue/30 text-white">
-                    <DollarSign className="h-3.5 w-3.5" />
-                  </div>
-                  <span className="text-xs font-semibold text-white">{t("transactions.paid")}</span>
-                </div>
-                <p className="text-stat-value font-bold font-secondary text-white leading-none">
-                  {formatNumber(data.paid)}
-                </p>
-              </div>
-
-              {/* Canceled */}
-              <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-3.5 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="rounded-md p-1.5 shrink-0 bg-white/10 text-white/70">
-                    <XCircle className="h-3.5 w-3.5" />
-                  </div>
-                  <span className="text-xs font-semibold text-white">{t("transactions.canceled")}</span>
-                </div>
-                <p className="text-stat-value font-bold font-secondary text-white/70 leading-none">
-                  {formatNumber(data.canceled)}
-                </p>
+              {/* Legend */}
+              <div className="flex-1 w-full grid grid-cols-2 gap-3">
+                {segments.map((s) => {
+                  const pct = total ? Math.round((s.value / total) * 100) : 0;
+                  return (
+                    <div key={s.key} className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
+                        <span className="text-xs font-semibold text-white truncate">{s.label}</span>
+                      </div>
+                      <div className="flex items-baseline gap-1.5">
+                        <p className="font-secondary font-bold text-2xl text-white leading-none tabular-nums">
+                          {formatNumber(s.value)}
+                        </p>
+                        <span className="text-xs text-white/60 tabular-nums">{pct}%</span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
