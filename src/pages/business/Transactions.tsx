@@ -28,10 +28,10 @@ export default function BusinessTransactions() {
   const total = d.inProgress + d.closed + d.paid + d.canceled;
 
   const segments = [
-    { key: "inProgress", label: t("transactions.inProgress"), value: d.inProgress, color: "hsl(var(--exp-gold-light))" },
-    { key: "closed",     label: t("transactions.closed"),     value: d.closed,     color: "hsl(var(--exp-green-light))" },
-    { key: "paid",       label: t("transactions.paid"),       value: d.paid,       color: "hsl(var(--exp-frosted-blue))" },
-    { key: "canceled",   label: t("transactions.canceled"),   value: d.canceled,   color: "hsl(var(--exp-gray-dark))" },
+    { key: "inProgress", label: t("transactions.inProgress"), value: d.inProgress, color: "hsl(var(--exp-purple))" },
+    { key: "closed",     label: t("transactions.closed"),     value: d.closed,     color: "hsl(var(--exp-green))" },
+    { key: "paid",       label: t("transactions.paid"),       value: d.paid,       color: "hsl(var(--exp-blue-light))" },
+    { key: "canceled",   label: t("transactions.canceled"),   value: d.canceled,   color: "hsl(var(--exp-light-grey))" },
   ];
 
   const chartData = total === 0
