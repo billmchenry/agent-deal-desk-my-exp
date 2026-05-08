@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar } from "@/components/filters";
 import { useDocumentTitle } from "@/hooks/use-document-title";
@@ -6,9 +6,47 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Briefcase } from "lucide-react";
+import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+interface ListingRow {
+  id: string;
+  mlsNumber: string;
+  propertyAddress: string;
+  propertyCity: string;
+  status: "Active" | "Expired" | "Incomplete" | "Canceled/Pend";
+  listingAgent: string;
+  office: string;
+  expirationDate: string;
+  listingPrice: number;
+  stage: string;
+  stageVariant: "default" | "warning" | "danger";
+}
+
+const LISTINGS: ListingRow[] = [
+  { id: "1", mlsNumber: "MLS-2024-001", propertyAddress: "1234 Oak Street", propertyCity: "Austin, TX 78701",  status: "Expired",       listingAgent: "John & Mary Smith",        office: "Main Office",  expirationDate: "2024-07-14", listingPrice: 485000,  stage: "Active",            stageVariant: "default" },
+  { id: "2", mlsNumber: "MLS-2024-002", propertyAddress: "567 Riverside Dr", propertyCity: "Round Rock, TX 78664", status: "Expired",    listingAgent: "Robert Davis",             office: "Main Office",  expirationDate: "2024-07-31", listingPrice: 325000,  stage: "Pending Review",    stageVariant: "warning" },
+  { id: "3", mlsNumber: "N/A",          propertyAddress: "890 Summit View",  propertyCity: "Cedar Park, TX 78613", status: "Expired",    listingAgent: "Amanda Wilson",            office: "Main Office",  expirationDate: "2024-08-09", listingPrice: 575000,  stage: "Missing Signatures",stageVariant: "warning" },
+  { id: "4", mlsNumber: "MLS-2024-004", propertyAddress: "2100 Lakefront Blvd", propertyCity: "Lakeway, TX 78734", status: "Expired",    listingAgent: "Michael & Jennifer Brown", office: "Main Office",  expirationDate: "2024-07-19", listingPrice: 1250000, stage: "Active",            stageVariant: "default" },
+  { id: "5", mlsNumber: "MLS-001",      propertyAddress: "1234 Oak Street",  propertyCity: "Austin, TX 78701",     status: "Active",     listingAgent: "John Smith",               office: "Main Office",  expirationDate: "2025-06-29", listingPrice: 485000,  stage: "Active",            stageVariant: "default" },
+  { id: "6", mlsNumber: "MLS-002",      propertyAddress: "567 Riverside Dr", propertyCity: "Round Rock, TX 78664", status: "Incomplete", listingAgent: "Sarah Johnson",            office: "North Office", expirationDate: "2025-05-14", listingPrice: 325000,  stage: "Missing Documents", stageVariant: "danger" },
+  { id: "7", mlsNumber: "MLS-003",      propertyAddress: "890 Summit View",  propertyCity: "Cedar Park, TX 78613", status: "Canceled/Pend", listingAgent: "Michael Brown",         office: "Main Office",  expirationDate: "2025-04-19", listingPrice: 575000,  stage: "Awaiting Approval", stageVariant: "default" },
+  { id: "8", mlsNumber: "MLS-004",      propertyAddress: "2100 Lakefront Blvd", propertyCity: "Lakeway, TX 78734", status: "Active",     listingAgent: "Jennifer Brown",           office: "Main Office",  expirationDate: "2025-08-22", listingPrice: 1250000, stage: "Active",            stageVariant: "default" },
+  { id: "9", mlsNumber: "MLS-005",      propertyAddress: "455 Maple Ave",    propertyCity: "Austin, TX 78704",     status: "Active",     listingAgent: "Carlos Reyes",             office: "South Office", expirationDate: "2025-09-30", listingPrice: 695000,  stage: "Active",            stageVariant: "default" },
+];
+
+type StatusFilter = "all" | "active" | "pending" | "closed";
+type SourceTab = "listings" | "transactions";
+
 
 type Period = "monthly" | "quarterly" | "yearly";
 
@@ -27,6 +65,105 @@ export default function BusinessTransactions() {
   const d = PIPELINE_BY_PERIOD[period];
   const total = d.inProgress + d.closed + d.paid + d.canceled;
 
+  const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [search, setSearch] = useState("");
+
+  const filteredListings = useMemo(() => {
+    return LISTINGS.filter((row) => {
+      if (statusFilter !== "all") {
+        const s = row.status.toLowerCase();
+        if (statusFilter === "active" && s !== "active") return false;
+        if (statusFilter === "pending" && !["incomplete", "canceled/pend"].includes(s)) return false;
+        if (statusFilter === "closed" && s !== "expired") return false;
+      }
+      if (search) {
+        const q = search.toLowerCase();
+        return (
+          row.mlsNumber.toLowerCase().includes(q) ||
+          row.propertyAddress.toLowerCase().includes(q) ||
+          row.propertyCity.toLowerCase().includes(q) ||
+          row.listingAgent.toLowerCase().includes(q) ||
+          row.office.toLowerCase().includes(q)
+        );
+      }
+      return true;
+    });
+  }, [statusFilter, search]);
+
+  const listingStatusBadge = (status: ListingRow["status"]) => {
+    switch (status) {
+      case "Active":
+        return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Active</Badge>;
+      case "Expired":
+        return <Badge className="bg-exp-red/10 text-exp-red border-exp-red/20 hover:bg-exp-red/10">Expired</Badge>;
+      case "Incomplete":
+        return <Badge className="bg-exp-purple/10 text-exp-purple border-exp-purple/20 hover:bg-exp-purple/10">Incomplete</Badge>;
+      case "Canceled/Pend":
+        return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Canceled/Pend</Badge>;
+    }
+  };
+
+  const stageBadge = (stage: string, variant: ListingRow["stageVariant"]) => {
+    if (variant === "warning") {
+      return <Badge className="bg-exp-gold/10 text-exp-gold border-exp-gold/20 hover:bg-exp-gold/10">{stage}</Badge>;
+    }
+    if (variant === "danger") {
+      return <Badge className="bg-exp-red/10 text-exp-red border-exp-red/20 hover:bg-exp-red/10">{stage}</Badge>;
+    }
+    return <span className="text-sm text-muted-foreground">{stage}</span>;
+  };
+
+  const columns: ColumnDef<ListingRow>[] = [
+    { key: "mlsNumber", header: "transactions.mlsNumber", type: "string", sortable: true },
+    {
+      key: "propertyAddress",
+      header: "transactions.propertyAddress",
+      type: "string",
+      sortable: true,
+      render: (_v, row) => (
+        <div className="min-w-0">
+          <p className="text-sm text-foreground truncate">{row.propertyAddress}</p>
+          <p className="text-xs text-muted-foreground truncate">{row.propertyCity}</p>
+        </div>
+      ),
+    },
+    { key: "status", header: "transactions.statusCol", type: "badge", sortable: true, render: (_v, row) => listingStatusBadge(row.status) },
+    { key: "listingAgent", header: "transactions.listingAgent", type: "string", sortable: true },
+    { key: "office", header: "transactions.office", type: "string", sortable: true },
+    { key: "expirationDate", header: "transactions.expirationDate", type: "date", sortable: true },
+    { key: "listingPrice", header: "transactions.listingPrice", type: "currency", sortable: true },
+    { key: "stage", header: "transactions.stage", type: "string", sortable: true, render: (_v, row) => stageBadge(row.stage, row.stageVariant) },
+    {
+      id: "actions",
+      key: "id" as keyof ListingRow,
+      header: "transactions.actions",
+      type: "string",
+      sortable: false,
+      stickyRight: true,
+      render: (_v, row) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9"
+              aria-label={`Open actions for ${row.mlsNumber}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>{t("transactions.viewDetails")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("transactions.editListing")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("transactions.openInSkySlope")}</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ];
+
   const segments = [
     { key: "inProgress", label: t("transactions.inProgress"), value: d.inProgress, color: "hsl(var(--exp-purple))" },
     { key: "closed",     label: t("transactions.closed"),     value: d.closed,     color: "hsl(var(--exp-green))" },
@@ -41,7 +178,20 @@ export default function BusinessTransactions() {
   return (
     <DashboardLayout>
       <div className="space-y-4 pb-20">
-        <UniversalFilterBar title={t("nav.transactions")} />
+        <UniversalFilterBar title={t("nav.transactions")} subtitle={t("transactions.subtitle")}>
+          <Button
+            variant="outline"
+            className="rounded-[51px] gap-2 min-h-[44px]"
+            onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
+          >
+            <ExternalLink className="h-4 w-4" />
+            SkySlope
+          </Button>
+          <Button className="rounded-[51px] gap-2 min-h-[44px] bg-exp-purple hover:bg-exp-purple/90 text-white">
+            <Plus className="h-4 w-4" />
+            {t("transactions.create")}
+          </Button>
+        </UniversalFilterBar>
 
         {/* Active Pipeline Hero — donut + legend */}
         <Card className="relative overflow-hidden bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue p-4 sm:p-6 text-white">
@@ -202,9 +352,53 @@ export default function BusinessTransactions() {
           </div>
         </Card>
 
-        <div className="flex min-h-[40vh] items-center justify-center rounded-2xl border border-dashed border-border bg-card text-sm text-muted-foreground">
-          {t("transactions.placeholder")}
+        {/* Filters: search + status pills */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={t("transactions.searchProperties")}
+            className="h-11 w-full sm:max-w-md rounded-[51px] border border-input bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            aria-label={t("transactions.searchProperties")}
+          />
+          <div className="flex flex-wrap items-center gap-2">
+            {(["all", "active", "pending", "closed"] as StatusFilter[]).map((key) => (
+              <Button
+                key={key}
+                variant={statusFilter === key ? "default" : "outline"}
+                onClick={() => setStatusFilter(key)}
+                className={`rounded-[51px] min-h-[44px] px-4 ${statusFilter === key ? "bg-exp-purple hover:bg-exp-purple/90 text-white" : ""}`}
+              >
+                {t(`transactions.filter.${key}`)}
+              </Button>
+            ))}
+          </div>
         </div>
+
+        {/* Source tabs: Listings / Transactions */}
+        <Tabs value={sourceTab} onValueChange={(v) => setSourceTab(v as SourceTab)}>
+          <TabsList className="h-10 p-1">
+            <TabsTrigger value="listings" className="rounded-[51px] px-3 py-1.5 gap-2">
+              <HomeIcon className="h-4 w-4" />
+              {t("transactions.tabListings")}
+              <Badge variant="secondary" className="ms-1 px-2">{LISTINGS.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="transactions" className="rounded-[51px] px-3 py-1.5 gap-2">
+              <DollarIcon className="h-4 w-4" />
+              {t("transactions.tabTransactions")}
+              <Badge variant="secondary" className="ms-1 px-2">{total}</Badge>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
+        {/* Table */}
+        {/* Table */}
+        <DataTable<ListingRow>
+          data={filteredListings}
+          columns={columns}
+          defaultPageSize={25}
+        />
       </div>
     </DashboardLayout>
   );
