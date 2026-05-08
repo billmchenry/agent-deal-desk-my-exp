@@ -87,16 +87,15 @@ export default function BusinessTransactions() {
                           fx="50%"
                           fy="50%"
                         >
-                          <stop offset="0%" stopColor="#fff" stopOpacity={0.35} />
-                          <stop offset="40%" stopColor={s.color} stopOpacity={1} />
-                          <stop offset="100%" stopColor={s.color} stopOpacity={0.9} />
+                          <stop offset="55%" stopColor={s.color} stopOpacity={1} />
+                          <stop offset="100%" stopColor={s.color} stopOpacity={0.55} />
                         </radialGradient>
                       ))}
                       <filter id="donutShadow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-                        <feOffset dx="0" dy="2" result="offsetblur" />
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                        <feOffset dx="0" dy="4" result="offsetblur" />
                         <feComponentTransfer>
-                          <feFuncA type="linear" slope="0.3" />
+                          <feFuncA type="linear" slope="0.55" />
                         </feComponentTransfer>
                         <feMerge>
                           <feMergeNode />
@@ -104,11 +103,11 @@ export default function BusinessTransactions() {
                         </feMerge>
                       </filter>
                       <radialGradient id="donutInnerShade" cx="50%" cy="50%" r="50%">
-                        <stop offset="70%" stopColor="#000" stopOpacity={0} />
-                        <stop offset="100%" stopColor="#000" stopOpacity={0.2} />
+                        <stop offset="60%" stopColor="hsl(var(--exp-dark-navy))" stopOpacity={0} />
+                        <stop offset="100%" stopColor="#000" stopOpacity={0.45} />
                       </radialGradient>
-                      <radialGradient id="donutHighlight" cx="50%" cy="30%" r="60%">
-                        <stop offset="0%" stopColor="#fff" stopOpacity={0.3} />
+                      <radialGradient id="donutHighlight" cx="50%" cy="35%" r="55%">
+                        <stop offset="0%" stopColor="#fff" stopOpacity={0.18} />
                         <stop offset="70%" stopColor="#fff" stopOpacity={0} />
                       </radialGradient>
                     </defs>
