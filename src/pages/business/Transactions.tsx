@@ -352,17 +352,32 @@ export default function BusinessTransactions() {
           </div>
         </Card>
 
-        {/* Filters: search + status pills */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("transactions.searchProperties")}
-            className="h-11 w-full sm:max-w-md rounded-[51px] border border-input bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            aria-label={t("transactions.searchProperties")}
-          />
-          <div className="flex flex-wrap items-center gap-2">
+        {/* Toolbar: tabs (left) + search + status pills (right) */}
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <Tabs value={sourceTab} onValueChange={(v) => setSourceTab(v as SourceTab)}>
+            <TabsList className="h-10 p-1">
+              <TabsTrigger value="listings" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
+                <HomeIcon className="h-4 w-4" />
+                {t("transactions.tabListings")}
+                <Badge variant="secondary" className="ms-1 px-2 font-normal">{LISTINGS.length}</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="transactions" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
+                <DollarIcon className="h-4 w-4" />
+                {t("transactions.tabTransactions")}
+                <Badge variant="secondary" className="ms-1 px-2 font-normal">{total}</Badge>
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t("transactions.searchProperties")}
+              className="h-11 w-full sm:w-72 rounded-[51px] border border-input bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              aria-label={t("transactions.searchProperties")}
+            />
             {(["all", "active", "pending", "closed"] as StatusFilter[]).map((key) => (
               <Button
                 key={key}
@@ -375,22 +390,6 @@ export default function BusinessTransactions() {
             ))}
           </div>
         </div>
-
-        {/* Source tabs: Listings / Transactions */}
-        <Tabs value={sourceTab} onValueChange={(v) => setSourceTab(v as SourceTab)}>
-          <TabsList className="h-10 p-1">
-            <TabsTrigger value="listings" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
-              <HomeIcon className="h-4 w-4" />
-              {t("transactions.tabListings")}
-              <Badge variant="secondary" className="ms-1 px-2 font-normal">{LISTINGS.length}</Badge>
-            </TabsTrigger>
-            <TabsTrigger value="transactions" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
-              <DollarIcon className="h-4 w-4" />
-              {t("transactions.tabTransactions")}
-              <Badge variant="secondary" className="ms-1 px-2 font-normal">{total}</Badge>
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
 
         {/* Table */}
         {/* Table */}
