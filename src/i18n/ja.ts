@@ -17,6 +17,8 @@ export const ja: Record<string, string> = {
   "nav.organizationTree": "組織ツリー",
   "nav.myRevshareTrends": "収益シェアトレンド",
   "nav.mentorProgram": "メンタープログラム",
+  "nav.transactions": "取引",
+  "transactions.placeholder": "近日公開 — このビューを定義するスクリーンショットを追加してください。",
   "nav.reportMarketplace": "レポートマーケット",
   "nav.tools": "ツール",
   "nav.knowledgeBase": "ナレッジベース",

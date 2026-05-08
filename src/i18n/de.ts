@@ -18,6 +18,8 @@ export const de: Record<string, string> = {
   "nav.organizationTree": "Organisationsbaum",
   "nav.myRevshareTrends": "Meine RevShare-Trends",
   "nav.mentorProgram": "Mentorenprogramm",
+  "nav.transactions": "Transaktionen",
+  "transactions.placeholder": "Demnächst — fügen Sie Screenshots hinzu, um diese Ansicht zu definieren.",
   "nav.reportMarketplace": "Berichtsmarktplatz",
   "nav.tools": "Werkzeuge",
   "nav.knowledgeBase": "Wissensdatenbank",
