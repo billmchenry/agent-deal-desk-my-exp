@@ -1,27 +1,28 @@
-The screenshot shows three rows stacked tightly on the left edge: the search input, the Listings/Transactions tabs (with the DataTable's "Columns" button right under them). It reads as left-heavy because there's a large empty void on the right.
+Replace the three-dot dropdown with a row → side-drawer detail pattern, matching the project's existing Detail Sheet Pattern.
 
-## Proposed layout
+## UX
 
-Consolidate into a single toolbar row above the table, with content distributed across the full width:
-
-```text
-[ Listings (9) | Transactions (3) ]      [ Search… ] [ All ][ Active ][ Pending ][ Closed ] [ Columns ]
-       left cluster                                       right cluster
-```
-
-- **Left cluster:** Listings / Transactions tabs (primary view switcher — belongs first).
-- **Right cluster:** Search input (compact, ~280px), status pills, and the DataTable's Columns control.
-- One row on desktop (`lg:flex-row justify-between`), wraps gracefully on smaller widths.
-- Drop the standalone "Columns" row that currently sits below the tabs by passing the toolbar content into DataTable's existing toolbar slot (or rendering Columns inline next to the pills).
-
-## Why this fixes "heavy on the left"
-
-- Search no longer takes the full row width; it shrinks to the right side where it pairs with the filter pills.
-- Tabs anchor the left, filters/search/columns anchor the right → visual weight is balanced.
-- Removes the third stacked row, tightening vertical rhythm.
+- **Row click** anywhere on a listing opens a right-side `Sheet` drawer (~480px wide on desktop, full-width on mobile, per the Detail Sheet memory).
+- **Actions column** shrinks to a single icon-only `ExternalLink` button → opens SkySlope in a new tab. Tooltip: "Open in SkySlope". `stopPropagation` so it doesn't also open the drawer.
+- **Drawer contents** (`ListingDetailSheet`):
+  - Sticky header: address (h2) + city + status badge, close button.
+  - Property block: MLS#, Listing Price, Expiration Date, Stage badge.
+  - People block: Listing Agent, Office.
+  - Footer (sticky): primary `Edit Listing` button + secondary `Open in SkySlope ↗` button. Both 51px pill, min-h 44px.
+- Hover state on rows (`hover:bg-muted/50 cursor-pointer`) to signal interactivity.
+- Keyboard: rows get `role="button"` + Enter/Space handler; drawer traps focus (Sheet handles this).
 
 ## Files
 
-- `src/pages/business/Transactions.tsx` — restructure the toolbar block (lines ~355–393) into one flex row; verify how `DataTable` exposes its Columns button so it can be co-located (may need a small prop or to render the toolbar above and hide DataTable's internal one).
+- **New:** `src/pages/business/components/ListingDetailSheet.tsx` — controlled `Sheet` with the listing prop and the layout above.
+- **Edit:** `src/pages/business/Transactions.tsx`
+  - Add `selectedListing` state + open handler.
+  - Pass `onRowClick={(row) => setSelectedListing(row)}` to `DataTable`.
+  - Replace the `actions` column render with a single icon button (`ExternalLink`).
+  - Mount `<ListingDetailSheet listing={selectedListing} onClose={() => setSelectedListing(null)} />`.
+  - Drop the now-unused `DropdownMenu*` imports and `MoreVertical`.
+- **Edit:** all 7 i18n files (`en, es, fr-CA, de, ja, zh, ar`) — add `transactions.openInSkySlopeAria` and `transactions.detailsTitle` / drawer field labels. Remove or repurpose `viewDetails` (no longer needed).
 
-No business logic, data, or color changes — purely layout.
+## Out of scope
+
+- No data changes, no DataTable refactor (it already supports `onRowClick`), no business-logic changes.
