@@ -187,7 +187,7 @@ export default function BusinessTransactions() {
             <ExternalLink className="h-4 w-4" />
             SkySlope
           </Button>
-          <Button className="rounded-[51px] gap-2 min-h-[44px] text-white border-0 bg-[linear-gradient(135deg,#7C3AED_0%,#6D28D9_100%)] hover:opacity-90 shadow-[0_4px_14px_-2px_rgba(124,58,237,0.45)]">
+          <Button className="rounded-[51px] gap-2 min-h-[44px] bg-primary text-primary-foreground hover:bg-primary/90">
             <Plus className="h-4 w-4" />
             {t("transactions.create")}
           </Button>
