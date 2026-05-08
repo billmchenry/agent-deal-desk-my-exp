@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   User, Users, DollarSign, FileText, Calendar, GraduationCap,
   Wrench, BookOpen, HelpCircle, Home, LayoutDashboard, Award,
-  ChevronRight, Store, ChevronsLeft, ChevronsRight } from
+  ChevronRight, Store, ChevronsLeft, ChevronsRight, Receipt } from
 "lucide-react";
 import { cn } from "@/lib/utils";
 import { sidebarNavigation, SidebarNavItem } from "@/data/mockData";
@@ -16,7 +16,7 @@ import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
 const iconMap: Record<string, React.ComponentType<{className?: string;}>> = {
   Home, LayoutDashboard, User, Users, DollarSign, FileText,
-  Calendar, GraduationCap, Wrench, BookOpen, HelpCircle, Award, Store
+  Calendar, GraduationCap, Wrench, BookOpen, HelpCircle, Award, Store, Receipt
 };
 
 const NAV_KEYS: Record<string, string> = {
@@ -47,7 +47,8 @@ const NAV_KEYS: Record<string, string> = {
   "Help Center": "nav.helpCenter",
   "Team Reconciliation": "nav.teamReconciliation",
   "Revenue Share Group": "nav.revShareGroup",
-  "Financials": "nav.financials"
+  "Financials": "nav.financials",
+  "Transactions": "nav.transactions"
 };
 
 function isInSection(pathname: string, item: SidebarNavItem): boolean {

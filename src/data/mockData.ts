@@ -520,6 +520,7 @@ export const sidebarNavigation: Record<string, SidebarSection> = {
           { title: "Financials", url: "/revshare/financials" },
         ],
       },
+      { title: "Transactions", icon: "Receipt", url: "/business/transactions" },
       { title: "Mentor Program", icon: "GraduationCap", url: "/mentor" },
     ],
   },
