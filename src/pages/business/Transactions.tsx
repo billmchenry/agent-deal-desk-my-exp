@@ -853,6 +853,66 @@ export default function BusinessTransactions() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Seller Information */}
+                  <div className="rounded-2xl border border-border/60 bg-card p-3.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-semibold text-foreground">Seller Information</h4>
+                        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Optional</span>
+                      </div>
+                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
+                        <Pencil className="h-3 w-3" />
+                        Edit
+                      </Button>
+                    </div>
+                    <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm">
+                      <div>
+                        <p className="text-xs text-muted-foreground">Name</p>
+                        <p className="font-medium text-foreground">Bob Smith</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Email</p>
+                        <p className="font-medium text-foreground truncate">bob.smith@example.com</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Phone</p>
+                        <p className="font-medium text-foreground tabular-nums">(214) 555-5555</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Property details */}
+                  <div className="rounded-2xl border border-border/60 bg-card p-3.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-semibold text-foreground">Property details</h4>
+                        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Optional</span>
+                      </div>
+                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
+                        <Pencil className="h-3 w-3" />
+                        Edit
+                      </Button>
+                    </div>
+                    <div className="mt-3 grid grid-cols-4 gap-x-3 gap-y-2.5 text-sm">
+                      <div>
+                        <p className="text-xs text-muted-foreground">Year Built</p>
+                        <p className="font-medium text-muted-foreground">—</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Property Type ID</p>
+                        <p className="font-medium text-muted-foreground">—</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Property Subtype ID</p>
+                        <p className="font-medium text-muted-foreground">—</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">MLS Number</p>
+                        <p className="font-medium text-muted-foreground">—</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
