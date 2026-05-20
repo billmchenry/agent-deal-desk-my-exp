@@ -9,7 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
-import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X, Loader2, MapPin, User as UserIcon, Calendar as CalendarIcon, CheckCircle2, Pencil, ArrowLeft, Maximize2, History, ZoomIn, ZoomOut, AlertCircle } from "lucide-react";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X, Loader2, MapPin, User as UserIcon, Calendar as CalendarIcon, CheckCircle2, Pencil, ArrowLeft, Maximize2, History, ZoomIn, ZoomOut, AlertCircle, Check } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import {
   DropdownMenu,
@@ -74,6 +75,84 @@ export default function BusinessTransactions() {
   const [isDragging, setIsDragging] = useState(false);
   const [createStage, setCreateStage] = useState<"upload" | "processing" | "complete" | "verification">("upload");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  type CardKey = "office" | "propertyCore" | "listingTerms" | "seller" | "propertyDetails";
+  const [editingCards, setEditingCards] = useState<Record<CardKey, boolean>>({
+    office: false,
+    propertyCore: false,
+    listingTerms: false,
+    seller: false,
+    propertyDetails: false,
+  });
+  const toggleEdit = (key: CardKey) =>
+    setEditingCards((prev) => ({ ...prev, [key]: !prev[key] }));
+  const [verifyValues, setVerifyValues] = useState({
+    office: "Connecticut",
+    checklistType: "",
+    streetNumber: "6096",
+    streetAddress: "Energy Lane",
+    city: "Dallas",
+    state: "TX",
+    zip: "75225",
+    county: "Dallas",
+    listingPrice: "$500,000",
+    startDate: "Feb 13, 2026",
+    expirationDate: "Mar 13, 2026",
+    sellerName: "Bob Smith",
+    sellerEmail: "bob.smith@example.com",
+    sellerPhone: "(214) 555-5555",
+    yearBuilt: "",
+    propertyTypeId: "",
+    propertySubtypeId: "",
+    mlsNumber: "",
+  });
+  const setVerifyField = (key: keyof typeof verifyValues, value: string) =>
+    setVerifyValues((prev) => ({ ...prev, [key]: value }));
+
+  const renderEditToggle = (cardKey: CardKey) => {
+    const isEditing = editingCards[cardKey];
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        className="h-7 gap-1.5 shrink-0"
+        onClick={() => toggleEdit(cardKey)}
+      >
+        {isEditing ? <Check className="h-3 w-3" /> : <Pencil className="h-3 w-3" />}
+        {isEditing ? "Done" : "Edit"}
+      </Button>
+    );
+  };
+
+  const renderField = (
+    label: string,
+    fieldKey: keyof typeof verifyValues,
+    cardKey: CardKey,
+    opts: { placeholder?: string; className?: string; numeric?: boolean } = {},
+  ) => {
+    const { placeholder = "—", className = "", numeric = false } = opts;
+    const value = verifyValues[fieldKey];
+    const isEditing = editingCards[cardKey];
+    return (
+      <div className={className} key={fieldKey}>
+        <p className="text-xs text-muted-foreground mb-1">{label}</p>
+        {isEditing ? (
+          <Input
+            value={value}
+            onChange={(e) => setVerifyField(fieldKey, e.target.value)}
+            className={`h-9 rounded-lg ${numeric ? "tabular-nums" : ""}`}
+            placeholder={placeholder}
+          />
+        ) : (
+          <p
+            className={`font-medium ${value ? "text-foreground" : "text-muted-foreground"} ${numeric ? "tabular-nums" : ""} truncate`}
+          >
+            {value || placeholder}
+          </p>
+        )}
+      </div>
+    );
+  };
 
   const addFiles = (incoming: FileList | File[]) => {
     const arr = Array.from(incoming);
@@ -734,24 +813,15 @@ export default function BusinessTransactions() {
                           <span className="text-xs text-muted-foreground">— Select a checklist type</span>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5 shrink-0">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("office")}
                     </div>
                     <div className="mt-3 flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
                       <AlertCircle className="h-3.5 w-3.5" />
                       Required: These details are not in the agreement.
                     </div>
                     <div className="mt-3 grid grid-cols-1 gap-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Office</p>
-                        <p className="font-medium text-foreground">Connecticut</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Checklist type</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
+                      {renderField("Office", "office", "office")}
+                      {renderField("Checklist type", "checklistType", "office", { placeholder: "—" })}
                     </div>
                   </div>
 
@@ -762,36 +832,15 @@ export default function BusinessTransactions() {
                         <h4 className="font-semibold text-foreground">Property Core</h4>
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">Required</span>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("propertyCore")}
                     </div>
                     <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Street Number</p>
-                        <p className="font-medium text-foreground">6096</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Street Address</p>
-                        <p className="font-medium text-foreground">Energy Lane</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">City</p>
-                        <p className="font-medium text-foreground">Dallas</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">State</p>
-                        <p className="font-medium text-foreground">TX</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">ZIP</p>
-                        <p className="font-medium text-foreground tabular-nums">75225</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">County</p>
-                        <p className="font-medium text-foreground">Dallas</p>
-                      </div>
+                      {renderField("Street Number", "streetNumber", "propertyCore", { numeric: true })}
+                      {renderField("Street Address", "streetAddress", "propertyCore")}
+                      {renderField("City", "city", "propertyCore")}
+                      {renderField("State", "state", "propertyCore")}
+                      {renderField("ZIP", "zip", "propertyCore", { numeric: true })}
+                      {renderField("County", "county", "propertyCore")}
                     </div>
                   </div>
 
@@ -802,24 +851,12 @@ export default function BusinessTransactions() {
                         <h4 className="font-semibold text-foreground">Listing Terms</h4>
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">Required</span>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("listingTerms")}
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Listing Price</p>
-                        <p className="font-medium text-foreground tabular-nums">$500,000</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Start Date</p>
-                        <p className="font-medium text-foreground">Feb 13, 2026</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Expiration Date</p>
-                        <p className="font-medium text-foreground">Mar 13, 2026</p>
-                      </div>
+                      {renderField("Listing Price", "listingPrice", "listingTerms", { numeric: true })}
+                      {renderField("Start Date", "startDate", "listingTerms")}
+                      {renderField("Expiration Date", "expirationDate", "listingTerms")}
                     </div>
                   </div>
 
@@ -830,24 +867,12 @@ export default function BusinessTransactions() {
                         <h4 className="font-semibold text-foreground">Seller Information</h4>
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Optional</span>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("seller")}
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Name</p>
-                        <p className="font-medium text-foreground">Bob Smith</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Email</p>
-                        <p className="font-medium text-foreground truncate">bob.smith@example.com</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Phone</p>
-                        <p className="font-medium text-foreground tabular-nums">(214) 555-5555</p>
-                      </div>
+                      {renderField("Name", "sellerName", "seller")}
+                      {renderField("Email", "sellerEmail", "seller")}
+                      {renderField("Phone", "sellerPhone", "seller", { numeric: true })}
                     </div>
                   </div>
 
@@ -858,28 +883,13 @@ export default function BusinessTransactions() {
                         <h4 className="font-semibold text-foreground">Property details</h4>
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Optional</span>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("propertyDetails")}
                     </div>
                     <div className="mt-3 grid grid-cols-4 gap-x-3 gap-y-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Year Built</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Property Type ID</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Property Subtype ID</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">MLS Number</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
+                      {renderField("Year Built", "yearBuilt", "propertyDetails", { numeric: true })}
+                      {renderField("Property Type ID", "propertyTypeId", "propertyDetails")}
+                      {renderField("Property Subtype ID", "propertySubtypeId", "propertyDetails")}
+                      {renderField("MLS Number", "mlsNumber", "propertyDetails")}
                     </div>
                   </div>
                 </div>
