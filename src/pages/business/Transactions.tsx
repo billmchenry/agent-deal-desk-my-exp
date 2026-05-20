@@ -219,6 +219,18 @@ export default function BusinessTransactions() {
                 <span className="font-medium">Create Listing</span>
               </DropdownMenuItem>
               <DropdownMenuItem
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setCreateOpen(true);
+                }}
+                className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <HomeIcon className="h-4 w-4" />
+                </span>
+                <span className="font-medium">Create Listing</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
                 onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
                 className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
               >
