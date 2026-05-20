@@ -758,17 +758,27 @@ export default function BusinessTransactions() {
           )}
 
           {/* VERIFICATION STAGE */}
-          {createStage === "verification" && (
+          {createStage === "verification" && (() => {
+            const officeIncomplete =
+              !verifyValues.office.trim() || !verifyValues.checklistType.trim();
+            return (
             <div className="flex flex-col max-h-[calc(92vh-96px)]">
               {/* Status banner */}
               <div className="mx-5 mt-4 mb-3 rounded-2xl border border-border/60 bg-muted/40 px-3.5 py-2.5">
                 <p className="text-xs text-foreground/80 leading-relaxed">
                   Everything from your PDF has been extracted. Click <span className="font-semibold">Edit</span> on Office & Checklist to select an office and checklist type, review the details below, fill in any other required fields, and click "Create Listing" to finish.
                 </p>
-                <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
-                  Still needed: Office & Checklist
-                </div>
+                {officeIncomplete ? (
+                  <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+                    Still needed: Office & Checklist
+                  </div>
+                ) : (
+                  <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                    <Check className="h-3 w-3" />
+                    All required fields complete
+                  </div>
+                )}
               </div>
 
               {/* Body: PDF preview + extracted fields */}
