@@ -206,9 +206,7 @@ export default function BusinessTransactions() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <HomeIcon className="h-4 w-4" />
                 </span>
-                <span className="flex flex-col">
                 <span className="font-medium">Create Listing</span>
-                </span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
@@ -217,10 +215,7 @@ export default function BusinessTransactions() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <DollarIcon className="h-4 w-4" />
                 </span>
-                <span className="flex flex-col">
-                  <span className="font-medium">Create listing via form</span>
-                  <span className="text-xs text-muted-foreground">Use a guided intake form</span>
-                </span>
+                <span className="font-medium">Create listing via form</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
