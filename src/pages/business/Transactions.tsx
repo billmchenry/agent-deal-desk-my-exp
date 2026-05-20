@@ -194,14 +194,34 @@ export default function BusinessTransactions() {
                 {t("transactions.create")}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}>
-                <HomeIcon className="h-4 w-4" />
-                Create Listing
+            <DropdownMenuContent
+              align="end"
+              sideOffset={8}
+              className="w-64 rounded-2xl border-border/60 bg-popover/95 backdrop-blur-sm shadow-lg p-2"
+            >
+              <DropdownMenuItem
+                onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
+                className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <HomeIcon className="h-4 w-4" />
+                </span>
+                <span className="flex flex-col">
+                  <span className="font-medium">Create Listing</span>
+                  <span className="text-xs text-muted-foreground">Start a new listing in SkySlope</span>
+                </span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}>
-                <HomeIcon className="h-4 w-4" />
-                Create listing via form
+              <DropdownMenuItem
+                onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
+                className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <DollarIcon className="h-4 w-4" />
+                </span>
+                <span className="flex flex-col">
+                  <span className="font-medium">Create listing via form</span>
+                  <span className="text-xs text-muted-foreground">Use a guided intake form</span>
+                </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
