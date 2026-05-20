@@ -813,24 +813,15 @@ export default function BusinessTransactions() {
                           <span className="text-xs text-muted-foreground">— Select a checklist type</span>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5 shrink-0">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("office")}
                     </div>
                     <div className="mt-3 flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
                       <AlertCircle className="h-3.5 w-3.5" />
                       Required: These details are not in the agreement.
                     </div>
                     <div className="mt-3 grid grid-cols-1 gap-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Office</p>
-                        <p className="font-medium text-foreground">Connecticut</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Checklist type</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
+                      {renderField("Office", "office", "office")}
+                      {renderField("Checklist type", "checklistType", "office", { placeholder: "—" })}
                     </div>
                   </div>
 
@@ -841,36 +832,15 @@ export default function BusinessTransactions() {
                         <h4 className="font-semibold text-foreground">Property Core</h4>
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">Required</span>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("propertyCore")}
                     </div>
                     <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Street Number</p>
-                        <p className="font-medium text-foreground">6096</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Street Address</p>
-                        <p className="font-medium text-foreground">Energy Lane</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">City</p>
-                        <p className="font-medium text-foreground">Dallas</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">State</p>
-                        <p className="font-medium text-foreground">TX</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">ZIP</p>
-                        <p className="font-medium text-foreground tabular-nums">75225</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">County</p>
-                        <p className="font-medium text-foreground">Dallas</p>
-                      </div>
+                      {renderField("Street Number", "streetNumber", "propertyCore", { numeric: true })}
+                      {renderField("Street Address", "streetAddress", "propertyCore")}
+                      {renderField("City", "city", "propertyCore")}
+                      {renderField("State", "state", "propertyCore")}
+                      {renderField("ZIP", "zip", "propertyCore", { numeric: true })}
+                      {renderField("County", "county", "propertyCore")}
                     </div>
                   </div>
 
@@ -881,24 +851,12 @@ export default function BusinessTransactions() {
                         <h4 className="font-semibold text-foreground">Listing Terms</h4>
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">Required</span>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("listingTerms")}
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Listing Price</p>
-                        <p className="font-medium text-foreground tabular-nums">$500,000</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Start Date</p>
-                        <p className="font-medium text-foreground">Feb 13, 2026</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Expiration Date</p>
-                        <p className="font-medium text-foreground">Mar 13, 2026</p>
-                      </div>
+                      {renderField("Listing Price", "listingPrice", "listingTerms", { numeric: true })}
+                      {renderField("Start Date", "startDate", "listingTerms")}
+                      {renderField("Expiration Date", "expirationDate", "listingTerms")}
                     </div>
                   </div>
 
@@ -909,24 +867,12 @@ export default function BusinessTransactions() {
                         <h4 className="font-semibold text-foreground">Seller Information</h4>
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Optional</span>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("seller")}
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Name</p>
-                        <p className="font-medium text-foreground">Bob Smith</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Email</p>
-                        <p className="font-medium text-foreground truncate">bob.smith@example.com</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Phone</p>
-                        <p className="font-medium text-foreground tabular-nums">(214) 555-5555</p>
-                      </div>
+                      {renderField("Name", "sellerName", "seller")}
+                      {renderField("Email", "sellerEmail", "seller")}
+                      {renderField("Phone", "sellerPhone", "seller", { numeric: true })}
                     </div>
                   </div>
 
@@ -937,28 +883,13 @@ export default function BusinessTransactions() {
                         <h4 className="font-semibold text-foreground">Property details</h4>
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Optional</span>
                       </div>
-                      <Button variant="outline" size="sm" className="h-7 gap-1.5">
-                        <Pencil className="h-3 w-3" />
-                        Edit
-                      </Button>
+                      {renderEditToggle("propertyDetails")}
                     </div>
                     <div className="mt-3 grid grid-cols-4 gap-x-3 gap-y-2.5 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Year Built</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Property Type ID</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Property Subtype ID</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">MLS Number</p>
-                        <p className="font-medium text-muted-foreground">—</p>
-                      </div>
+                      {renderField("Year Built", "yearBuilt", "propertyDetails", { numeric: true })}
+                      {renderField("Property Type ID", "propertyTypeId", "propertyDetails")}
+                      {renderField("Property Subtype ID", "propertySubtypeId", "propertyDetails")}
+                      {renderField("MLS Number", "mlsNumber", "propertyDetails")}
                     </div>
                   </div>
                 </div>
