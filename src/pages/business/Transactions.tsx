@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar } from "@/components/filters";
 import { useDocumentTitle } from "@/hooks/use-document-title";
@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
-import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon } from "lucide-react";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import {
   DropdownMenu,
@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 interface ListingRow {
   id: string;
@@ -68,6 +69,15 @@ export default function BusinessTransactions() {
   const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [search, setSearch] = useState("");
+  const [createOpen, setCreateOpen] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const addFiles = (incoming: FileList | File[]) => {
+    const arr = Array.from(incoming);
+    if (arr.length) setFiles((prev) => [...prev, ...arr]);
+  };
 
   const filteredListings = useMemo(() => {
     return LISTINGS.filter((row) => {
@@ -200,7 +210,10 @@ export default function BusinessTransactions() {
               className="w-64 rounded-2xl border-border/60 bg-popover/95 backdrop-blur-sm shadow-lg p-2"
             >
               <DropdownMenuItem
-                onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setCreateOpen(true);
+                }}
                 className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
               >
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -427,6 +440,118 @@ export default function BusinessTransactions() {
           defaultPageSize={25}
         />
       </div>
+
+      <Dialog
+        open={createOpen}
+        onOpenChange={(o) => {
+          setCreateOpen(o);
+          if (!o) {
+            setFiles([]);
+            setIsDragging(false);
+          }
+        }}
+      >
+        <DialogContent className="sm:max-w-md rounded-2xl border-border/60 p-0 overflow-hidden">
+          <div className="bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue px-5 py-4 text-white">
+            <DialogHeader className="space-y-1 text-start">
+              <DialogTitle className="flex items-center gap-2 text-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
+                  <Sparkles className="h-4 w-4" />
+                </span>
+                Create Listing
+              </DialogTitle>
+              <DialogDescription className="text-white/75">
+                Drop your Listing Agreement, disclosures, or any related docs — Mira will sort and process them automatically.
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+
+          <div className="p-5 space-y-4">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragging(true);
+              }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+                if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
+              }}
+              className={`w-full rounded-2xl border-2 border-dashed transition-colors px-6 py-8 flex flex-col items-center justify-center gap-3 text-center ${
+                isDragging
+                  ? "border-primary bg-primary/5"
+                  : "border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/40"
+              }`}
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <UploadCloud className="h-6 w-6" />
+              </span>
+              <span className="font-medium text-foreground">Drop Documents</span>
+              <span className="text-xs text-muted-foreground">
+                Drop multiple PDFs or click to browse
+              </span>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".pdf,.doc,.docx,image/*"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files) addFiles(e.target.files);
+                  e.target.value = "";
+                }}
+              />
+            </button>
+
+            {files.length > 0 && (
+              <ul className="space-y-2 max-h-40 overflow-y-auto">
+                {files.map((f, i) => (
+                  <li
+                    key={`${f.name}-${i}`}
+                    className="flex items-center gap-3 rounded-xl border border-border/60 bg-card px-3 py-2"
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+                      <FileText className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium truncate">{f.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(f.size / 1024).toFixed(1)} KB
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0"
+                      onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+                      aria-label={`Remove ${f.name}`}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="flex items-center justify-end gap-2 pt-1">
+              <Button variant="ghost" onClick={() => setCreateOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                disabled={files.length === 0}
+                onClick={() => setCreateOpen(false)}
+                className="gap-2"
+              >
+                <Sparkles className="h-4 w-4" />
+                Process with Mira
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
