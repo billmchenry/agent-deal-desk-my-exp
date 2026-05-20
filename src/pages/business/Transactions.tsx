@@ -187,10 +187,24 @@ export default function BusinessTransactions() {
             <ExternalLink className="h-4 w-4" />
             SkySlope
           </Button>
-          <Button className="rounded-[51px] gap-2 min-h-[44px] bg-primary text-primary-foreground hover:bg-primary/90">
-            <Plus className="h-4 w-4" />
-            {t("transactions.create")}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="rounded-[51px] gap-2 min-h-[44px] bg-primary text-primary-foreground hover:bg-primary/90">
+                <Plus className="h-4 w-4" />
+                {t("transactions.create")}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}>
+                <HomeIcon className="h-4 w-4" />
+                Create Listing
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}>
+                <HomeIcon className="h-4 w-4" />
+                Create listing via form
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </UniversalFilterBar>
 
         {/* Active Pipeline Hero — donut + legend */}
