@@ -454,14 +454,28 @@ export default function BusinessTransactions() {
         }}
       >
         <DialogContent className={`${createStage === "verification" ? "sm:max-w-[1100px] max-h-[92vh]" : "sm:max-w-md"} rounded-2xl border-border/60 p-0 overflow-hidden`}>
-          {createStage !== "verification" && (
           <div className="bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue px-5 py-4 text-white">
             <DialogHeader className="space-y-1 text-start">
               <DialogTitle className="flex items-center gap-2 text-white">
+                {createStage === "verification" && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 -ms-1 text-white hover:bg-white/15 hover:text-white"
+                    aria-label="Back"
+                    onClick={() => setCreateStage("complete")}
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                )}
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
                   <Sparkles className="h-4 w-4" />
                 </span>
-                {createStage === "complete" ? "Extraction Complete" : "Create Listing"}
+                {createStage === "complete"
+                  ? "Extraction Complete"
+                  : createStage === "verification"
+                    ? "Listing Verification"
+                    : "Create Listing"}
               </DialogTitle>
               <DialogDescription className="text-white/75">
                 {createStage === "upload" &&
@@ -470,10 +484,11 @@ export default function BusinessTransactions() {
                   "Mira is reading your documents and extracting listing details. This usually takes a few seconds."}
                 {createStage === "complete" &&
                   "Here's what Mira extracted from your PDF. Review the details and finish your listing."}
+                {createStage === "verification" &&
+                  "Review extracted data from the Listing Agreement and complete any required details."}
               </DialogDescription>
             </DialogHeader>
           </div>
-          )}
 
           {/* UPLOAD STAGE */}
           {createStage === "upload" && (
