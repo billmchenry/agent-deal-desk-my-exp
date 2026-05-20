@@ -532,7 +532,7 @@ export default function BusinessTransactions() {
           }
         }}
       >
-        <DialogContent className={`${createStage === "verification" ? "sm:max-w-[1100px] max-h-[92vh]" : "sm:max-w-md"} rounded-2xl border-border/60 p-0 overflow-hidden`}>
+        <DialogContent className={`${createStage === "verification" ? "sm:max-w-[1280px] max-h-[92vh]" : "sm:max-w-md"} rounded-2xl border-border/60 p-0 overflow-hidden`}>
           <div className="bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue px-5 py-4 text-white">
             <DialogHeader className="space-y-1 text-start">
               <DialogTitle className="flex items-center gap-2 text-white">
@@ -759,172 +759,215 @@ export default function BusinessTransactions() {
 
           {/* VERIFICATION STAGE */}
           {createStage === "verification" && (() => {
-            const officeIncomplete =
-              !verifyValues.office.trim() || !verifyValues.checklistType.trim();
+            const sections: { id: CardKey; label: string; required: boolean; incomplete: boolean }[] = [
+              {
+                id: "office",
+                label: "Office & Checklist",
+                required: true,
+                incomplete: !verifyValues.office.trim() || !verifyValues.checklistType.trim(),
+              },
+              { id: "propertyCore", label: "Property Core", required: true, incomplete: false },
+              { id: "listingTerms", label: "Listing Terms", required: true, incomplete: false },
+              { id: "seller", label: "Seller Information", required: false, incomplete: false },
+              { id: "propertyDetails", label: "Property details", required: false, incomplete: false },
+            ];
+            const incompleteCount = sections.filter((s) => s.required && s.incomplete).length;
+            const canCreate = incompleteCount === 0;
+            const scrollTo = (id: CardKey) => {
+              document.getElementById(`verify-card-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+            };
             return (
-            <div className="flex flex-col max-h-[calc(92vh-96px)]">
-              {/* Status banner */}
-              <div className="mx-5 mt-4 mb-3 rounded-2xl border border-border/60 bg-muted/40 px-3.5 py-2.5">
-                <p className="text-xs text-foreground/80 leading-relaxed">
-                  Everything from your PDF has been extracted. Click <span className="font-semibold">Edit</span> on Office & Checklist to select an office and checklist type, review the details below, fill in any other required fields, and click "Create Listing" to finish.
-                </p>
-                {officeIncomplete ? (
-                  <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
-                    Still needed: Office & Checklist
-                  </div>
-                ) : (
-                  <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                    <Check className="h-3 w-3" />
-                    All required fields complete
-                  </div>
-                )}
-              </div>
+              <div className="flex flex-col max-h-[calc(92vh-96px)]">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 overflow-hidden min-h-[520px]">
+                  {/* PDF Viewer */}
+                  <section className="flex flex-col border-r border-border/60 bg-muted/30 overflow-hidden">
+                    <div className="shrink-0 flex items-center justify-between gap-2 px-5 py-3 border-b border-border/60 bg-card">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                        <span>Testing.pdf</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Zoom out">
+                          <ZoomOut className="h-4 w-4" />
+                        </Button>
+                        <span className="tabular-nums font-medium tracking-wider uppercase">100%</span>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Zoom in">
+                          <ZoomIn className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex-1 overflow-y-auto p-6 flex justify-center bg-foreground/[0.04] dark:bg-background/40">
+                      <div className="w-full max-w-[520px] aspect-[1/1.35] bg-card rounded-md border border-border/60 shadow-lg p-10 flex flex-col items-center justify-center text-center gap-3">
+                        <h3 className="text-xl font-bold text-foreground tracking-tight">RESIDENTIAL LISTING AGREEMENT</h3>
+                        <p className="text-sm font-medium text-muted-foreground">Exclusive Right to Sell</p>
+                        <div className="w-3/4 h-px bg-border/60 my-2" />
+                        <p className="text-sm italic text-muted-foreground">Document preview not available.</p>
+                        <p className="text-xs text-muted-foreground">Upload a PDF to view the actual document.</p>
+                      </div>
+                    </div>
+                  </section>
 
-              {/* Body: PDF preview + extracted fields */}
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_360px] gap-3 px-5 pb-3 overflow-y-auto">
-                {/* PDF preview */}
-                <div className="rounded-2xl border border-border/60 bg-card flex flex-col min-h-[420px]">
-                  <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-border/60">
-                    <div className="flex items-center gap-2 text-sm font-medium">
-                      <FileText className="h-4 w-4 text-muted-foreground" />
-                      <span>Testing.pdf</span>
+                  {/* Extraction details */}
+                  <section className="relative flex flex-col overflow-hidden bg-background">
+                    <div className="absolute start-2 top-6 bottom-6 w-8 hidden md:flex flex-col items-center gap-5 z-10 py-2">
+                      {sections.map((s) => {
+                        const active = s.required && s.incomplete;
+                        return (
+                          <button
+                            key={s.id}
+                            type="button"
+                            onClick={() => scrollTo(s.id)}
+                            aria-label={`Jump to ${s.label}`}
+                            className="group flex items-center justify-center min-h-[44px] min-w-[44px]"
+                          >
+                            <span
+                              className={`h-2 w-2 rounded-full transition-all ${
+                                active
+                                  ? "bg-amber-500 ring-4 ring-amber-500/15"
+                                  : "bg-muted-foreground/30 group-hover:bg-muted-foreground/60"
+                              }`}
+                            />
+                          </button>
+                        );
+                      })}
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Button variant="ghost" size="icon" className="h-7 w-7" aria-label="Zoom out">
-                        <ZoomOut className="h-3.5 w-3.5" />
-                      </Button>
-                      <span className="tabular-nums">100%</span>
-                      <Button variant="ghost" size="icon" className="h-7 w-7" aria-label="Zoom in">
-                        <ZoomIn className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="flex-1 p-6 bg-muted/20">
-                    <div className="mx-auto max-w-md bg-card rounded-lg border border-border/60 shadow-sm p-6">
-                      <h3 className="text-center font-bold text-foreground">RESIDENTIAL LISTING AGREEMENT</h3>
-                      <p className="text-center text-sm text-primary mt-1">Exclusive Right to Sell</p>
-                      <hr className="my-4 border-border/60" />
-                      <p className="text-sm text-primary">Document preview not available.</p>
-                      <p className="text-sm text-primary mt-1">Upload a PDF to view the actual document.</p>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Extracted fields */}
-                <div className="space-y-3">
-                  {/* Office & Checklist */}
-                  <div className={`rounded-2xl border p-3.5 ${officeIncomplete ? "border-amber-400/40 bg-amber-50/40 dark:bg-amber-500/5" : "border-border/60 bg-card"}`}>
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="font-semibold text-foreground">Office & Checklist</h4>
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">Required</span>
-                          {officeIncomplete && (
-                            <span className="text-xs text-muted-foreground">— Select a checklist type</span>
-                          )}
+                    <div className="flex-1 overflow-y-auto ps-12 pe-6 py-6 space-y-5">
+                      {(() => {
+                        const incomplete = sections[0].incomplete;
+                        return (
+                          <div
+                            id="verify-card-office"
+                            className={`rounded-2xl p-5 transition-colors ${
+                              incomplete
+                                ? "border-2 border-amber-400/60 bg-amber-50/60 dark:bg-amber-500/5"
+                                : "border border-border/60 bg-card"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-3 mb-3">
+                              <div>
+                                <span className="inline-block bg-amber-200/80 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                                  Required
+                                </span>
+                                <h4 className="text-base font-bold text-foreground">Office & Checklist</h4>
+                              </div>
+                              {renderEditToggle("office")}
+                            </div>
+                            {incomplete && (
+                              <div className="flex items-start gap-2 bg-amber-100/60 dark:bg-amber-500/10 p-3 rounded-lg border border-amber-200/80 dark:border-amber-500/20 mb-4">
+                                <AlertCircle className="h-4 w-4 text-amber-700 dark:text-amber-400 mt-0.5 shrink-0" />
+                                <p className="text-xs font-medium text-amber-800 dark:text-amber-200 leading-snug">
+                                  Required: These details were not found in the document. Please select manually.
+                                </p>
+                              </div>
+                            )}
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                              {renderField("Office", "office", "office")}
+                              {renderField("Checklist type", "checklistType", "office", { placeholder: "Not selected" })}
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      <div id="verify-card-propertyCore" className="rounded-2xl border border-border/60 bg-card p-5">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                              Required
+                            </span>
+                            <h4 className="text-base font-bold text-foreground">Property Core</h4>
+                          </div>
+                          {renderEditToggle("propertyCore")}
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                          {renderField("Street Number", "streetNumber", "propertyCore", { numeric: true })}
+                          {renderField("Street Address", "streetAddress", "propertyCore")}
+                          {renderField("City", "city", "propertyCore")}
+                          {renderField("State", "state", "propertyCore")}
+                          {renderField("ZIP", "zip", "propertyCore", { numeric: true })}
+                          {renderField("County", "county", "propertyCore")}
                         </div>
                       </div>
-                      {renderEditToggle("office")}
-                    </div>
-                    {officeIncomplete && (
-                      <div className="mt-3 flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
-                        <AlertCircle className="h-3.5 w-3.5" />
-                        Required: These details are not in the agreement.
-                      </div>
-                    )}
-                    <div className="mt-3 grid grid-cols-1 gap-2.5 text-sm">
-                      {renderField("Office", "office", "office")}
-                      {renderField("Checklist type", "checklistType", "office", { placeholder: "—" })}
-                    </div>
-                  </div>
 
-                  {/* Property Core */}
-                  <div className="rounded-2xl border border-border/60 bg-card p-3.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-foreground">Property Core</h4>
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">Required</span>
+                      <div id="verify-card-listingTerms" className="rounded-2xl border border-border/60 bg-card p-5">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                              Required
+                            </span>
+                            <h4 className="text-base font-bold text-foreground">Listing Terms</h4>
+                          </div>
+                          {renderEditToggle("listingTerms")}
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                          {renderField("Listing Price", "listingPrice", "listingTerms", { numeric: true })}
+                          {renderField("Start Date", "startDate", "listingTerms")}
+                          {renderField("Expiration Date", "expirationDate", "listingTerms")}
+                        </div>
                       </div>
-                      {renderEditToggle("propertyCore")}
-                    </div>
-                    <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2.5 text-sm">
-                      {renderField("Street Number", "streetNumber", "propertyCore", { numeric: true })}
-                      {renderField("Street Address", "streetAddress", "propertyCore")}
-                      {renderField("City", "city", "propertyCore")}
-                      {renderField("State", "state", "propertyCore")}
-                      {renderField("ZIP", "zip", "propertyCore", { numeric: true })}
-                      {renderField("County", "county", "propertyCore")}
-                    </div>
-                  </div>
 
-                  {/* Listing Terms */}
-                  <div className="rounded-2xl border border-border/60 bg-card p-3.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-foreground">Listing Terms</h4>
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">Required</span>
+                      <div id="verify-card-seller" className="rounded-2xl border border-border/60 bg-card p-5">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span className="inline-block bg-muted text-muted-foreground text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                              Optional
+                            </span>
+                            <h4 className="text-base font-bold text-foreground">Seller Information</h4>
+                          </div>
+                          {renderEditToggle("seller")}
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                          {renderField("Name", "sellerName", "seller")}
+                          {renderField("Email", "sellerEmail", "seller")}
+                          {renderField("Phone", "sellerPhone", "seller", { numeric: true })}
+                        </div>
                       </div>
-                      {renderEditToggle("listingTerms")}
-                    </div>
-                    <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm">
-                      {renderField("Listing Price", "listingPrice", "listingTerms", { numeric: true })}
-                      {renderField("Start Date", "startDate", "listingTerms")}
-                      {renderField("Expiration Date", "expirationDate", "listingTerms")}
-                    </div>
-                  </div>
 
-                  {/* Seller Information */}
-                  <div className="rounded-2xl border border-border/60 bg-card p-3.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-foreground">Seller Information</h4>
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Optional</span>
+                      <div id="verify-card-propertyDetails" className="rounded-2xl border border-border/60 bg-card p-5">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span className="inline-block bg-muted text-muted-foreground text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                              Optional
+                            </span>
+                            <h4 className="text-base font-bold text-foreground">Property details</h4>
+                          </div>
+                          {renderEditToggle("propertyDetails")}
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                          {renderField("Year Built", "yearBuilt", "propertyDetails", { numeric: true })}
+                          {renderField("Property Type ID", "propertyTypeId", "propertyDetails")}
+                          {renderField("Property Subtype ID", "propertySubtypeId", "propertyDetails")}
+                          {renderField("MLS Number", "mlsNumber", "propertyDetails")}
+                        </div>
                       </div>
-                      {renderEditToggle("seller")}
                     </div>
-                    <div className="mt-3 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm">
-                      {renderField("Name", "sellerName", "seller")}
-                      {renderField("Email", "sellerEmail", "seller")}
-                      {renderField("Phone", "sellerPhone", "seller", { numeric: true })}
-                    </div>
-                  </div>
+                  </section>
+                </div>
 
-                  {/* Property details */}
-                  <div className="rounded-2xl border border-border/60 bg-card p-3.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-foreground">Property details</h4>
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground bg-muted px-1.5 py-0.5 rounded">Optional</span>
-                      </div>
-                      {renderEditToggle("propertyDetails")}
+                {/* Footer */}
+                <div className="shrink-0 flex items-center justify-between gap-3 px-6 py-4 border-t border-border/60 bg-card">
+                  {canCreate ? (
+                    <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                      <Check className="h-4 w-4" />
+                      All required fields complete
                     </div>
-                    <div className="mt-3 grid grid-cols-4 gap-x-3 gap-y-2.5 text-sm">
-                      {renderField("Year Built", "yearBuilt", "propertyDetails", { numeric: true })}
-                      {renderField("Property Type ID", "propertyTypeId", "propertyDetails")}
-                      {renderField("Property Subtype ID", "propertySubtypeId", "propertyDetails")}
-                      {renderField("MLS Number", "mlsNumber", "propertyDetails")}
+                  ) : (
+                    <div className="flex items-center gap-2 text-sm font-semibold text-amber-600 dark:text-amber-400">
+                      <AlertCircle className="h-4 w-4" />
+                      <span className="tabular-nums">{incompleteCount}</span>{" "}
+                      {incompleteCount === 1 ? "section" : "sections"} remaining
                     </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" onClick={() => setCreateOpen(false)}>
+                      Save as Draft
+                    </Button>
+                    <Button onClick={() => setCreateOpen(false)} disabled={!canCreate}>
+                      Create Listing
+                    </Button>
                   </div>
                 </div>
               </div>
-
-              {/* Footer */}
-              <div className="flex items-center justify-between gap-3 px-5 py-3 border-t border-border/60 bg-card">
-                <div className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
-                  <AlertCircle className="h-3.5 w-3.5" />
-                  Finish required fields to create listing.
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" onClick={() => setCreateOpen(false)}>
-                    Save as Draft
-                  </Button>
-                  <Button onClick={() => setCreateOpen(false)}>
-                    Create Listing
-                  </Button>
-                </div>
-              </div>
-            </div>
             );
           })()}
         </DialogContent>
