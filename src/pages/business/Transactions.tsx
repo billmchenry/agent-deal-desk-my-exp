@@ -109,7 +109,7 @@ export default function BusinessTransactions() {
   const setVerifyField = (key: keyof typeof verifyValues, value: string) =>
     setVerifyValues((prev) => ({ ...prev, [key]: value }));
 
-  const EditToggleButton = ({ cardKey }: { cardKey: CardKey }) => {
+  const renderEditToggle = (cardKey: CardKey) => {
     const isEditing = editingCards[cardKey];
     return (
       <Button
@@ -124,25 +124,17 @@ export default function BusinessTransactions() {
     );
   };
 
-  const Field = ({
-    label,
-    fieldKey,
-    cardKey,
-    placeholder = "—",
-    className = "",
-    numeric = false,
-  }: {
-    label: string;
-    fieldKey: keyof typeof verifyValues;
-    cardKey: CardKey;
-    placeholder?: string;
-    className?: string;
-    numeric?: boolean;
-  }) => {
+  const renderField = (
+    label: string,
+    fieldKey: keyof typeof verifyValues,
+    cardKey: CardKey,
+    opts: { placeholder?: string; className?: string; numeric?: boolean } = {},
+  ) => {
+    const { placeholder = "—", className = "", numeric = false } = opts;
     const value = verifyValues[fieldKey];
     const isEditing = editingCards[cardKey];
     return (
-      <div className={className}>
+      <div className={className} key={fieldKey}>
         <p className="text-xs text-muted-foreground mb-1">{label}</p>
         {isEditing ? (
           <Input
