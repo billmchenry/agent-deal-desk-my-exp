@@ -914,7 +914,6 @@ export default function BusinessTransactions() {
                     </div>
                   </div>
                 </div>
-                </div>
               </div>
 
               {/* Footer */}
