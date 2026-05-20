@@ -76,6 +76,92 @@ export default function BusinessTransactions() {
   const [createStage, setCreateStage] = useState<"upload" | "processing" | "complete" | "verification">("upload");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  type CardKey = "office" | "propertyCore" | "listingTerms" | "seller" | "propertyDetails";
+  const [editingCards, setEditingCards] = useState<Record<CardKey, boolean>>({
+    office: false,
+    propertyCore: false,
+    listingTerms: false,
+    seller: false,
+    propertyDetails: false,
+  });
+  const toggleEdit = (key: CardKey) =>
+    setEditingCards((prev) => ({ ...prev, [key]: !prev[key] }));
+  const [verifyValues, setVerifyValues] = useState({
+    office: "Connecticut",
+    checklistType: "",
+    streetNumber: "6096",
+    streetAddress: "Energy Lane",
+    city: "Dallas",
+    state: "TX",
+    zip: "75225",
+    county: "Dallas",
+    listingPrice: "$500,000",
+    startDate: "Feb 13, 2026",
+    expirationDate: "Mar 13, 2026",
+    sellerName: "Bob Smith",
+    sellerEmail: "bob.smith@example.com",
+    sellerPhone: "(214) 555-5555",
+    yearBuilt: "",
+    propertyTypeId: "",
+    propertySubtypeId: "",
+    mlsNumber: "",
+  });
+  const setVerifyField = (key: keyof typeof verifyValues, value: string) =>
+    setVerifyValues((prev) => ({ ...prev, [key]: value }));
+
+  const EditToggleButton = ({ cardKey }: { cardKey: CardKey }) => {
+    const isEditing = editingCards[cardKey];
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        className="h-7 gap-1.5 shrink-0"
+        onClick={() => toggleEdit(cardKey)}
+      >
+        {isEditing ? <Check className="h-3 w-3" /> : <Pencil className="h-3 w-3" />}
+        {isEditing ? "Done" : "Edit"}
+      </Button>
+    );
+  };
+
+  const Field = ({
+    label,
+    fieldKey,
+    cardKey,
+    placeholder = "—",
+    className = "",
+    numeric = false,
+  }: {
+    label: string;
+    fieldKey: keyof typeof verifyValues;
+    cardKey: CardKey;
+    placeholder?: string;
+    className?: string;
+    numeric?: boolean;
+  }) => {
+    const value = verifyValues[fieldKey];
+    const isEditing = editingCards[cardKey];
+    return (
+      <div className={className}>
+        <p className="text-xs text-muted-foreground mb-1">{label}</p>
+        {isEditing ? (
+          <Input
+            value={value}
+            onChange={(e) => setVerifyField(fieldKey, e.target.value)}
+            className={`h-9 rounded-lg ${numeric ? "tabular-nums" : ""}`}
+            placeholder={placeholder}
+          />
+        ) : (
+          <p
+            className={`font-medium ${value ? "text-foreground" : "text-muted-foreground"} ${numeric ? "tabular-nums" : ""} truncate`}
+          >
+            {value || placeholder}
+          </p>
+        )}
+      </div>
+    );
+  };
+
   const addFiles = (incoming: FileList | File[]) => {
     const arr = Array.from(incoming);
     if (arr.length) setFiles((prev) => [...prev, ...arr]);
