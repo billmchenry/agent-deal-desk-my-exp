@@ -70,10 +70,10 @@ export default function BusinessTransactions() {
   const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [search, setSearch] = useState("");
-  const [createOpen, setCreateOpen] = useState(true);
+  const [createOpen, setCreateOpen] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
-  const [createStage, setCreateStage] = useState<"upload" | "processing" | "complete" | "verification">("verification");
+  const [createStage, setCreateStage] = useState<"upload" | "processing" | "complete" | "verification">("upload");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   type CardKey = "office" | "propertyCore" | "listingTerms" | "seller" | "propertyDetails";
