@@ -758,17 +758,27 @@ export default function BusinessTransactions() {
           )}
 
           {/* VERIFICATION STAGE */}
-          {createStage === "verification" && (
+          {createStage === "verification" && (() => {
+            const officeIncomplete =
+              !verifyValues.office.trim() || !verifyValues.checklistType.trim();
+            return (
             <div className="flex flex-col max-h-[calc(92vh-96px)]">
               {/* Status banner */}
               <div className="mx-5 mt-4 mb-3 rounded-2xl border border-border/60 bg-muted/40 px-3.5 py-2.5">
                 <p className="text-xs text-foreground/80 leading-relaxed">
                   Everything from your PDF has been extracted. Click <span className="font-semibold">Edit</span> on Office & Checklist to select an office and checklist type, review the details below, fill in any other required fields, and click "Create Listing" to finish.
                 </p>
-                <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
-                  Still needed: Office & Checklist
-                </div>
+                {officeIncomplete ? (
+                  <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+                    Still needed: Office & Checklist
+                  </div>
+                ) : (
+                  <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                    <Check className="h-3 w-3" />
+                    All required fields complete
+                  </div>
+                )}
               </div>
 
               {/* Body: PDF preview + extracted fields */}
@@ -804,21 +814,25 @@ export default function BusinessTransactions() {
                 {/* Extracted fields */}
                 <div className="space-y-3">
                   {/* Office & Checklist */}
-                  <div className="rounded-2xl border border-amber-400/40 bg-amber-50/40 dark:bg-amber-500/5 p-3.5">
+                  <div className={`rounded-2xl border p-3.5 ${officeIncomplete ? "border-amber-400/40 bg-amber-50/40 dark:bg-amber-500/5" : "border-border/60 bg-card"}`}>
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <h4 className="font-semibold text-foreground">Office & Checklist</h4>
                           <span className="text-[10px] font-semibold uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">Required</span>
-                          <span className="text-xs text-muted-foreground">— Select a checklist type</span>
+                          {officeIncomplete && (
+                            <span className="text-xs text-muted-foreground">— Select a checklist type</span>
+                          )}
                         </div>
                       </div>
                       {renderEditToggle("office")}
                     </div>
-                    <div className="mt-3 flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
-                      <AlertCircle className="h-3.5 w-3.5" />
-                      Required: These details are not in the agreement.
-                    </div>
+                    {officeIncomplete && (
+                      <div className="mt-3 flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400">
+                        <AlertCircle className="h-3.5 w-3.5" />
+                        Required: These details are not in the agreement.
+                      </div>
+                    )}
                     <div className="mt-3 grid grid-cols-1 gap-2.5 text-sm">
                       {renderField("Office", "office", "office")}
                       {renderField("Checklist type", "checklistType", "office", { placeholder: "—" })}
@@ -911,7 +925,8 @@ export default function BusinessTransactions() {
                 </div>
               </div>
             </div>
-          )}
+            );
+          })()}
         </DialogContent>
       </Dialog>
     </DashboardLayout>
