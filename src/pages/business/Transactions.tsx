@@ -454,14 +454,28 @@ export default function BusinessTransactions() {
         }}
       >
         <DialogContent className={`${createStage === "verification" ? "sm:max-w-[1100px] max-h-[92vh]" : "sm:max-w-md"} rounded-2xl border-border/60 p-0 overflow-hidden`}>
-          {createStage !== "verification" && (
           <div className="bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue px-5 py-4 text-white">
             <DialogHeader className="space-y-1 text-start">
               <DialogTitle className="flex items-center gap-2 text-white">
+                {createStage === "verification" && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 -ms-1 text-white hover:bg-white/15 hover:text-white"
+                    aria-label="Back"
+                    onClick={() => setCreateStage("complete")}
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                )}
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
                   <Sparkles className="h-4 w-4" />
                 </span>
-                {createStage === "complete" ? "Extraction Complete" : "Create Listing"}
+                {createStage === "complete"
+                  ? "Extraction Complete"
+                  : createStage === "verification"
+                    ? "Listing Verification"
+                    : "Create Listing"}
               </DialogTitle>
               <DialogDescription className="text-white/75">
                 {createStage === "upload" &&
@@ -470,10 +484,11 @@ export default function BusinessTransactions() {
                   "Mira is reading your documents and extracting listing details. This usually takes a few seconds."}
                 {createStage === "complete" &&
                   "Here's what Mira extracted from your PDF. Review the details and finish your listing."}
+                {createStage === "verification" &&
+                  "Review extracted data from the Listing Agreement and complete any required details."}
               </DialogDescription>
             </DialogHeader>
           </div>
-          )}
 
           {/* UPLOAD STAGE */}
           {createStage === "upload" && (
@@ -665,55 +680,9 @@ export default function BusinessTransactions() {
 
           {/* VERIFICATION STAGE */}
           {createStage === "verification" && (
-            <div className="flex flex-col max-h-[92vh]">
-              {/* Top bar */}
-              <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-border/60 bg-card">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary shrink-0">
-                    <Sparkles className="h-4 w-4" />
-                  </span>
-                  <DialogTitle className="text-base font-semibold truncate">Mira AI</DialogTitle>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Expand">
-                    <Maximize2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="History">
-                    <History className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    aria-label="Close"
-                    onClick={() => setCreateOpen(false)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-
-              {/* Title row */}
-              <div className="flex items-start justify-between gap-3 px-5 pt-4 pb-3">
-                <div className="min-w-0">
-                  <h2 className="text-lg font-semibold text-foreground">Listing Verification</h2>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Review extracted data from the Listing Agreement
-                  </p>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 shrink-0"
-                  aria-label="Back"
-                  onClick={() => setCreateStage("complete")}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-              </div>
-
+            <div className="flex flex-col max-h-[calc(92vh-96px)]">
               {/* Status banner */}
-              <div className="mx-5 mb-3 rounded-xl border border-border/60 bg-muted/40 px-3 py-2.5">
+              <div className="mx-5 mt-4 mb-3 rounded-2xl border border-border/60 bg-muted/40 px-3.5 py-2.5">
                 <p className="text-xs text-foreground/80 leading-relaxed">
                   Everything from your PDF has been extracted. Click <span className="font-semibold">Edit</span> on Office & Checklist to select an office and checklist type, review the details below, fill in any other required fields, and click "Create Listing" to finish.
                 </p>
