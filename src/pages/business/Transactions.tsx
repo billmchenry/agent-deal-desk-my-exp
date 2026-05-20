@@ -69,6 +69,15 @@ export default function BusinessTransactions() {
   const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [search, setSearch] = useState("");
+  const [createOpen, setCreateOpen] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const addFiles = (incoming: FileList | File[]) => {
+    const arr = Array.from(incoming);
+    if (arr.length) setFiles((prev) => [...prev, ...arr]);
+  };
 
   const filteredListings = useMemo(() => {
     return LISTINGS.filter((row) => {
