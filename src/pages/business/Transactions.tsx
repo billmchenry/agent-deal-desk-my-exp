@@ -207,8 +207,7 @@ export default function BusinessTransactions() {
                   <HomeIcon className="h-4 w-4" />
                 </span>
                 <span className="flex flex-col">
-                  <span className="font-medium">Create Listing</span>
-                  <span className="text-xs text-muted-foreground">Start a new listing in SkySlope</span>
+                <span className="font-medium">Create Listing</span>
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem
