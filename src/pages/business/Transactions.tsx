@@ -72,7 +72,7 @@ export default function BusinessTransactions() {
   const [createOpen, setCreateOpen] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
-  const [createStage, setCreateStage] = useState<"upload" | "processing" | "complete">("upload");
+  const [createStage, setCreateStage] = useState<"upload" | "processing" | "complete" | "verification">("upload");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const addFiles = (incoming: FileList | File[]) => {
