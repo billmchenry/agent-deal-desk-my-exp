@@ -451,103 +451,81 @@ export default function BusinessTransactions() {
           }
         }}
       >
-        <DialogContent className="sm:max-w-[560px] rounded-2xl border border-white/10 bg-exp-dark-navy p-0 overflow-hidden text-white shadow-2xl">
-          {/* Decorative top glow */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-primary/15 to-transparent"
-          />
-
-          {/* Header */}
-          <div className="relative px-8 pt-8 pb-6">
-            <DialogHeader className="text-start">
-              <div className="flex gap-4">
-                <span className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/20 text-primary">
-                  <Sparkles className="h-5 w-5" />
+        <DialogContent className="sm:max-w-md rounded-2xl border-border/60 p-0 overflow-hidden">
+          <div className="bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue px-5 py-4 text-white">
+            <DialogHeader className="space-y-1 text-start">
+              <DialogTitle className="flex items-center gap-2 text-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
+                  <Sparkles className="h-4 w-4" />
                 </span>
-                <div className="min-w-0">
-                  <DialogTitle className="text-2xl font-bold tracking-tight text-white">
-                    Create Listing
-                  </DialogTitle>
-                  <DialogDescription className="mt-2 max-w-[380px] text-sm leading-relaxed text-slate-400">
-                    Drop your Listing Agreement, disclosures, or any related docs — Mira will sort and process them automatically.
-                  </DialogDescription>
-                </div>
-              </div>
+                Create Listing
+              </DialogTitle>
+              <DialogDescription className="text-white/75">
+                Drop your Listing Agreement, disclosures, or any related docs — Mira will sort and process them automatically.
+              </DialogDescription>
             </DialogHeader>
           </div>
 
-          {/* Drop Zone */}
-          <div className="relative px-8 pb-4">
-            <div className="group relative">
-              <div
-                aria-hidden
-                className={`absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-primary/30 to-primary/10 blur transition duration-500 ${
-                  isDragging ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                }`}
+          <div className="p-5 space-y-4">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragging(true);
+              }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setIsDragging(false);
+                if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
+              }}
+              className={`w-full rounded-2xl border-2 border-dashed transition-colors px-6 py-8 flex flex-col items-center justify-center gap-3 text-center ${
+                isDragging
+                  ? "border-primary bg-primary/5"
+                  : "border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/40"
+              }`}
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <UploadCloud className="h-6 w-6" />
+              </span>
+              <span className="font-medium text-foreground">Drop Documents</span>
+              <span className="text-xs text-muted-foreground">
+                Drop multiple PDFs or click to browse
+              </span>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".pdf,.doc,.docx,image/*"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files) addFiles(e.target.files);
+                  e.target.value = "";
+                }}
               />
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setIsDragging(true);
-                }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                  if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
-                }}
-                className={`relative flex h-64 w-full flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed transition-all duration-300 ${
-                  isDragging
-                    ? "border-primary/60 bg-white/[0.04]"
-                    : "border-white/10 bg-white/[0.02] hover:border-primary/50 hover:bg-white/[0.04]"
-                }`}
-              >
-                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110">
-                  <UploadCloud className="h-8 w-8" />
-                </span>
-                <div className="text-center">
-                  <span className="block text-lg font-semibold text-white">Drop Documents</span>
-                  <span className="mt-1 block text-sm text-slate-500">
-                    Drop multiple PDFs or click to browse
-                  </span>
-                </div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  multiple
-                  accept=".pdf,.doc,.docx,image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    if (e.target.files) addFiles(e.target.files);
-                    e.target.value = "";
-                  }}
-                />
-              </button>
-            </div>
+            </button>
 
             {files.length > 0 && (
-              <ul className="mt-4 space-y-2 max-h-40 overflow-y-auto">
+              <ul className="space-y-2 max-h-40 overflow-y-auto">
                 {files.map((f, i) => (
                   <li
                     key={`${f.name}-${i}`}
-                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2"
+                    className="flex items-center gap-3 rounded-xl border border-border/60 bg-card px-3 py-2"
                   >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
                       <FileText className="h-4 w-4" />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-white">{f.name}</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-sm font-medium truncate">{f.name}</p>
+                      <p className="text-xs text-muted-foreground">
                         {(f.size / 1024).toFixed(1)} KB
                       </p>
                     </div>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 shrink-0 text-slate-400 hover:bg-white/10 hover:text-white"
+                      className="h-8 w-8 shrink-0"
                       onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
                       aria-label={`Remove ${f.name}`}
                     >
@@ -557,25 +535,20 @@ export default function BusinessTransactions() {
                 ))}
               </ul>
             )}
-          </div>
 
-          {/* Footer */}
-          <div className="relative flex items-center justify-end gap-6 px-8 py-8">
-            <button
-              type="button"
-              onClick={() => setCreateOpen(false)}
-              className="text-sm font-semibold text-slate-400 transition-colors hover:text-white"
-            >
-              Cancel
-            </button>
-            <Button
-              disabled={files.length === 0}
-              onClick={() => setCreateOpen(false)}
-              className="h-[51px] gap-2 px-8 font-semibold shadow-[0_0_20px_hsl(var(--primary)/0.3)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.5)]"
-            >
-              <Sparkles className="h-4 w-4" />
-              Process with Mira
-            </Button>
+            <div className="flex items-center justify-end gap-2 pt-1">
+              <Button variant="ghost" onClick={() => setCreateOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                disabled={files.length === 0}
+                onClick={() => setCreateOpen(false)}
+                className="gap-2"
+              >
+                <Sparkles className="h-4 w-4" />
+                Process with Mira
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
