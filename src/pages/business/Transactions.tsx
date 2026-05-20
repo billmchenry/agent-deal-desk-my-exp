@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
-import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X } from "lucide-react";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X, Loader2, MapPin, User as UserIcon, Calendar as CalendarIcon, CheckCircle2, Pencil } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import {
   DropdownMenu,
@@ -72,6 +72,7 @@ export default function BusinessTransactions() {
   const [createOpen, setCreateOpen] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [createStage, setCreateStage] = useState<"upload" | "processing" | "complete">("upload");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const addFiles = (incoming: FileList | File[]) => {
@@ -448,6 +449,7 @@ export default function BusinessTransactions() {
           if (!o) {
             setFiles([]);
             setIsDragging(false);
+            setCreateStage("upload");
           }
         }}
       >
@@ -458,98 +460,206 @@ export default function BusinessTransactions() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
                   <Sparkles className="h-4 w-4" />
                 </span>
-                Create Listing
+                {createStage === "complete" ? "Extraction Complete" : "Create Listing"}
               </DialogTitle>
               <DialogDescription className="text-white/75">
-                Drop your Listing Agreement, disclosures, or any related docs — Mira will sort and process them automatically.
+                {createStage === "upload" &&
+                  "Drop your Listing Agreement, disclosures, or any related docs — Mira will sort and process them automatically."}
+                {createStage === "processing" &&
+                  "Mira is reading your documents and extracting listing details. This usually takes a few seconds."}
+                {createStage === "complete" &&
+                  "Here's what Mira extracted from your PDF. Review the details and finish your listing."}
               </DialogDescription>
             </DialogHeader>
           </div>
 
-          <div className="p-5 space-y-4">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setIsDragging(true);
-              }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={(e) => {
-                e.preventDefault();
-                setIsDragging(false);
-                if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
-              }}
-              className={`w-full rounded-2xl border-2 border-dashed transition-colors px-6 py-8 flex flex-col items-center justify-center gap-3 text-center ${
-                isDragging
-                  ? "border-primary bg-primary/5"
-                  : "border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/40"
-              }`}
-            >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <UploadCloud className="h-6 w-6" />
-              </span>
-              <span className="font-medium text-foreground">Drop Documents</span>
-              <span className="text-xs text-muted-foreground">
-                Drop multiple PDFs or click to browse
-              </span>
-              <input
-                ref={fileInputRef}
-                type="file"
-                multiple
-                accept=".pdf,.doc,.docx,image/*"
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target.files) addFiles(e.target.files);
-                  e.target.value = "";
+          {/* UPLOAD STAGE */}
+          {createStage === "upload" && (
+            <div className="p-5 space-y-4">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDragging(true);
                 }}
-              />
-            </button>
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setIsDragging(false);
+                  if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
+                }}
+                className={`w-full rounded-2xl border-2 border-dashed transition-colors px-6 py-8 flex flex-col items-center justify-center gap-3 text-center ${
+                  isDragging
+                    ? "border-primary bg-primary/5"
+                    : "border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/40"
+                }`}
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <UploadCloud className="h-6 w-6" />
+                </span>
+                <span className="font-medium text-foreground">Drop Documents</span>
+                <span className="text-xs text-muted-foreground">
+                  Drop multiple PDFs or click to browse
+                </span>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept=".pdf,.doc,.docx,image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files) addFiles(e.target.files);
+                    e.target.value = "";
+                  }}
+                />
+              </button>
 
-            {files.length > 0 && (
-              <ul className="space-y-2 max-h-40 overflow-y-auto">
-                {files.map((f, i) => (
-                  <li
-                    key={`${f.name}-${i}`}
-                    className="flex items-center gap-3 rounded-xl border border-border/60 bg-card px-3 py-2"
-                  >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
-                      <FileText className="h-4 w-4" />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium truncate">{f.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {(f.size / 1024).toFixed(1)} KB
-                      </p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 shrink-0"
-                      onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
-                      aria-label={`Remove ${f.name}`}
+              {files.length > 0 && (
+                <ul className="space-y-2 max-h-40 overflow-y-auto">
+                  {files.map((f, i) => (
+                    <li
+                      key={`${f.name}-${i}`}
+                      className="flex items-center gap-3 rounded-xl border border-border/60 bg-card px-3 py-2"
                     >
-                      <X className="h-4 w-4" />
-                    </Button>
+                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+                        <FileText className="h-4 w-4" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium truncate">{f.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {(f.size / 1024).toFixed(1)} KB
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 shrink-0"
+                        onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+                        aria-label={`Remove ${f.name}`}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-1">
+                <Button variant="ghost" onClick={() => setCreateOpen(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  disabled={files.length === 0}
+                  onClick={() => {
+                    setCreateStage("processing");
+                    window.setTimeout(() => setCreateStage("complete"), 2200);
+                  }}
+                  className="gap-2"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Process with Mira
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* PROCESSING STAGE */}
+          {createStage === "processing" && (
+            <div className="p-6 space-y-6">
+              <div className="flex flex-col items-center justify-center text-center py-6 gap-4">
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse" aria-hidden />
+                  <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Loader2 className="h-7 w-7 animate-spin" />
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground">Processing with Mira</p>
+                  <p className="text-xs text-muted-foreground">
+                    Extracting fields from {files.length} document{files.length === 1 ? "" : "s"}…
+                  </p>
+                </div>
+              </div>
+
+              <ul className="space-y-2" aria-live="polite">
+                {[
+                  "Reading document content",
+                  "Identifying listing details",
+                  "Validating fields",
+                ].map((label, i) => (
+                  <li
+                    key={label}
+                    className="flex items-center gap-3 rounded-xl border border-border/60 bg-muted/30 px-3 py-2 text-sm"
+                  >
+                    <Loader2
+                      className="h-4 w-4 animate-spin text-primary"
+                      style={{ animationDelay: `${i * 0.15}s` }}
+                    />
+                    <span className="text-foreground/80">{label}</span>
                   </li>
                 ))}
               </ul>
-            )}
-
-            <div className="flex items-center justify-end gap-2 pt-1">
-              <Button variant="ghost" onClick={() => setCreateOpen(false)}>
-                Cancel
-              </Button>
-              <Button
-                disabled={files.length === 0}
-                onClick={() => setCreateOpen(false)}
-                className="gap-2"
-              >
-                <Sparkles className="h-4 w-4" />
-                Process with Mira
-              </Button>
             </div>
-          </div>
+          )}
+
+          {/* COMPLETE STAGE */}
+          {createStage === "complete" && (
+            <div className="p-5 space-y-4">
+              <div className="flex items-center gap-2 rounded-xl bg-emerald-500/10 px-3 py-2 text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-sm font-semibold">Extraction Complete</span>
+                <span className="ms-auto text-xs text-muted-foreground">Step 1 of 2</span>
+              </div>
+
+              <ul className="rounded-2xl border border-border/60 bg-card divide-y divide-border/60">
+                {[
+                  { icon: MapPin, label: "Property Address", value: "8160 Energy Lane, Dallas, TX 75225" },
+                  { icon: UserIcon, label: "Seller", value: "Bob Smith" },
+                  { icon: DollarIcon, label: "Listing Price", value: "500,000 USD" },
+                  { icon: CalendarIcon, label: "Start Date", value: "02/13/2026" },
+                ].map(({ icon: Icon, label, value }) => (
+                  <li key={label} className="flex items-center gap-3 px-3 py-2.5">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs text-muted-foreground">{label}</p>
+                      <p className="text-sm font-medium text-foreground truncate">{value}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="rounded-2xl border border-border/60 bg-muted/30 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Final Details
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                  Summary of key extracted fields. Please review the full extraction and complete
+                  any required details in the next step.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 pt-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => setCreateStage("upload")}
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                  Re-upload
+                </Button>
+                <Button
+                  onClick={() => setCreateOpen(false)}
+                  className="gap-2"
+                >
+                  Finish Listing
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </DashboardLayout>
