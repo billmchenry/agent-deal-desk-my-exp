@@ -576,7 +576,7 @@ export default function BusinessTransactions() {
           }
         }}
       >
-        <DialogContent className={`${createStage === "verification" ? "sm:max-w-[1280px] max-h-[92vh]" : "sm:max-w-md"} rounded-2xl border-border/60 p-0 overflow-hidden`}>
+        <DialogContent className={`${createStage === "verification" ? "sm:max-w-[1280px] h-[92vh] flex flex-col" : "sm:max-w-md"} rounded-2xl border-border/60 p-0 overflow-hidden`}>
           <div className="bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue px-5 py-4 text-white">
             <DialogHeader className="space-y-1 text-start">
               <DialogTitle className="flex items-center gap-2 text-white">
