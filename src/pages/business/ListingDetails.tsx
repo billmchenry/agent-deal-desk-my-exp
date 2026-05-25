@@ -496,33 +496,33 @@ export default function ListingDetails() {
             </Card>
 
             {/* Property Meta */}
-            <Card className="rounded-2xl p-6 border-border shadow-sm space-y-4">
+            <Card className="rounded-2xl p-5 border-border shadow-sm space-y-3">
               <div className="flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-muted-foreground" />
-                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
+                <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
+                <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                   Property Meta
                 </h3>
               </div>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
+              <div className="space-y-2.5">
+                <div className="flex justify-between text-xs">
                   <span className="text-muted-foreground">Year Built</span>
                   <span className="font-semibold text-foreground tabular-nums">
                     {tx.yearBuilt || "—"}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-muted-foreground">Office</span>
                   <span className="font-semibold text-foreground">
                     {tx.office || "—"}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-muted-foreground">Expiration</span>
                   <span className="font-semibold text-foreground tabular-nums">
                     {row?.expirationDate || "—"}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-muted-foreground">Listing ID</span>
                   <span className="font-semibold text-foreground">
                     {params.id ?? "—"}
