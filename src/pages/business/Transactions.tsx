@@ -821,8 +821,8 @@ export default function BusinessTransactions() {
               document.getElementById(`verify-card-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
             };
             return (
-              <div className="flex flex-col max-h-[calc(92vh-96px)]">
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 overflow-hidden min-h-[520px]">
+              <div className="flex-1 min-h-0 flex flex-col">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 overflow-hidden min-h-0">
                   {/* PDF Viewer */}
                   <section className="flex flex-col border-r border-border/60 bg-muted/30 overflow-hidden min-h-0">
                     <div className="shrink-0 flex items-center justify-between gap-2 px-4 py-2 border-b border-border/60 bg-card">
