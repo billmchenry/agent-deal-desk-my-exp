@@ -524,7 +524,7 @@ export default function BusinessTransactions() {
               <TabsTrigger value="listings" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
                 <HomeIcon className="h-4 w-4" />
                 {t("transactions.tabListings")}
-                <Badge variant="secondary" className="ms-1 px-2 font-normal">{LISTINGS.length}</Badge>
+                <Badge variant="secondary" className="ms-1 px-2 font-normal">{listings.length}</Badge>
               </TabsTrigger>
               <TabsTrigger value="transactions" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
                 <DollarIcon className="h-4 w-4" />
