@@ -67,6 +67,7 @@ const App = () => (
                 <Route path="/team/dashboard" element={<TeamDashboard />} />
                 <Route path="/team/reconciliation" element={<TeamReconciliation />} />
                 <Route path="/business/transactions" element={<BusinessTransactions />} />
+                <Route path="/business/listings/:id" element={<ListingDetails />} />
                 <Route path="/revshare/dashboard" element={<RevShareDashboard />} />
                 <Route path="/revshare/organization" element={<OrganizationReporting />} />
                 <Route path="/revshare/organization-tree" element={<OrganizationTree />} />
