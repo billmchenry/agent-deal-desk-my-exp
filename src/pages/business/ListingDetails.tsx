@@ -376,7 +376,7 @@ export default function ListingDetails() {
                     placeholder="Last name"
                   />
                 </Field>
-                <Field label="Email Address" className="md:col-span-2">
+                <Field label="Email Address">
                   <Input
                     type="email"
                     value={contacts.email}
@@ -387,7 +387,7 @@ export default function ListingDetails() {
                     placeholder="name@example.com"
                   />
                 </Field>
-                <Field label="Phone Number" className="md:col-span-2">
+                <Field label="Phone Number">
                   <Input
                     value={contacts.phone}
                     onChange={(e) =>
