@@ -570,6 +570,9 @@ export default function BusinessTransactions() {
         open={createOpen}
         onOpenChange={(o) => {
           setCreateOpen(o);
+          if (o) {
+            setVerifyValues((prev) => ({ ...prev, checklistType: "" }));
+          }
           if (!o) {
             setFiles([]);
             setIsDragging(false);
