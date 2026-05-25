@@ -21,7 +21,7 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New", "Test L&D Listing"] as const;
+const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New"] as const;
 
 interface ListingRow {
   id: string;
