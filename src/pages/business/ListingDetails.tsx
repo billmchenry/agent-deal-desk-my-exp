@@ -216,7 +216,7 @@ export default function ListingDetails() {
               iconBg="bg-primary/10"
               iconColor="text-primary"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-3">
                 <Field label="Agent">
                   <Input
                     value={tx.agent}
