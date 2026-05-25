@@ -905,7 +905,13 @@ export default function BusinessTransactions() {
                           >
                             <div className="flex items-start justify-between gap-3 mb-3">
                               <div>
-                                <span className="inline-block bg-amber-200/80 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                                <span
+                                  className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5 ${
+                                    incomplete
+                                      ? "bg-amber-200/80 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300"
+                                      : "bg-primary/10 text-primary"
+                                  }`}
+                                >
                                   Required
                                 </span>
                                 <h4 className="text-sm font-bold text-foreground">Office & Checklist</h4>
@@ -923,7 +929,15 @@ export default function BusinessTransactions() {
                             <div className="grid grid-cols-1 gap-x-4 gap-y-3">
                               {renderField("Office", "office", "office")}
                               <div>
-                                <p className="text-[11px] text-muted-foreground mb-0.5">Checklist type</p>
+                                <div className="flex items-center justify-between mb-0.5">
+                                  <p className="text-[11px] text-muted-foreground">Checklist type</p>
+                                  {verifyValues.checklistType.trim() && (
+                                    <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                      <Check className="h-3 w-3" />
+                                      Done
+                                    </span>
+                                  )}
+                                </div>
                                 <Select
                                   value={verifyValues.checklistType}
                                   onValueChange={(v) => setVerifyField("checklistType", v)}
