@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
 
 const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New"] as const;
 
@@ -37,7 +38,7 @@ interface ListingRow {
   stageVariant: "default" | "warning" | "danger";
 }
 
-const LISTINGS: ListingRow[] = [
+const INITIAL_LISTINGS: ListingRow[] = [
   { id: "1", mlsNumber: "MLS-2024-001", propertyAddress: "1234 Oak Street", propertyCity: "Austin, TX 78701",  status: "Expired",       listingAgent: "John & Mary Smith",        office: "Main Office",  expirationDate: "2024-07-14", listingPrice: 485000,  stage: "Active",            stageVariant: "default" },
   { id: "2", mlsNumber: "MLS-2024-002", propertyAddress: "567 Riverside Dr", propertyCity: "Round Rock, TX 78664", status: "Expired",    listingAgent: "Robert Davis",             office: "Main Office",  expirationDate: "2024-07-31", listingPrice: 325000,  stage: "Pending Review",    stageVariant: "warning" },
   { id: "3", mlsNumber: "N/A",          propertyAddress: "890 Summit View",  propertyCity: "Cedar Park, TX 78613", status: "Expired",    listingAgent: "Amanda Wilson",            office: "Main Office",  expirationDate: "2024-08-09", listingPrice: 575000,  stage: "Missing Signatures",stageVariant: "warning" },
@@ -48,6 +49,18 @@ const LISTINGS: ListingRow[] = [
   { id: "8", mlsNumber: "MLS-004",      propertyAddress: "2100 Lakefront Blvd", propertyCity: "Lakeway, TX 78734", status: "Active",     listingAgent: "Jennifer Brown",           office: "Main Office",  expirationDate: "2025-08-22", listingPrice: 1250000, stage: "Active",            stageVariant: "default" },
   { id: "9", mlsNumber: "MLS-005",      propertyAddress: "455 Maple Ave",    propertyCity: "Austin, TX 78704",     status: "Active",     listingAgent: "Carlos Reyes",             office: "South Office", expirationDate: "2025-09-30", listingPrice: 695000,  stage: "Active",            stageVariant: "default" },
 ];
+
+function parsePriceToNumber(s: string): number {
+  const n = parseFloat(String(s).replace(/[^0-9.]/g, ""));
+  return isNaN(n) ? 0 : n;
+}
+function formatDateMDY(s: string): string {
+  const d = new Date(s);
+  if (isNaN(d.getTime())) return s || "-";
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${mm}/${dd}/${d.getFullYear()}`;
+}
 
 type StatusFilter = "all" | "active" | "pending" | "closed";
 type SourceTab = "listings" | "transactions";
@@ -162,8 +175,36 @@ export default function BusinessTransactions() {
     if (arr.length) setFiles((prev) => [...prev, ...arr]);
   };
 
+  const [listings, setListings] = useState<ListingRow[]>(INITIAL_LISTINGS);
+
+  const handleCreateListing = () => {
+    const address = `${verifyValues.streetNumber} ${verifyValues.streetAddress}`.trim();
+    const city = [verifyValues.city, verifyValues.state].filter(Boolean).join(", ") +
+      (verifyValues.zip ? ` ${verifyValues.zip}` : "");
+    const newRow: ListingRow = {
+      id: `new-${Date.now()}`,
+      mlsNumber: verifyValues.mlsNumber || "N/A",
+      propertyAddress: address || "New Listing",
+      propertyCity: city.trim() || "—",
+      status: "Active",
+      listingAgent: verifyValues.sellerName || "—",
+      office: verifyValues.office || "Main Office",
+      expirationDate: formatDateMDY(verifyValues.expirationDate),
+      listingPrice: parsePriceToNumber(verifyValues.listingPrice),
+      stage: "Active",
+      stageVariant: "default",
+    };
+    setListings((prev) => [newRow, ...prev]);
+    setCreateOpen(false);
+    setCreateStage("upload");
+    setFiles([]);
+    setSourceTab("listings");
+    setStatusFilter("all");
+    toast.success("Listing created", { description: address || "New listing added to your dashboard." });
+  };
+
   const filteredListings = useMemo(() => {
-    return LISTINGS.filter((row) => {
+    return listings.filter((row) => {
       if (statusFilter !== "all") {
         const s = row.status.toLowerCase();
         if (statusFilter === "active" && s !== "active") return false;
@@ -182,7 +223,7 @@ export default function BusinessTransactions() {
       }
       return true;
     });
-  }, [statusFilter, search]);
+  }, [listings, statusFilter, search]);
 
   const listingStatusBadge = (status: ListingRow["status"]) => {
     switch (status) {
@@ -483,7 +524,7 @@ export default function BusinessTransactions() {
               <TabsTrigger value="listings" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
                 <HomeIcon className="h-4 w-4" />
                 {t("transactions.tabListings")}
-                <Badge variant="secondary" className="ms-1 px-2 font-normal">{LISTINGS.length}</Badge>
+                <Badge variant="secondary" className="ms-1 px-2 font-normal">{listings.length}</Badge>
               </TabsTrigger>
               <TabsTrigger value="transactions" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
                 <DollarIcon className="h-4 w-4" />
@@ -994,10 +1035,16 @@ export default function BusinessTransactions() {
                     </div>
                   )}
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" onClick={() => setCreateOpen(false)}>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setCreateOpen(false);
+                        toast("Draft saved", { description: "Your listing was saved as a draft." });
+                      }}
+                    >
                       Save as Draft
                     </Button>
-                    <Button onClick={() => setCreateOpen(false)} disabled={!canCreate}>
+                    <Button onClick={handleCreateListing} disabled={!canCreate}>
                       Create Listing
                     </Button>
                   </div>
