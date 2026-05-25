@@ -38,7 +38,17 @@ type RowLite = {
 };
 
 const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New"];
-const REPRESENTATION_TYPES = ["Seller", "Buyer", "Both", "Landlord", "Tenant"];
+const REPRESENTATION_TYPES = [
+  "Purchase",
+  "Listing",
+  "Both Purchase & Listing",
+  "Lease Tenant",
+  "Lease Landlord",
+  "Both Lease Tenant & Landlord",
+  "Referral",
+  "BPO",
+  "Other",
+];
 
 const inputCls =
   "w-full h-9 px-3.5 text-[10px] rounded-[51px] bg-background border-border focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary";
