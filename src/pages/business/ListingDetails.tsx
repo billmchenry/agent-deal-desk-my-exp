@@ -112,7 +112,13 @@ export default function ListingDetails() {
       <div className="space-y-4 pb-20">
         <UniversalFilterBar
           title={fullAddress}
-          subtitle={row?.mlsNumber ? `MLS ${row.mlsNumber}` : `Listing ${params.id ?? ""}`}
+          subtitle={
+            row?.listingAgent
+              ? `${row?.mlsNumber ? `MLS ${row.mlsNumber} · ` : ""}Listing Agent: ${row.listingAgent}`
+              : row?.mlsNumber
+                ? `MLS ${row.mlsNumber}`
+                : `Listing ${params.id ?? ""}`
+          }
         >
           <Button
             variant="outline"
@@ -131,19 +137,6 @@ export default function ListingDetails() {
           </Button>
         </UniversalFilterBar>
 
-        <Card className="rounded-2xl p-4 flex items-start gap-3">
-          <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
-            <MapPin className="h-5 w-5" />
-          </div>
-          <div className="min-w-0">
-            <h1 className="text-xl font-semibold text-foreground truncate">
-              {fullAddress}
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {row?.listingAgent ? `Listing Agent: ${row.listingAgent}` : "Listing details"}
-            </p>
-          </div>
-        </Card>
 
         <SectionCard title="Transaction">
           <Field label="Agent">
