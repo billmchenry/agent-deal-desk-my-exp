@@ -54,7 +54,7 @@ function Field({
 }) {
   return (
     <div className={`space-y-1.5 ${className}`}>
-      <Label className="text-[13px] font-semibold text-muted-foreground ms-1">
+      <Label className="text-xs font-semibold text-muted-foreground ms-1">
         {label}
       </Label>
       {children}
