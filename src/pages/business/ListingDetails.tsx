@@ -209,12 +209,12 @@ export default function ListingDetails() {
           {/* Left: details */}
           <div className="lg:col-span-2 space-y-6">
             {/* Completeness */}
-            <Card className="rounded-2xl p-6 border-border shadow-sm">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-bold text-foreground">
+            <Card className="rounded-2xl p-5 border-border shadow-sm">
+              <div className="flex items-center justify-between mb-2.5">
+                <span className="text-xs font-bold text-foreground">
                   Listing Completeness
                 </span>
-                <span className="text-sm font-bold text-primary tabular-nums">
+                <span className="text-xs font-bold text-primary tabular-nums">
                   {completeness}%
                 </span>
               </div>
