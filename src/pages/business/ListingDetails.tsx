@@ -208,25 +208,8 @@ export default function ListingDetails() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: details */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Completeness */}
-            <Card className="rounded-2xl p-5 border-border shadow-sm">
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="text-xs font-bold text-foreground">
-                  Listing Completeness
-                </span>
-                <span className="text-xs font-bold text-primary tabular-nums">
-                  {completeness}%
-                </span>
-              </div>
-              <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-primary h-full rounded-full transition-all"
-                  style={{ width: `${completeness}%` }}
-                />
-              </div>
-            </Card>
-
             {/* Transaction */}
+
             <SectionCard
               title="Transaction Details"
               icon={FileText}
