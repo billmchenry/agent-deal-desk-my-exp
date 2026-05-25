@@ -355,7 +355,7 @@ export default function ListingDetails() {
                 </nav>
               }
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-3">
                 <Field label={`${contactTab}'s First Name`}>
                   <Input
                     value={contacts.firstName}
