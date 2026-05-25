@@ -879,9 +879,26 @@ export default function BusinessTransactions() {
                                 </p>
                               </div>
                             )}
-                            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                            <div className="grid grid-cols-1 gap-x-4 gap-y-3">
                               {renderField("Office", "office", "office")}
-                              {renderField("Checklist type", "checklistType", "office", { placeholder: "Not selected" })}
+                              <div>
+                                <p className="text-[11px] text-muted-foreground mb-0.5">Checklist type</p>
+                                <Select
+                                  value={verifyValues.checklistType}
+                                  onValueChange={(v) => setVerifyField("checklistType", v)}
+                                >
+                                  <SelectTrigger className="h-8 text-xs rounded-lg">
+                                    <SelectValue placeholder="Choose a checklist type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {CHECKLIST_TYPES.map((opt) => (
+                                      <SelectItem key={opt} value={opt} className="text-xs">
+                                        {opt}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
                             </div>
                           </div>
                         );
