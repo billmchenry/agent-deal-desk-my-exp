@@ -780,30 +780,45 @@ export default function BusinessTransactions() {
               <div className="flex flex-col max-h-[calc(92vh-96px)]">
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 overflow-hidden min-h-[520px]">
                   {/* PDF Viewer */}
-                  <section className="flex flex-col border-r border-border/60 bg-muted/30 overflow-hidden">
-                    <div className="shrink-0 flex items-center justify-between gap-2 px-5 py-3 border-b border-border/60 bg-card">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                        <FileText className="h-4 w-4 text-muted-foreground" />
+                  <section className="flex flex-col border-r border-border/60 bg-muted/30 overflow-hidden min-h-0">
+                    <div className="shrink-0 flex items-center justify-between gap-2 px-4 py-2 border-b border-border/60 bg-card">
+                      <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+                        <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                         <span>Testing.pdf</span>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Zoom out">
-                          <ZoomOut className="h-4 w-4" />
+                      <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                        <Button variant="ghost" size="icon" className="h-7 w-7" aria-label="Zoom out">
+                          <ZoomOut className="h-3.5 w-3.5" />
                         </Button>
                         <span className="tabular-nums font-medium tracking-wider uppercase">100%</span>
-                        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Zoom in">
-                          <ZoomIn className="h-4 w-4" />
+                        <Button variant="ghost" size="icon" className="h-7 w-7" aria-label="Zoom in">
+                          <ZoomIn className="h-3.5 w-3.5" />
                         </Button>
                       </div>
                     </div>
-                    <div className="flex-1 overflow-y-auto p-6 flex justify-center bg-foreground/[0.04] dark:bg-background/40">
-                      <div className="w-full max-w-[520px] aspect-[1/1.35] bg-card rounded-md border border-border/60 shadow-lg p-10 flex flex-col items-center justify-center text-center gap-3">
-                        <h3 className="text-xl font-bold text-foreground tracking-tight">RESIDENTIAL LISTING AGREEMENT</h3>
-                        <p className="text-sm font-medium text-muted-foreground">Exclusive Right to Sell</p>
-                        <div className="w-3/4 h-px bg-border/60 my-2" />
-                        <p className="text-sm italic text-muted-foreground">Document preview not available.</p>
-                        <p className="text-xs text-muted-foreground">Upload a PDF to view the actual document.</p>
-                      </div>
+                    <div className="flex-1 min-h-0 overflow-y-auto p-4 flex flex-col items-center gap-4 bg-foreground/[0.04] dark:bg-background/40">
+                      {[1, 2, 3].map((page) => (
+                        <div
+                          key={page}
+                          className="w-full max-w-[460px] aspect-[1/1.35] bg-card rounded-md border border-border/60 shadow-md p-8 flex flex-col items-center justify-center text-center gap-2 shrink-0"
+                        >
+                          {page === 1 ? (
+                            <>
+                              <h3 className="text-base font-bold text-foreground tracking-tight">RESIDENTIAL LISTING AGREEMENT</h3>
+                              <p className="text-xs font-medium text-muted-foreground">Exclusive Right to Sell</p>
+                              <div className="w-3/4 h-px bg-border/60 my-1" />
+                              <p className="text-xs italic text-muted-foreground">Document preview not available.</p>
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Page {page}</p>
+                              <div className="w-3/4 h-px bg-border/60 my-1" />
+                              <p className="text-xs italic text-muted-foreground">Continued content…</p>
+                            </>
+                          )}
+                          <p className="text-[10px] text-muted-foreground mt-auto">Page {page} of 3</p>
+                        </div>
+                      ))}
                     </div>
                   </section>
 
