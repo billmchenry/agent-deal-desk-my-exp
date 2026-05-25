@@ -20,6 +20,7 @@ import AgentTransactions from "./pages/agent/Transactions";
 import TeamDashboard from "./pages/team/Dashboard";
 import TeamReconciliation from "./pages/team/Reconciliation";
 import BusinessTransactions from "./pages/business/Transactions";
+import ListingDetails from "./pages/business/ListingDetails";
 import RevShareDashboard from "./pages/revshare/Dashboard";
 import OrganizationReporting from "./pages/revshare/Organization";
 import OrganizationTree from "./pages/revshare/OrganizationTree";
