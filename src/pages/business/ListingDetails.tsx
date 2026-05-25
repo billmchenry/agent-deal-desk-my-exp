@@ -274,7 +274,7 @@ export default function ListingDetails() {
                     </SelectContent>
                   </Select>
                 </Field>
-                <Field label="Representation">
+                <Field label="Type (Representation)">
                   <Select
                     value={tx.representation}
                     onValueChange={(v) => setTx({ ...tx, representation: v })}
