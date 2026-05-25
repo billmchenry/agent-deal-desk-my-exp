@@ -41,7 +41,7 @@ const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New"];
 const REPRESENTATION_TYPES = ["Seller", "Buyer", "Both", "Landlord", "Tenant"];
 
 const inputCls =
-  "w-full h-11 px-4 text-sm rounded-[51px] bg-background border-border focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary";
+  "w-full h-10 px-4 text-xs rounded-[51px] bg-background border-border focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary";
 
 function Field({
   label,
@@ -54,7 +54,7 @@ function Field({
 }) {
   return (
     <div className={`space-y-1.5 ${className}`}>
-      <Label className="text-xs font-semibold text-muted-foreground ms-1">
+      <Label className="text-[11px] font-semibold text-muted-foreground ms-1">
         {label}
       </Label>
       {children}
@@ -86,7 +86,7 @@ function SectionCard({
           >
             <Icon className="w-4 h-4" />
           </div>
-          <h2 className="text-base font-bold text-foreground">{title}</h2>
+          <h2 className="text-sm font-bold text-foreground">{title}</h2>
         </div>
         {right}
       </div>
