@@ -41,7 +41,7 @@ const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New"];
 const REPRESENTATION_TYPES = ["Seller", "Buyer", "Both", "Landlord", "Tenant"];
 
 const inputCls =
-  "w-full h-11 px-4 text-sm rounded-[51px] bg-background border-border focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary";
+  "w-full h-10 px-4 text-xs rounded-[51px] bg-background border-border focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:border-primary";
 
 function Field({
   label,
