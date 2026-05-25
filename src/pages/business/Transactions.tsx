@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar } from "@/components/filters";
 import { useDocumentTitle } from "@/hooks/use-document-title";
@@ -77,6 +78,7 @@ const PIPELINE_BY_PERIOD: Record<Period, { inProgress: number; closed: number; p
 export default function BusinessTransactions() {
   const { t } = useTranslation();
   const { formatNumber } = useFormatters();
+  const navigate = useNavigate();
   useDocumentTitle(t("nav.transactions"));
 
   const [period, setPeriod] = useState<Period>("quarterly");
@@ -290,7 +292,7 @@ export default function BusinessTransactions() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>{t("transactions.viewDetails")}</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => navigate(`/business/listings/${row.id}`, { state: { row } })}>{t("transactions.viewDetails")}</DropdownMenuItem>
             <DropdownMenuItem>{t("transactions.editListing")}</DropdownMenuItem>
             <DropdownMenuItem>{t("transactions.openInSkySlope")}</DropdownMenuItem>
           </DropdownMenuContent>
