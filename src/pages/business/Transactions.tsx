@@ -135,17 +135,17 @@ export default function BusinessTransactions() {
     const isEditing = editingCards[cardKey];
     return (
       <div className={className} key={fieldKey}>
-        <p className="text-xs text-muted-foreground mb-1">{label}</p>
+        <p className="text-[11px] text-muted-foreground mb-0.5">{label}</p>
         {isEditing ? (
           <Input
             value={value}
             onChange={(e) => setVerifyField(fieldKey, e.target.value)}
-            className={`h-9 rounded-lg ${numeric ? "tabular-nums" : ""}`}
+            className={`h-8 text-xs rounded-lg ${numeric ? "tabular-nums" : ""}`}
             placeholder={placeholder}
           />
         ) : (
           <p
-            className={`font-medium ${value ? "text-foreground" : "text-muted-foreground"} ${numeric ? "tabular-nums" : ""} truncate`}
+            className={`text-xs font-medium ${value ? "text-foreground" : "text-muted-foreground"} ${numeric ? "tabular-nums" : ""} truncate`}
           >
             {value || placeholder}
           </p>
