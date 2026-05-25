@@ -175,8 +175,36 @@ export default function BusinessTransactions() {
     if (arr.length) setFiles((prev) => [...prev, ...arr]);
   };
 
+  const [listings, setListings] = useState<ListingRow[]>(INITIAL_LISTINGS);
+
+  const handleCreateListing = () => {
+    const address = `${verifyValues.streetNumber} ${verifyValues.streetAddress}`.trim();
+    const city = [verifyValues.city, verifyValues.state].filter(Boolean).join(", ") +
+      (verifyValues.zip ? ` ${verifyValues.zip}` : "");
+    const newRow: ListingRow = {
+      id: `new-${Date.now()}`,
+      mlsNumber: verifyValues.mlsNumber || "N/A",
+      propertyAddress: address || "New Listing",
+      propertyCity: city.trim() || "—",
+      status: "Active",
+      listingAgent: verifyValues.sellerName || "—",
+      office: verifyValues.office || "Main Office",
+      expirationDate: formatDateMDY(verifyValues.expirationDate),
+      listingPrice: parsePriceToNumber(verifyValues.listingPrice),
+      stage: "Active",
+      stageVariant: "default",
+    };
+    setListings((prev) => [newRow, ...prev]);
+    setCreateOpen(false);
+    setCreateStage("upload");
+    setFiles([]);
+    setSourceTab("listings");
+    setStatusFilter("all");
+    toast.success("Listing created", { description: address || "New listing added to your dashboard." });
+  };
+
   const filteredListings = useMemo(() => {
-    return LISTINGS.filter((row) => {
+    return listings.filter((row) => {
       if (statusFilter !== "all") {
         const s = row.status.toLowerCase();
         if (statusFilter === "active" && s !== "active") return false;
@@ -195,7 +223,7 @@ export default function BusinessTransactions() {
       }
       return true;
     });
-  }, [statusFilter, search]);
+  }, [listings, statusFilter, search]);
 
   const listingStatusBadge = (status: ListingRow["status"]) => {
     switch (status) {
