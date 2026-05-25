@@ -853,7 +853,7 @@ export default function BusinessTransactions() {
                         return (
                           <div
                             id="verify-card-office"
-                            className={`rounded-2xl p-5 transition-colors ${
+                            className={`rounded-2xl p-4 transition-colors ${
                               incomplete
                                 ? "border-2 border-amber-400/60 bg-amber-50/60 dark:bg-amber-500/5"
                                 : "border border-border/60 bg-card"
@@ -864,7 +864,7 @@ export default function BusinessTransactions() {
                                 <span className="inline-block bg-amber-200/80 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
                                   Required
                                 </span>
-                                <h4 className="text-base font-bold text-foreground">Office & Checklist</h4>
+                                <h4 className="text-sm font-bold text-foreground">Office & Checklist</h4>
                               </div>
                               {renderEditToggle("office")}
                             </div>
@@ -884,13 +884,13 @@ export default function BusinessTransactions() {
                         );
                       })()}
 
-                      <div id="verify-card-propertyCore" className="rounded-2xl border border-border/60 bg-card p-5">
+                      <div id="verify-card-propertyCore" className="rounded-2xl border border-border/60 bg-card p-4">
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div>
                             <span className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
                               Required
                             </span>
-                            <h4 className="text-base font-bold text-foreground">Property Core</h4>
+                            <h4 className="text-sm font-bold text-foreground">Property Core</h4>
                           </div>
                           {renderEditToggle("propertyCore")}
                         </div>
@@ -904,13 +904,13 @@ export default function BusinessTransactions() {
                         </div>
                       </div>
 
-                      <div id="verify-card-listingTerms" className="rounded-2xl border border-border/60 bg-card p-5">
+                      <div id="verify-card-listingTerms" className="rounded-2xl border border-border/60 bg-card p-4">
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div>
                             <span className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
                               Required
                             </span>
-                            <h4 className="text-base font-bold text-foreground">Listing Terms</h4>
+                            <h4 className="text-sm font-bold text-foreground">Listing Terms</h4>
                           </div>
                           {renderEditToggle("listingTerms")}
                         </div>
@@ -921,13 +921,13 @@ export default function BusinessTransactions() {
                         </div>
                       </div>
 
-                      <div id="verify-card-seller" className="rounded-2xl border border-border/60 bg-card p-5">
+                      <div id="verify-card-seller" className="rounded-2xl border border-border/60 bg-card p-4">
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div>
                             <span className="inline-block bg-muted text-muted-foreground text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
                               Optional
                             </span>
-                            <h4 className="text-base font-bold text-foreground">Seller Information</h4>
+                            <h4 className="text-sm font-bold text-foreground">Seller Information</h4>
                           </div>
                           {renderEditToggle("seller")}
                         </div>
@@ -938,13 +938,13 @@ export default function BusinessTransactions() {
                         </div>
                       </div>
 
-                      <div id="verify-card-propertyDetails" className="rounded-2xl border border-border/60 bg-card p-5">
+                      <div id="verify-card-propertyDetails" className="rounded-2xl border border-border/60 bg-card p-4">
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div>
                             <span className="inline-block bg-muted text-muted-foreground text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
                               Optional
                             </span>
-                            <h4 className="text-base font-bold text-foreground">Property details</h4>
+                            <h4 className="text-sm font-bold text-foreground">Property details</h4>
                           </div>
                           {renderEditToggle("propertyDetails")}
                         </div>
