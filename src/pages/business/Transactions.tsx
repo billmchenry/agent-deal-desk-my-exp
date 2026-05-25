@@ -78,6 +78,7 @@ const PIPELINE_BY_PERIOD: Record<Period, { inProgress: number; closed: number; p
 export default function BusinessTransactions() {
   const { t } = useTranslation();
   const { formatNumber } = useFormatters();
+  const navigate = useNavigate();
   useDocumentTitle(t("nav.transactions"));
 
   const [period, setPeriod] = useState<Period>("quarterly");
