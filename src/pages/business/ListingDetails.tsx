@@ -411,8 +411,8 @@ export default function ListingDetails() {
                 </div>
                 <h2 className="text-base font-bold">Commission</h2>
               </div>
-              <div className="p-5 space-y-4">
-                <div className="space-y-1.5">
+              <div className="p-4 space-y-2.5">
+                <div className="space-y-1">
                   <Label className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">
                     Sale Price
                   </Label>
@@ -421,14 +421,14 @@ export default function ListingDetails() {
                     onChange={(e) =>
                       setCommission({ ...commission, salePrice: e.target.value })
                     }
-                    className="h-11 px-4 rounded-[51px] bg-white/10 border-white/10 text-white placeholder:text-white/40 text-base font-extrabold tabular-nums focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:border-white/30"
+                    className="h-9 px-3.5 rounded-[51px] bg-white/10 border-white/10 text-white placeholder:text-white/40 text-sm font-extrabold tabular-nums focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:border-white/30"
                     placeholder="0"
                     inputMode="decimal"
                   />
                 </div>
 
-                <div className="pt-2 border-t border-white/10 space-y-3">
-                  <div className="space-y-1.5">
+                <div className="pt-2 border-t border-white/10 space-y-2">
+                  <div className="space-y-1">
                     <Label className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">
                       Commission Rate
                     </Label>
@@ -438,17 +438,17 @@ export default function ListingDetails() {
                         onChange={(e) =>
                           setCommission({ ...commission, rate: e.target.value })
                         }
-                        className="h-11 ps-4 pe-10 text-sm rounded-[51px] bg-white/10 border-white/10 text-white placeholder:text-white/40 tabular-nums focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:border-white/30"
+                        className="h-9 ps-3.5 pe-9 text-xs rounded-[51px] bg-white/10 border-white/10 text-white placeholder:text-white/40 tabular-nums focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:border-white/30"
                         placeholder="0"
                         inputMode="decimal"
                       />
-                      <span className="absolute end-4 top-1/2 -translate-y-1/2 text-white/60 text-sm font-bold pointer-events-none">
+                      <span className="absolute end-4 top-1/2 -translate-y-1/2 text-white/60 text-xs font-bold pointer-events-none">
                         %
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center pt-1">
+                  <div className="flex justify-between items-center pt-0.5">
                     <span className="text-slate-300 text-xs">Total Commission</span>
                     <span className="text-sm font-extrabold text-emerald-400 tabular-nums">
                       {formatNumber(totalCommission, {
@@ -460,7 +460,7 @@ export default function ListingDetails() {
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                <div className="pt-2 border-t border-white/10 flex items-center justify-between">
                   <Label
                     htmlFor="personal-deal"
                     className="text-xs font-medium text-white cursor-pointer"
