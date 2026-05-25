@@ -171,31 +171,31 @@ export default function ListingDetails() {
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-3 mb-1.5">
-              <Badge className="px-3 py-1 bg-primary/10 text-primary hover:bg-primary/10 border-0 text-xs font-bold uppercase tracking-wider rounded-full">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
+              <Badge className="px-2.5 py-0.5 bg-primary/10 text-primary hover:bg-primary/10 border-0 text-[10px] font-bold uppercase tracking-wider rounded-full">
                 {status} Listing
               </Badge>
               {row?.mlsNumber && (
-                <span className="text-muted-foreground text-sm font-medium uppercase tracking-tight">
+                <span className="text-muted-foreground text-xs font-medium uppercase tracking-tight">
                   MLS #{row.mlsNumber}
                 </span>
               )}
             </div>
-            <h1 className="text-3xl font-extrabold text-foreground truncate">
+            <h1 className="text-2xl font-extrabold text-foreground truncate">
               {fullAddress}
             </h1>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             <Button
               variant="outline"
-              className="rounded-[51px] gap-2 h-[51px] px-6 min-h-[44px]"
+              className="rounded-[51px] gap-2 h-11 px-5 text-sm min-h-[44px]"
               onClick={() => navigate(-1)}
             >
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
             <Button
-              className="rounded-[51px] gap-2 h-[51px] px-8 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20"
+              className="rounded-[51px] gap-2 h-11 px-6 text-sm bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20"
               onClick={handleSave}
             >
               <Save className="h-4 w-4" />
