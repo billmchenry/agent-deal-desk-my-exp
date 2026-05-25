@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { UniversalFilterBar } from "@/components/filters";
 import { useDocumentTitle } from "@/hooks/use-document-title";
