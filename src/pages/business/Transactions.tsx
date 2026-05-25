@@ -1035,10 +1035,16 @@ export default function BusinessTransactions() {
                     </div>
                   )}
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" onClick={() => setCreateOpen(false)}>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setCreateOpen(false);
+                        toast("Draft saved", { description: "Your listing was saved as a draft." });
+                      }}
+                    >
                       Save as Draft
                     </Button>
-                    <Button onClick={() => setCreateOpen(false)} disabled={!canCreate}>
+                    <Button onClick={handleCreateListing} disabled={!canCreate}>
                       Create Listing
                     </Button>
                   </div>
