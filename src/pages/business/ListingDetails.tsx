@@ -86,7 +86,7 @@ function SectionCard({
           >
             <Icon className="w-4 h-4" />
           </div>
-          <h2 className="text-base font-bold text-foreground">{title}</h2>
+          <h2 className="text-sm font-bold text-foreground">{title}</h2>
         </div>
         {right}
       </div>
