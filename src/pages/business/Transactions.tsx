@@ -292,7 +292,7 @@ export default function BusinessTransactions() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>{t("transactions.viewDetails")}</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => navigate(`/business/listings/${row.id}`, { state: { row } })}>{t("transactions.viewDetails")}</DropdownMenuItem>
             <DropdownMenuItem>{t("transactions.editListing")}</DropdownMenuItem>
             <DropdownMenuItem>{t("transactions.openInSkySlope")}</DropdownMenuItem>
           </DropdownMenuContent>
