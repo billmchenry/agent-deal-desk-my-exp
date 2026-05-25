@@ -234,12 +234,12 @@ export default function ListingDetails() {
               iconColor="text-primary"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                <Field label="Type (Representation)">
+                <Field label="Agent">
                   <Input
                     value={tx.agent}
                     onChange={(e) => setTx({ ...tx, agent: e.target.value })}
                     className={inputCls}
-                    placeholder="Enter type"
+                    placeholder="Enter agent name"
                   />
                 </Field>
                 <Field label="MLS ID">
