@@ -200,6 +200,7 @@ export default function BusinessTransactions() {
     setFiles([]);
     setSourceTab("listings");
     setStatusFilter("all");
+    setVerifyValues((prev) => ({ ...prev, checklistType: "" }));
     toast.success("Listing created", { description: address || "New listing added to your dashboard." });
   };
 
@@ -569,6 +570,9 @@ export default function BusinessTransactions() {
         open={createOpen}
         onOpenChange={(o) => {
           setCreateOpen(o);
+          if (o) {
+            setVerifyValues((prev) => ({ ...prev, checklistType: "" }));
+          }
           if (!o) {
             setFiles([]);
             setIsDragging(false);
