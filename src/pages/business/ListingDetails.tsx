@@ -251,7 +251,7 @@ export default function ListingDetails() {
                     placeholder="0"
                   />
                 </Field>
-                <Field label="Lead Source">
+                <Field label="Source">
                   <Input
                     value={tx.source}
                     onChange={(e) => setTx({ ...tx, source: e.target.value })}
