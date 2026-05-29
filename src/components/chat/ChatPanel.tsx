@@ -191,6 +191,7 @@ function ChatContent({
   onStopVoiceListening,
   onVoiceTranscript,
   transactionFlowContent,
+  flowActive,
 }: ChatContentProps) {
   const { t } = useTranslation();
   const [pendingAttachments, setPendingAttachments] = React.useState<ChatAttachment[]>([]);
