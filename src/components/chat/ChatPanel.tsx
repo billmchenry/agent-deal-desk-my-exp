@@ -156,6 +156,7 @@ interface ChatContentProps {
   onStopVoiceListening: () => void;
   onVoiceTranscript: (text: string) => void;
   transactionFlowContent?: React.ReactNode;
+  flowActive?: boolean;
 }
 
 function ChatContent({
