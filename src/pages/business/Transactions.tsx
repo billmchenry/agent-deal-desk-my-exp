@@ -664,14 +664,14 @@ export default function Transactions() {
           <TabsTrigger value="listings" className="gap-2">
             <Home className="w-4 h-4" />
             Listings
-            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
+            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-caption tabular-nums">
               {listingsData.length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="transactions" className="gap-2">
             <DollarSign className="w-4 h-4" />
             Transactions
-            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
+            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-caption tabular-nums">
               {transactionsData.length}
             </Badge>
           </TabsTrigger>
@@ -705,7 +705,7 @@ export default function Transactions() {
                       <TableCell>
                         <div>
                           <p className="font-medium text-foreground">{item.propertyAddress}</p>
-                          <p className="text-sm text-muted-foreground">{item.city}, {item.state} {item.zipCode}</p>
+                          <p className="text-body text-muted-foreground">{item.city}, {item.state} {item.zipCode}</p>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -778,7 +778,7 @@ export default function Transactions() {
                         <div className="flex flex-col items-center justify-center gap-2">
                           <Home className="w-8 h-8 text-muted-foreground" />
                           <p className="text-muted-foreground">No listings found</p>
-                          <Button onClick={startListingFlow} size="sm" className="gradient-primary mt-2">
+                          <Button onClick={startListingFlow} size="sm" className="mt-2">
                             <Plus className="w-4 h-4 mr-2" />
                             Create Listing
                           </Button>
@@ -818,7 +818,7 @@ export default function Transactions() {
                       <TableCell>
                         <div>
                           <p className="font-medium text-foreground">{item.fileName}</p>
-                          <p className="text-sm text-muted-foreground">{item.address}</p>
+                          <p className="text-body text-muted-foreground">{item.address}</p>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -882,7 +882,7 @@ export default function Transactions() {
                         <div className="flex flex-col items-center justify-center gap-2">
                           <DollarSign className="w-8 h-8 text-muted-foreground" />
                           <p className="text-muted-foreground">No transactions found</p>
-                          <Button onClick={startTransactionFlow} size="sm" className="gradient-primary mt-2">
+                          <Button onClick={startTransactionFlow} size="sm" className="mt-2">
                             <Plus className="w-4 h-4 mr-2" />
                             Create Transaction
                           </Button>
