@@ -418,7 +418,7 @@ function ChatContent({
 
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 sm:p-4 min-h-0">
         <div className="flex flex-col gap-4 sm:gap-6">
-          {currentMessages.map((message) => {
+          {listingMode === "idle" && contractMode === "idle" && currentMessages.map((message) => {
             const displayMessage = message.id === 'welcome'
               ? { ...message, content: getWelcomeMessageForRoute(pathname) }
               : message;
