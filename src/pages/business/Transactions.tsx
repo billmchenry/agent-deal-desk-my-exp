@@ -23,6 +23,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useTransactions } from "@/contexts/TransactionsContext";
+import { useMiraChat } from "@/contexts/MiraChatContext";
 import { mockExtractContract } from "@/data/mockContractExtraction";
 
 const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New"] as const;
@@ -81,6 +82,7 @@ export default function BusinessTransactions() {
   const { t } = useTranslation();
   const { formatNumber } = useFormatters();
   const navigate = useNavigate();
+  const { openChat } = useMiraChat();
   useDocumentTitle(t("nav.transactions"));
 
   const {
@@ -88,6 +90,8 @@ export default function BusinessTransactions() {
     setPendingContract,
     setActiveListingForContract,
     setContractMode,
+    startListingFlow,
+    startTransactionFlow,
   } = useTransactions();
   const [pickListingOpen, setPickListingOpen] = useState(false);
   const [pickedListingId, setPickedListingId] = useState<string>("");
@@ -383,7 +387,8 @@ export default function BusinessTransactions() {
               <DropdownMenuItem
                 onSelect={(e) => {
                   e.preventDefault();
-                  setCreateOpen(true);
+                  startListingFlow();
+                  openChat();
                 }}
                 className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
               >
@@ -395,7 +400,8 @@ export default function BusinessTransactions() {
               <DropdownMenuItem
                 onSelect={(e) => {
                   e.preventDefault();
-                  setPickListingOpen(true);
+                  startTransactionFlow();
+                  openChat();
                 }}
                 className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
               >
