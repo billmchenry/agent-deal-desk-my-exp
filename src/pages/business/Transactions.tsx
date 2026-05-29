@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useApp } from '@/contexts/AppContext';
 import { cn } from '@/lib/utils';
-import { formatCurrency, formatDate } from '@/lib/mockDocumentExtraction';
+import { useFormatters } from '@/hooks/useFormatters';
 import { CircularProgress } from '@/components/ui/circular-progress';
 
 // Action types and their severity
@@ -144,22 +144,22 @@ const legacyTransactions = [
 
 // Transaction-specific status configuration
 const transactionStatusConfig = {
-  incomplete: { label: 'Incomplete', className: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
-  pending: { label: 'Pending', className: 'bg-orange-500/10 text-orange-600 border-orange-500/20' },
-  canceled_pend: { label: 'Canceled/Pend', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_app: { label: 'Canceled/App', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  expired: { label: 'Expired', className: 'bg-red-500/10 text-red-600 border-red-500/20' },
-  closed: { label: 'Closed', className: 'bg-rose-500/10 text-rose-600 border-rose-500/20' },
-  archived: { label: 'Archived', className: 'bg-amber-500/10 text-amber-700 border-amber-500/20' },
-  pre_contract: { label: 'Pre-Contract', className: 'bg-pink-500/10 text-pink-600 border-pink-500/20' },
+  incomplete: { label: 'Incomplete', className: 'bg-muted text-muted-foreground border-border' },
+  pending: { label: 'Pending', className: 'bg-warning/10 text-warning border-warning/20' },
+  canceled_pend: { label: 'Canceled/Pend', className: 'bg-muted text-muted-foreground border-border' },
+  canceled_app: { label: 'Canceled/App', className: 'bg-muted text-muted-foreground border-border' },
+  expired: { label: 'Expired', className: 'bg-destructive/10 text-destructive border-destructive/20' },
+  closed: { label: 'Closed', className: 'bg-success/10 text-success border-success/20' },
+  archived: { label: 'Archived', className: 'bg-muted text-muted-foreground border-border' },
+  pre_contract: { label: 'Pre-Contract', className: 'bg-primary/10 text-primary border-primary/20' },
 };
 
 // Listing-specific status configuration (matching transaction status UI format)
 const listingStatusConfig = {
-  incomplete: { label: 'Incomplete', className: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
-  active: { label: 'Active', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_pend: { label: 'Canceled/Pend', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_app: { label: 'Canceled/App', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
+  incomplete: { label: 'Incomplete', className: 'bg-muted text-muted-foreground border-border' },
+  active: { label: 'Active', className: 'bg-success/10 text-success border-success/20' },
+  canceled_pend: { label: 'Canceled/Pend', className: 'bg-muted text-muted-foreground border-border' },
+  canceled_app: { label: 'Canceled/App', className: 'bg-muted text-muted-foreground border-border' },
   expired: { label: 'Expired', className: 'bg-destructive/10 text-destructive border-destructive/20' },
 };
 
@@ -244,6 +244,8 @@ const mockListingsData = [
 
 export default function Transactions() {
   const navigate = useNavigate();
+  const { formatNumber, formatDate } = useFormatters();
+  const formatUSD = (n: number) => `${formatNumber(n)} USD`;
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const { askMira, listings, startListingFlow, startTransactionFlow } = useApp();
@@ -426,22 +428,22 @@ export default function Transactions() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-semibold text-foreground">Transactions</h1>
-          <p className="text-muted-foreground">Manage and track your real estate transactions</p>
+          <h1 className="text-page-title font-semibold text-foreground">Transactions</h1>
+          <p className="text-body text-muted-foreground">Manage and track your real estate transactions</p>
         </div>
         <div className="flex items-center gap-6">
-          <a 
-            href="https://skyslope.com" 
-            target="_blank" 
+          <a
+            href="https://skyslope.com"
+            target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-2 text-body text-muted-foreground hover:text-foreground transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             <span>SkySlope</span>
           </a>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="gradient-primary gap-2">
+              <Button className="gap-2">
                 <Plus className="w-4 h-4" />
                 Create
                 <ChevronDown className="w-4 h-4" />
@@ -469,17 +471,17 @@ export default function Transactions() {
       <Card className="mb-6 border-primary/20 bg-primary/5">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-4 h-4 text-primary-foreground" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-foreground leading-relaxed">
+              <p className="text-body text-foreground leading-relaxed">
                 <span className="font-medium">Quick Summary:</span> You have{' '}
                 <span className="font-semibold text-primary">
                   {pendingCount} pending transaction{pendingCount !== 1 ? 's' : ''}
                 </span>{' '}
-                worth <span className="font-semibold">${pendingValue.toLocaleString()}</span> with potential commission of{' '}
-                <span className="font-semibold text-success">${pendingCommission.toLocaleString()}</span>.
+                worth <span className="font-semibold tabular-nums">{formatUSD(pendingValue)}</span> with potential commission of{' '}
+                <span className="font-semibold text-success tabular-nums">{formatUSD(pendingCommission)}</span>.
               </p>
             </div>
             <Button variant="outline" size="sm" onClick={handleAskMira}>
@@ -497,34 +499,34 @@ export default function Transactions() {
           <Card className="bg-card">
             <CardContent className="p-5">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Active Pipeline</span>
+                <span className="text-caption font-medium text-muted-foreground uppercase tracking-wide">Active Pipeline</span>
                 <Tabs value={pipelineRange} onValueChange={setPipelineRange}>
                   <TabsList className="h-7">
-                    <TabsTrigger value="month" className="text-xs px-2 h-5">Monthly</TabsTrigger>
-                    <TabsTrigger value="quarter" className="text-xs px-2 h-5">Quarterly</TabsTrigger>
-                    <TabsTrigger value="year" className="text-xs px-2 h-5">Yearly</TabsTrigger>
+                    <TabsTrigger value="month" className="text-caption px-2 h-5">Monthly</TabsTrigger>
+                    <TabsTrigger value="quarter" className="text-caption px-2 h-5">Quarterly</TabsTrigger>
+                    <TabsTrigger value="year" className="text-caption px-2 h-5">Yearly</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
               <div className="mb-4">
-                <p className="text-4xl font-bold text-foreground">{totalDeals}</p>
-                <p className="text-sm text-muted-foreground">Total Deals</p>
+                <p className="text-stat-value font-semibold text-foreground tabular-nums">{totalDeals}</p>
+                <p className="text-body text-muted-foreground">Total Deals</p>
               </div>
-              <div className="flex items-center gap-3 text-xs">
+              <div className="flex items-center gap-3 text-caption">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-warning">{inProgressCount}</span>
+                  <span className="font-semibold text-warning tabular-nums">{inProgressCount}</span>
                   <span className="text-muted-foreground uppercase">In Progress</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-foreground">{closedCount}</span>
+                  <span className="font-semibold text-foreground tabular-nums">{closedCount}</span>
                   <span className="text-muted-foreground uppercase">Closed</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-success">{paidCount}</span>
+                  <span className="font-semibold text-success tabular-nums">{paidCount}</span>
                   <span className="text-muted-foreground uppercase">Paid</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-muted-foreground">{canceledCount}</span>
+                  <span className="font-semibold text-muted-foreground tabular-nums">{canceledCount}</span>
                   <span className="text-muted-foreground uppercase">Canceled</span>
                 </div>
               </div>
@@ -535,32 +537,31 @@ export default function Transactions() {
           <Card className="border-warning/30 bg-warning/5">
             <CardContent className="p-5">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-warning/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-warning/20 flex items-center justify-center">
                   <Send className="w-5 h-5 text-warning" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-foreground">Send DA</span>
-                    <Badge className="bg-warning text-warning-foreground text-xs">{readyToSend} Ready</Badge>
+                    <Badge className="bg-warning text-warning-foreground text-caption tabular-nums">{readyToSend} Ready</Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground">Disbursement Authorization</p>
+                  <p className="text-caption text-muted-foreground">Disbursement Authorization</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-background rounded-lg p-3 text-center">
-                  <p className="text-2xl font-bold text-foreground">{readyToSend}</p>
-                  <p className="text-xs text-muted-foreground">Ready to Send</p>
+                <div className="bg-background rounded-2xl p-3 text-center">
+                  <p className="text-stat-value font-semibold text-foreground tabular-nums">{readyToSend}</p>
+                  <p className="text-caption text-muted-foreground">Ready to Send</p>
                 </div>
-                <div className="bg-background rounded-lg p-3 text-center">
-                  <p className="text-2xl font-bold text-foreground">{daIssued}</p>
-                  <p className="text-xs text-muted-foreground">DA Issued</p>
+                <div className="bg-background rounded-2xl p-3 text-center">
+                  <p className="text-stat-value font-semibold text-foreground tabular-nums">{daIssued}</p>
+                  <p className="text-caption text-muted-foreground">DA Issued</p>
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button 
-                  size="sm" 
-                  className="flex-1 text-white hover:opacity-90"
-                  style={{ backgroundColor: 'hsl(var(--warning))' }}
+                <Button
+                  size="sm"
+                  className="flex-1 bg-warning text-warning-foreground hover:bg-warning/90"
                 >
                   <Send className="w-3 h-3 mr-1.5" />
                   Send All DAs
@@ -577,25 +578,25 @@ export default function Transactions() {
           <Card className="border-success/30 bg-success/5">
             <CardContent className="p-5">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-success/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-success/20 flex items-center justify-center">
                   <CreditCard className="w-5 h-5 text-success" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-foreground">Settlement</span>
-                    <Badge className="bg-success text-success-foreground text-xs">${(totalPotentialPayout / 1000).toFixed(0)}K</Badge>
+                    <Badge className="bg-success text-success-foreground text-caption tabular-nums">{formatUSD(totalPotentialPayout)}</Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground">Get Paid</p>
+                  <p className="text-caption text-muted-foreground">Get Paid</p>
                 </div>
               </div>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Pending Payout</p>
-                  <p className="text-2xl font-bold text-foreground">${(pendingPayout / 1000).toFixed(0)}K</p>
+                  <p className="text-caption text-muted-foreground uppercase tracking-wide mb-1">Pending Payout</p>
+                  <p className="text-stat-value font-semibold text-foreground tabular-nums">{formatUSD(pendingPayout)}</p>
                 </div>
                 <CircularProgress value={payoutProgress} size={56} strokeWidth={5} />
               </div>
-              <div className="flex items-center gap-4 mb-4 text-xs">
+              <div className="flex items-center gap-4 mb-4 text-caption">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-warning" />
                   <span className="text-muted-foreground">{needDocsCount} Need Docs</span>
@@ -663,14 +664,14 @@ export default function Transactions() {
           <TabsTrigger value="listings" className="gap-2">
             <Home className="w-4 h-4" />
             Listings
-            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
+            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-caption tabular-nums">
               {listingsData.length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="transactions" className="gap-2">
             <DollarSign className="w-4 h-4" />
             Transactions
-            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
+            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-caption tabular-nums">
               {transactionsData.length}
             </Badge>
           </TabsTrigger>
@@ -704,7 +705,7 @@ export default function Transactions() {
                       <TableCell>
                         <div>
                           <p className="font-medium text-foreground">{item.propertyAddress}</p>
-                          <p className="text-sm text-muted-foreground">{item.city}, {item.state} {item.zipCode}</p>
+                          <p className="text-body text-muted-foreground">{item.city}, {item.state} {item.zipCode}</p>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -718,8 +719,8 @@ export default function Transactions() {
                       <TableCell>{item.listingAgent}</TableCell>
                       <TableCell>{item.office}</TableCell>
                       <TableCell>{formatDate(item.expirationDate)}</TableCell>
-                      <TableCell className="font-medium">
-                        {formatCurrency(item.listingPrice)}
+                      <TableCell className="text-right font-medium tabular-nums">
+                        {formatUSD(item.listingPrice)}
                       </TableCell>
                       <TableCell>
                         {item.action ? (
@@ -777,7 +778,7 @@ export default function Transactions() {
                         <div className="flex flex-col items-center justify-center gap-2">
                           <Home className="w-8 h-8 text-muted-foreground" />
                           <p className="text-muted-foreground">No listings found</p>
-                          <Button onClick={startListingFlow} size="sm" className="gradient-primary mt-2">
+                          <Button onClick={startListingFlow} size="sm" className="mt-2">
                             <Plus className="w-4 h-4 mr-2" />
                             Create Listing
                           </Button>
@@ -817,7 +818,7 @@ export default function Transactions() {
                       <TableCell>
                         <div>
                           <p className="font-medium text-foreground">{item.fileName}</p>
-                          <p className="text-sm text-muted-foreground">{item.address}</p>
+                          <p className="text-body text-muted-foreground">{item.address}</p>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -881,7 +882,7 @@ export default function Transactions() {
                         <div className="flex flex-col items-center justify-center gap-2">
                           <DollarSign className="w-8 h-8 text-muted-foreground" />
                           <p className="text-muted-foreground">No transactions found</p>
-                          <Button onClick={startTransactionFlow} size="sm" className="gradient-primary mt-2">
+                          <Button onClick={startTransactionFlow} size="sm" className="mt-2">
                             <Plus className="w-4 h-4 mr-2" />
                             Create Transaction
                           </Button>
