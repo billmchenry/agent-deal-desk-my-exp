@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
-import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X, Loader2, MapPin, User as UserIcon, Calendar as CalendarIcon, CheckCircle2, Pencil, ArrowLeft, Maximize2, History, ZoomIn, ZoomOut, AlertCircle, Check } from "lucide-react";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X, Loader2, MapPin, User as UserIcon, Calendar as CalendarIcon, CheckCircle2, Pencil, ArrowLeft, Maximize2, History, ZoomIn, ZoomOut, AlertCircle, Check, Send, CreditCard, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import {
@@ -84,6 +84,17 @@ export default function BusinessTransactions() {
   const [period, setPeriod] = useState<Period>("quarterly");
   const d = PIPELINE_BY_PERIOD[period];
   const total = d.inProgress + d.closed + d.paid + d.canceled;
+
+  // Mock summary metrics
+  const pendingValue = 1290000;
+  const pendingCommission = 38700;
+  const readyToSend = 3;
+  const daIssued = 2;
+  const totalPotentialPayout = 110000;
+  const pendingPayout = 67000;
+  const payoutProgress = 25;
+  const needDocsCount = 2;
+  const processingCount = 1;
 
   const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -361,164 +372,154 @@ export default function BusinessTransactions() {
           </DropdownMenu>
         </UniversalFilterBar>
 
-        {/* Active Pipeline Hero — donut + legend */}
-        <Card className="relative overflow-hidden bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue p-4 sm:p-6 text-white">
-          <div className="absolute right-0 top-0 h-full w-1/3 opacity-10 pointer-events-none">
-            <div className="absolute right-8 top-8 h-32 w-32 rounded-full bg-exp-frosted-blue" />
-            <div className="absolute right-20 bottom-4 h-20 w-20 rounded-full bg-white" />
-          </div>
-
-          <div className="relative z-10">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <Badge className="bg-white/15 text-white border-white/20 hover:bg-white/20">
-                <Briefcase className="me-1 h-3 w-3" />
-                {t("transactions.activePipeline").toUpperCase()}
-              </Badge>
-              <Tabs value={period} onValueChange={(v) => setPeriod(v as Period)}>
-                <TabsList className="h-10 bg-white/10 border border-white/15 p-1">
-                  <TabsTrigger value="monthly" className="rounded-[51px] px-3 py-1.5 text-xs data-[state=active]:bg-white data-[state=active]:text-exp-dark-navy text-white/80">
-                    {t("transactions.monthly")}
-                  </TabsTrigger>
-                  <TabsTrigger value="quarterly" className="rounded-[51px] px-3 py-1.5 text-xs data-[state=active]:bg-white data-[state=active]:text-exp-dark-navy text-white/80">
-                    {t("transactions.quarterly")}
-                  </TabsTrigger>
-                  <TabsTrigger value="yearly" className="rounded-[51px] px-3 py-1.5 text-xs data-[state=active]:bg-white data-[state=active]:text-exp-dark-navy text-white/80">
-                    {t("transactions.yearly")}
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-6">
-              {/* Donut with center total */}
-              <div className="relative w-44 h-44 sm:w-48 sm:h-48 shrink-0">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <defs>
-                      {chartData.map((s, i) => (
-                        <radialGradient
-                          key={`grad-${s.key}`}
-                          id={`donutGrad-${s.key}-${i}`}
-                          cx="50%"
-                          cy="50%"
-                          r="65%"
-                          fx="50%"
-                          fy="50%"
-                        >
-                          <stop offset="55%" stopColor={s.color} stopOpacity={1} />
-                          <stop offset="100%" stopColor={s.color} stopOpacity={0.55} />
-                        </radialGradient>
-                      ))}
-                      <filter id="donutShadow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" />
-                        <feOffset dx="0" dy="2" result="offsetblur" />
-                        <feComponentTransfer>
-                          <feFuncA type="linear" slope="0.25" />
-                        </feComponentTransfer>
-                        <feMerge>
-                          <feMergeNode />
-                          <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                      </filter>
-                      <radialGradient id="donutInnerShade" cx="50%" cy="50%" r="50%">
-                        <stop offset="60%" stopColor="hsl(var(--exp-dark-navy))" stopOpacity={0} />
-                        <stop offset="100%" stopColor="#000" stopOpacity={0.2} />
-                      </radialGradient>
-                      <radialGradient id="donutHighlight" cx="50%" cy="35%" r="55%">
-                        <stop offset="0%" stopColor="#fff" stopOpacity={0.18} />
-                        <stop offset="70%" stopColor="#fff" stopOpacity={0} />
-                      </radialGradient>
-                    </defs>
-
-                    {/* Subtle base track for depth */}
-                    <Pie
-                      data={[{ value: 1 }]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius="64%"
-                      outerRadius="100%"
-                      dataKey="value"
-                      stroke="none"
-                      fill="hsl(var(--exp-dark-navy))"
-                      isAnimationActive={false}
-                    />
-                    {/* Main colored ring with radial gradients + shadow */}
-                    <Pie
-                      data={chartData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius="66%"
-                      outerRadius="100%"
-                      dataKey="value"
-                      stroke="hsl(var(--exp-dark-navy))"
-                      strokeWidth={3}
-                      paddingAngle={total > 1 ? 3 : 0}
-                      cornerRadius={6}
-                      startAngle={90}
-                      endAngle={-270}
-                      filter="url(#donutShadow)"
-                    >
-                      {chartData.map((s, i) => (
-                        <Cell key={s.key} fill={`url(#donutGrad-${s.key}-${i})`} />
-                      ))}
-                    </Pie>
-                    {/* Inner edge shading for bevel illusion */}
-                    <Pie
-                      data={[{ value: 1 }]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius="66%"
-                      outerRadius="100%"
-                      dataKey="value"
-                      stroke="none"
-                      fill="url(#donutInnerShade)"
-                      isAnimationActive={false}
-                    />
-                    {/* Top-light highlight */}
-                    <Pie
-                      data={[{ value: 1 }]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius="66%"
-                      outerRadius="100%"
-                      dataKey="value"
-                      stroke="none"
-                      fill="url(#donutHighlight)"
-                      isAnimationActive={false}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <p className="font-secondary font-bold text-4xl sm:text-5xl text-white leading-none tabular-nums">
-                    {formatNumber(total)}
-                  </p>
-                  <p className="text-xs text-white/70 mt-1">{t("transactions.totalDeals")}</p>
-                </div>
+        {/* AI Summary */}
+        <Card className="rounded-2xl border-primary/20 bg-primary/5">
+          <div className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                <Sparkles className="w-4 h-4 text-primary-foreground" />
               </div>
-
-              {/* Legend */}
-              <div className="flex-1 w-full grid grid-cols-2 gap-3">
-                {segments.map((s) => {
-                  const pct = total ? Math.round((s.value / total) * 100) : 0;
-                  return (
-                    <div key={s.key} className="rounded-lg bg-white/10 backdrop-blur-sm px-3 py-2.5 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-                        <span className="text-xs font-semibold text-white truncate">{s.label}</span>
-                      </div>
-                      <div className="flex items-baseline gap-1.5">
-                        <p className="font-secondary font-bold text-2xl text-white leading-none tabular-nums">
-                          {formatNumber(s.value)}
-                        </p>
-                        <span className="text-xs text-white/60 tabular-nums">{pct}%</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <p className="text-sm text-foreground leading-relaxed">
+                <span className="font-semibold">Quick Summary:</span> You have{" "}
+                <span className="font-semibold text-primary tabular-nums">{d.inProgress} pending transaction{d.inProgress !== 1 ? "s" : ""}</span>{" "}
+                worth <span className="font-semibold tabular-nums">{formatNumber(pendingValue)} USD</span> with potential commission of{" "}
+                <span className="font-semibold text-exp-green tabular-nums">{formatNumber(pendingCommission)} USD</span>.
+              </p>
             </div>
+            <Button variant="outline" size="sm" className="rounded-[51px] gap-1.5 shrink-0 min-h-[36px]">
+              <Sparkles className="w-3 h-3" />
+              Ask more
+            </Button>
           </div>
         </Card>
+
+        {/* Pipeline / DA / Settlement stat row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Active Pipeline */}
+          <Card className="rounded-2xl bg-card">
+            <div className="p-5">
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                  {t("transactions.activePipeline")}
+                </span>
+                <Tabs value={period} onValueChange={(v) => setPeriod(v as Period)}>
+                  <TabsList className="h-8 p-1">
+                    <TabsTrigger value="monthly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.monthly")}</TabsTrigger>
+                    <TabsTrigger value="quarterly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.quarterly")}</TabsTrigger>
+                    <TabsTrigger value="yearly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.yearly")}</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+              <div className="mb-4">
+                <p className="font-secondary font-bold text-4xl text-foreground tabular-nums leading-none">{formatNumber(total)}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t("transactions.totalDeals")}</p>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-exp-gold tabular-nums">{d.inProgress}</span>
+                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.inProgress")}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-foreground tabular-nums">{d.closed}</span>
+                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.closed")}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-exp-green tabular-nums">{d.paid}</span>
+                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.paid")}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-muted-foreground tabular-nums">{d.canceled}</span>
+                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.canceled")}</span>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Send DA */}
+          <Card className="rounded-2xl border-exp-gold/30 bg-exp-gold/5">
+            <div className="p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-exp-gold/15 flex items-center justify-center text-exp-gold shrink-0">
+                  <Send className="w-5 h-5" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-foreground">Send DA</span>
+                    <Badge className="bg-exp-gold text-white hover:bg-exp-gold border-0 text-[10px] px-2 py-0 h-5">{readyToSend} Ready</Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Disbursement Authorization</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-background rounded-xl p-3 text-center">
+                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">{readyToSend}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Ready to Send</p>
+                </div>
+                <div className="bg-background rounded-xl p-3 text-center">
+                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">{daIssued}</p>
+                  <p className="text-xs text-muted-foreground mt-1">DA Issued</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button size="sm" className="flex-1 rounded-[51px] bg-exp-gold text-white hover:bg-exp-gold/90 gap-1.5 min-h-[36px]">
+                  <Send className="w-3 h-3" />
+                  Send All
+                </Button>
+                <Button size="sm" variant="outline" className="flex-1 rounded-[51px] gap-1.5 min-h-[36px]">
+                  Go to DAs
+                  <ArrowRight className="w-3 h-3" />
+                </Button>
+              </div>
+            </div>
+          </Card>
+
+          {/* Settlement */}
+          <Card className="rounded-2xl border-exp-green/30 bg-exp-green/5">
+            <div className="p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-exp-green/15 flex items-center justify-center text-exp-green shrink-0">
+                  <CreditCard className="w-5 h-5" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-foreground">Settlement</span>
+                    <Badge className="bg-exp-green text-white hover:bg-exp-green border-0 text-[10px] px-2 py-0 h-5 tabular-nums">{Math.round(totalPotentialPayout / 1000)}K</Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Get Paid</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="min-w-0">
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Pending Payout</p>
+                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">
+                    {formatNumber(Math.round(pendingPayout / 1000))}K USD
+                  </p>
+                </div>
+                <div className="relative h-14 w-14 shrink-0">
+                  <svg viewBox="0 0 36 36" className="h-14 w-14 -rotate-90">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="hsl(var(--muted))" strokeWidth="3" />
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="hsl(var(--exp-green))" strokeWidth="3" strokeDasharray={`${payoutProgress}, 100`} strokeLinecap="round" />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-foreground tabular-nums">{payoutProgress}%</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 mb-4 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-exp-gold" />
+                  <span className="text-muted-foreground tabular-nums">{needDocsCount} Need Docs</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-primary" />
+                  <span className="text-muted-foreground tabular-nums">{processingCount} Processing</span>
+                </div>
+              </div>
+              <Button size="sm" className="w-full rounded-[51px] bg-exp-green text-white hover:bg-exp-green/90 gap-1.5 min-h-[36px]">
+                Go to Settlement
+                <ArrowRight className="w-3 h-3" />
+              </Button>
+            </div>
+          </Card>
+        </div>
 
         {/* Toolbar: tabs (left) + search + status pills (right) */}
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
