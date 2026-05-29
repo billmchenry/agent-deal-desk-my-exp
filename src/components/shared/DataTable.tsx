@@ -408,7 +408,7 @@ export function DataTable<T extends Record<string, any>>({
             <button
               key={i}
               type="button"
-              className="w-full text-left rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+              className="w-full text-left rounded-lg border bg-card p-3 hover:bg-accent/50 transition-colors focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] font-secondary"
               onClick={() => onRowClick?.(row)}>
               
                   {mobileCardRender(row)}
@@ -527,6 +527,7 @@ export function DataTable<T extends Record<string, any>>({
               <TableCell
                 key={`${getColumnId(col)}-${i}`}
                 className={cn(
+                  "font-secondary",
                   col.type === "string" && "max-w-[200px] truncate",
                   (col.type === "number" || col.type === "currency") && "text-right tabular-nums",
                   col.stickyRight && "sticky right-0 z-20 bg-background group-hover:bg-muted shadow-[inset_2px_0_0_0_hsl(var(--border))]"
