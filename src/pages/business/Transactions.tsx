@@ -385,8 +385,7 @@ export default function BusinessTransactions() {
               className="w-64 rounded-2xl border-border/60 bg-popover/95 backdrop-blur-sm shadow-lg p-2"
             >
               <DropdownMenuItem
-                onSelect={(e) => {
-                  e.preventDefault();
+                onSelect={() => {
                   startListingFlow();
                   openChat();
                 }}
@@ -398,8 +397,7 @@ export default function BusinessTransactions() {
                 <span className="font-medium">Create Listing</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onSelect={(e) => {
-                  e.preventDefault();
+                onSelect={() => {
                   startTransactionFlow();
                   openChat();
                 }}
