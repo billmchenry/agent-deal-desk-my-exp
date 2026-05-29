@@ -244,6 +244,8 @@ const mockListingsData = [
 
 export default function Transactions() {
   const navigate = useNavigate();
+  const { formatNumber, formatDate } = useFormatters();
+  const formatUSD = (n: number) => `${formatNumber(n)} USD`;
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const { askMira, listings, startListingFlow, startTransactionFlow } = useApp();
