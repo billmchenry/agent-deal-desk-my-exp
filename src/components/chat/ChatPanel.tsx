@@ -1,17 +1,24 @@
-import React, { useRef, useEffect, useState, useMemo } from "react";
-import { useLocation } from "react-router-dom";
-import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2, AudioWaveform, Plus, FileText, Mic, Square } from "lucide-react";
+import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2, AudioWaveform, Plus, FileText, Mic, Square, Home, DollarSign } from "lucide-react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "./ChatMessage";
 import { useMiraChat } from "@/contexts/MiraChatContext";
-import { ChatMessageData, ChatAttachment } from "@/types/chat";
+import { useTransactions } from "@/contexts/TransactionsContext";
+import { ChatMessageData, ChatAttachment, Conversation } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/hooks/useTranslation";
 import { VoiceModeView } from "./VoiceMode";
+import { DocumentDropzone } from "@/components/transactions/DocumentDropzone";
+import { ProcessingStatus } from "@/components/transactions/ProcessingStatus";
+import { ExtractionSummary } from "@/components/transactions/ExtractionSummary";
+import { mockExtractListing } from "@/data/mockListingExtraction";
+import { mockExtractContract } from "@/data/mockContractExtraction";
+import { toast } from "sonner";
 
 interface ChatPanelProps {
   isOpen: boolean;
@@ -130,7 +137,7 @@ interface ChatContentProps {
   messagesContainerRef: React.RefObject<HTMLDivElement>;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  filteredConversations: any[];
+  filteredConversations: Conversation[];
   handleLoadConversation: (id: string) => void;
   handleDeleteConversation: (e: React.MouseEvent, id: string) => void;
   swipedId: string | null;
@@ -148,6 +155,7 @@ interface ChatContentProps {
   onStartVoiceListening: () => void;
   onStopVoiceListening: () => void;
   onVoiceTranscript: (text: string) => void;
+  transactionFlowContent?: React.ReactNode;
 }
 
 function ChatContent({
@@ -181,6 +189,7 @@ function ChatContent({
   onStartVoiceListening,
   onStopVoiceListening,
   onVoiceTranscript,
+  transactionFlowContent,
 }: ChatContentProps) {
   const { t } = useTranslation();
   const [pendingAttachments, setPendingAttachments] = React.useState<ChatAttachment[]>([]);
@@ -421,6 +430,7 @@ function ChatContent({
               />
             );
           })}
+          {transactionFlowContent}
         </div>
       </div>
 
@@ -581,6 +591,7 @@ function ChatContent({
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const { 
     currentMessages, 
     setCurrentMessages, 
@@ -590,6 +601,21 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     pendingQuery,
     clearPendingQuery,
   } = useMiraChat();
+  const {
+    listings,
+    listingMode,
+    setListingMode,
+    pendingExtraction,
+    setPendingExtraction,
+    contractMode,
+    setContractMode,
+    pendingContract,
+    setPendingContract,
+    activeListingForContract,
+    setActiveListingForContract,
+    setSubmittedListing,
+    setSubmittedContract,
+  } = useTransactions();
   const location = useLocation();
   const [inputValue, setInputValue] = useState("");
   const [showHistory, setShowHistory] = useState(false);
@@ -598,7 +624,64 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVoiceMode, setIsVoiceMode] = useState(false);
   const [isVoiceListening, setIsVoiceListening] = useState(false);
+  const [isProcessingListing, setIsProcessingListing] = useState(false);
+  const [isProcessingContract, setIsProcessingContract] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleListingFileSelect = useCallback(async (file: File) => {
+    setListingMode("processing");
+    setIsProcessingListing(true);
+    try {
+      const extractedData = await mockExtractListing(file.name);
+      setPendingExtraction(extractedData);
+    } catch {
+      toast.error("Error processing document. Please try again.");
+      setListingMode("idle");
+    }
+  }, [setListingMode, setPendingExtraction]);
+
+  const handleCancelListingFlow = useCallback(() => {
+    setListingMode("idle");
+    setPendingExtraction(null);
+    setIsProcessingListing(false);
+  }, [setListingMode, setPendingExtraction]);
+
+  const handleViewFullExtraction = useCallback(() => {
+    if (!pendingExtraction) return;
+    setListingMode("verifying");
+    navigate("/business/new-listing");
+  }, [pendingExtraction, setListingMode, navigate]);
+
+  const handleContractFileSelect = useCallback(async (file: File) => {
+    setContractMode("processing");
+    setIsProcessingContract(true);
+    try {
+      const listing = activeListingForContract || listings[0];
+      if (!listing) {
+        toast.error("Create a listing first, then add a transaction.");
+        setContractMode("selecting_listing");
+        return;
+      }
+      const extractedData = await mockExtractContract(file.name, listing);
+      setPendingContract(extractedData);
+    } catch {
+      toast.error("Error processing contract. Please try again.");
+      setContractMode("idle");
+    }
+  }, [activeListingForContract, listings, setContractMode, setPendingContract]);
+
+  const handleCancelContractFlow = useCallback(() => {
+    setContractMode("idle");
+    setPendingContract(null);
+    setActiveListingForContract(null);
+    setIsProcessingContract(false);
+  }, [setContractMode, setPendingContract, setActiveListingForContract]);
+
+  const handleViewContractExtraction = useCallback(() => {
+    if (!activeListingForContract) return;
+    setContractMode("verifying");
+    navigate(`/business/new-contract/${activeListingForContract.id}`);
+  }, [activeListingForContract, setContractMode, navigate]);
 
   const handleLoadConversation = (id: string) => {
     loadConversation(id);
@@ -628,7 +711,12 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
-  }, [currentMessages]);
+  }, [currentMessages, listingMode, contractMode]);
+
+  useEffect(() => {
+    if (listingMode === "uploading") setIsProcessingListing(false);
+    if (contractMode === "uploading") setIsProcessingContract(false);
+  }, [listingMode, contractMode]);
 
   // Auto-scroll while AI is streaming (typewriter animation)
   useEffect(() => {
@@ -722,6 +810,114 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     processMessage(question);
   };
 
+  const transactionFlowContent = (
+    <>
+      {listingMode !== "idle" && listingMode !== "verifying" && (
+        <div className="flex flex-col gap-4 animate-fade-in">
+          <div className="flex items-start gap-3">
+            <div className="relative shrink-0">
+              <div className="absolute inset-0 rounded-full bg-primary/30 blur-md animate-pulse" />
+              <div className="relative h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-primary-foreground" />
+              </div>
+            </div>
+            <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-secondary/80 px-4 py-3">
+              {listingMode === "uploading" && <p className="text-body text-foreground">Ready to start? 📄 Drop all your documents at once—Listing Agreement, disclosures, anything you have—and I'll sort and process them automatically.</p>}
+              {listingMode === "processing" && <p className="text-body text-foreground">Got it! I'm scanning the document now—extracting property details, seller info, and checking for signatures... ✨</p>}
+              {listingMode === "ready" && pendingExtraction && (
+                <div className="text-body text-foreground space-y-2">
+                  <p>✅ <span className="font-medium">100% Compliant</span>—All signatures and initials detected.</p>
+                  <p>Here's what I extracted. <span className="font-medium">Tap “View & Edit”</span> to review the full details and send for compliance review.</p>
+                </div>
+              )}
+              {listingMode === "submitted" && (
+                <div className="text-body text-foreground space-y-2">
+                  <p>🎉 <span className="font-medium">Listing Created!</span> Now being reviewed by compliance.</p>
+                  <p className="text-muted-foreground">Your listing is ready. View the property overview to track progress and manage your listing.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="ps-11 space-y-4">
+            {listingMode === "uploading" && (
+              <>
+                <DocumentDropzone onFileSelect={handleListingFileSelect} disabled={isProcessingListing} allowMultiple label="Drop Documents" />
+                <Button variant="ghost" size="sm" onClick={handleCancelListingFlow} className="text-muted-foreground">Cancel</Button>
+              </>
+            )}
+            {listingMode === "processing" && <ProcessingStatus isProcessing onComplete={() => { setIsProcessingListing(false); setListingMode("ready"); }} documentType="listing" />}
+            {listingMode === "ready" && pendingExtraction && (
+              <>
+                <ExtractionSummary extraction={pendingExtraction} onViewFullExtraction={handleViewFullExtraction} />
+                <Button variant="ghost" size="sm" onClick={handleCancelListingFlow} className="text-muted-foreground">Cancel</Button>
+              </>
+            )}
+            {listingMode === "submitted" && (
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-3 min-h-[56px] rounded-2xl"
+                onClick={() => {
+                  setSubmittedListing(null);
+                  setListingMode("idle");
+                }}
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary"><Home className="h-4 w-4" /></span>
+                <span className="text-start"><span className="block font-medium text-body">View Property Overview</span><span className="block text-xs text-muted-foreground">See listing details and track progress</span></span>
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {contractMode !== "idle" && contractMode !== "verifying" && (
+        <div className="flex flex-col gap-4 animate-fade-in">
+          <div className="flex items-start gap-3">
+            <div className="relative shrink-0">
+              <div className="absolute inset-0 rounded-full bg-primary/30 blur-md animate-pulse" />
+              <div className="relative h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-primary-foreground" />
+              </div>
+            </div>
+            <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-secondary/80 px-4 py-3">
+              {contractMode === "uploading" && !activeListingForContract && <p className="text-body text-foreground">Let's create a transaction! 🎉 Drop your executed contract and any supporting documents below—I'll extract all the details.</p>}
+              {contractMode === "uploading" && activeListingForContract && <p className="text-body text-foreground">Exciting news! 🎉 Let's get <span className="font-medium">{activeListingForContract.extraction.propertyAddress}</span> under contract. Drop your sales contract and/or any supporting docs below.</p>}
+              {contractMode === "processing" && <p className="text-body text-foreground">Got it! I'm scanning the contract—extracting buyer info, financials, and key dates... ✨</p>}
+              {contractMode === "selecting_listing" && pendingContract && <p className="text-body text-foreground">Got it! I extracted the contract for <span className="font-medium">{pendingContract.propertyAddress}</span>. Which listing does this belong to?</p>}
+              {contractMode === "ready" && <div className="text-body text-foreground space-y-2"><p className="font-medium text-exp-green">✅ 100% Compliant—All fields extracted, signatures and initials verified.</p><p>Tap <span className="font-medium">“View & Edit”</span> to review the details and complete any fields not provided in the contract.</p></div>}
+              {contractMode === "submitted" && <div className="text-body text-foreground space-y-2"><p>🎉 <span className="font-medium">Transaction Created!</span> Now being reviewed by compliance.</p><p className="text-muted-foreground">Your transaction checklist is ready. View the property overview to track progress and manage upcoming deadlines.</p></div>}
+            </div>
+          </div>
+
+          <div className="ps-11 space-y-4">
+            {contractMode === "uploading" && (
+              <>
+                <DocumentDropzone onFileSelect={handleContractFileSelect} disabled={isProcessingContract} allowMultiple label="Drop Contract Documents" />
+                <Button variant="ghost" size="sm" onClick={handleCancelContractFlow} className="text-muted-foreground">Cancel</Button>
+              </>
+            )}
+            {contractMode === "processing" && <ProcessingStatus isProcessing onComplete={() => { setIsProcessingContract(false); setContractMode(activeListingForContract ? "ready" : "selecting_listing"); }} documentType="contract" />}
+            {contractMode === "selecting_listing" && pendingContract && (
+              <div className="overflow-hidden rounded-2xl border border-border bg-card">
+                <div className="border-b border-border bg-secondary/50 px-4 py-2"><p className="text-xs font-medium text-muted-foreground">Select a listing</p></div>
+                <div className="max-h-64 divide-y divide-border overflow-y-auto">
+                  {listings.map((listing) => (
+                    <button key={listing.id} onClick={() => { setActiveListingForContract(listing); setContractMode("ready"); }} className="w-full px-4 py-3 text-start hover:bg-secondary/50 transition-colors">
+                      <p className="font-medium text-body text-foreground">{listing.extraction.propertyAddress}</p>
+                      <p className="text-xs text-muted-foreground font-secondary tabular-nums">{listing.extraction.city}, {listing.extraction.state} • {listing.extraction.listingPrice.toLocaleString()} USD</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {contractMode === "ready" && pendingContract && activeListingForContract && <Button onClick={handleViewContractExtraction} className="w-full rounded-[51px] min-h-[44px]">View & Edit</Button>}
+            {contractMode === "submitted" && <Button variant="outline" className="w-full justify-start gap-3 min-h-[56px] rounded-2xl" onClick={() => { setSubmittedContract(null); setContractMode("idle"); }}><span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary"><DollarSign className="h-4 w-4" /></span><span className="text-start"><span className="block font-medium text-body">View Property Overview</span><span className="block text-xs text-muted-foreground">Track progress and manage deadlines</span></span></Button>}
+          </div>
+        </div>
+      )}
+    </>
+  );
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -765,6 +961,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     onStartVoiceListening: () => setIsVoiceListening(true),
     onStopVoiceListening: () => setIsVoiceListening(false),
     onVoiceTranscript: (text: string) => processMessage(text),
+    transactionFlowContent,
   };
 
   // Mobile: Fixed full-screen panel (no overlay)

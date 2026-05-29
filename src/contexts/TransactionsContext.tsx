@@ -135,7 +135,10 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const startTransactionFlow = useCallback(() => {
-    setContractMode("selecting_listing");
+    setActiveListingForContract(null);
+    setPendingContract(null);
+    setSubmittedContract(null);
+    setContractMode("uploading");
   }, []);
 
   const value = useMemo<TransactionsContextValue>(
