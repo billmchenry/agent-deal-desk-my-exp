@@ -22,6 +22,8 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { useTransactions } from "@/contexts/TransactionsContext";
+import { mockExtractContract } from "@/data/mockContractExtraction";
 
 const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New"] as const;
 
@@ -80,6 +82,30 @@ export default function BusinessTransactions() {
   const { formatNumber } = useFormatters();
   const navigate = useNavigate();
   useDocumentTitle(t("nav.transactions"));
+
+  const {
+    listings: ctxListings,
+    setPendingContract,
+    setActiveListingForContract,
+    setContractMode,
+  } = useTransactions();
+  const [pickListingOpen, setPickListingOpen] = useState(false);
+  const [pickedListingId, setPickedListingId] = useState<string>("");
+
+  const startContractForListing = async (listingId: string) => {
+    const listing = ctxListings.find((l) => l.id === listingId);
+    if (!listing) {
+      toast.error("Listing not found");
+      return;
+    }
+    toast.loading("Extracting contract...", { id: "extract-contract" });
+    const contract = await mockExtractContract("Contract.pdf", listing);
+    setActiveListingForContract(listing);
+    setPendingContract(contract);
+    setContractMode("verifying");
+    toast.success("Contract ready for review", { id: "extract-contract" });
+    navigate(`/business/new-contract/${listing.id}`);
+  };
 
   const [period, setPeriod] = useState<Period>("quarterly");
   const d = PIPELINE_BY_PERIOD[period];
@@ -304,6 +330,13 @@ export default function BusinessTransactions() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onSelect={() => navigate(`/business/listings/${row.id}`, { state: { row } })}>{t("transactions.viewDetails")}</DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                void startContractForListing(row.id);
+              }}
+            >
+              Convert to Transaction
+            </DropdownMenuItem>
             <DropdownMenuItem>{t("transactions.editListing")}</DropdownMenuItem>
             <DropdownMenuItem>{t("transactions.openInSkySlope")}</DropdownMenuItem>
           </DropdownMenuContent>
@@ -360,13 +393,16 @@ export default function BusinessTransactions() {
                 <span className="font-medium">Create Listing</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setPickListingOpen(true);
+                }}
                 className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
               >
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <DollarIcon className="h-4 w-4" />
                 </span>
-                <span className="font-medium">Create listing via form</span>
+                <span className="font-medium">Create Transaction</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -1075,6 +1111,41 @@ export default function BusinessTransactions() {
           })()}
         </DialogContent>
       </Dialog>
+
+      {/* Listing picker for Create Transaction flow */}
+      <Dialog open={pickListingOpen} onOpenChange={setPickListingOpen}>
+        <DialogContent className="sm:max-w-md rounded-2xl">
+          <DialogHeader>
+            <DialogTitle>Create Transaction</DialogTitle>
+            <DialogDescription>Select the listing this transaction is for.</DialogDescription>
+          </DialogHeader>
+          <Select value={pickedListingId} onValueChange={setPickedListingId}>
+            <SelectTrigger className="h-11"><SelectValue placeholder="Choose a listing" /></SelectTrigger>
+            <SelectContent>
+              {ctxListings.map((l) => (
+                <SelectItem key={l.id} value={l.id}>
+                  {l.extraction.propertyAddress} — {l.extraction.city}, {l.extraction.state}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="ghost" onClick={() => setPickListingOpen(false)}>Cancel</Button>
+            <Button
+              disabled={!pickedListingId}
+              onClick={() => {
+                const id = pickedListingId;
+                setPickListingOpen(false);
+                setPickedListingId("");
+                void startContractForListing(id);
+              }}
+            >
+              Continue
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
+
