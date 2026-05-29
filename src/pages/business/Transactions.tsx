@@ -412,26 +412,6 @@ export default function BusinessTransactions() {
           </DropdownMenu>
         </UniversalFilterBar>
 
-        {/* AI Summary */}
-        <Card className="rounded-2xl border-primary/20 bg-primary/5">
-          <div className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
-            <div className="flex items-center gap-3 flex-1">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-                <Sparkles className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-semibold">Quick Summary:</span> You have{" "}
-                <span className="font-semibold text-primary tabular-nums">{d.inProgress} pending transaction{d.inProgress !== 1 ? "s" : ""}</span>{" "}
-                worth <span className="font-semibold tabular-nums">{formatNumber(pendingValue)} USD</span> with potential commission of{" "}
-                <span className="font-semibold text-exp-green tabular-nums">{formatNumber(pendingCommission)} USD</span>.
-              </p>
-            </div>
-            <Button variant="outline" size="sm" className="rounded-[51px] gap-1.5 shrink-0 min-h-[36px]">
-              <Sparkles className="w-3 h-3" />
-              Ask more
-            </Button>
-          </div>
-        </Card>
 
         {/* Pipeline / DA / Settlement stat row — Coming Soon */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
