@@ -1,900 +1,1151 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, Sparkles, ExternalLink, MoreVertical, Plus, FileText, ChevronDown, DollarSign, Users, Home, Clock, TrendingUp, Link2, Send, CreditCard, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { UniversalFilterBar } from "@/components/filters";
+import { useDocumentTitle } from "@/hooks/use-document-title";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useFormatters } from "@/hooks/useFormatters";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X, Loader2, MapPin, User as UserIcon, Calendar as CalendarIcon, CheckCircle2, Pencil, ArrowLeft, Maximize2, History, ZoomIn, ZoomOut, AlertCircle, Check, Send, CreditCard, ArrowRight } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useApp } from '@/contexts/AppContext';
-import { cn } from '@/lib/utils';
-import { formatCurrency, formatDate } from '@/lib/mockDocumentExtraction';
-import { CircularProgress } from '@/components/ui/circular-progress';
+} from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
+import { useTransactions } from "@/contexts/TransactionsContext";
+import { mockExtractContract } from "@/data/mockContractExtraction";
 
-// Action types and their severity
-type ActionType = 'error' | 'warning' | null;
+const CHECKLIST_TYPES = ["Commercial Lease", "Lease", "Lot", "Resale", "New"] as const;
 
-const getActionType = (action: string | null): ActionType => {
-  if (!action) return null;
-  const errorActions = ['Missing Documents', 'Broker Rejected', 'Compliance Issue'];
-  return errorActions.includes(action) ? 'error' : 'warning';
-};
+interface ListingRow {
+  id: string;
+  mlsNumber: string;
+  propertyAddress: string;
+  propertyCity: string;
+  status: "Active" | "Expired" | "Incomplete" | "Canceled/Pend";
+  listingAgent: string;
+  office: string;
+  expirationDate: string;
+  listingPrice: number;
+  stage: string;
+  stageVariant: "default" | "warning" | "danger";
+}
 
-// Legacy mock transactions - will be replaced with real listings that have been converted
-const legacyTransactions = [
-  {
-    id: 'legacy-1',
-    property: '456 Maple Avenue',
-    address: 'Austin, TX 78702',
-    status: 'pending',
-    value: 375000,
-    closingDate: new Date('2024-02-20'),
-    commission: 11250,
-    type: 'buyer',
-    client: 'Sarah Mitchell',
-    action: 'Missing Documents',
-    office: 'Austin Central',
-  },
-  {
-    id: 'legacy-2',
-    property: '321 Cedar Court',
-    address: 'Georgetown, TX 78628',
-    status: 'incomplete',
-    value: 299000,
-    closingDate: new Date('2024-02-15'),
-    commission: 8970,
-    type: 'buyer',
-    client: 'David Thompson',
-    action: 'Missing Info',
-    office: 'Georgetown Branch',
-  },
-  {
-    id: 'legacy-3',
-    property: '789 Sunset Blvd',
-    address: 'Pflugerville, TX 78660',
-    status: 'closed',
-    value: 425000,
-    closingDate: new Date('2024-01-15'),
-    commission: 12750,
-    type: 'seller',
-    client: 'The Martinez Family',
-    action: null,
-    office: 'North Austin Division',
-  },
-  {
-    id: 'legacy-4',
-    property: '1520 Willow Creek',
-    address: 'Round Rock, TX 78681',
-    status: 'canceled_pend',
-    value: 515000,
-    closingDate: new Date('2024-03-01'),
-    commission: 15450,
-    type: 'seller',
-    client: 'Jennifer Adams',
-    action: null,
-    office: 'Round Rock Branch',
-  },
-  {
-    id: 'legacy-5',
-    property: '432 Heritage Lane',
-    address: 'Leander, TX 78641',
-    status: 'archived',
-    value: 350000,
-    closingDate: new Date('2024-01-08'),
-    commission: 10500,
-    type: 'referral',
-    client: 'Mark & Lisa Cooper',
-    action: null,
-    office: 'Leander Division',
-  },
-  {
-    id: 'legacy-6',
-    property: '890 Lakeview Dr',
-    address: 'Lakeway, TX 78734',
-    status: 'expired',
-    value: 650000,
-    closingDate: new Date('2024-01-01'),
-    commission: 19500,
-    type: 'seller',
-    client: 'Robert Williams',
-    action: null,
-    office: 'Lakeway Branch',
-  },
-  {
-    id: 'legacy-7',
-    property: '2100 Highland Terrace',
-    address: 'Cedar Park, TX 78613',
-    status: 'canceled_app',
-    value: 420000,
-    closingDate: new Date('2024-02-10'),
-    commission: 12600,
-    type: 'buyer',
-    client: 'Emily Chen',
-    action: null,
-    office: 'Cedar Park Division',
-  },
-  {
-    id: 'legacy-8',
-    property: '555 Oak Ridge Way',
-    address: 'Bee Cave, TX 78738',
-    status: 'pre_contract',
-    value: 890000,
-    closingDate: new Date('2024-04-15'),
-    commission: 26700,
-    type: 'seller',
-    client: 'Michael & Susan Brown',
-    action: null,
-    office: 'West Austin Branch',
-  },
+const INITIAL_LISTINGS: ListingRow[] = [
+  { id: "1", mlsNumber: "MLS-2024-001", propertyAddress: "1234 Oak Street", propertyCity: "Austin, TX 78701",  status: "Expired",       listingAgent: "John & Mary Smith",        office: "Main Office",  expirationDate: "2024-07-14", listingPrice: 485000,  stage: "Active",            stageVariant: "default" },
+  { id: "2", mlsNumber: "MLS-2024-002", propertyAddress: "567 Riverside Dr", propertyCity: "Round Rock, TX 78664", status: "Expired",    listingAgent: "Robert Davis",             office: "Main Office",  expirationDate: "2024-07-31", listingPrice: 325000,  stage: "Pending Review",    stageVariant: "warning" },
+  { id: "3", mlsNumber: "N/A",          propertyAddress: "890 Summit View",  propertyCity: "Cedar Park, TX 78613", status: "Expired",    listingAgent: "Amanda Wilson",            office: "Main Office",  expirationDate: "2024-08-09", listingPrice: 575000,  stage: "Missing Signatures",stageVariant: "warning" },
+  { id: "4", mlsNumber: "MLS-2024-004", propertyAddress: "2100 Lakefront Blvd", propertyCity: "Lakeway, TX 78734", status: "Expired",    listingAgent: "Michael & Jennifer Brown", office: "Main Office",  expirationDate: "2024-07-19", listingPrice: 1250000, stage: "Active",            stageVariant: "default" },
+  { id: "5", mlsNumber: "MLS-001",      propertyAddress: "1234 Oak Street",  propertyCity: "Austin, TX 78701",     status: "Active",     listingAgent: "John Smith",               office: "Main Office",  expirationDate: "2025-06-29", listingPrice: 485000,  stage: "Active",            stageVariant: "default" },
+  { id: "6", mlsNumber: "MLS-002",      propertyAddress: "567 Riverside Dr", propertyCity: "Round Rock, TX 78664", status: "Incomplete", listingAgent: "Sarah Johnson",            office: "North Office", expirationDate: "2025-05-14", listingPrice: 325000,  stage: "Missing Documents", stageVariant: "danger" },
+  { id: "7", mlsNumber: "MLS-003",      propertyAddress: "890 Summit View",  propertyCity: "Cedar Park, TX 78613", status: "Canceled/Pend", listingAgent: "Michael Brown",         office: "Main Office",  expirationDate: "2025-04-19", listingPrice: 575000,  stage: "Awaiting Approval", stageVariant: "default" },
+  { id: "8", mlsNumber: "MLS-004",      propertyAddress: "2100 Lakefront Blvd", propertyCity: "Lakeway, TX 78734", status: "Active",     listingAgent: "Jennifer Brown",           office: "Main Office",  expirationDate: "2025-08-22", listingPrice: 1250000, stage: "Active",            stageVariant: "default" },
+  { id: "9", mlsNumber: "MLS-005",      propertyAddress: "455 Maple Ave",    propertyCity: "Austin, TX 78704",     status: "Active",     listingAgent: "Carlos Reyes",             office: "South Office", expirationDate: "2025-09-30", listingPrice: 695000,  stage: "Active",            stageVariant: "default" },
 ];
 
-// Transaction-specific status configuration
-const transactionStatusConfig = {
-  incomplete: { label: 'Incomplete', className: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
-  pending: { label: 'Pending', className: 'bg-orange-500/10 text-orange-600 border-orange-500/20' },
-  canceled_pend: { label: 'Canceled/Pend', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_app: { label: 'Canceled/App', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  expired: { label: 'Expired', className: 'bg-red-500/10 text-red-600 border-red-500/20' },
-  closed: { label: 'Closed', className: 'bg-rose-500/10 text-rose-600 border-rose-500/20' },
-  archived: { label: 'Archived', className: 'bg-amber-500/10 text-amber-700 border-amber-500/20' },
-  pre_contract: { label: 'Pre-Contract', className: 'bg-pink-500/10 text-pink-600 border-pink-500/20' },
+function parsePriceToNumber(s: string): number {
+  const n = parseFloat(String(s).replace(/[^0-9.]/g, ""));
+  return isNaN(n) ? 0 : n;
+}
+function formatDateMDY(s: string): string {
+  const d = new Date(s);
+  if (isNaN(d.getTime())) return s || "-";
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${mm}/${dd}/${d.getFullYear()}`;
+}
+
+type StatusFilter = "all" | "active" | "pending" | "closed";
+type SourceTab = "listings" | "transactions";
+
+
+type Period = "monthly" | "quarterly" | "yearly";
+
+const PIPELINE_BY_PERIOD: Record<Period, { inProgress: number; closed: number; paid: number; canceled: number }> = {
+  monthly:   { inProgress: 1, closed: 1, paid: 1, canceled: 0 },
+  quarterly: { inProgress: 1, closed: 1, paid: 1, canceled: 0 },
+  yearly:    { inProgress: 4, closed: 9, paid: 8, canceled: 1 },
 };
 
-// Listing-specific status configuration (matching transaction status UI format)
-const listingStatusConfig = {
-  incomplete: { label: 'Incomplete', className: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
-  active: { label: 'Active', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_pend: { label: 'Canceled/Pend', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_app: { label: 'Canceled/App', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  expired: { label: 'Expired', className: 'bg-destructive/10 text-destructive border-destructive/20' },
-};
-
-// Mock listings to demonstrate all status types
-const mockListingsData = [
-  {
-    id: 'mock-1',
-    mlsNumber: 'MLS-001',
-    propertyAddress: '1234 Oak Street',
-    city: 'Austin',
-    state: 'TX',
-    zipCode: '78701',
-    status: 'active' as keyof typeof listingStatusConfig,
-    listingAgent: 'John Smith',
-    office: 'Main Office',
-    expirationDate: new Date('2025-06-30'),
-    listingPrice: 485000,
-    stage: 'Active',
-    action: null,
-  },
-  {
-    id: 'mock-2',
-    mlsNumber: 'MLS-002',
-    propertyAddress: '567 Riverside Dr',
-    city: 'Round Rock',
-    state: 'TX',
-    zipCode: '78664',
-    status: 'incomplete' as keyof typeof listingStatusConfig,
-    listingAgent: 'Sarah Johnson',
-    office: 'North Office',
-    expirationDate: new Date('2025-05-15'),
-    listingPrice: 325000,
-    stage: 'Pending Review',
-    action: 'Missing Documents',
-  },
-  {
-    id: 'mock-3',
-    mlsNumber: 'MLS-003',
-    propertyAddress: '890 Summit View',
-    city: 'Cedar Park',
-    state: 'TX',
-    zipCode: '78613',
-    status: 'canceled_pend' as keyof typeof listingStatusConfig,
-    listingAgent: 'Michael Brown',
-    office: 'Main Office',
-    expirationDate: new Date('2025-04-20'),
-    listingPrice: 575000,
-    stage: 'Awaiting Approval',
-    action: null,
-  },
-  {
-    id: 'mock-4',
-    mlsNumber: 'MLS-004',
-    propertyAddress: '2100 Lakefront Blvd',
-    city: 'Lakeway',
-    state: 'TX',
-    zipCode: '78734',
-    status: 'canceled_app' as keyof typeof listingStatusConfig,
-    listingAgent: 'Emily Davis',
-    office: 'West Office',
-    expirationDate: new Date('2025-03-10'),
-    listingPrice: 1250000,
-    stage: 'Closed',
-    action: null,
-  },
-  {
-    id: 'mock-5',
-    mlsNumber: 'MLS-005',
-    propertyAddress: '432 Heritage Lane',
-    city: 'Leander',
-    state: 'TX',
-    zipCode: '78641',
-    status: 'expired' as keyof typeof listingStatusConfig,
-    listingAgent: 'Robert Wilson',
-    office: 'North Office',
-    expirationDate: new Date('2024-12-15'),
-    listingPrice: 399000,
-    stage: 'Expired',
-    action: null,
-  },
-];
-
-export default function Transactions() {
+export default function BusinessTransactions() {
+  const { t } = useTranslation();
+  const { formatNumber } = useFormatters();
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const { askMira, listings, startListingFlow, startTransactionFlow } = useApp();
+  useDocumentTitle(t("nav.transactions"));
 
-  // Convert listings that are "pending" or "sold" into transaction-like objects
-  const transactionsFromListings = listings
-    .filter(l => l.status === 'pending' || l.status === 'sold')
-    .map(listing => ({
-      id: listing.id,
-      property: listing.extraction.propertyAddress,
-      address: `${listing.extraction.city}, ${listing.extraction.state} ${listing.extraction.zipCode}`,
-      status: listing.status === 'pending' ? 'pending' : 'closed',
-      value: listing.contractData?.salesPrice || listing.extraction.listingPrice,
-      closingDate: listing.contractData?.closingDate,
-      commission: listing.contractData?.listingBrokerFee || 0,
-      type: 'seller', // Default to seller since this was a listing
-      client: listing.extraction.sellers.map(s => s.name).join(', ') || 'Unknown',
-      action: null as string | null,
-      office: 'Austin Central',
-      isFromListing: true,
-    }));
+  const {
+    listings: ctxListings,
+    setPendingContract,
+    setActiveListingForContract,
+    setContractMode,
+  } = useTransactions();
+  const [pickListingOpen, setPickListingOpen] = useState(false);
+  const [pickedListingId, setPickedListingId] = useState<string>("");
 
-  // Combine with legacy transactions
-  const allTransactions = [...transactionsFromListings, ...legacyTransactions];
+  const startContractForListing = async (listingId: string) => {
+    const listing = ctxListings.find((l) => l.id === listingId);
+    if (!listing) {
+      toast.error("Listing not found");
+      return;
+    }
+    toast.loading("Extracting contract...", { id: "extract-contract" });
+    const contract = await mockExtractContract("Contract.pdf", listing);
+    setActiveListingForContract(listing);
+    setPendingContract(contract);
+    setContractMode("verifying");
+    toast.success("Contract ready for review", { id: "extract-contract" });
+    navigate(`/business/new-contract/${listing.id}`);
+  };
 
-  const filteredTransactions = allTransactions.filter((t) => {
-    const matchesSearch = t.property.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.address.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = !statusFilter || t.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const [period, setPeriod] = useState<Period>("quarterly");
+  const d = PIPELINE_BY_PERIOD[period];
+  const total = d.inProgress + d.closed + d.paid + d.canceled;
 
-  const pendingValue = allTransactions
-    .filter((t) => t.status === 'pending')
-    .reduce((acc, t) => acc + t.value, 0);
-
-  const pendingCommission = allTransactions
-    .filter((t) => t.status === 'pending')
-    .reduce((acc, t) => acc + t.commission, 0);
-
-  const pendingCount = allTransactions.filter(t => t.status === 'pending').length;
-
-  // Count only active listings (not pending/sold which are transactions)
-  const activeListingsCount = listings.filter(l => l.status !== 'pending' && l.status !== 'sold').length;
-
-  // Pipeline metrics
-  const [pipelineRange, setPipelineRange] = useState('quarter');
-  const [activeTab, setActiveTab] = useState('listings');
-  
-  const closedThisMonth = allTransactions.filter(t => 
-    t.status === 'closed' && 
-    t.closingDate && 
-    t.closingDate.getMonth() === new Date().getMonth() &&
-    t.closingDate.getFullYear() === new Date().getFullYear()
-  ).length;
-  
-  const totalVolume = allTransactions
-    .filter(t => t.status === 'pending' || t.status === 'closed')
-    .reduce((acc, t) => acc + t.value, 0);
-
-  // Pipeline status counts
-  const inProgressCount = allTransactions.filter(t => t.status === 'pending').length;
-  const closedCount = allTransactions.filter(t => t.status === 'closed').length;
-  const paidCount = allTransactions.filter(t => t.status === 'closed').length; // Mock: treat closed as paid for now
-  const canceledCount = 0; // Mock value
-  const totalDeals = allTransactions.length;
-
-  // DA (Disbursement Authorization) metrics - mock data
+  // Mock summary metrics
+  const pendingValue = 1290000;
+  const pendingCommission = 38700;
   const readyToSend = 3;
   const daIssued = 2;
-
-  // Settlement metrics - mock data
   const totalPotentialPayout = 110000;
   const pendingPayout = 67000;
   const payoutProgress = 25;
   const needDocsCount = 2;
   const processingCount = 1;
 
-  const handleAskMira = () => {
-    askMira('Tell me about my pending transactions');
+  const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [search, setSearch] = useState("");
+  const [createOpen, setCreateOpen] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [createStage, setCreateStage] = useState<"upload" | "processing" | "complete" | "verification">("upload");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  type CardKey = "office" | "propertyCore" | "listingTerms" | "seller" | "propertyDetails";
+  const [editingCards, setEditingCards] = useState<Record<CardKey, boolean>>({
+    office: false,
+    propertyCore: false,
+    listingTerms: false,
+    seller: false,
+    propertyDetails: false,
+  });
+  const toggleEdit = (key: CardKey) =>
+    setEditingCards((prev) => ({ ...prev, [key]: !prev[key] }));
+  const [verifyValues, setVerifyValues] = useState({
+    office: "Connecticut",
+    checklistType: "",
+    streetNumber: "6096",
+    streetAddress: "Energy Lane",
+    city: "Dallas",
+    state: "TX",
+    zip: "75225",
+    county: "Dallas",
+    listingPrice: "$500,000",
+    startDate: "Feb 13, 2026",
+    expirationDate: "Mar 13, 2026",
+    sellerName: "Bob Smith",
+    sellerEmail: "bob.smith@example.com",
+    sellerPhone: "(214) 555-5555",
+    yearBuilt: "",
+    propertyTypeId: "",
+    propertySubtypeId: "",
+    mlsNumber: "",
+  });
+  const setVerifyField = (key: keyof typeof verifyValues, value: string) =>
+    setVerifyValues((prev) => ({ ...prev, [key]: value }));
+
+  const renderEditToggle = (cardKey: CardKey) => {
+    const isEditing = editingCards[cardKey];
+    return (
+      <Button
+        variant="outline"
+        size="sm"
+        className="h-7 gap-1.5 shrink-0"
+        onClick={() => toggleEdit(cardKey)}
+      >
+        {isEditing ? <Check className="h-3 w-3" /> : <Pencil className="h-3 w-3" />}
+        {isEditing ? "Done" : "Edit"}
+      </Button>
+    );
   };
 
-  // Sample actions for listings
-  const listingActions: Record<string, string | null> = {
-    'listing-001': null,
-    'listing-002': 'Pending Review',
-    'listing-003': 'Missing Signatures',
-    'listing-004': null,
+  const renderField = (
+    label: string,
+    fieldKey: keyof typeof verifyValues,
+    cardKey: CardKey,
+    opts: { placeholder?: string; className?: string; numeric?: boolean } = {},
+  ) => {
+    const { placeholder = "—", className = "", numeric = false } = opts;
+    const value = verifyValues[fieldKey];
+    const isEditing = editingCards[cardKey];
+    return (
+      <div className={className} key={fieldKey}>
+        <p className="text-[11px] text-muted-foreground mb-0.5">{label}</p>
+        {isEditing ? (
+          <Input
+            value={value}
+            onChange={(e) => setVerifyField(fieldKey, e.target.value)}
+            className={`h-8 text-xs rounded-lg ${numeric ? "tabular-nums" : ""}`}
+            placeholder={placeholder}
+          />
+        ) : (
+          <p
+            className={`text-xs font-medium ${value ? "text-foreground" : "text-muted-foreground"} ${numeric ? "tabular-nums" : ""} truncate`}
+          >
+            {value || placeholder}
+          </p>
+        )}
+      </div>
+    );
   };
 
-  // Helper function to determine listing display status
-  const getListingStatus = (listing: typeof listings[0]): keyof typeof listingStatusConfig => {
-    const now = new Date();
-    const expirationDate = new Date(listing.extraction.listingEndDate);
-    
-    // Check if expired (past expiration date)
-    if (expirationDate < now) return 'expired';
-    
-    // Check for incomplete (draft or missing critical info)
-    if (listing.status === 'draft' || !listing.extraction.propertyAddress || !listing.extraction.listingPrice) {
-      return 'incomplete';
-    }
-    
-    // Check for withdrawn status -> maps to canceled/pend (needs auditor approval)
-    if (listing.status === 'withdrawn') return 'canceled_pend';
-    
-    // Check for pending_review -> could be canceled/app if already approved, otherwise active
-    if (listing.status === 'pending_review') return 'incomplete';
-    
-    // Default to active for all other statuses
-    return 'active';
+  const addFiles = (incoming: FileList | File[]) => {
+    const arr = Array.from(incoming);
+    if (arr.length) setFiles((prev) => [...prev, ...arr]);
   };
 
-  // Listings data - combine real listings with mock data to show all statuses
-  const realListingsData = listings
-    .filter(l => l.status !== 'pending' && l.status !== 'sold')
-    .map(listing => ({
-      id: listing.id,
-      mlsNumber: listing.extraction.mlsNumber || 'N/A',
-      propertyAddress: listing.extraction.propertyAddress,
-      city: listing.extraction.city,
-      state: listing.extraction.state,
-      zipCode: listing.extraction.zipCode,
-      status: getListingStatus(listing),
-      listingAgent: listing.extraction.sellers[0]?.name || 'Unknown Agent',
-      office: 'Main Office',
-      expirationDate: listing.extraction.listingEndDate,
-      listingPrice: listing.extraction.listingPrice,
-      stage: listing.status === 'active' ? 'Active' : 'Pending Review',
-      action: listingActions[listing.id] || null,
-    }));
+  const [listings, setListings] = useState<ListingRow[]>(INITIAL_LISTINGS);
 
-  // Combine real listings with mock data
-  const listingsData = [...realListingsData, ...mockListingsData]
-    .filter(item => {
-      const matchesSearch = item.propertyAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        `${item.city}, ${item.state}`.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesStatus = !statusFilter || item.status === statusFilter;
-      return matchesSearch && matchesStatus;
+  const handleCreateListing = () => {
+    const address = `${verifyValues.streetNumber} ${verifyValues.streetAddress}`.trim();
+    const city = [verifyValues.city, verifyValues.state].filter(Boolean).join(", ") +
+      (verifyValues.zip ? ` ${verifyValues.zip}` : "");
+    const newRow: ListingRow = {
+      id: `new-${Date.now()}`,
+      mlsNumber: verifyValues.mlsNumber || "N/A",
+      propertyAddress: address || "New Listing",
+      propertyCity: city.trim() || "—",
+      status: "Active",
+      listingAgent: verifyValues.sellerName || "—",
+      office: verifyValues.office || "Main Office",
+      expirationDate: formatDateMDY(verifyValues.expirationDate),
+      listingPrice: parsePriceToNumber(verifyValues.listingPrice),
+      stage: "Active",
+      stageVariant: "default",
+    };
+    setListings((prev) => [newRow, ...prev]);
+    setCreateOpen(false);
+    setCreateStage("upload");
+    setFiles([]);
+    setSourceTab("listings");
+    setStatusFilter("all");
+    setVerifyValues((prev) => ({ ...prev, checklistType: "" }));
+    toast.success("Listing created", { description: address || "New listing added to your dashboard." });
+  };
+
+  const filteredListings = useMemo(() => {
+    return listings.filter((row) => {
+      if (statusFilter !== "all") {
+        const s = row.status.toLowerCase();
+        if (statusFilter === "active" && s !== "active") return false;
+        if (statusFilter === "pending" && !["incomplete", "canceled/pend"].includes(s)) return false;
+        if (statusFilter === "closed" && s !== "expired") return false;
+      }
+      if (search) {
+        const q = search.toLowerCase();
+        return (
+          row.mlsNumber.toLowerCase().includes(q) ||
+          row.propertyAddress.toLowerCase().includes(q) ||
+          row.propertyCity.toLowerCase().includes(q) ||
+          row.listingAgent.toLowerCase().includes(q) ||
+          row.office.toLowerCase().includes(q)
+        );
+      }
+      return true;
     });
+  }, [listings, statusFilter, search]);
 
-  // Transactions data (pending/closed transactions)
-  const transactionsData = allTransactions
-    .map(t => ({
-      id: t.id,
-      fileName: t.property,
-      address: t.address,
-      status: t.status as keyof typeof transactionStatusConfig,
-      agent: t.client || 'Agent Name',
-      office: t.office || 'Austin Central',
-      incompleteItems: t.action ? 1 : 0,
-      closingDate: t.closingDate,
-      stage: getStageFromStatus(t.status),
-      action: t.action || null,
-    }))
-    .filter(item => {
-      const matchesSearch = item.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.address.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesStatus = !statusFilter || item.status === statusFilter;
-      return matchesSearch && matchesStatus;
-    });
-
-  // Helper to get stage text from status
-  function getStageFromStatus(status: string): string {
+  const listingStatusBadge = (status: ListingRow["status"]) => {
     switch (status) {
-      case 'pre_contract': return 'Pre-Contract';
-      case 'pending': return 'In Progress';
-      case 'incomplete': return 'Needs Attention';
-      case 'closed': return 'Completed';
-      case 'archived': return 'Archived';
-      case 'expired': return 'Expired';
-      case 'canceled_pend': return 'Pending Approval';
-      case 'canceled_app': return 'Canceled';
-      default: return 'In Progress';
+      case "Active":
+        return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Active</Badge>;
+      case "Expired":
+        return <Badge className="bg-exp-red/10 text-exp-red border-exp-red/20 hover:bg-exp-red/10">Expired</Badge>;
+      case "Incomplete":
+        return <Badge className="bg-exp-purple/10 text-exp-purple border-exp-purple/20 hover:bg-exp-purple/10">Incomplete</Badge>;
+      case "Canceled/Pend":
+        return <Badge className="bg-muted text-muted-foreground hover:bg-muted">Canceled/Pend</Badge>;
     }
-  }
+  };
+
+  const stageBadge = (stage: string, variant: ListingRow["stageVariant"]) => {
+    if (variant === "warning") {
+      return <Badge className="bg-exp-gold/10 text-exp-gold border-exp-gold/20 hover:bg-exp-gold/10">{stage}</Badge>;
+    }
+    if (variant === "danger") {
+      return <Badge className="bg-exp-red/10 text-exp-red border-exp-red/20 hover:bg-exp-red/10">{stage}</Badge>;
+    }
+    return <span className="text-sm text-muted-foreground">{stage}</span>;
+  };
+
+  const columns: ColumnDef<ListingRow>[] = [
+    { key: "mlsNumber", header: "transactions.mlsNumber", type: "string", sortable: true },
+    {
+      key: "propertyAddress",
+      header: "transactions.propertyAddress",
+      type: "string",
+      sortable: true,
+      render: (_v, row) => (
+        <div className="min-w-0">
+          <p className="text-sm text-foreground truncate">{row.propertyAddress}</p>
+          <p className="text-xs text-muted-foreground truncate">{row.propertyCity}</p>
+        </div>
+      ),
+    },
+    { key: "status", header: "transactions.statusCol", type: "badge", sortable: true, render: (_v, row) => listingStatusBadge(row.status) },
+    { key: "listingAgent", header: "transactions.listingAgent", type: "string", sortable: true },
+    { key: "office", header: "transactions.office", type: "string", sortable: true },
+    { key: "expirationDate", header: "transactions.expirationDate", type: "date", sortable: true },
+    { key: "listingPrice", header: "transactions.listingPrice", type: "currency", sortable: true },
+    { key: "stage", header: "transactions.stage", type: "string", sortable: true, render: (_v, row) => stageBadge(row.stage, row.stageVariant) },
+    {
+      id: "actions",
+      key: "id" as keyof ListingRow,
+      header: "transactions.actions",
+      type: "string",
+      sortable: false,
+      stickyRight: true,
+      render: (_v, row) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9"
+              aria-label={`Open actions for ${row.mlsNumber}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={() => navigate(`/business/listings/${row.id}`, { state: { row } })}>{t("transactions.viewDetails")}</DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                void startContractForListing(row.id);
+              }}
+            >
+              Convert to Transaction
+            </DropdownMenuItem>
+            <DropdownMenuItem>{t("transactions.editListing")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("transactions.openInSkySlope")}</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ];
+
+  const segments = [
+    { key: "inProgress", label: t("transactions.inProgress"), value: d.inProgress, color: "hsl(var(--exp-purple))" },
+    { key: "closed",     label: t("transactions.closed"),     value: d.closed,     color: "hsl(var(--exp-green))" },
+    { key: "paid",       label: t("transactions.paid"),       value: d.paid,       color: "hsl(var(--exp-blue-light))" },
+    { key: "canceled",   label: t("transactions.canceled"),   value: d.canceled,   color: "hsl(var(--exp-light-grey))" },
+  ];
+
+  const chartData = total === 0
+    ? [{ key: "empty", value: 1, color: "hsl(var(--muted))" }]
+    : segments.filter((s) => s.value > 0);
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto animate-fade-in">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl lg:text-3xl font-semibold text-foreground">Transactions</h1>
-          <p className="text-muted-foreground">Manage and track your real estate transactions</p>
-        </div>
-        <div className="flex items-center gap-6">
-          <a 
-            href="https://skyslope.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+    <DashboardLayout>
+      <div className="space-y-4 pb-20">
+        <UniversalFilterBar title={t("nav.transactions")} subtitle={t("transactions.subtitle")}>
+          <Button
+            variant="outline"
+            className="rounded-[51px] gap-2 min-h-[44px]"
+            onClick={() => window.open("https://exp.skyslope.com", "_blank", "noopener,noreferrer")}
           >
-            <ExternalLink className="w-4 h-4" />
-            <span>SkySlope</span>
-          </a>
+            <ExternalLink className="h-4 w-4" />
+            SkySlope
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="gradient-primary gap-2">
-                <Plus className="w-4 h-4" />
-                Create
-                <ChevronDown className="w-4 h-4" />
+              <Button className="rounded-[51px] gap-2 min-h-[44px] bg-primary text-primary-foreground hover:bg-primary/90">
+                <Plus className="h-4 w-4" />
+                {t("transactions.create")}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={startListingFlow}>
-                <FileText className="w-4 h-4 mr-2" />
-                Create Listing
+            <DropdownMenuContent
+              align="end"
+              sideOffset={8}
+              className="w-64 rounded-2xl border-border/60 bg-popover/95 backdrop-blur-sm shadow-lg p-2"
+            >
+              <DropdownMenuItem
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setCreateOpen(true);
+                }}
+                className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <HomeIcon className="h-4 w-4" />
+                </span>
+                <span className="font-medium">Create Listing</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={startTransactionFlow}>
-                <DollarSign className="w-4 h-4 mr-2" />
-                Create Transaction
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => askMira("Help me create a new referral")}>
-                <Users className="w-4 h-4 mr-2" />
-                Create Referral
+              <DropdownMenuItem
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setPickListingOpen(true);
+                }}
+                className="rounded-xl gap-3 px-3 py-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <DollarIcon className="h-4 w-4" />
+                </span>
+                <span className="font-medium">Create Transaction</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-      </div>
+        </UniversalFilterBar>
 
-      {/* AI Summary Card */}
-      <Card className="mb-6 border-primary/20 bg-primary/5">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <div className="flex-1">
+        {/* AI Summary */}
+        <Card className="rounded-2xl border-primary/20 bg-primary/5">
+          <div className="p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+                <Sparkles className="w-4 h-4 text-primary-foreground" />
+              </div>
               <p className="text-sm text-foreground leading-relaxed">
-                <span className="font-medium">Quick Summary:</span> You have{' '}
-                <span className="font-semibold text-primary">
-                  {pendingCount} pending transaction{pendingCount !== 1 ? 's' : ''}
-                </span>{' '}
-                worth <span className="font-semibold">${pendingValue.toLocaleString()}</span> with potential commission of{' '}
-                <span className="font-semibold text-success">${pendingCommission.toLocaleString()}</span>.
+                <span className="font-semibold">Quick Summary:</span> You have{" "}
+                <span className="font-semibold text-primary tabular-nums">{d.inProgress} pending transaction{d.inProgress !== 1 ? "s" : ""}</span>{" "}
+                worth <span className="font-semibold tabular-nums">{formatNumber(pendingValue)} USD</span> with potential commission of{" "}
+                <span className="font-semibold text-exp-green tabular-nums">{formatNumber(pendingCommission)} USD</span>.
               </p>
             </div>
-            <Button variant="outline" size="sm" onClick={handleAskMira}>
-              <Sparkles className="w-3 h-3 mr-1.5" />
+            <Button variant="outline" size="sm" className="rounded-[51px] gap-1.5 shrink-0 min-h-[36px]">
+              <Sparkles className="w-3 h-3" />
               Ask more
             </Button>
           </div>
-        </CardContent>
-      </Card>
+        </Card>
 
-
-      <div className="mb-6">
+        {/* Pipeline / DA / Settlement stat row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Active Pipeline Card */}
-          <Card className="bg-card">
-            <CardContent className="p-5">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Active Pipeline</span>
-                <Tabs value={pipelineRange} onValueChange={setPipelineRange}>
-                  <TabsList className="h-7">
-                    <TabsTrigger value="month" className="text-xs px-2 h-5">Monthly</TabsTrigger>
-                    <TabsTrigger value="quarter" className="text-xs px-2 h-5">Quarterly</TabsTrigger>
-                    <TabsTrigger value="year" className="text-xs px-2 h-5">Yearly</TabsTrigger>
+          {/* Active Pipeline */}
+          <Card className="rounded-2xl bg-card">
+            <div className="p-5">
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                  {t("transactions.activePipeline")}
+                </span>
+                <Tabs value={period} onValueChange={(v) => setPeriod(v as Period)}>
+                  <TabsList className="h-8 p-1">
+                    <TabsTrigger value="monthly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.monthly")}</TabsTrigger>
+                    <TabsTrigger value="quarterly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.quarterly")}</TabsTrigger>
+                    <TabsTrigger value="yearly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.yearly")}</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
               <div className="mb-4">
-                <p className="text-4xl font-bold text-foreground">{totalDeals}</p>
-                <p className="text-sm text-muted-foreground">Total Deals</p>
+                <p className="font-secondary font-bold text-4xl text-foreground tabular-nums leading-none">{formatNumber(total)}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t("transactions.totalDeals")}</p>
               </div>
-              <div className="flex items-center gap-3 text-xs">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-warning">{inProgressCount}</span>
-                  <span className="text-muted-foreground uppercase">In Progress</span>
+                  <span className="font-bold text-exp-gold tabular-nums">{d.inProgress}</span>
+                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.inProgress")}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-foreground">{closedCount}</span>
-                  <span className="text-muted-foreground uppercase">Closed</span>
+                  <span className="font-bold text-foreground tabular-nums">{d.closed}</span>
+                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.closed")}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-success">{paidCount}</span>
-                  <span className="text-muted-foreground uppercase">Paid</span>
+                  <span className="font-bold text-exp-green tabular-nums">{d.paid}</span>
+                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.paid")}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-muted-foreground">{canceledCount}</span>
-                  <span className="text-muted-foreground uppercase">Canceled</span>
+                  <span className="font-bold text-muted-foreground tabular-nums">{d.canceled}</span>
+                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.canceled")}</span>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
-          {/* Send DA Card */}
-          <Card className="border-warning/30 bg-warning/5">
-            <CardContent className="p-5">
+          {/* Send DA */}
+          <Card className="rounded-2xl border-exp-gold/30 bg-exp-gold/5">
+            <div className="p-5">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-warning/20 flex items-center justify-center">
-                  <Send className="w-5 h-5 text-warning" />
+                <div className="w-10 h-10 rounded-xl bg-exp-gold/15 flex items-center justify-center text-exp-gold shrink-0">
+                  <Send className="w-5 h-5" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-foreground">Send DA</span>
-                    <Badge className="bg-warning text-warning-foreground text-xs">{readyToSend} Ready</Badge>
+                    <Badge className="bg-exp-gold text-white hover:bg-exp-gold border-0 text-[10px] px-2 py-0 h-5">{readyToSend} Ready</Badge>
                   </div>
                   <p className="text-xs text-muted-foreground">Disbursement Authorization</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-background rounded-lg p-3 text-center">
-                  <p className="text-2xl font-bold text-foreground">{readyToSend}</p>
-                  <p className="text-xs text-muted-foreground">Ready to Send</p>
+                <div className="bg-background rounded-xl p-3 text-center">
+                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">{readyToSend}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Ready to Send</p>
                 </div>
-                <div className="bg-background rounded-lg p-3 text-center">
-                  <p className="text-2xl font-bold text-foreground">{daIssued}</p>
-                  <p className="text-xs text-muted-foreground">DA Issued</p>
+                <div className="bg-background rounded-xl p-3 text-center">
+                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">{daIssued}</p>
+                  <p className="text-xs text-muted-foreground mt-1">DA Issued</p>
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button 
-                  size="sm" 
-                  className="flex-1 text-white hover:opacity-90"
-                  style={{ backgroundColor: 'hsl(var(--warning))' }}
-                >
-                  <Send className="w-3 h-3 mr-1.5" />
-                  Send All DAs
+                <Button size="sm" className="flex-1 rounded-[51px] bg-exp-gold text-white hover:bg-exp-gold/90 gap-1.5 min-h-[36px]">
+                  <Send className="w-3 h-3" />
+                  Send All
                 </Button>
-                <Button size="sm" variant="outline" className="flex-1">
+                <Button size="sm" variant="outline" className="flex-1 rounded-[51px] gap-1.5 min-h-[36px]">
                   Go to DAs
-                  <ArrowRight className="w-3 h-3 ml-1.5" />
+                  <ArrowRight className="w-3 h-3" />
                 </Button>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
-          {/* Settlement Card */}
-          <Card className="border-success/30 bg-success/5">
-            <CardContent className="p-5">
+          {/* Settlement */}
+          <Card className="rounded-2xl border-exp-green/30 bg-exp-green/5">
+            <div className="p-5">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-success/20 flex items-center justify-center">
-                  <CreditCard className="w-5 h-5 text-success" />
+                <div className="w-10 h-10 rounded-xl bg-exp-green/15 flex items-center justify-center text-exp-green shrink-0">
+                  <CreditCard className="w-5 h-5" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-foreground">Settlement</span>
-                    <Badge className="bg-success text-success-foreground text-xs">${(totalPotentialPayout / 1000).toFixed(0)}K</Badge>
+                    <Badge className="bg-exp-green text-white hover:bg-exp-green border-0 text-[10px] px-2 py-0 h-5 tabular-nums">{Math.round(totalPotentialPayout / 1000)}K</Badge>
                   </div>
                   <p className="text-xs text-muted-foreground">Get Paid</p>
                 </div>
               </div>
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Pending Payout</p>
-                  <p className="text-2xl font-bold text-foreground">${(pendingPayout / 1000).toFixed(0)}K</p>
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="min-w-0">
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Pending Payout</p>
+                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">
+                    {formatNumber(Math.round(pendingPayout / 1000))}K USD
+                  </p>
                 </div>
-                <CircularProgress value={payoutProgress} size={56} strokeWidth={5} />
+                <div className="relative h-14 w-14 shrink-0">
+                  <svg viewBox="0 0 36 36" className="h-14 w-14 -rotate-90">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="hsl(var(--muted))" strokeWidth="3" />
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="hsl(var(--exp-green))" strokeWidth="3" strokeDasharray={`${payoutProgress}, 100`} strokeLinecap="round" />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-foreground tabular-nums">{payoutProgress}%</div>
+                </div>
               </div>
               <div className="flex items-center gap-4 mb-4 text-xs">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-warning" />
-                  <span className="text-muted-foreground">{needDocsCount} Need Docs</span>
+                  <span className="w-2 h-2 rounded-full bg-exp-gold" />
+                  <span className="text-muted-foreground tabular-nums">{needDocsCount} Need Docs</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-primary" />
-                  <span className="text-muted-foreground">{processingCount} Processing</span>
+                  <span className="text-muted-foreground tabular-nums">{processingCount} Processing</span>
                 </div>
               </div>
-              <Button size="sm" className="w-full bg-success text-success-foreground hover:bg-success/90">
+              <Button size="sm" className="w-full rounded-[51px] bg-exp-green text-white hover:bg-exp-green/90 gap-1.5 min-h-[36px]">
                 Go to Settlement
-                <ArrowRight className="w-3 h-3 ml-1.5" />
+                <ArrowRight className="w-3 h-3" />
               </Button>
-            </CardContent>
+            </div>
           </Card>
         </div>
+
+        {/* Toolbar: tabs (left) + search + status pills (right) */}
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <Tabs value={sourceTab} onValueChange={(v) => setSourceTab(v as SourceTab)}>
+            <TabsList className="h-10 p-1">
+              <TabsTrigger value="listings" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
+                <HomeIcon className="h-4 w-4" />
+                {t("transactions.tabListings")}
+                <Badge variant="secondary" className="ms-1 px-2 font-normal">{listings.length}</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="transactions" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
+                <DollarIcon className="h-4 w-4" />
+                {t("transactions.tabTransactions")}
+                <Badge variant="secondary" className="ms-1 px-2 font-normal">{total}</Badge>
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t("transactions.searchProperties")}
+              className="h-11 w-full sm:w-72 rounded-[51px] border border-input bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              aria-label={t("transactions.searchProperties")}
+            />
+            {(["all", "active", "pending", "closed"] as StatusFilter[]).map((key) => (
+              <Button
+                key={key}
+                variant={statusFilter === key ? "default" : "outline"}
+                onClick={() => setStatusFilter(key)}
+                className={`rounded-[51px] min-h-[44px] px-4 ${statusFilter === key ? "bg-primary hover:bg-primary/90 text-primary-foreground" : ""}`}
+              >
+                {t(`transactions.filter.${key}`)}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {/* Table */}
+        {/* Table */}
+        <DataTable<ListingRow>
+          data={filteredListings}
+          columns={columns}
+          defaultPageSize={25}
+        />
       </div>
 
-      {/* Search & Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search properties..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant={statusFilter === null ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setStatusFilter(null)}
-          >
-            All
-          </Button>
-          <Button
-            variant={statusFilter === 'active' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setStatusFilter('active')}
-          >
-            Active
-          </Button>
-          <Button
-            variant={statusFilter === 'pending' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setStatusFilter('pending')}
-          >
-            Pending
-          </Button>
-          <Button
-            variant={statusFilter === 'closed' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setStatusFilter('closed')}
-          >
-            Closed
-          </Button>
-        </div>
-      </div>
+      <Dialog
+        open={createOpen}
+        onOpenChange={(o) => {
+          setCreateOpen(o);
+          if (o) {
+            setVerifyValues((prev) => ({ ...prev, checklistType: "" }));
+          }
+          if (!o) {
+            setFiles([]);
+            setIsDragging(false);
+            setCreateStage("upload");
+          }
+        }}
+      >
+        <DialogContent className={`${createStage === "verification" ? "sm:max-w-[1280px] h-[92vh] flex flex-col" : "sm:max-w-md"} rounded-2xl border-border/60 p-0 overflow-hidden`}>
+          <div className="bg-gradient-to-r from-exp-dark-navy via-exp-charcoal-blue to-exp-slate-blue px-5 py-4 text-white">
+            <DialogHeader className="space-y-1 text-start">
+              <DialogTitle className="flex items-center gap-2 text-white">
+                {createStage === "verification" && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 -ms-1 text-white hover:bg-white/15 hover:text-white"
+                    aria-label="Back"
+                    onClick={() => setCreateStage("complete")}
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                )}
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
+                  <Sparkles className="h-4 w-4" />
+                </span>
+                {createStage === "complete"
+                  ? "Extraction Complete"
+                  : createStage === "verification"
+                    ? "Listing Verification"
+                    : "Create Listing"}
+              </DialogTitle>
+              <DialogDescription className="text-white/75">
+                {createStage === "upload" &&
+                  "Drop your Listing Agreement, disclosures, or any related docs — Mira will sort and process them automatically."}
+                {createStage === "processing" &&
+                  "Mira is reading your documents and extracting listing details. This usually takes a few seconds."}
+                {createStage === "complete" &&
+                  "Here's what Mira extracted from your PDF. Review the details and finish your listing."}
+                {createStage === "verification" &&
+                  "Review extracted data from the Listing Agreement and complete any required details."}
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
-      {/* Tabbed Tables */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="mb-4">
-          <TabsTrigger value="listings" className="gap-2">
-            <Home className="w-4 h-4" />
-            Listings
-            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
-              {listingsData.length}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="transactions" className="gap-2">
-            <DollarSign className="w-4 h-4" />
-            Transactions
-            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
-              {transactionsData.length}
-            </Badge>
-          </TabsTrigger>
-        </TabsList>
+          {/* UPLOAD STAGE */}
+          {createStage === "upload" && (
+            <div className="p-5 space-y-4">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDragging(true);
+                }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setIsDragging(false);
+                  if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
+                }}
+                className={`w-full rounded-2xl border-2 border-dashed transition-colors px-6 py-8 flex flex-col items-center justify-center gap-3 text-center ${
+                  isDragging
+                    ? "border-primary bg-primary/5"
+                    : "border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/40"
+                }`}
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <UploadCloud className="h-6 w-6" />
+                </span>
+                <span className="font-medium text-foreground">Drop Documents</span>
+                <span className="text-xs text-muted-foreground">
+                  Drop multiple PDFs or click to browse
+                </span>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept=".pdf,.doc,.docx,image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files) addFiles(e.target.files);
+                    e.target.value = "";
+                  }}
+                />
+              </button>
 
-        <TabsContent value="listings">
-          <Card>
-            <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>MLS#</TableHead>
-                    <TableHead>Property Address</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Listing Agent</TableHead>
-                    <TableHead>Office</TableHead>
-                    <TableHead>Expiration Date</TableHead>
-                    <TableHead>Listing Price</TableHead>
-                    <TableHead>Stage</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {listingsData.map((item) => (
-                    <TableRow 
-                      key={item.id} 
-                      className="group cursor-pointer hover:bg-muted/50"
-                      onClick={() => navigate(`/transactions/${item.id}`)}
+              {files.length > 0 && (
+                <ul className="space-y-2 max-h-40 overflow-y-auto">
+                  {files.map((f, i) => (
+                    <li
+                      key={`${f.name}-${i}`}
+                      className="flex items-center gap-3 rounded-xl border border-border/60 bg-card px-3 py-2"
                     >
-                      <TableCell className="font-medium">{item.mlsNumber}</TableCell>
-                      <TableCell>
-                        <div>
-                          <p className="font-medium text-foreground">{item.propertyAddress}</p>
-                          <p className="text-sm text-muted-foreground">{item.city}, {item.state} {item.zipCode}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant="outline" 
-                          className={listingStatusConfig[item.status]?.className || 'bg-muted text-muted-foreground'}
+                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+                        <FileText className="h-4 w-4" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium truncate">{f.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {(f.size / 1024).toFixed(1)} KB
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 shrink-0"
+                        onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+                        aria-label={`Remove ${f.name}`}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-1">
+                <Button variant="ghost" onClick={() => setCreateOpen(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  disabled={files.length === 0}
+                  onClick={() => {
+                    setCreateStage("processing");
+                    window.setTimeout(() => setCreateStage("complete"), 2200);
+                  }}
+                  className="gap-2"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Process with Mira
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* PROCESSING STAGE */}
+          {createStage === "processing" && (
+            <div className="p-6 space-y-6">
+              <div className="flex flex-col items-center justify-center text-center py-6 gap-4">
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse" aria-hidden />
+                  <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Loader2 className="h-7 w-7 animate-spin" />
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground">Processing with Mira</p>
+                  <p className="text-xs text-muted-foreground">
+                    Extracting fields from {files.length} document{files.length === 1 ? "" : "s"}…
+                  </p>
+                </div>
+              </div>
+
+              <ul className="space-y-2" aria-live="polite">
+                {[
+                  "Reading document content",
+                  "Identifying listing details",
+                  "Validating fields",
+                ].map((label, i) => (
+                  <li
+                    key={label}
+                    className="flex items-center gap-3 rounded-xl border border-border/60 bg-muted/30 px-3 py-2 text-sm"
+                  >
+                    <Loader2
+                      className="h-4 w-4 animate-spin text-primary"
+                      style={{ animationDelay: `${i * 0.15}s` }}
+                    />
+                    <span className="text-foreground/80">{label}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* COMPLETE STAGE */}
+          {createStage === "complete" && (
+            <div className="p-5 space-y-4">
+              <div className="flex items-center gap-2 rounded-xl bg-emerald-500/10 px-3 py-2 text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="text-sm font-semibold">Extraction Complete</span>
+                <span className="ms-auto text-xs text-muted-foreground">Step 1 of 2</span>
+              </div>
+
+              <ul className="rounded-2xl border border-border/60 bg-card divide-y divide-border/60">
+                {[
+                  { icon: MapPin, label: "Property Address", value: "8160 Energy Lane, Dallas, TX 75225" },
+                  { icon: UserIcon, label: "Seller", value: "Bob Smith" },
+                  { icon: DollarIcon, label: "Listing Price", value: "500,000 USD" },
+                  { icon: CalendarIcon, label: "Start Date", value: "02/13/2026" },
+                ].map(({ icon: Icon, label, value }) => (
+                  <li key={label} className="flex items-center gap-3 px-3 py-2.5">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs text-muted-foreground">{label}</p>
+                      <p className="text-sm font-medium text-foreground truncate">{value}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="rounded-2xl border border-border/60 bg-muted/30 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Final Details
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                  Summary of key extracted fields. Please review the full extraction and complete
+                  any required details in the next step.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between gap-2 pt-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2"
+                  onClick={() => setCreateStage("upload")}
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                  Re-upload
+                </Button>
+                <Button
+                  onClick={() => setCreateStage("verification")}
+                  className="gap-2"
+                >
+                  Finish Listing
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* VERIFICATION STAGE */}
+          {createStage === "verification" && (() => {
+            const sections: { id: CardKey; label: string; required: boolean; incomplete: boolean }[] = [
+              {
+                id: "office",
+                label: "Office & Checklist",
+                required: true,
+                incomplete: !verifyValues.office.trim() || !verifyValues.checklistType.trim(),
+              },
+              { id: "propertyCore", label: "Property Core", required: true, incomplete: false },
+              { id: "listingTerms", label: "Listing Terms", required: true, incomplete: false },
+              { id: "seller", label: "Seller Information", required: false, incomplete: false },
+              { id: "propertyDetails", label: "Property details", required: false, incomplete: false },
+            ];
+            const incompleteCount = sections.filter((s) => s.required && s.incomplete).length;
+            const canCreate = incompleteCount === 0;
+            const scrollTo = (id: CardKey) => {
+              document.getElementById(`verify-card-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+            };
+            return (
+              <div className="flex-1 min-h-0 flex flex-col">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 overflow-hidden min-h-0">
+                  {/* PDF Viewer */}
+                  <section className="flex flex-col border-r border-border/60 bg-muted/30 overflow-hidden min-h-0">
+                    <div className="shrink-0 flex items-center justify-between gap-2 px-4 py-2 border-b border-border/60 bg-card">
+                      <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+                        <FileText className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span>Testing.pdf</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                        <Button variant="ghost" size="icon" className="h-7 w-7" aria-label="Zoom out">
+                          <ZoomOut className="h-3.5 w-3.5" />
+                        </Button>
+                        <span className="tabular-nums font-medium tracking-wider uppercase">100%</span>
+                        <Button variant="ghost" size="icon" className="h-7 w-7" aria-label="Zoom in">
+                          <ZoomIn className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-h-0 overflow-y-auto p-4 flex flex-col items-center gap-4 bg-foreground/[0.04] dark:bg-background/40">
+                      {[1, 2, 3].map((page) => (
+                        <div
+                          key={page}
+                          className="w-full max-w-[460px] aspect-[1/1.35] bg-card rounded-md border border-border/60 shadow-md p-8 flex flex-col items-center justify-center text-center gap-2 shrink-0"
                         >
-                          {listingStatusConfig[item.status]?.label || item.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{item.listingAgent}</TableCell>
-                      <TableCell>{item.office}</TableCell>
-                      <TableCell>{formatDate(item.expirationDate)}</TableCell>
-                      <TableCell className="font-medium">
-                        {formatCurrency(item.listingPrice)}
-                      </TableCell>
-                      <TableCell>
-                        {item.action ? (
-                          <Badge 
-                            variant="outline" 
-                            className={cn(
-                              "gap-1",
-                              getActionType(item.action) === 'error' 
-                                ? "bg-destructive/10 text-destructive border-destructive/20" 
-                                : "bg-warning/10 text-warning border-warning/20"
-                            )}
+                          {page === 1 ? (
+                            <>
+                              <h3 className="text-base font-bold text-foreground tracking-tight">RESIDENTIAL LISTING AGREEMENT</h3>
+                              <p className="text-xs font-medium text-muted-foreground">Exclusive Right to Sell</p>
+                              <div className="w-3/4 h-px bg-border/60 my-1" />
+                              <p className="text-xs italic text-muted-foreground">Document preview not available.</p>
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Page {page}</p>
+                              <div className="w-3/4 h-px bg-border/60 my-1" />
+                              <p className="text-xs italic text-muted-foreground">Continued content…</p>
+                            </>
+                          )}
+                          <p className="text-[10px] text-muted-foreground mt-auto">Page {page} of 3</p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+
+                  {/* Extraction details */}
+                  <section className="relative flex flex-col overflow-hidden bg-background">
+                    <div className="absolute start-2 top-6 bottom-6 w-8 hidden md:flex flex-col items-center gap-5 z-10 py-2">
+                      {sections.map((s) => {
+                        const active = s.required && s.incomplete;
+                        return (
+                          <button
+                            key={s.id}
+                            type="button"
+                            onClick={() => scrollTo(s.id)}
+                            aria-label={`Jump to ${s.label}`}
+                            className="group flex items-center justify-center min-h-[44px] min-w-[44px]"
                           >
-                            <span>⊘</span>
-                            {item.action}
-                          </Badge>
-                        ) : (
-                          <span className="text-muted-foreground">{item.stage}</span>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button 
-                              variant="outline" 
-                              size="icon" 
-                              className="h-8 w-8"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <MoreVertical className="w-4 h-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/transactions/${item.id}`);
-                            }}>
-                              <ExternalLink className="w-4 h-4 mr-2" />
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={(e) => {
-                              e.stopPropagation();
-                              askMira(`Tell me about the property at ${item.propertyAddress}`);
-                            }}>
-                              <Sparkles className="w-4 h-4 mr-2" />
-                              Ask Mira
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {listingsData.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={9} className="h-32 text-center">
-                        <div className="flex flex-col items-center justify-center gap-2">
-                          <Home className="w-8 h-8 text-muted-foreground" />
-                          <p className="text-muted-foreground">No listings found</p>
-                          <Button onClick={startListingFlow} size="sm" className="gradient-primary mt-2">
-                            <Plus className="w-4 h-4 mr-2" />
-                            Create Listing
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                            <span
+                              className={`h-2 w-2 rounded-full transition-all ${
+                                active
+                                  ? "bg-amber-500 ring-4 ring-amber-500/15"
+                                  : "bg-muted-foreground/30 group-hover:bg-muted-foreground/60"
+                              }`}
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
 
-        <TabsContent value="transactions">
-          <Card>
-            <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>File Name</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Agent</TableHead>
-                    <TableHead>Office</TableHead>
-                    <TableHead>Incomplete Items</TableHead>
-                    <TableHead>Closing Date</TableHead>
-                    <TableHead>Stage</TableHead>
-                    <TableHead className="w-10">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {transactionsData.map((item) => (
-                    <TableRow 
-                      key={item.id} 
-                      className="group cursor-pointer hover:bg-muted/50"
-                      onClick={() => navigate(`/transactions/${item.id}`)}
-                    >
-                      <TableCell>
-                        <div>
-                          <p className="font-medium text-foreground">{item.fileName}</p>
-                          <p className="text-sm text-muted-foreground">{item.address}</p>
+                    <div className="flex-1 min-h-0 overflow-y-auto ps-10 pe-4 py-4 space-y-4 text-sm">
+                      {(() => {
+                        const incomplete = sections[0].incomplete;
+                        return (
+                          <div
+                            id="verify-card-office"
+                            className={`rounded-2xl p-4 transition-colors ${
+                              incomplete
+                                ? "border-2 border-amber-400/60 bg-amber-50/60 dark:bg-amber-500/5"
+                                : "border border-border/60 bg-card"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-3 mb-3">
+                              <div>
+                                <span
+                                  className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5 ${
+                                    incomplete
+                                      ? "bg-amber-200/80 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300"
+                                      : "bg-primary/10 text-primary"
+                                  }`}
+                                >
+                                  Required
+                                </span>
+                                <h4 className="text-sm font-bold text-foreground">Office & Checklist</h4>
+                              </div>
+                              {renderEditToggle("office")}
+                            </div>
+                            {incomplete && (
+                              <div className="flex items-start gap-2 bg-amber-100/60 dark:bg-amber-500/10 p-3 rounded-lg border border-amber-200/80 dark:border-amber-500/20 mb-4">
+                                <AlertCircle className="h-4 w-4 text-amber-700 dark:text-amber-400 mt-0.5 shrink-0" />
+                                <p className="text-xs font-medium text-amber-800 dark:text-amber-200 leading-snug">
+                                  Required: These details were not found in the document. Please select manually.
+                                </p>
+                              </div>
+                            )}
+                            <div className="grid grid-cols-1 gap-x-4 gap-y-3">
+                              {renderField("Office", "office", "office")}
+                              <div>
+                                <div className="flex items-center justify-between mb-0.5">
+                                  <p className="text-[11px] text-muted-foreground">Checklist type</p>
+                                  {verifyValues.checklistType.trim() && (
+                                    <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                      <Check className="h-3 w-3" />
+                                      Done
+                                    </span>
+                                  )}
+                                </div>
+                                <Select
+                                  value={verifyValues.checklistType}
+                                  onValueChange={(v) => setVerifyField("checklistType", v)}
+                                >
+                                  <SelectTrigger className="h-8 text-xs rounded-lg">
+                                    <SelectValue placeholder="Choose a checklist type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {CHECKLIST_TYPES.map((opt) => (
+                                      <SelectItem key={opt} value={opt} className="text-xs">
+                                        {opt}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      <div id="verify-card-propertyCore" className="rounded-2xl border border-border/60 bg-card p-4">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                              Required
+                            </span>
+                            <h4 className="text-sm font-bold text-foreground">Property Core</h4>
+                          </div>
+                          {renderEditToggle("propertyCore")}
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant="outline" 
-                          className={transactionStatusConfig[item.status]?.className || 'bg-muted text-muted-foreground'}
-                        >
-                          {transactionStatusConfig[item.status]?.label || item.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{item.agent}</TableCell>
-                      <TableCell>{item.office}</TableCell>
-                      <TableCell>
-                        {item.incompleteItems > 0 ? item.incompleteItems : '—'}
-                      </TableCell>
-                      <TableCell>
-                        {item.closingDate ? formatDate(item.closingDate) : '—'}
-                      </TableCell>
-                      <TableCell>
-                        <span className={cn(
-                          item.stage === 'Closed' ? 'text-success' : 'text-muted-foreground'
-                        )}>
-                          {item.stage}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button 
-                              variant="outline" 
-                              size="icon" 
-                              className="h-8 w-8"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <MoreVertical className="w-4 h-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/transactions/${item.id}`);
-                            }}>
-                              <ExternalLink className="w-4 h-4 mr-2" />
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={(e) => {
-                              e.stopPropagation();
-                              askMira(`Tell me about the property at ${item.fileName}`);
-                            }}>
-                              <Sparkles className="w-4 h-4 mr-2" />
-                              Ask Mira
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {transactionsData.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={8} className="h-32 text-center">
-                        <div className="flex flex-col items-center justify-center gap-2">
-                          <DollarSign className="w-8 h-8 text-muted-foreground" />
-                          <p className="text-muted-foreground">No transactions found</p>
-                          <Button onClick={startTransactionFlow} size="sm" className="gradient-primary mt-2">
-                            <Plus className="w-4 h-4 mr-2" />
-                            Create Transaction
-                          </Button>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                          {renderField("Street Number", "streetNumber", "propertyCore", { numeric: true })}
+                          {renderField("Street Address", "streetAddress", "propertyCore")}
+                          {renderField("City", "city", "propertyCore")}
+                          {renderField("State", "state", "propertyCore")}
+                          {renderField("ZIP", "zip", "propertyCore", { numeric: true })}
+                          {renderField("County", "county", "propertyCore")}
                         </div>
-                      </TableCell>
-                    </TableRow>
+                      </div>
+
+                      <div id="verify-card-listingTerms" className="rounded-2xl border border-border/60 bg-card p-4">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span className="inline-block bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                              Required
+                            </span>
+                            <h4 className="text-sm font-bold text-foreground">Listing Terms</h4>
+                          </div>
+                          {renderEditToggle("listingTerms")}
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                          {renderField("Listing Price", "listingPrice", "listingTerms", { numeric: true })}
+                          {renderField("Start Date", "startDate", "listingTerms")}
+                          {renderField("Expiration Date", "expirationDate", "listingTerms")}
+                        </div>
+                      </div>
+
+                      <div id="verify-card-seller" className="rounded-2xl border border-border/60 bg-card p-4">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span className="inline-block bg-muted text-muted-foreground text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                              Optional
+                            </span>
+                            <h4 className="text-sm font-bold text-foreground">Seller Information</h4>
+                          </div>
+                          {renderEditToggle("seller")}
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                          {renderField("Name", "sellerName", "seller")}
+                          {renderField("Email", "sellerEmail", "seller")}
+                          {renderField("Phone", "sellerPhone", "seller", { numeric: true })}
+                        </div>
+                      </div>
+
+                      <div id="verify-card-propertyDetails" className="rounded-2xl border border-border/60 bg-card p-4">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <span className="inline-block bg-muted text-muted-foreground text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5">
+                              Optional
+                            </span>
+                            <h4 className="text-sm font-bold text-foreground">Property details</h4>
+                          </div>
+                          {renderEditToggle("propertyDetails")}
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                          {renderField("Year Built", "yearBuilt", "propertyDetails", { numeric: true })}
+                          {renderField("Property Type ID", "propertyTypeId", "propertyDetails")}
+                          {renderField("Property Subtype ID", "propertySubtypeId", "propertyDetails")}
+                          {renderField("MLS Number", "mlsNumber", "propertyDetails")}
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+                {/* Footer */}
+                <div className="shrink-0 flex items-center justify-between gap-3 px-6 py-4 border-t border-border/60 bg-card">
+                  {canCreate ? (
+                    <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                      <Check className="h-4 w-4" />
+                      All required fields complete
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 text-sm font-semibold text-amber-600 dark:text-amber-400">
+                      <AlertCircle className="h-4 w-4" />
+                      <span className="tabular-nums">{incompleteCount}</span>{" "}
+                      {incompleteCount === 1 ? "section" : "sections"} remaining
+                    </div>
                   )}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setCreateOpen(false);
+                        toast("Draft saved", { description: "Your listing was saved as a draft." });
+                      }}
+                    >
+                      Save as Draft
+                    </Button>
+                    <Button onClick={handleCreateListing} disabled={!canCreate}>
+                      Create Listing
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+        </DialogContent>
+      </Dialog>
+
+      {/* Listing picker for Create Transaction flow */}
+      <Dialog open={pickListingOpen} onOpenChange={setPickListingOpen}>
+        <DialogContent className="sm:max-w-md rounded-2xl">
+          <DialogHeader>
+            <DialogTitle>Create Transaction</DialogTitle>
+            <DialogDescription>Select the listing this transaction is for.</DialogDescription>
+          </DialogHeader>
+          <Select value={pickedListingId} onValueChange={setPickedListingId}>
+            <SelectTrigger className="h-11"><SelectValue placeholder="Choose a listing" /></SelectTrigger>
+            <SelectContent>
+              {ctxListings.map((l) => (
+                <SelectItem key={l.id} value={l.id}>
+                  {l.extraction.propertyAddress} — {l.extraction.city}, {l.extraction.state}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="ghost" onClick={() => setPickListingOpen(false)}>Cancel</Button>
+            <Button
+              disabled={!pickedListingId}
+              onClick={() => {
+                const id = pickedListingId;
+                setPickListingOpen(false);
+                setPickedListingId("");
+                void startContractForListing(id);
+              }}
+            >
+              Continue
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </DashboardLayout>
   );
 }
+

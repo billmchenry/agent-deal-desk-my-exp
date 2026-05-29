@@ -1,14 +1,17 @@
-import { useCallback, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useApp } from '@/contexts/AppContext';
-import { ContractVerificationView } from '@/components/contract/ContractVerificationView';
-import { toast } from 'sonner';
-import { transactionChecklistItems } from '@/lib/mockContractExtraction';
+import { useCallback, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { ContractVerificationView } from "@/components/transactions/ContractVerificationView";
+import { useTransactions } from "@/contexts/TransactionsContext";
+import { transactionChecklistItems } from "@/data/mockContractExtraction";
+import { toast } from "sonner";
 
 export default function NewContract() {
   const { listingId } = useParams<{ listingId: string }>();
   const navigate = useNavigate();
-  const { 
+  const {
     listings,
     pendingContract,
     setPendingContract,
@@ -16,74 +19,81 @@ export default function NewContract() {
     updateListingToContract,
     setSubmittedContract,
     setActiveListingForContract,
-    setIsChatOpen,
-  } = useApp();
+  } = useTransactions();
 
-  const listing = listings.find(l => l.id === listingId);
+  const listing = listings.find((l) => l.id === listingId) || null;
 
-  // Redirect if no pending contract or listing not found
   useEffect(() => {
     if (!pendingContract || !listing) {
-      navigate('/transactions');
+      navigate("/business/transactions");
     }
   }, [pendingContract, listing, navigate]);
 
-  const handleUpdateField = useCallback((field: string, value: any) => {
-    if (!pendingContract) return;
-    
-    setPendingContract({
-      ...pendingContract,
-      [field]: value,
-      confidence: {
-        ...pendingContract.confidence,
-        [field]: 100, // User verified = 100% confidence
-      },
-    });
-  }, [pendingContract, setPendingContract]);
+  const handleUpdate = useCallback(
+    (field: string, value: unknown) => {
+      if (!pendingContract) return;
+      setPendingContract({
+        ...pendingContract,
+        [field]: value,
+        confidence: { ...pendingContract.confidence, [field]: 100 },
+      });
+    },
+    [pendingContract, setPendingContract],
+  );
 
   const handleApprove = useCallback(() => {
     if (!pendingContract || !listing) return;
-    
-    // Update listing to "Under Contract" status with contract data and new checklist
     updateListingToContract(listing.id, pendingContract, transactionChecklistItems);
-    
-    // Store the submitted contract data for the chat UI
     setSubmittedContract({ listing, contract: pendingContract });
-    
-    // Reset contract flow state and switch to submitted mode
     setPendingContract(null);
     setActiveListingForContract(null);
-    setContractMode('submitted');
-    
-    // Open chat to show confirmation
-    setIsChatOpen(true);
-    
-    // Navigate to transactions page
-    navigate('/transactions');
-  }, [pendingContract, listing, updateListingToContract, setPendingContract, setContractMode, setSubmittedContract, setActiveListingForContract, setIsChatOpen, navigate]);
+    setContractMode("submitted");
+    toast.success("Transaction created", { description: listing.extraction.propertyAddress });
+    navigate("/business/transactions");
+  }, [
+    pendingContract,
+    listing,
+    updateListingToContract,
+    setPendingContract,
+    setActiveListingForContract,
+    setContractMode,
+    setSubmittedContract,
+    navigate,
+  ]);
 
   const handleSaveDraft = useCallback(() => {
-    toast.success('Contract saved as draft');
-    navigate('/transactions');
+    toast.success("Contract saved as draft");
+    navigate("/business/transactions");
   }, [navigate]);
 
   const handleClose = useCallback(() => {
     setPendingContract(null);
-    setContractMode('idle');
-    navigate('/transactions');
-  }, [setPendingContract, setContractMode, navigate]);
+    setActiveListingForContract(null);
+    setContractMode("idle");
+    navigate("/business/transactions");
+  }, [setPendingContract, setActiveListingForContract, setContractMode, navigate]);
 
   if (!pendingContract || !listing) {
-    return null;
+    return (
+      <DashboardLayout>
+        <div className="p-6 max-w-2xl mx-auto text-center space-y-4">
+          <h2 className="text-xl font-semibold text-foreground">No contract in progress</h2>
+          <Button onClick={() => navigate("/business/transactions")} variant="outline" className="gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Transactions
+          </Button>
+        </div>
+      </DashboardLayout>
+    );
   }
 
   return (
     <ContractVerificationView
-      open={true}
+      open
       onClose={handleClose}
       listing={listing}
       extraction={pendingContract}
-      onUpdate={handleUpdateField}
+      onUpdate={handleUpdate}
       onApprove={handleApprove}
       onSaveDraft={handleSaveDraft}
     />

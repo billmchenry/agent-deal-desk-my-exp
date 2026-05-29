@@ -23,9 +23,7 @@ import BusinessTransactions from "./pages/business/Transactions";
 import ListingDetails from "./pages/business/ListingDetails";
 import NewListing from "./pages/business/NewListing";
 import NewContract from "./pages/business/NewContract";
-import PropertyDetailRouter from "./pages/business/PropertyDetailRouter";
-import { AppProvider } from "@/contexts/AppContext";
-import { FloatingChat } from "@/components/chat/FloatingChat";
+import { TransactionsProvider } from "@/contexts/TransactionsContext";
 import RevShareDashboard from "./pages/revshare/Dashboard";
 import OrganizationReporting from "./pages/revshare/Organization";
 import OrganizationTree from "./pages/revshare/OrganizationTree";
@@ -56,7 +54,7 @@ const App = () => (
         <MiraChatProvider>
           <DemoConfigProvider>
           <DashboardProvider>
-            <AppProvider>
+            <TransactionsProvider>
             <TooltipProvider>
             <Toaster />
             <Sonner />
@@ -76,11 +74,6 @@ const App = () => (
                 <Route path="/business/listings/:id" element={<ListingDetails />} />
                 <Route path="/business/new-listing" element={<NewListing />} />
                 <Route path="/business/new-contract/:listingId" element={<NewContract />} />
-                {/* Mirapro-aligned transaction flow routes */}
-                <Route path="/transactions" element={<BusinessTransactions />} />
-                <Route path="/transactions/new-listing" element={<NewListing />} />
-                <Route path="/transactions/:listingId" element={<PropertyDetailRouter />} />
-                <Route path="/transactions/:listingId/contract" element={<NewContract />} />
                 <Route path="/revshare/dashboard" element={<RevShareDashboard />} />
                 <Route path="/revshare/organization" element={<OrganizationReporting />} />
                 <Route path="/revshare/organization-tree" element={<OrganizationTree />} />
@@ -102,10 +95,9 @@ const App = () => (
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              <FloatingChat />
             </BrowserRouter>
             </TooltipProvider>
-            </AppProvider>
+            </TransactionsProvider>
           </DashboardProvider>
           </DemoConfigProvider>
         </MiraChatProvider>
