@@ -144,22 +144,22 @@ const legacyTransactions = [
 
 // Transaction-specific status configuration
 const transactionStatusConfig = {
-  incomplete: { label: 'Incomplete', className: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
-  pending: { label: 'Pending', className: 'bg-orange-500/10 text-orange-600 border-orange-500/20' },
-  canceled_pend: { label: 'Canceled/Pend', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_app: { label: 'Canceled/App', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  expired: { label: 'Expired', className: 'bg-red-500/10 text-red-600 border-red-500/20' },
-  closed: { label: 'Closed', className: 'bg-rose-500/10 text-rose-600 border-rose-500/20' },
-  archived: { label: 'Archived', className: 'bg-amber-500/10 text-amber-700 border-amber-500/20' },
-  pre_contract: { label: 'Pre-Contract', className: 'bg-pink-500/10 text-pink-600 border-pink-500/20' },
+  incomplete: { label: 'Incomplete', className: 'bg-muted text-muted-foreground border-border' },
+  pending: { label: 'Pending', className: 'bg-warning/10 text-warning border-warning/20' },
+  canceled_pend: { label: 'Canceled/Pend', className: 'bg-muted text-muted-foreground border-border' },
+  canceled_app: { label: 'Canceled/App', className: 'bg-muted text-muted-foreground border-border' },
+  expired: { label: 'Expired', className: 'bg-destructive/10 text-destructive border-destructive/20' },
+  closed: { label: 'Closed', className: 'bg-success/10 text-success border-success/20' },
+  archived: { label: 'Archived', className: 'bg-muted text-muted-foreground border-border' },
+  pre_contract: { label: 'Pre-Contract', className: 'bg-primary/10 text-primary border-primary/20' },
 };
 
 // Listing-specific status configuration (matching transaction status UI format)
 const listingStatusConfig = {
-  incomplete: { label: 'Incomplete', className: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
-  active: { label: 'Active', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_pend: { label: 'Canceled/Pend', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
-  canceled_app: { label: 'Canceled/App', className: 'bg-gray-500/10 text-gray-600 border-gray-500/20' },
+  incomplete: { label: 'Incomplete', className: 'bg-muted text-muted-foreground border-border' },
+  active: { label: 'Active', className: 'bg-success/10 text-success border-success/20' },
+  canceled_pend: { label: 'Canceled/Pend', className: 'bg-muted text-muted-foreground border-border' },
+  canceled_app: { label: 'Canceled/App', className: 'bg-muted text-muted-foreground border-border' },
   expired: { label: 'Expired', className: 'bg-destructive/10 text-destructive border-destructive/20' },
 };
 
