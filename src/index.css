@@ -75,6 +75,19 @@
     --header-background: 0 0% 100%;
     --header-foreground: 0 0% 0%;
     --header-border: 214 32% 91%;
+
+    /* Mirapro semantic tokens */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+    --surface: 0 0% 100%;
+    --surface-elevated: 0 0% 100%;
+    --surface-hover: 210 40% 96%;
+    --ai-gradient-start: 221 36% 49%;
+    --ai-gradient-end: 262 83% 58%;
   }
 
   .dark {
@@ -139,6 +152,53 @@
 @layer utilities {
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Mirapro utility classes */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--ai-gradient-start)), hsl(var(--ai-gradient-end)));
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--ai-gradient-start)), hsl(var(--ai-gradient-end)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .glass {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+  }
+  .glass-elevated {
+    @apply bg-card/90 backdrop-blur-xl border border-border/50 shadow-lg;
+  }
+  .glass-chat {
+    @apply bg-card/95 backdrop-blur-2xl border border-border/30;
+    box-shadow: 0 0 0 1px hsl(var(--border) / 0.1), 0 8px 40px -12px hsl(var(--primary) / 0.15), 0 20px 60px -20px hsl(0 0% 0% / 0.2);
+  }
+  .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+  .animate-float { animation: float 3s ease-in-out infinite; }
+  .animate-shimmer { animation: shimmer 2s linear infinite; background-size: 200% 100%; }
+  .animate-typing { animation: typing 1.4s infinite; }
+  .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+  .chat-bubble-enter { animation: bubbleEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  .chat-bubble-user { animation: bubbleSlideLeft 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .chat-bubble-assistant { animation: bubbleSlideRight 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .input-glow {
+    box-shadow: 0 0 0 1px hsl(var(--border) / 0.5), 0 2px 8px -2px hsl(var(--primary) / 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  .input-glow:focus-within {
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3), 0 4px 20px -4px hsl(var(--primary) / 0.25);
+  }
+}
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes typing { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes fadeIn { 0% { opacity: 0; transform: translateY(4px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes bubbleEnter { 0% { opacity: 0; transform: scale(0.8) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes bubbleSlideLeft { 0% { opacity: 0; transform: translateX(20px); } 100% { opacity: 1; transform: translateX(0); } }
+@keyframes bubbleSlideRight { 0% { opacity: 0; transform: translateX(-20px); } 100% { opacity: 1; transform: translateX(0); } }
+
+@layer utilities {
 
   /* ── Semantic Typography Scale ──
      All rem-based → scales with accessibility root font-size.
