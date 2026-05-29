@@ -720,8 +720,8 @@ export default function Transactions() {
                       <TableCell>{item.listingAgent}</TableCell>
                       <TableCell>{item.office}</TableCell>
                       <TableCell>{formatDate(item.expirationDate)}</TableCell>
-                      <TableCell className="font-medium">
-                        {formatCurrency(item.listingPrice)}
+                      <TableCell className="text-right font-medium tabular-nums">
+                        {formatUSD(item.listingPrice)}
                       </TableCell>
                       <TableCell>
                         {item.action ? (
