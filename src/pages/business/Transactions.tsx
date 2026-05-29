@@ -1111,6 +1111,41 @@ export default function BusinessTransactions() {
           })()}
         </DialogContent>
       </Dialog>
+
+      {/* Listing picker for Create Transaction flow */}
+      <Dialog open={pickListingOpen} onOpenChange={setPickListingOpen}>
+        <DialogContent className="sm:max-w-md rounded-2xl">
+          <DialogHeader>
+            <DialogTitle>Create Transaction</DialogTitle>
+            <DialogDescription>Select the listing this transaction is for.</DialogDescription>
+          </DialogHeader>
+          <Select value={pickedListingId} onValueChange={setPickedListingId}>
+            <SelectTrigger className="h-11"><SelectValue placeholder="Choose a listing" /></SelectTrigger>
+            <SelectContent>
+              {ctxListings.map((l) => (
+                <SelectItem key={l.id} value={l.id}>
+                  {l.extraction.propertyAddress} — {l.extraction.city}, {l.extraction.state}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button variant="ghost" onClick={() => setPickListingOpen(false)}>Cancel</Button>
+            <Button
+              disabled={!pickedListingId}
+              onClick={() => {
+                const id = pickedListingId;
+                setPickListingOpen(false);
+                setPickedListingId("");
+                void startContractForListing(id);
+              }}
+            >
+              Continue
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
+
