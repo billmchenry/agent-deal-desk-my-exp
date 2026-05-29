@@ -156,6 +156,7 @@ interface ChatContentProps {
   onStopVoiceListening: () => void;
   onVoiceTranscript: (text: string) => void;
   transactionFlowContent?: React.ReactNode;
+  flowActive?: boolean;
 }
 
 function ChatContent({
@@ -190,6 +191,7 @@ function ChatContent({
   onStopVoiceListening,
   onVoiceTranscript,
   transactionFlowContent,
+  flowActive,
 }: ChatContentProps) {
   const { t } = useTranslation();
   const [pendingAttachments, setPendingAttachments] = React.useState<ChatAttachment[]>([]);
@@ -418,7 +420,7 @@ function ChatContent({
 
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 sm:p-4 min-h-0">
         <div className="flex flex-col gap-4 sm:gap-6">
-          {currentMessages.map((message) => {
+          {!flowActive && currentMessages.map((message) => {
             const displayMessage = message.id === 'welcome'
               ? { ...message, content: getWelcomeMessageForRoute(pathname) }
               : message;
@@ -962,6 +964,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     onStopVoiceListening: () => setIsVoiceListening(false),
     onVoiceTranscript: (text: string) => processMessage(text),
     transactionFlowContent,
+    flowActive: listingMode !== "idle" || contractMode !== "idle",
   };
 
   // Mobile: Fixed full-screen panel (no overlay)
