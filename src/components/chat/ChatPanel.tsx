@@ -1,17 +1,24 @@
-import React, { useRef, useEffect, useState, useMemo } from "react";
-import { useLocation } from "react-router-dom";
-import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2, AudioWaveform, Plus, FileText, Mic, Square } from "lucide-react";
+import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Sparkles, Send, History, ArrowLeft, MessageSquare, Search, Trash2, X, Maximize2, Minimize2, AudioWaveform, Plus, FileText, Mic, Square, Home, DollarSign } from "lucide-react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "./ChatMessage";
 import { useMiraChat } from "@/contexts/MiraChatContext";
+import { useTransactions } from "@/contexts/TransactionsContext";
 import { ChatMessageData, ChatAttachment } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/hooks/useTranslation";
 import { VoiceModeView } from "./VoiceMode";
+import { DocumentDropzone } from "@/components/transactions/DocumentDropzone";
+import { ProcessingStatus } from "@/components/transactions/ProcessingStatus";
+import { ExtractionSummary } from "@/components/transactions/ExtractionSummary";
+import { mockExtractListing } from "@/data/mockListingExtraction";
+import { mockExtractContract } from "@/data/mockContractExtraction";
+import { toast } from "sonner";
 
 interface ChatPanelProps {
   isOpen: boolean;
@@ -148,6 +155,7 @@ interface ChatContentProps {
   onStartVoiceListening: () => void;
   onStopVoiceListening: () => void;
   onVoiceTranscript: (text: string) => void;
+  transactionFlowContent?: React.ReactNode;
 }
 
 function ChatContent({
@@ -181,6 +189,7 @@ function ChatContent({
   onStartVoiceListening,
   onStopVoiceListening,
   onVoiceTranscript,
+  transactionFlowContent,
 }: ChatContentProps) {
   const { t } = useTranslation();
   const [pendingAttachments, setPendingAttachments] = React.useState<ChatAttachment[]>([]);
@@ -421,6 +430,7 @@ function ChatContent({
               />
             );
           })}
+          {transactionFlowContent}
         </div>
       </div>
 
