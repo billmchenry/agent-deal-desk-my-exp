@@ -591,6 +591,7 @@ function ChatContent({
 
 export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const { 
     currentMessages, 
     setCurrentMessages, 
@@ -600,6 +601,21 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     pendingQuery,
     clearPendingQuery,
   } = useMiraChat();
+  const {
+    listings,
+    listingMode,
+    setListingMode,
+    pendingExtraction,
+    setPendingExtraction,
+    contractMode,
+    setContractMode,
+    pendingContract,
+    setPendingContract,
+    activeListingForContract,
+    setActiveListingForContract,
+    setSubmittedListing,
+    setSubmittedContract,
+  } = useTransactions();
   const location = useLocation();
   const [inputValue, setInputValue] = useState("");
   const [showHistory, setShowHistory] = useState(false);
@@ -608,7 +624,64 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVoiceMode, setIsVoiceMode] = useState(false);
   const [isVoiceListening, setIsVoiceListening] = useState(false);
+  const [isProcessingListing, setIsProcessingListing] = useState(false);
+  const [isProcessingContract, setIsProcessingContract] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleListingFileSelect = useCallback(async (file: File) => {
+    setListingMode("processing");
+    setIsProcessingListing(true);
+    try {
+      const extractedData = await mockExtractListing(file.name);
+      setPendingExtraction(extractedData);
+    } catch {
+      toast.error("Error processing document. Please try again.");
+      setListingMode("idle");
+    }
+  }, [setListingMode, setPendingExtraction]);
+
+  const handleCancelListingFlow = useCallback(() => {
+    setListingMode("idle");
+    setPendingExtraction(null);
+    setIsProcessingListing(false);
+  }, [setListingMode, setPendingExtraction]);
+
+  const handleViewFullExtraction = useCallback(() => {
+    if (!pendingExtraction) return;
+    setListingMode("verifying");
+    navigate("/business/new-listing");
+  }, [pendingExtraction, setListingMode, navigate]);
+
+  const handleContractFileSelect = useCallback(async (file: File) => {
+    setContractMode("processing");
+    setIsProcessingContract(true);
+    try {
+      const listing = activeListingForContract || listings[0];
+      if (!listing) {
+        toast.error("Create a listing first, then add a transaction.");
+        setContractMode("selecting_listing");
+        return;
+      }
+      const extractedData = await mockExtractContract(file.name, listing);
+      setPendingContract(extractedData);
+    } catch {
+      toast.error("Error processing contract. Please try again.");
+      setContractMode("idle");
+    }
+  }, [activeListingForContract, listings, setContractMode, setPendingContract]);
+
+  const handleCancelContractFlow = useCallback(() => {
+    setContractMode("idle");
+    setPendingContract(null);
+    setActiveListingForContract(null);
+    setIsProcessingContract(false);
+  }, [setContractMode, setPendingContract, setActiveListingForContract]);
+
+  const handleViewContractExtraction = useCallback(() => {
+    if (!activeListingForContract) return;
+    setContractMode("verifying");
+    navigate(`/business/new-contract/${activeListingForContract.id}`);
+  }, [activeListingForContract, setContractMode, navigate]);
 
   const handleLoadConversation = (id: string) => {
     loadConversation(id);
