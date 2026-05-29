@@ -428,22 +428,22 @@ export default function Transactions() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-semibold text-foreground">Transactions</h1>
-          <p className="text-muted-foreground">Manage and track your real estate transactions</p>
+          <h1 className="text-page-title font-semibold text-foreground">Transactions</h1>
+          <p className="text-body text-muted-foreground">Manage and track your real estate transactions</p>
         </div>
         <div className="flex items-center gap-6">
-          <a 
-            href="https://skyslope.com" 
-            target="_blank" 
+          <a
+            href="https://skyslope.com"
+            target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-2 text-body text-muted-foreground hover:text-foreground transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             <span>SkySlope</span>
           </a>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="gradient-primary gap-2">
+              <Button className="gap-2">
                 <Plus className="w-4 h-4" />
                 Create
                 <ChevronDown className="w-4 h-4" />
@@ -471,17 +471,17 @@ export default function Transactions() {
       <Card className="mb-6 border-primary/20 bg-primary/5">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-4 h-4 text-primary-foreground" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-foreground leading-relaxed">
+              <p className="text-body text-foreground leading-relaxed">
                 <span className="font-medium">Quick Summary:</span> You have{' '}
                 <span className="font-semibold text-primary">
                   {pendingCount} pending transaction{pendingCount !== 1 ? 's' : ''}
                 </span>{' '}
-                worth <span className="font-semibold">${pendingValue.toLocaleString()}</span> with potential commission of{' '}
-                <span className="font-semibold text-success">${pendingCommission.toLocaleString()}</span>.
+                worth <span className="font-semibold tabular-nums">{formatUSD(pendingValue)}</span> with potential commission of{' '}
+                <span className="font-semibold text-success tabular-nums">{formatUSD(pendingCommission)}</span>.
               </p>
             </div>
             <Button variant="outline" size="sm" onClick={handleAskMira}>
