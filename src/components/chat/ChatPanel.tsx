@@ -711,7 +711,12 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
-  }, [currentMessages]);
+  }, [currentMessages, listingMode, contractMode]);
+
+  useEffect(() => {
+    if (listingMode === "uploading") setIsProcessingListing(false);
+    if (contractMode === "uploading") setIsProcessingContract(false);
+  }, [listingMode, contractMode]);
 
   // Auto-scroll while AI is streaming (typewriter animation)
   useEffect(() => {
@@ -804,6 +809,114 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
   const handleFollowUp = (question: string) => {
     processMessage(question);
   };
+
+  const transactionFlowContent = (
+    <>
+      {listingMode !== "idle" && listingMode !== "verifying" && (
+        <div className="flex flex-col gap-4 animate-fade-in">
+          <div className="flex items-start gap-3">
+            <div className="relative shrink-0">
+              <div className="absolute inset-0 rounded-full bg-primary/30 blur-md animate-pulse" />
+              <div className="relative h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-primary-foreground" />
+              </div>
+            </div>
+            <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-secondary/80 px-4 py-3">
+              {listingMode === "uploading" && <p className="text-body text-foreground">Ready to start? 📄 Drop all your documents at once—Listing Agreement, disclosures, anything you have—and I'll sort and process them automatically.</p>}
+              {listingMode === "processing" && <p className="text-body text-foreground">Got it! I'm scanning the document now—extracting property details, seller info, and checking for signatures... ✨</p>}
+              {listingMode === "ready" && pendingExtraction && (
+                <div className="text-body text-foreground space-y-2">
+                  <p>✅ <span className="font-medium">100% Compliant</span>—All signatures and initials detected.</p>
+                  <p>Here's what I extracted. <span className="font-medium">Tap “View & Edit”</span> to review the full details and send for compliance review.</p>
+                </div>
+              )}
+              {listingMode === "submitted" && (
+                <div className="text-body text-foreground space-y-2">
+                  <p>🎉 <span className="font-medium">Listing Created!</span> Now being reviewed by compliance.</p>
+                  <p className="text-muted-foreground">Your listing is ready. View the property overview to track progress and manage your listing.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="ps-11 space-y-4">
+            {listingMode === "uploading" && (
+              <>
+                <DocumentDropzone onFileSelect={handleListingFileSelect} disabled={isProcessingListing} allowMultiple label="Drop Documents" />
+                <Button variant="ghost" size="sm" onClick={handleCancelListingFlow} className="text-muted-foreground">Cancel</Button>
+              </>
+            )}
+            {listingMode === "processing" && <ProcessingStatus isProcessing onComplete={() => { setIsProcessingListing(false); setListingMode("ready"); }} documentType="listing" />}
+            {listingMode === "ready" && pendingExtraction && (
+              <>
+                <ExtractionSummary extraction={pendingExtraction} onViewFullExtraction={handleViewFullExtraction} />
+                <Button variant="ghost" size="sm" onClick={handleCancelListingFlow} className="text-muted-foreground">Cancel</Button>
+              </>
+            )}
+            {listingMode === "submitted" && (
+              <Button
+                variant="outline"
+                className="w-full justify-start gap-3 min-h-[56px] rounded-2xl"
+                onClick={() => {
+                  setSubmittedListing(null);
+                  setListingMode("idle");
+                }}
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary"><Home className="h-4 w-4" /></span>
+                <span className="text-start"><span className="block font-medium text-body">View Property Overview</span><span className="block text-xs text-muted-foreground">See listing details and track progress</span></span>
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {contractMode !== "idle" && contractMode !== "verifying" && (
+        <div className="flex flex-col gap-4 animate-fade-in">
+          <div className="flex items-start gap-3">
+            <div className="relative shrink-0">
+              <div className="absolute inset-0 rounded-full bg-primary/30 blur-md animate-pulse" />
+              <div className="relative h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-primary-foreground" />
+              </div>
+            </div>
+            <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-secondary/80 px-4 py-3">
+              {contractMode === "uploading" && !activeListingForContract && <p className="text-body text-foreground">Let's create a transaction! 🎉 Drop your executed contract and any supporting documents below—I'll extract all the details.</p>}
+              {contractMode === "uploading" && activeListingForContract && <p className="text-body text-foreground">Exciting news! 🎉 Let's get <span className="font-medium">{activeListingForContract.extraction.propertyAddress}</span> under contract. Drop your sales contract and/or any supporting docs below.</p>}
+              {contractMode === "processing" && <p className="text-body text-foreground">Got it! I'm scanning the contract—extracting buyer info, financials, and key dates... ✨</p>}
+              {contractMode === "selecting_listing" && pendingContract && <p className="text-body text-foreground">Got it! I extracted the contract for <span className="font-medium">{pendingContract.propertyAddress}</span>. Which listing does this belong to?</p>}
+              {contractMode === "ready" && <div className="text-body text-foreground space-y-2"><p className="font-medium text-exp-green">✅ 100% Compliant—All fields extracted, signatures and initials verified.</p><p>Tap <span className="font-medium">“View & Edit”</span> to review the details and complete any fields not provided in the contract.</p></div>}
+              {contractMode === "submitted" && <div className="text-body text-foreground space-y-2"><p>🎉 <span className="font-medium">Transaction Created!</span> Now being reviewed by compliance.</p><p className="text-muted-foreground">Your transaction checklist is ready. View the property overview to track progress and manage upcoming deadlines.</p></div>}
+            </div>
+          </div>
+
+          <div className="ps-11 space-y-4">
+            {contractMode === "uploading" && (
+              <>
+                <DocumentDropzone onFileSelect={handleContractFileSelect} disabled={isProcessingContract} allowMultiple label="Drop Contract Documents" />
+                <Button variant="ghost" size="sm" onClick={handleCancelContractFlow} className="text-muted-foreground">Cancel</Button>
+              </>
+            )}
+            {contractMode === "processing" && <ProcessingStatus isProcessing onComplete={() => { setIsProcessingContract(false); setContractMode(activeListingForContract ? "ready" : "selecting_listing"); }} documentType="contract" />}
+            {contractMode === "selecting_listing" && pendingContract && (
+              <div className="overflow-hidden rounded-2xl border border-border bg-card">
+                <div className="border-b border-border bg-secondary/50 px-4 py-2"><p className="text-xs font-medium text-muted-foreground">Select a listing</p></div>
+                <div className="max-h-64 divide-y divide-border overflow-y-auto">
+                  {listings.map((listing) => (
+                    <button key={listing.id} onClick={() => { setActiveListingForContract(listing); setContractMode("ready"); }} className="w-full px-4 py-3 text-start hover:bg-secondary/50 transition-colors">
+                      <p className="font-medium text-body text-foreground">{listing.extraction.propertyAddress}</p>
+                      <p className="text-xs text-muted-foreground font-secondary tabular-nums">{listing.extraction.city}, {listing.extraction.state} • {listing.extraction.listingPrice.toLocaleString()} USD</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {contractMode === "ready" && pendingContract && activeListingForContract && <Button onClick={handleViewContractExtraction} className="w-full rounded-[51px] min-h-[44px]">View & Edit</Button>}
+            {contractMode === "submitted" && <Button variant="outline" className="w-full justify-start gap-3 min-h-[56px] rounded-2xl" onClick={() => { setSubmittedContract(null); setContractMode("idle"); }}><span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary"><DollarSign className="h-4 w-4" /></span><span className="text-start"><span className="block font-medium text-body">View Property Overview</span><span className="block text-xs text-muted-foreground">Track progress and manage deadlines</span></span></Button>}
+          </div>
+        </div>
+      )}
+    </>
+  );
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
