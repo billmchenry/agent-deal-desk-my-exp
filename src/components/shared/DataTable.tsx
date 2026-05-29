@@ -97,7 +97,7 @@ function getStatusBadge(status: string) {
 
 // ---------- Component ----------
 
-export function DataTable<T extends Record<string, unknown>>({
+export function DataTable<T extends object>({
   data,
   columns,
   searchableKeys,
@@ -160,13 +160,13 @@ export function DataTable<T extends Record<string, unknown>>({
       if (val) {
         const q = val.toLowerCase();
         result = result.filter((row) =>
-        String(row[key] ?? "").toLowerCase().includes(q)
+        String((row as Record<string, unknown>)[key] ?? "").toLowerCase().includes(q)
         );
       }
     }
     for (const [key, vals] of Object.entries(columnEnumFilters)) {
       if (vals.size > 0) {
-        result = result.filter((row) => vals.has(String(row[key] ?? "")));
+        result = result.filter((row) => vals.has(String((row as Record<string, unknown>)[key] ?? "")));
       }
     }
 
