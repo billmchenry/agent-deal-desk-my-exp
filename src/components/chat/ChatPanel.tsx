@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "./ChatMessage";
 import { useMiraChat } from "@/contexts/MiraChatContext";
 import { useTransactions } from "@/contexts/TransactionsContext";
-import { ChatMessageData, ChatAttachment } from "@/types/chat";
+import { ChatMessageData, ChatAttachment, Conversation } from "@/types/chat";
 import { formatDistanceToNow } from "date-fns";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -137,7 +137,7 @@ interface ChatContentProps {
   messagesContainerRef: React.RefObject<HTMLDivElement>;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  filteredConversations: any[];
+  filteredConversations: Conversation[];
   handleLoadConversation: (id: string) => void;
   handleDeleteConversation: (e: React.MouseEvent, id: string) => void;
   swipedId: string | null;
