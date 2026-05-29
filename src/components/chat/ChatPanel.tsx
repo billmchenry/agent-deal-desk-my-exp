@@ -964,6 +964,7 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
     onStopVoiceListening: () => setIsVoiceListening(false),
     onVoiceTranscript: (text: string) => processMessage(text),
     transactionFlowContent,
+    flowActive: listingMode !== "idle" || contractMode !== "idle",
   };
 
   // Mobile: Fixed full-screen panel (no overlay)
