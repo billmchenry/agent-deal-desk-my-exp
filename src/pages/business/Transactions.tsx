@@ -499,34 +499,34 @@ export default function Transactions() {
           <Card className="bg-card">
             <CardContent className="p-5">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Active Pipeline</span>
+                <span className="text-caption font-medium text-muted-foreground uppercase tracking-wide">Active Pipeline</span>
                 <Tabs value={pipelineRange} onValueChange={setPipelineRange}>
                   <TabsList className="h-7">
-                    <TabsTrigger value="month" className="text-xs px-2 h-5">Monthly</TabsTrigger>
-                    <TabsTrigger value="quarter" className="text-xs px-2 h-5">Quarterly</TabsTrigger>
-                    <TabsTrigger value="year" className="text-xs px-2 h-5">Yearly</TabsTrigger>
+                    <TabsTrigger value="month" className="text-caption px-2 h-5">Monthly</TabsTrigger>
+                    <TabsTrigger value="quarter" className="text-caption px-2 h-5">Quarterly</TabsTrigger>
+                    <TabsTrigger value="year" className="text-caption px-2 h-5">Yearly</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
               <div className="mb-4">
-                <p className="text-4xl font-bold text-foreground">{totalDeals}</p>
-                <p className="text-sm text-muted-foreground">Total Deals</p>
+                <p className="text-stat-value font-semibold text-foreground tabular-nums">{totalDeals}</p>
+                <p className="text-body text-muted-foreground">Total Deals</p>
               </div>
-              <div className="flex items-center gap-3 text-xs">
+              <div className="flex items-center gap-3 text-caption">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-warning">{inProgressCount}</span>
+                  <span className="font-semibold text-warning tabular-nums">{inProgressCount}</span>
                   <span className="text-muted-foreground uppercase">In Progress</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-foreground">{closedCount}</span>
+                  <span className="font-semibold text-foreground tabular-nums">{closedCount}</span>
                   <span className="text-muted-foreground uppercase">Closed</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-success">{paidCount}</span>
+                  <span className="font-semibold text-success tabular-nums">{paidCount}</span>
                   <span className="text-muted-foreground uppercase">Paid</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-muted-foreground">{canceledCount}</span>
+                  <span className="font-semibold text-muted-foreground tabular-nums">{canceledCount}</span>
                   <span className="text-muted-foreground uppercase">Canceled</span>
                 </div>
               </div>
@@ -537,32 +537,31 @@ export default function Transactions() {
           <Card className="border-warning/30 bg-warning/5">
             <CardContent className="p-5">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-warning/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-warning/20 flex items-center justify-center">
                   <Send className="w-5 h-5 text-warning" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-foreground">Send DA</span>
-                    <Badge className="bg-warning text-warning-foreground text-xs">{readyToSend} Ready</Badge>
+                    <Badge className="bg-warning text-warning-foreground text-caption tabular-nums">{readyToSend} Ready</Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground">Disbursement Authorization</p>
+                  <p className="text-caption text-muted-foreground">Disbursement Authorization</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-background rounded-lg p-3 text-center">
-                  <p className="text-2xl font-bold text-foreground">{readyToSend}</p>
-                  <p className="text-xs text-muted-foreground">Ready to Send</p>
+                <div className="bg-background rounded-2xl p-3 text-center">
+                  <p className="text-stat-value font-semibold text-foreground tabular-nums">{readyToSend}</p>
+                  <p className="text-caption text-muted-foreground">Ready to Send</p>
                 </div>
-                <div className="bg-background rounded-lg p-3 text-center">
-                  <p className="text-2xl font-bold text-foreground">{daIssued}</p>
-                  <p className="text-xs text-muted-foreground">DA Issued</p>
+                <div className="bg-background rounded-2xl p-3 text-center">
+                  <p className="text-stat-value font-semibold text-foreground tabular-nums">{daIssued}</p>
+                  <p className="text-caption text-muted-foreground">DA Issued</p>
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button 
-                  size="sm" 
-                  className="flex-1 text-white hover:opacity-90"
-                  style={{ backgroundColor: 'hsl(var(--warning))' }}
+                <Button
+                  size="sm"
+                  className="flex-1 bg-warning text-warning-foreground hover:bg-warning/90"
                 >
                   <Send className="w-3 h-3 mr-1.5" />
                   Send All DAs
@@ -579,25 +578,25 @@ export default function Transactions() {
           <Card className="border-success/30 bg-success/5">
             <CardContent className="p-5">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-success/20 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-success/20 flex items-center justify-center">
                   <CreditCard className="w-5 h-5 text-success" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-foreground">Settlement</span>
-                    <Badge className="bg-success text-success-foreground text-xs">${(totalPotentialPayout / 1000).toFixed(0)}K</Badge>
+                    <Badge className="bg-success text-success-foreground text-caption tabular-nums">{formatUSD(totalPotentialPayout)}</Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground">Get Paid</p>
+                  <p className="text-caption text-muted-foreground">Get Paid</p>
                 </div>
               </div>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Pending Payout</p>
-                  <p className="text-2xl font-bold text-foreground">${(pendingPayout / 1000).toFixed(0)}K</p>
+                  <p className="text-caption text-muted-foreground uppercase tracking-wide mb-1">Pending Payout</p>
+                  <p className="text-stat-value font-semibold text-foreground tabular-nums">{formatUSD(pendingPayout)}</p>
                 </div>
                 <CircularProgress value={payoutProgress} size={56} strokeWidth={5} />
               </div>
-              <div className="flex items-center gap-4 mb-4 text-xs">
+              <div className="flex items-center gap-4 mb-4 text-caption">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-warning" />
                   <span className="text-muted-foreground">{needDocsCount} Need Docs</span>
