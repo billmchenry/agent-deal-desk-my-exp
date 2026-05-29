@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useApp } from '@/contexts/AppContext';
 import { cn } from '@/lib/utils';
-import { formatCurrency, formatDate } from '@/lib/mockDocumentExtraction';
+import { useFormatters } from '@/hooks/useFormatters';
 import { CircularProgress } from '@/components/ui/circular-progress';
 
 // Action types and their severity
