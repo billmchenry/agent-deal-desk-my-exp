@@ -433,132 +433,25 @@ export default function BusinessTransactions() {
           </div>
         </Card>
 
-        {/* Pipeline / DA / Settlement stat row */}
+        {/* Pipeline / DA / Settlement stat row — Coming Soon */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Active Pipeline */}
-          <Card className="rounded-2xl bg-card">
-            <div className="p-5">
-              <div className="flex items-center justify-between gap-2 mb-4">
+          {[
+            { label: t("transactions.activePipeline") ?? "Active Pipeline", className: "rounded-2xl bg-card" },
+            { label: "Send DA", className: "rounded-2xl border-exp-gold/30 bg-exp-gold/5" },
+            { label: "Settlement", className: "rounded-2xl border-exp-green/30 bg-exp-green/5" },
+          ].map((c) => (
+            <Card key={c.label} className={c.className}>
+              <div className="p-5 min-h-[220px] flex flex-col items-center justify-center text-center gap-2">
                 <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                  {t("transactions.activePipeline")}
+                  {c.label}
                 </span>
-                <Tabs value={period} onValueChange={(v) => setPeriod(v as Period)}>
-                  <TabsList className="h-8 p-1">
-                    <TabsTrigger value="monthly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.monthly")}</TabsTrigger>
-                    <TabsTrigger value="quarterly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.quarterly")}</TabsTrigger>
-                    <TabsTrigger value="yearly" className="rounded-[51px] text-[11px] px-2.5 py-1">{t("transactions.yearly")}</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                <Badge variant="outline" className="rounded-[51px] text-[10px]">In Progress</Badge>
+                <p className="text-sm text-muted-foreground max-w-[220px]">
+                  Coming soon — this feature is currently in development.
+                </p>
               </div>
-              <div className="mb-4">
-                <p className="font-secondary font-bold text-4xl text-foreground tabular-nums leading-none">{formatNumber(total)}</p>
-                <p className="text-sm text-muted-foreground mt-1">{t("transactions.totalDeals")}</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-exp-gold tabular-nums">{d.inProgress}</span>
-                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.inProgress")}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-foreground tabular-nums">{d.closed}</span>
-                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.closed")}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-exp-green tabular-nums">{d.paid}</span>
-                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.paid")}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-muted-foreground tabular-nums">{d.canceled}</span>
-                  <span className="text-muted-foreground uppercase text-[10px] tracking-wider">{t("transactions.canceled")}</span>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* Send DA */}
-          <Card className="rounded-2xl border-exp-gold/30 bg-exp-gold/5">
-            <div className="p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-exp-gold/15 flex items-center justify-center text-exp-gold shrink-0">
-                  <Send className="w-5 h-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-foreground">Send DA</span>
-                    <Badge className="bg-exp-gold text-white hover:bg-exp-gold border-0 text-[10px] px-2 py-0 h-5">{readyToSend} Ready</Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Disbursement Authorization</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="bg-background rounded-xl p-3 text-center">
-                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">{readyToSend}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Ready to Send</p>
-                </div>
-                <div className="bg-background rounded-xl p-3 text-center">
-                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">{daIssued}</p>
-                  <p className="text-xs text-muted-foreground mt-1">DA Issued</p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button size="sm" className="flex-1 rounded-[51px] bg-exp-gold text-white hover:bg-exp-gold/90 gap-1.5 min-h-[36px]">
-                  <Send className="w-3 h-3" />
-                  Send All
-                </Button>
-                <Button size="sm" variant="outline" className="flex-1 rounded-[51px] gap-1.5 min-h-[36px]">
-                  Go to DAs
-                  <ArrowRight className="w-3 h-3" />
-                </Button>
-              </div>
-            </div>
-          </Card>
-
-          {/* Settlement */}
-          <Card className="rounded-2xl border-exp-green/30 bg-exp-green/5">
-            <div className="p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-exp-green/15 flex items-center justify-center text-exp-green shrink-0">
-                  <CreditCard className="w-5 h-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-foreground">Settlement</span>
-                    <Badge className="bg-exp-green text-white hover:bg-exp-green border-0 text-[10px] px-2 py-0 h-5 tabular-nums">{Math.round(totalPotentialPayout / 1000)}K</Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Get Paid</p>
-                </div>
-              </div>
-              <div className="flex items-center justify-between gap-3 mb-4">
-                <div className="min-w-0">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Pending Payout</p>
-                  <p className="font-secondary font-bold text-2xl text-foreground tabular-nums leading-none">
-                    {formatNumber(Math.round(pendingPayout / 1000))}K USD
-                  </p>
-                </div>
-                <div className="relative h-14 w-14 shrink-0">
-                  <svg viewBox="0 0 36 36" className="h-14 w-14 -rotate-90">
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="hsl(var(--muted))" strokeWidth="3" />
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="hsl(var(--exp-green))" strokeWidth="3" strokeDasharray={`${payoutProgress}, 100`} strokeLinecap="round" />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-foreground tabular-nums">{payoutProgress}%</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 mb-4 text-xs">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-exp-gold" />
-                  <span className="text-muted-foreground tabular-nums">{needDocsCount} Need Docs</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-primary" />
-                  <span className="text-muted-foreground tabular-nums">{processingCount} Processing</span>
-                </div>
-              </div>
-              <Button size="sm" className="w-full rounded-[51px] bg-exp-green text-white hover:bg-exp-green/90 gap-1.5 min-h-[36px]">
-                Go to Settlement
-                <ArrowRight className="w-3 h-3" />
-              </Button>
-            </div>
-          </Card>
+            </Card>
+          ))}
         </div>
 
         {/* Toolbar: tabs (left) + search + status pills (right) */}
