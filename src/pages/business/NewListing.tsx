@@ -40,7 +40,7 @@ export default function NewListing() {
     setSubmittedListing(newListing);
     setPendingExtraction(null);
     setListingMode("submitted");
-    toast.success("Listing submitted", { description: newListing.extraction.propertyAddress });
+    
     navigate("/business/transactions");
   }, [pendingExtraction, addListing, setPendingExtraction, setListingMode, setSubmittedListing, navigate]);
 
