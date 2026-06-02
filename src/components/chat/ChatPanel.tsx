@@ -913,7 +913,16 @@ export function ChatPanel({ isOpen, onClose }: ChatPanelProps) {
                 </div>
               </div>
             )}
-            {contractMode === "ready" && pendingContract && activeListingForContract && <Button onClick={handleViewContractExtraction} className="w-full rounded-[51px] min-h-[44px]">View & Edit</Button>}
+            {contractMode === "ready" && pendingContract && activeListingForContract && (
+              <>
+                <ContractExtractionSummary
+                  extraction={pendingContract}
+                  listing={activeListingForContract}
+                  onViewFullExtraction={handleViewContractExtraction}
+                />
+                <Button variant="ghost" size="sm" onClick={handleCancelContractFlow} className="text-muted-foreground">Cancel</Button>
+              </>
+            )}
             {contractMode === "submitted" && <Button variant="outline" className="w-full justify-start gap-3 min-h-[56px] rounded-2xl" onClick={() => { setSubmittedContract(null); setContractMode("idle"); }}><span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary"><DollarSign className="h-4 w-4" /></span><span className="text-start"><span className="block font-medium text-body">View Property Overview</span><span className="block text-xs text-muted-foreground">Track progress and manage deadlines</span></span></Button>}
           </div>
         </div>
