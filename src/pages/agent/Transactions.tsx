@@ -201,85 +201,84 @@ export default function Transactions() {
         <CanadianDisclaimer variant="agent" email="canada.support@exprealty.com" />
         <UniversalFilterBar title={t("txn.agentProductionDetails")} />
 
-        {/* Row 1: search + more filters */}
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <div className="flex-1 min-w-0">
-            <SearchFilter
-              value={search}
-              onChange={setSearch}
-              placeholder={t("txn.searchTransactions")}
-            />
-          </div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="rounded-[51px] min-h-[44px] gap-2">
-                <SlidersHorizontal className="h-4 w-4" />
-                More filters
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-64 rounded-2xl">
-              <p className="text-sm text-muted-foreground">
-                No additional filters yet — coming soon.
-              </p>
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        {/* Row 2: labeled dropdown filters */}
-        <div className="rounded-[32px] border border-border/60 bg-muted/40 p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <LabeledFilter label={t("txn.status") ?? "Status"}>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <button className="w-full inline-flex items-center justify-between gap-2 rounded-[51px] border border-input bg-background px-4 h-11 text-sm hover:bg-muted/50 transition-colors">
-                    <span className="truncate">{statusLabel}</span>
-                    <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent align="start" className="w-56 p-1">
-                  <div
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-muted text-sm"
-                    onClick={() => handleStatusToggle("all")}
-                  >
-                    <Checkbox checked={isAllSelected} className="pointer-events-none" />
-                    <span className="font-medium">{t("txn.allStatuses")}</span>
-                  </div>
-                  <div className="h-px bg-border my-1" />
-                  {allStatuses.map((opt) => (
-                    <div
-                      key={opt.value}
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-muted text-sm"
-                      onClick={() => handleStatusToggle(opt.value)}
-                    >
-                      <Checkbox
-                        checked={statusFilter.includes(opt.value)}
-                        disabled={isAllSelected}
-                        className="pointer-events-none"
-                      />
-                      <span>{opt.label}</span>
-                    </div>
-                  ))}
-                </PopoverContent>
-              </Popover>
-            </LabeledFilter>
-
-            <LabeledFilter label="Date Range" className="lg:col-span-2">
-              <UniversalFilterBar.DateRange
-                value={dateRange}
-                onChange={setDateRange}
-                extraContent={!isGlobal ? (
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <Checkbox
-                      checked={includePipeline}
-                      onCheckedChange={(checked) => setIncludePipeline(checked === true)}
-                    />
-                    <span className="text-sm text-foreground">Include All Pipeline</span>
-                  </label>
-                ) : undefined}
+        {/* Single-row filter bar */}
+        <div className="rounded-[32px] border border-border/60 bg-card p-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex-1 min-w-[220px]">
+              <SearchFilter
+                value={search}
+                onChange={setSearch}
+                placeholder={t("txn.searchTransactions")}
               />
-            </LabeledFilter>
+            </div>
+
+            <div className="h-8 w-px bg-border mx-1 hidden md:block" />
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className={`inline-flex items-center justify-between gap-2 rounded-[51px] border bg-background px-4 h-11 text-sm hover:bg-muted/50 transition-colors ${!isAllSelected ? "border-primary text-primary" : "border-input"}`}
+                >
+                  <span className="truncate">{t("txn.status") ?? "Status"}: {statusLabel}</span>
+                  <ChevronDown className="h-4 w-4 shrink-0 opacity-60" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-56 p-1">
+                <div
+                  className="flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-muted text-sm"
+                  onClick={() => handleStatusToggle("all")}
+                >
+                  <Checkbox checked={isAllSelected} className="pointer-events-none" />
+                  <span className="font-medium">{t("txn.allStatuses")}</span>
+                </div>
+                <div className="h-px bg-border my-1" />
+                {allStatuses.map((opt) => (
+                  <div
+                    key={opt.value}
+                    className="flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-muted text-sm"
+                    onClick={() => handleStatusToggle(opt.value)}
+                  >
+                    <Checkbox
+                      checked={statusFilter.includes(opt.value)}
+                      disabled={isAllSelected}
+                      className="pointer-events-none"
+                    />
+                    <span>{opt.label}</span>
+                  </div>
+                ))}
+              </PopoverContent>
+            </Popover>
+
+            <UniversalFilterBar.DateRange
+              value={dateRange}
+              onChange={setDateRange}
+              extraContent={!isGlobal ? (
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <Checkbox
+                    checked={includePipeline}
+                    onCheckedChange={(checked) => setIncludePipeline(checked === true)}
+                  />
+                  <span className="text-sm text-foreground">Include All Pipeline</span>
+                </label>
+              ) : undefined}
+            />
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="rounded-[51px] h-11 gap-2">
+                  <SlidersHorizontal className="h-4 w-4" />
+                  More filters
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-64 rounded-2xl">
+                <p className="text-sm text-muted-foreground">
+                  Additional filters — coming soon.
+                </p>
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
+
 
         <DataTable
           data={filteredData}

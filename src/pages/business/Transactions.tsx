@@ -70,7 +70,7 @@ function formatDateMDY(s: string): string {
 }
 
 type StatusFilter = "all" | "active" | "pending" | "closed";
-type SourceTab = "listings" | "transactions";
+type SourceTab = "all" | "listings" | "transactions";
 
 
 type Period = "monthly" | "quarterly" | "yearly";
@@ -450,107 +450,141 @@ export default function BusinessTransactions() {
           ))}
         </div>
 
-        {/* Row 1: search + source tabs + more filters */}
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-          <div className="flex-1 min-w-0">
-            <SearchFilter
-              value={search}
-              onChange={setSearch}
-              placeholder={t("transactions.searchProperties")}
-            />
+        {/* Single-row filter bar */}
+
+        <div className="rounded-[32px] border border-border/60 bg-card p-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex-1 min-w-[220px]">
+              <SearchFilter
+                value={search}
+                onChange={setSearch}
+                placeholder={t("transactions.searchProperties")}
+              />
+            </div>
+
+            <div className="h-8 w-px bg-border mx-1 hidden md:block" />
+
+            <Tabs value={sourceTab} onValueChange={(v) => setSourceTab(v as SourceTab)}>
+              <TabsList className="h-11 p-1 rounded-[51px] bg-muted">
+                <TabsTrigger value="all" className="rounded-[51px] px-4 py-1.5 font-normal data-[state=active]:font-medium data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm">
+                  All
+                </TabsTrigger>
+                <TabsTrigger value="listings" className="rounded-[51px] px-4 py-1.5 gap-2 font-normal data-[state=active]:font-medium data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm">
+                  <HomeIcon className="h-4 w-4" />
+                  {t("transactions.tabListings")}
+                </TabsTrigger>
+                <TabsTrigger value="transactions" className="rounded-[51px] px-4 py-1.5 gap-2 font-normal data-[state=active]:font-medium data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm">
+                  <DollarIcon className="h-4 w-4" />
+                  {t("transactions.tabTransactions")}
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+
+            {/* Inline pill dropdowns */}
+            <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
+              <SelectTrigger className={`rounded-[51px] h-11 px-4 w-auto gap-2 bg-background ${statusFilter !== "all" ? "border-primary text-primary" : ""}`}>
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                {(["all", "active", "pending", "closed"] as StatusFilter[]).map((key) => (
+                  <SelectItem key={key} value={key}>
+                    {t(`transactions.filter.${key}`)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={officeFilter} onValueChange={setOfficeFilter}>
+              <SelectTrigger className={`rounded-[51px] h-11 px-4 w-auto gap-2 bg-background ${officeFilter !== "all" ? "border-primary text-primary" : ""}`}>
+                <SelectValue placeholder="Office" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All offices</SelectItem>
+                {officeOptions.map((o) => (
+                  <SelectItem key={o} value={o}>{o}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={agentFilter} onValueChange={setAgentFilter}>
+              <SelectTrigger className={`rounded-[51px] h-11 px-4 w-auto gap-2 bg-background ${agentFilter !== "all" ? "border-primary text-primary" : ""}`}>
+                <SelectValue placeholder="Agent" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All agents</SelectItem>
+                {agentOptions.map((a) => (
+                  <SelectItem key={a} value={a}>{a}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="rounded-[51px] h-11 gap-2">
+                  <SlidersHorizontal className="h-4 w-4" />
+                  More filters
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-64 rounded-2xl">
+                <p className="text-sm text-muted-foreground">
+                  Date range and additional filters — coming soon.
+                </p>
+              </PopoverContent>
+            </Popover>
           </div>
 
-          <Tabs value={sourceTab} onValueChange={(v) => setSourceTab(v as SourceTab)}>
-            <TabsList className="h-11 p-1 rounded-[51px] bg-muted">
-              <TabsTrigger value="listings" className="rounded-[51px] px-4 py-1.5 gap-2 font-normal data-[state=active]:font-medium data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm">
-                <HomeIcon className="h-4 w-4" />
-                {t("transactions.tabListings")}
-                <Badge variant="secondary" className="ms-1 px-2 font-normal">{listings.length}</Badge>
-              </TabsTrigger>
-              <TabsTrigger value="transactions" className="rounded-[51px] px-4 py-1.5 gap-2 font-normal data-[state=active]:font-medium data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm">
-                <DollarIcon className="h-4 w-4" />
-                {t("transactions.tabTransactions")}
-                <Badge variant="secondary" className="ms-1 px-2 font-normal">{total}</Badge>
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="rounded-[51px] min-h-[44px] gap-2">
-                <SlidersHorizontal className="h-4 w-4" />
-                More filters
+          {/* Active filter chips */}
+          {(statusFilter !== "all" || officeFilter !== "all" || agentFilter !== "all" || sourceTab !== "all") && (
+            <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-border/60">
+              {sourceTab !== "all" && (
+                <Badge variant="secondary" className="rounded-[51px] h-8 px-3 gap-1.5 font-medium">
+                  {sourceTab === "listings" ? t("transactions.tabListings") : t("transactions.tabTransactions")}
+                  <button onClick={() => setSourceTab("all")} aria-label="Clear source filter" className="ms-1 -me-1 p-0.5 rounded-full hover:bg-background/60">
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              )}
+              {statusFilter !== "all" && (
+                <Badge variant="secondary" className="rounded-[51px] h-8 px-3 gap-1.5 font-medium">
+                  Status: {t(`transactions.filter.${statusFilter}`)}
+                  <button onClick={() => setStatusFilter("all")} aria-label="Clear status filter" className="ms-1 -me-1 p-0.5 rounded-full hover:bg-background/60">
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              )}
+              {officeFilter !== "all" && (
+                <Badge variant="secondary" className="rounded-[51px] h-8 px-3 gap-1.5 font-medium">
+                  Office: {officeFilter}
+                  <button onClick={() => setOfficeFilter("all")} aria-label="Clear office filter" className="ms-1 -me-1 p-0.5 rounded-full hover:bg-background/60">
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              )}
+              {agentFilter !== "all" && (
+                <Badge variant="secondary" className="rounded-[51px] h-8 px-3 gap-1.5 font-medium">
+                  Agent: {agentFilter}
+                  <button onClick={() => setAgentFilter("all")} aria-label="Clear agent filter" className="ms-1 -me-1 p-0.5 rounded-full hover:bg-background/60">
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ms-auto h-8 text-muted-foreground hover:text-foreground"
+                onClick={() => {
+                  setSourceTab("all");
+                  setStatusFilter("all");
+                  setOfficeFilter("all");
+                  setAgentFilter("all");
+                }}
+              >
+                Clear all
               </Button>
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-64 rounded-2xl">
-              <p className="text-sm text-muted-foreground">
-                No additional filters yet — coming soon.
-              </p>
-            </PopoverContent>
-          </Popover>
+            </div>
+          )}
         </div>
 
-        {/* Row 2: labeled dropdown filters */}
-        <div className="rounded-[32px] border border-border/60 bg-muted/40 p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <LabeledFilter label="Status">
-              <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
-                <SelectTrigger className="rounded-[51px] h-11 bg-background">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {(["all", "active", "pending", "closed"] as StatusFilter[]).map((key) => (
-                    <SelectItem key={key} value={key}>
-                      {t(`transactions.filter.${key}`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </LabeledFilter>
-
-            <LabeledFilter label="Office">
-              <Select value={officeFilter} onValueChange={setOfficeFilter}>
-                <SelectTrigger className="rounded-[51px] h-11 bg-background">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All offices</SelectItem>
-                  {officeOptions.map((o) => (
-                    <SelectItem key={o} value={o}>{o}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </LabeledFilter>
-
-            <LabeledFilter label="Agent">
-              <Select value={agentFilter} onValueChange={setAgentFilter}>
-                <SelectTrigger className="rounded-[51px] h-11 bg-background">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All agents</SelectItem>
-                  {agentOptions.map((a) => (
-                    <SelectItem key={a} value={a}>{a}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </LabeledFilter>
-
-            <LabeledFilter label="Date Range">
-              <Select defaultValue="all">
-                <SelectTrigger className="rounded-[51px] h-11 bg-background">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All time</SelectItem>
-                  <SelectItem value="30">Last 30 days</SelectItem>
-                  <SelectItem value="90">Last 90 days</SelectItem>
-                  <SelectItem value="ytd">Year to date</SelectItem>
-                </SelectContent>
-              </Select>
-            </LabeledFilter>
-          </div>
-        </div>
 
         {/* Table */}
         {/* Table */}
