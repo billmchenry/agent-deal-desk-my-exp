@@ -4,8 +4,10 @@ import { DropdownFilter } from "./DropdownFilter";
 import { SearchFilter } from "./SearchFilter";
 import { ToggleFilter } from "./ToggleFilter";
 import { PillFilter } from "./PillFilter";
+import { LabeledFilter } from "./LabeledFilter";
 
 export type { DateRange } from "./DateRangeFilter";
+export { LabeledFilter } from "./LabeledFilter";
 
 // Attach sub-components for compound pattern
 const UniversalFilterBar = Object.assign(Bar, {
@@ -14,6 +16,7 @@ const UniversalFilterBar = Object.assign(Bar, {
   Search: SearchFilter,
   Toggle: ToggleFilter,
   Pills: PillFilter,
+  Labeled: LabeledFilter,
 });
 
 export { UniversalFilterBar };
