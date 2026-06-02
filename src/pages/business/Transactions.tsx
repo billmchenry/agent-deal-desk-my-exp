@@ -131,6 +131,8 @@ export default function BusinessTransactions() {
 
   const [sourceTab, setSourceTab] = useState<SourceTab>("listings");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [officeFilter, setOfficeFilter] = useState<string>("all");
+  const [agentFilter, setAgentFilter] = useState<string>("all");
   const [search, setSearch] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -258,6 +260,8 @@ export default function BusinessTransactions() {
         if (statusFilter === "pending" && !["incomplete", "canceled/pend"].includes(s)) return false;
         if (statusFilter === "closed" && s !== "expired") return false;
       }
+      if (officeFilter !== "all" && row.office !== officeFilter) return false;
+      if (agentFilter !== "all" && row.listingAgent !== agentFilter) return false;
       if (search) {
         const q = search.toLowerCase();
         return (
@@ -270,7 +274,16 @@ export default function BusinessTransactions() {
       }
       return true;
     });
-  }, [listings, statusFilter, search]);
+  }, [listings, statusFilter, officeFilter, agentFilter, search]);
+
+  const officeOptions = useMemo(
+    () => Array.from(new Set(listings.map((l) => l.office))).sort(),
+    [listings],
+  );
+  const agentOptions = useMemo(
+    () => Array.from(new Set(listings.map((l) => l.listingAgent))).sort(),
+    [listings],
+  );
 
   const listingStatusBadge = (status: ListingRow["status"]) => {
     switch (status) {
