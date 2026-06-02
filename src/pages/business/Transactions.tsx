@@ -10,8 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable, type ColumnDef } from "@/components/shared/DataTable";
-import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X, Loader2, MapPin, User as UserIcon, Calendar as CalendarIcon, CheckCircle2, Pencil, ArrowLeft, Maximize2, History, ZoomIn, ZoomOut, AlertCircle, Check, Send, CreditCard, ArrowRight } from "lucide-react";
+import { Briefcase, ExternalLink, Plus, MoreVertical, Home as HomeIcon, DollarSign as DollarIcon, Sparkles, UploadCloud, FileText, X, Loader2, MapPin, User as UserIcon, Calendar as CalendarIcon, CheckCircle2, Pencil, ArrowLeft, Maximize2, History, ZoomIn, ZoomOut, AlertCircle, Check, Send, CreditCard, ArrowRight, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { LabeledFilter } from "@/components/filters/LabeledFilter";
+import { SearchFilter } from "@/components/filters/SearchFilter";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import {
   DropdownMenu,
@@ -434,16 +437,24 @@ export default function BusinessTransactions() {
           ))}
         </div>
 
-        {/* Toolbar: tabs (left) + search + status pills (right) */}
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        {/* Row 1: search + source tabs + more filters */}
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+          <div className="flex-1 min-w-0">
+            <SearchFilter
+              value={search}
+              onChange={setSearch}
+              placeholder={t("transactions.searchProperties")}
+            />
+          </div>
+
           <Tabs value={sourceTab} onValueChange={(v) => setSourceTab(v as SourceTab)}>
-            <TabsList className="h-10 p-1">
-              <TabsTrigger value="listings" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
+            <TabsList className="h-11 p-1 rounded-[51px] bg-muted">
+              <TabsTrigger value="listings" className="rounded-[51px] px-4 py-1.5 gap-2 font-normal data-[state=active]:font-medium data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm">
                 <HomeIcon className="h-4 w-4" />
                 {t("transactions.tabListings")}
                 <Badge variant="secondary" className="ms-1 px-2 font-normal">{listings.length}</Badge>
               </TabsTrigger>
-              <TabsTrigger value="transactions" className="rounded-[51px] px-3 py-1.5 gap-2 font-normal data-[state=active]:font-medium">
+              <TabsTrigger value="transactions" className="rounded-[51px] px-4 py-1.5 gap-2 font-normal data-[state=active]:font-medium data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm">
                 <DollarIcon className="h-4 w-4" />
                 {t("transactions.tabTransactions")}
                 <Badge variant="secondary" className="ms-1 px-2 font-normal">{total}</Badge>
@@ -451,25 +462,38 @@ export default function BusinessTransactions() {
             </TabsList>
           </Tabs>
 
-          <div className="flex flex-wrap items-center gap-2 lg:justify-end">
-            <input
-              type="search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t("transactions.searchProperties")}
-              className="h-11 w-full sm:w-72 rounded-[51px] border border-input bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-              aria-label={t("transactions.searchProperties")}
-            />
-            {(["all", "active", "pending", "closed"] as StatusFilter[]).map((key) => (
-              <Button
-                key={key}
-                variant={statusFilter === key ? "default" : "outline"}
-                onClick={() => setStatusFilter(key)}
-                className={`rounded-[51px] min-h-[44px] px-4 ${statusFilter === key ? "bg-primary hover:bg-primary/90 text-primary-foreground" : ""}`}
-              >
-                {t(`transactions.filter.${key}`)}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="rounded-[51px] min-h-[44px] gap-2">
+                <SlidersHorizontal className="h-4 w-4" />
+                More filters
               </Button>
-            ))}
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-64 rounded-2xl">
+              <p className="text-sm text-muted-foreground">
+                No additional filters yet — coming soon.
+              </p>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        {/* Row 2: labeled dropdown filters */}
+        <div className="rounded-[32px] border border-border/60 bg-muted/40 p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <LabeledFilter label={t("transactions.filter.status") ?? "Status"}>
+              <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
+                <SelectTrigger className="rounded-[51px] h-11 bg-background">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {(["all", "active", "pending", "closed"] as StatusFilter[]).map((key) => (
+                    <SelectItem key={key} value={key}>
+                      {t(`transactions.filter.${key}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </LabeledFilter>
           </div>
         </div>
 
