@@ -70,7 +70,7 @@ function formatDateMDY(s: string): string {
 }
 
 type StatusFilter = "all" | "active" | "pending" | "closed";
-type SourceTab = "listings" | "transactions";
+type SourceTab = "all" | "listings" | "transactions";
 
 
 type Period = "monthly" | "quarterly" | "yearly";
