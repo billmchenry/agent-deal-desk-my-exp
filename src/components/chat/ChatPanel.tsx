@@ -16,6 +16,7 @@ import { VoiceModeView } from "./VoiceMode";
 import { DocumentDropzone } from "@/components/transactions/DocumentDropzone";
 import { ProcessingStatus } from "@/components/transactions/ProcessingStatus";
 import { ExtractionSummary } from "@/components/transactions/ExtractionSummary";
+import { ContractExtractionSummary } from "@/components/transactions/ContractExtractionSummary";
 import { mockExtractListing } from "@/data/mockListingExtraction";
 import { mockExtractContract } from "@/data/mockContractExtraction";
 import { toast } from "sonner";
