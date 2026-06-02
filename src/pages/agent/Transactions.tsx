@@ -9,10 +9,12 @@ import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useFormatters } from "@/hooks/useFormatters";
 import { Badge } from "@/components/ui/badge";
-import { Eye, ChevronDown, Check } from "lucide-react";
+import { Eye, ChevronDown, Check, SlidersHorizontal } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import { SearchFilter } from "@/components/filters/SearchFilter";
+import { LabeledFilter } from "@/components/filters/LabeledFilter";
 import { CanadianDisclaimer } from "@/components/shared/CanadianDisclaimer";
 import { useDemoConfig } from "@/contexts/DemoConfigContext";
 
