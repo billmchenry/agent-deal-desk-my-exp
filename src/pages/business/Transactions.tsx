@@ -432,15 +432,12 @@ export default function BusinessTransactions() {
         {/* Pipeline / DA / Settlement stat row — Coming Soon */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            { label: t("transactions.activePipeline") ?? "Active Pipeline", className: "rounded-2xl bg-card" },
-            { label: "Send DA", className: "rounded-2xl border-exp-gold/30 bg-exp-gold/5" },
-            { label: "Settlement", className: "rounded-2xl border-exp-green/30 bg-exp-green/5" },
+            { key: "pipeline", className: "rounded-2xl bg-card" },
+            { key: "da", className: "rounded-2xl border-exp-gold/30 bg-exp-gold/5" },
+            { key: "settlement", className: "rounded-2xl border-exp-green/30 bg-exp-green/5" },
           ].map((c) => (
-            <Card key={c.label} className={c.className}>
+            <Card key={c.key} className={c.className}>
               <div className="p-5 min-h-[220px] flex flex-col items-center justify-center text-center gap-2">
-                <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                  {c.label}
-                </span>
                 <Badge variant="outline" className="rounded-[51px] text-[10px]">In Progress</Badge>
                 <p className="text-sm text-muted-foreground max-w-[220px]">
                   Coming soon — this feature is currently in development.
