@@ -452,7 +452,7 @@ export default function BusinessTransactions() {
 
         {/* Single-row filter bar */}
 
-        <div className="rounded-[32px] border border-border/60 bg-card p-3">
+        <div className="rounded-[32px] border border-border/60 bg-card p-3 font-secondary [&_*]:font-secondary">
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex-1 min-w-[220px]">
               <SearchFilter
