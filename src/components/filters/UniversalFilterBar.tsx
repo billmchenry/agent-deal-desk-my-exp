@@ -31,7 +31,7 @@ export function UniversalFilterBar({
             <div>
               <h1 className="text-xl font-bold text-foreground">{title}</h1>
               {subtitle && (
-                <p className="text-sm text-muted-foreground">{subtitle}</p>
+                <p className="text-sm text-muted-foreground font-secondary">{subtitle}</p>
               )}
             </div>
           )}
