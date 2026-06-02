@@ -493,7 +493,7 @@ export default function BusinessTransactions() {
         {/* Row 2: labeled dropdown filters */}
         <div className="rounded-[32px] border border-border/60 bg-muted/40 p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <LabeledFilter label={t("transactions.filter.status") ?? "Status"}>
+            <LabeledFilter label="Status">
               <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
                 <SelectTrigger className="rounded-[51px] h-11 bg-background">
                   <SelectValue />
@@ -504,6 +504,48 @@ export default function BusinessTransactions() {
                       {t(`transactions.filter.${key}`)}
                     </SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+            </LabeledFilter>
+
+            <LabeledFilter label="Office">
+              <Select value={officeFilter} onValueChange={setOfficeFilter}>
+                <SelectTrigger className="rounded-[51px] h-11 bg-background">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All offices</SelectItem>
+                  {officeOptions.map((o) => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </LabeledFilter>
+
+            <LabeledFilter label="Agent">
+              <Select value={agentFilter} onValueChange={setAgentFilter}>
+                <SelectTrigger className="rounded-[51px] h-11 bg-background">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All agents</SelectItem>
+                  {agentOptions.map((a) => (
+                    <SelectItem key={a} value={a}>{a}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </LabeledFilter>
+
+            <LabeledFilter label="Date Range">
+              <Select defaultValue="all">
+                <SelectTrigger className="rounded-[51px] h-11 bg-background">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All time</SelectItem>
+                  <SelectItem value="30">Last 30 days</SelectItem>
+                  <SelectItem value="90">Last 90 days</SelectItem>
+                  <SelectItem value="ytd">Year to date</SelectItem>
                 </SelectContent>
               </Select>
             </LabeledFilter>
